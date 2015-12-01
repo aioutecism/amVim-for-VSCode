@@ -1,25 +1,32 @@
 {
 	"name": "vim",
-	"displayName": "Vim",
-	"description": "Vim mode for Visual Studio Code.",
 	"version": "0.0.1",
 	"publisher": "auiWorks",
-	"engines": {
-		"vscode": "^0.10.1"
-	},
+	"displayName": "Vim",
+	"description": "Vim mode for Visual Studio Code.",
+	"keywords": [
+		"vim",
+		"vintage"
+	],
 	"categories": [
 		"Other"
 	],
-	"activationEvents": [
-		"onCommand:extension.sayHello"
-	],
+	"engines": {
+		"vscode": "^0.10.1"
+	},
 	"main": "./out/src/extension",
 	"contributes": {
-		"commands": [{
-			"command": "extension.sayHello",
-			"title": "Hello World"
-		}]
+		"keybindings": [
+			{
+				"command": "vim.h",
+				"key": "h",
+				"when": "editorTextFocus && !suggestWidgetVisible"
+			}
+		]
 	},
+	"activationEvents": [
+		"*"
+	],
 	"scripts": {
 		"vscode:prepublish": "node ./node_modules/vscode/bin/compile",
 		"compile": "node ./node_modules/vscode/bin/compile -watch -p ./"
