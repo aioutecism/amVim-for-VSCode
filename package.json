@@ -20,22 +20,23 @@
 			{
 				"command": "vim.h",
 				"key": "h",
-				"when": "editorTextFocus && !suggestWidgetVisible"
+				"when": "editorTextFocus"
 			},
 			{
 				"command": "vim.l",
 				"key": "l",
-				"when": "editorTextFocus && !suggestWidgetVisible"
+				"when": "editorTextFocus"
 			},
 			{
 				"command": "vim.j",
 				"key": "j",
-				"when": "editorTextFocus && !suggestWidgetVisible"
+				"when": "editorTextFocus"
 			},
 			{
 				"command": "vim.k",
 				"key": "k",
-				"when": "editorTextFocus && !suggestWidgetVisible"
+				"when": "editorTextFocus"
+			{
 			}
 		]
 	},
