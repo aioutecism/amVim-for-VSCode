@@ -21,6 +21,21 @@
 				"command": "vim.h",
 				"key": "h",
 				"when": "editorTextFocus && !suggestWidgetVisible"
+			},
+			{
+				"command": "vim.l",
+				"key": "l",
+				"when": "editorTextFocus && !suggestWidgetVisible"
+			},
+			{
+				"command": "vim.j",
+				"key": "j",
+				"when": "editorTextFocus && !suggestWidgetVisible"
+			},
+			{
+				"command": "vim.k",
+				"key": "k",
+				"when": "editorTextFocus && !suggestWidgetVisible"
 			}
 		]
 	},
