@@ -1,6 +1,6 @@
 import {window, TextEditor, Position, Range, Selection} from 'vscode';
 
-function characterRelative(lineOffset: number, characterOffset: number): void {
+function relative(lineOffset: number, characterOffset: number): void {
 	const activeTextEditor = window.activeTextEditor;
 
 	if (! activeTextEditor) {
@@ -25,15 +25,15 @@ function characterRelative(lineOffset: number, characterOffset: number): void {
 	window.activeTextEditor.selection = new Selection(targetPosition, targetPosition);
 }
 
-export function characterLeft(): void {
-	characterRelative(0, -1);
+export function left(): void {
+	relative(0, -1);
 }
-export function characterRight(): void {
-	characterRelative(0, +1);
+export function right(): void {
+	relative(0, +1);
 }
-export function characterTop(): void {
-	characterRelative(-1, 0);
+export function top(): void {
+	relative(-1, 0);
 }
-export function characterBottom(): void {
-	characterRelative(+1, 0);
+export function bottom(): void {
+	relative(+1, 0);
 }

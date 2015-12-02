@@ -1,22 +1,19 @@
 import * as vscode from 'vscode';
-import * as Cursor from './Actions/Cursor';
+import * as MovementsCharacter from './Movements/Character';
 
 export function activate(context: vscode.ExtensionContext) {
-
-	const disposables = [
+	context.subscriptions.push(...[
 		vscode.commands.registerCommand('vim.h', () => {
-			Cursor.characterLeft();
+			MovementsCharacter.left();
 		}),
 		vscode.commands.registerCommand('vim.l', () => {
-			Cursor.characterRight();
+			MovementsCharacter.right();
 		}),
 		vscode.commands.registerCommand('vim.j', () => {
-			Cursor.characterBottom();
+			MovementsCharacter.bottom();
 		}),
 		vscode.commands.registerCommand('vim.k', () => {
-			Cursor.characterTop();
+			MovementsCharacter.top();
 		})
-	];
-
-	context.subscriptions.push(...disposables);
+	]);
 }
