@@ -17,27 +17,59 @@
 	"main": "./out/src/extension",
 	"contributes": {
 		"keybindings": [
-			{
-				"command": "vim.h",
-				"key": "h",
-				"when": "editorTextFocus"
-			},
-			{
-				"command": "vim.l",
-				"key": "l",
-				"when": "editorTextFocus"
-			},
-			{
-				"command": "vim.j",
-				"key": "j",
-				"when": "editorTextFocus"
-			},
-			{
-				"command": "vim.k",
-				"key": "k",
-				"when": "editorTextFocus"
-			{
-			}
+			{ "command": "vim.a", "key": "a", "when": "editorTextFocus" },
+			{ "command": "vim.b", "key": "b", "when": "editorTextFocus" },
+			{ "command": "vim.c", "key": "c", "when": "editorTextFocus" },
+			{ "command": "vim.d", "key": "d", "when": "editorTextFocus" },
+			{ "command": "vim.e", "key": "e", "when": "editorTextFocus" },
+			{ "command": "vim.f", "key": "f", "when": "editorTextFocus" },
+			{ "command": "vim.g", "key": "g", "when": "editorTextFocus" },
+			{ "command": "vim.h", "key": "h", "when": "editorTextFocus" },
+			{ "command": "vim.i", "key": "i", "when": "editorTextFocus" },
+			{ "command": "vim.j", "key": "j", "when": "editorTextFocus" },
+			{ "command": "vim.k", "key": "k", "when": "editorTextFocus" },
+			{ "command": "vim.l", "key": "l", "when": "editorTextFocus" },
+			{ "command": "vim.m", "key": "m", "when": "editorTextFocus" },
+			{ "command": "vim.n", "key": "n", "when": "editorTextFocus" },
+			{ "command": "vim.o", "key": "o", "when": "editorTextFocus" },
+			{ "command": "vim.p", "key": "p", "when": "editorTextFocus" },
+			{ "command": "vim.q", "key": "q", "when": "editorTextFocus" },
+			{ "command": "vim.r", "key": "r", "when": "editorTextFocus" },
+			{ "command": "vim.s", "key": "s", "when": "editorTextFocus" },
+			{ "command": "vim.t", "key": "t", "when": "editorTextFocus" },
+			{ "command": "vim.u", "key": "u", "when": "editorTextFocus" },
+			{ "command": "vim.v", "key": "v", "when": "editorTextFocus" },
+			{ "command": "vim.w", "key": "w", "when": "editorTextFocus" },
+			{ "command": "vim.x", "key": "x", "when": "editorTextFocus" },
+			{ "command": "vim.y", "key": "y", "when": "editorTextFocus" },
+			{ "command": "vim.z", "key": "z", "when": "editorTextFocus" },
+
+			{ "command": "vim.A", "key": "shift+a", "when": "editorTextFocus" },
+			{ "command": "vim.B", "key": "shift+b", "when": "editorTextFocus" },
+			{ "command": "vim.C", "key": "shift+c", "when": "editorTextFocus" },
+			{ "command": "vim.D", "key": "shift+d", "when": "editorTextFocus" },
+			{ "command": "vim.E", "key": "shift+e", "when": "editorTextFocus" },
+			{ "command": "vim.F", "key": "shift+f", "when": "editorTextFocus" },
+			{ "command": "vim.G", "key": "shift+g", "when": "editorTextFocus" },
+			{ "command": "vim.H", "key": "shift+h", "when": "editorTextFocus" },
+			{ "command": "vim.I", "key": "shift+i", "when": "editorTextFocus" },
+			{ "command": "vim.J", "key": "shift+j", "when": "editorTextFocus" },
+			{ "command": "vim.K", "key": "shift+k", "when": "editorTextFocus" },
+			{ "command": "vim.L", "key": "shift+l", "when": "editorTextFocus" },
+			{ "command": "vim.M", "key": "shift+m", "when": "editorTextFocus" },
+			{ "command": "vim.N", "key": "shift+n", "when": "editorTextFocus" },
+			{ "command": "vim.O", "key": "shift+o", "when": "editorTextFocus" },
+			{ "command": "vim.P", "key": "shift+p", "when": "editorTextFocus" },
+			{ "command": "vim.Q", "key": "shift+q", "when": "editorTextFocus" },
+			{ "command": "vim.R", "key": "shift+r", "when": "editorTextFocus" },
+			{ "command": "vim.S", "key": "shift+s", "when": "editorTextFocus" },
+			{ "command": "vim.T", "key": "shift+t", "when": "editorTextFocus" },
+			{ "command": "vim.U", "key": "shift+u", "when": "editorTextFocus" },
+			{ "command": "vim.V", "key": "shift+v", "when": "editorTextFocus" },
+			{ "command": "vim.W", "key": "shift+w", "when": "editorTextFocus" },
+			{ "command": "vim.X", "key": "shift+x", "when": "editorTextFocus" },
+			{ "command": "vim.Y", "key": "shift+y", "when": "editorTextFocus" },
+			{ "command": "vim.Z", "key": "shift+z", "when": "editorTextFocus" }
 		]
 	},
 	"activationEvents": [
