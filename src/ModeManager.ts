@@ -1,4 +1,4 @@
-import * as MovementsCharacter from './Movements/Character';
+import * as MotionsCharacter from './Motions/Character';
 
 enum MODE {NORMAL, VISUAL, VISUAL_BLOCK, INSERT};
 
@@ -9,16 +9,16 @@ export class ModeManager {
 	public createInputHandler(key: string): any {
 		// TODO
 		if (key === 'h') {
-			return MovementsCharacter.left;
+			return MotionsCharacter.left;
 		}
 		else if (key === 'l') {
-			return MovementsCharacter.right;
+			return MotionsCharacter.right;
 		}
 		else if (key === 'k') {
-			return MovementsCharacter.up;
+			return MotionsCharacter.up;
 		}
 		else if (key === 'j') {
-			return MovementsCharacter.down;
+			return MotionsCharacter.down;
 		}
 	}
 
