@@ -31,9 +31,9 @@ export function left(): void {
 export function right(): void {
 	relative(0, +1);
 }
-export function top(): void {
+export function up(): void {
 	relative(-1, 0);
 }
-export function bottom(): void {
+export function down(): void {
 	relative(+1, 0);
 }

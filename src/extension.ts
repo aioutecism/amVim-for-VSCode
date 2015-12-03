@@ -1,19 +1,15 @@
-import * as vscode from 'vscode';
-import * as MovementsCharacter from './Movements/Character';
+import {commands, ExtensionContext} from 'vscode';
+import {ModeManager} from './ModeManager';
 
-export function activate(context: vscode.ExtensionContext) {
-	context.subscriptions.push(...[
-		vscode.commands.registerCommand('vim.h', () => {
-			MovementsCharacter.left();
-		}),
-		vscode.commands.registerCommand('vim.l', () => {
-			MovementsCharacter.right();
-		}),
-		vscode.commands.registerCommand('vim.j', () => {
-			MovementsCharacter.bottom();
-		}),
-		vscode.commands.registerCommand('vim.k', () => {
-			MovementsCharacter.top();
-		})
-	]);
+export function activate(context: ExtensionContext) {
+	const modeManager = new ModeManager();
+	context.subscriptions.push(modeManager);
+
+	const keys = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+	for (var i = 0; i < keys.length; i++) {
+		var key = keys[i];
+		context.subscriptions.push(
+			commands.registerCommand(`vim.${key}`, modeManager.createInputHandler(key))
+		);
+	}
 }
