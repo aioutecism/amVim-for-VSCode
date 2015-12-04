@@ -1,7 +1,7 @@
 import * as MotionsCharacter from '../Motions/Character';
 
 export class ModesNormal {
-	public input(key: string): any {
+	public input(key: string): void {
 		// TODO
 		if (key === 'h') {
 			MotionsCharacter.left();
