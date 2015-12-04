@@ -16,7 +16,7 @@ export class Dispatcher {
 		[MODE.INSERT]: new ModesInsert(),
 	};
 
-	inputHandler(key: string): any {
+	inputHandler(key: string): () => void {
 		return () => {
 			this.modes[this.currentMode].input(key);
 		};

@@ -2,7 +2,7 @@ import {IMode} from './IMode'
 import * as MotionsCharacter from '../Motions/Character';
 
 export class ModesNormal implements IMode {
-	input(key) {
+	input(key: string) {
 		// TODO
 		if (key === 'h') {
 			MotionsCharacter.left();

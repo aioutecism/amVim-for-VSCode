@@ -1,7 +1,7 @@
 import {IMode} from './IMode'
 
 export class ModesVisualBlock implements IMode {
-	input(key) {
+	input(key: string) {
 		// TODO
 	}
 }
