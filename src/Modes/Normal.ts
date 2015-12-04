@@ -1,7 +1,8 @@
+import {IMode} from './IMode'
 import * as MotionsCharacter from '../Motions/Character';
 
-export class ModesNormal {
-	public input(key: string): void {
+export class ModesNormal implements IMode {
+	public input(key) {
 		// TODO
 		if (key === 'h') {
 			MotionsCharacter.left();

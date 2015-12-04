@@ -1,5 +1,7 @@
-export class ModesVisualBlock {
-	public input(key: string): void {
+import {IMode} from './IMode'
+
+export class ModesVisualBlock implements IMode {
+	public input(key) {
 		// TODO
 	}
 }
