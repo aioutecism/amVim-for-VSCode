@@ -16,13 +16,13 @@ export class Dispatcher {
 		[MODE.INSERT]: new ModesInsert(),
 	};
 
-	public inputHandler(key: string): any {
+	inputHandler(key: string): any {
 		return () => {
 			this.modes[this.currentMode].input(key);
 		};
 	}
 
-	public dispose(): void {
+	dispose(): void {
 		// Nothing to clear now.
 	}
 }
