@@ -1,24 +1,20 @@
-import {IMode} from './IMode'
+import {Mode} from './Mode'
+import {Map} from '../Mapper';
 import {MotionCharacter} from '../Motions/Character';
 
-export class ModesNormal implements IMode {
-	input(key: string) {
-		// TODO
-		if (key === 'h') {
-			let motion = new MotionCharacter();
-			motion.left();
-		}
-		else if (key === 'l') {
-			let motion = new MotionCharacter();
-			motion.right();
-		}
-		else if (key === 'k') {
-			let motion = new MotionCharacter();
-			motion.up();
-		}
-		else if (key === 'j') {
-			let motion = new MotionCharacter();
-			motion.down();
-		}
+export class ModesNormal extends Mode {
+	private maps: Map[] = [
+		{ keys: ['h'], command: () => { (new MotionCharacter()).left() } },
+		{ keys: ['l'], command: () => { (new MotionCharacter()).right() } },
+		{ keys: ['k'], command: () => { (new MotionCharacter()).up() } },
+		{ keys: ['j'], command: () => { (new MotionCharacter()).down() } },
+	];
+
+	constructor() {
+		super();
+
+		this.maps.forEach(map => {
+			this.mapper.map(map.keys, map.command, map.args);
+		});
 	}
 }

@@ -1,7 +1,5 @@
-import {IMode} from './IMode'
+import {Mode} from './Mode'
+import {Map} from '../Mapper';
 
-export class ModesInsert implements IMode {
-	input(key: string) {
-		// TODO
-	}
+export class ModesInsert extends Mode {
 }

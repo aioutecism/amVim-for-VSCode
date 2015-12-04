@@ -1,7 +1,5 @@
-import {IMode} from './IMode'
+import {Mode} from './Mode'
+import {Map} from '../Mapper';
 
-export class ModesVisualBlock implements IMode {
-	input(key: string) {
-		// TODO
-	}
+export class ModesVisualBlock extends Mode {
 }
