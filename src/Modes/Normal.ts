@@ -1,20 +1,24 @@
 import {IMode} from './IMode'
-import * as MotionsCharacter from '../Motions/Character';
+import {MotionCharacter} from '../Motions/Character';
 
 export class ModesNormal implements IMode {
 	input(key: string) {
 		// TODO
 		if (key === 'h') {
-			MotionsCharacter.left();
+			let motion = new MotionCharacter();
+			motion.left();
 		}
 		else if (key === 'l') {
-			MotionsCharacter.right();
+			let motion = new MotionCharacter();
+			motion.right();
 		}
 		else if (key === 'k') {
-			MotionsCharacter.up();
+			let motion = new MotionCharacter();
+			motion.up();
 		}
 		else if (key === 'j') {
-			MotionsCharacter.down();
+			let motion = new MotionCharacter();
+			motion.down();
 		}
 	}
 }
