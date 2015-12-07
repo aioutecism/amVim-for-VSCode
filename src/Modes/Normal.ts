@@ -1,13 +1,13 @@
 import {Mode} from './Mode'
 import {Map} from '../Mapper';
-import {MotionCharacter} from '../Motions/Character';
+import {ActionMoveCursor} from '../Actions/MoveCursor';
 
 export class ModeNormal extends Mode {
 	private maps: Map[] = [
-		{ keys: ['h'], command: () => { (new MotionCharacter()).left() } },
-		{ keys: ['l'], command: () => { (new MotionCharacter()).right() } },
-		{ keys: ['k'], command: () => { (new MotionCharacter()).up() } },
-		{ keys: ['j'], command: () => { (new MotionCharacter()).down() } },
+		{ keys: ['h'], command: ActionMoveCursor.characterLeft },
+		{ keys: ['l'], command: ActionMoveCursor.characterRight },
+		{ keys: ['k'], command: ActionMoveCursor.characterUp },
+		{ keys: ['j'], command: ActionMoveCursor.characterDown },
 	];
 
 	constructor() {
