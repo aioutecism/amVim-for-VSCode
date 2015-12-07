@@ -1,8 +1,8 @@
 import {Mode} from './Modes/Mode';
-import {ModesNormal} from './Modes/Normal';
-import {ModesVisual} from './Modes/Visual';
-import {ModesVisualBlock} from './Modes/VisualBlock';
-import {ModesInsert} from './Modes/Insert';
+import {ModeNormal} from './Modes/Normal';
+import {ModeVisual} from './Modes/Visual';
+import {ModeVisualBlock} from './Modes/VisualBlock';
+import {ModeInsert} from './Modes/Insert';
 
 enum MODE {NORMAL, VISUAL, VISUAL_BLOCK, INSERT};
 
@@ -10,10 +10,10 @@ export class Dispatcher {
 
 	private currentMode = MODE.NORMAL;
 	private modes: {[k: number]: Mode} = {
-		[MODE.NORMAL]: new ModesNormal(),
-		[MODE.VISUAL]: new ModesVisual(),
-		[MODE.VISUAL_BLOCK]: new ModesVisualBlock(),
-		[MODE.INSERT]: new ModesInsert(),
+		[MODE.NORMAL]: new ModeNormal(),
+		[MODE.VISUAL]: new ModeVisual(),
+		[MODE.VISUAL_BLOCK]: new ModeVisualBlock(),
+		[MODE.INSERT]: new ModeInsert(),
 	};
 
 	inputHandler(key: string): () => void {

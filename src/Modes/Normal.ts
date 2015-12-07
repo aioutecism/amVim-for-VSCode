@@ -2,7 +2,7 @@ import {Mode} from './Mode'
 import {Map} from '../Mapper';
 import {MotionCharacter} from '../Motions/Character';
 
-export class ModesNormal extends Mode {
+export class ModeNormal extends Mode {
 	private maps: Map[] = [
 		{ keys: ['h'], command: () => { (new MotionCharacter()).left() } },
 		{ keys: ['l'], command: () => { (new MotionCharacter()).right() } },
