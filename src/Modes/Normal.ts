@@ -8,6 +8,9 @@ export class ModeNormal extends Mode {
 		{ keys: ['l'], command: ActionMoveCursor.characterRight },
 		{ keys: ['k'], command: ActionMoveCursor.characterUp },
 		{ keys: ['j'], command: ActionMoveCursor.characterDown },
+
+		{ keys: ['0'], command: ActionMoveCursor.lineStart },
+		{ keys: ['$'], command: ActionMoveCursor.lineEnd },
 	];
 
 	constructor() {
