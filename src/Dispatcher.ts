@@ -4,11 +4,11 @@ import {ModeVisual} from './Modes/Visual';
 import {ModeVisualBlock} from './Modes/VisualBlock';
 import {ModeInsert} from './Modes/Insert';
 
-enum MODE {NORMAL, VISUAL, VISUAL_BLOCK, INSERT};
+export enum MODE {NORMAL, VISUAL, VISUAL_BLOCK, INSERT};
 
 export class Dispatcher {
 
-	private currentMode = MODE.NORMAL;
+	private currentMode;
 	private modes: {[k: number]: Mode} = {
 		[MODE.NORMAL]: new ModeNormal(),
 		[MODE.VISUAL]: new ModeVisual(),
@@ -16,10 +16,23 @@ export class Dispatcher {
 		[MODE.INSERT]: new ModeInsert(),
 	};
 
+	constructor() {
+		this.switchMode(MODE.NORMAL);
+	}
+
 	inputHandler(key: string): () => void {
 		return () => {
 			this.modes[this.currentMode].input(key);
 		};
+	}
+
+	switchMode(mode: MODE): void {
+		if (this.currentMode === mode) {
+			return;
+		}
+
+		this.currentMode = mode;
+		this.modes[this.currentMode].reset();
 	}
 
 	dispose(): void {

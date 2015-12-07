@@ -9,7 +9,7 @@ export abstract class Mode {
 		this.reset();
 	}
 
-	private reset(): void {
+	reset(): void {
 		this.inputs = [];
 	}
 
