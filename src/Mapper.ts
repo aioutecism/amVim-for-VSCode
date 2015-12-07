@@ -30,6 +30,8 @@ export class Mapper {
 	match(inputs: string[]): Map {
 		let map = this.maps[this.key(inputs)];
 
+		// TODO: part match
+
 		if (map) {
 			return {
 				command: map.command,

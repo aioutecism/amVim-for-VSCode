@@ -16,7 +16,7 @@ export abstract class Mode {
 	input(key: string) {
 		this.inputs.push(key);
 
-		let map = this.mapper.match(this.inputs);
+		const map = this.mapper.match(this.inputs);
 
 		if (map) {
 			map.command(map.args);
