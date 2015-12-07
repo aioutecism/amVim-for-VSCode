@@ -1,6 +1,7 @@
 import {window, Position, Selection} from 'vscode'
 import {MotionCharacter} from '../Motions/Character'
 import {MotionLine} from '../Motions/Line'
+import {MotionDocument} from '../Motions/Document'
 
 export class ActionMoveCursor {
 	private static moveTo(position: Position): void {
@@ -45,6 +46,18 @@ export class ActionMoveCursor {
 
 	static lineEnd(): void {
 		const motion = new MotionLine();
+		motion.end();
+		ActionMoveCursor.moveTo(motion.targetPosition);
+	}
+
+	static documentStart(): void {
+		const motion = new MotionDocument();
+		motion.start();
+		ActionMoveCursor.moveTo(motion.targetPosition);
+	}
+
+	static documentEnd(): void {
+		const motion = new MotionDocument();
 		motion.end();
 		ActionMoveCursor.moveTo(motion.targetPosition);
 	}
