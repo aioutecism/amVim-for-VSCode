@@ -69,7 +69,20 @@
 			{ "command": "vim.W", "key": "shift+w", "when": "editorTextFocus" },
 			{ "command": "vim.X", "key": "shift+x", "when": "editorTextFocus" },
 			{ "command": "vim.Y", "key": "shift+y", "when": "editorTextFocus" },
-			{ "command": "vim.Z", "key": "shift+z", "when": "editorTextFocus" }
+			{ "command": "vim.Z", "key": "shift+z", "when": "editorTextFocus" },
+
+			{ "command": "vim.1", "key": "1", "when": "editorTextFocus" },
+			{ "command": "vim.2", "key": "2", "when": "editorTextFocus" },
+			{ "command": "vim.3", "key": "3", "when": "editorTextFocus" },
+			{ "command": "vim.4", "key": "4", "when": "editorTextFocus" },
+			{ "command": "vim.5", "key": "5", "when": "editorTextFocus" },
+			{ "command": "vim.6", "key": "6", "when": "editorTextFocus" },
+			{ "command": "vim.7", "key": "7", "when": "editorTextFocus" },
+			{ "command": "vim.8", "key": "8", "when": "editorTextFocus" },
+			{ "command": "vim.9", "key": "9", "when": "editorTextFocus" },
+			{ "command": "vim.0", "key": "0", "when": "editorTextFocus" },
+
+			{ "command": "vim.$", "key": "shift+4", "when": "editorTextFocus" }
 		]
 	},
 	"activationEvents": [
