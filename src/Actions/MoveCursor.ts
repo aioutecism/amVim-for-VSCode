@@ -12,6 +12,8 @@ export class ActionMoveCursor {
 		}
 
 		activeTextEditor.selection = new Selection(position, position);
+
+		// TODO: Scroll View
 	}
 
 	static characterLeft(): void {
