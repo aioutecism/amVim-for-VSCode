@@ -82,7 +82,50 @@
 			{ "command": "vim.9", "key": "9", "when": "editorTextFocus" },
 			{ "command": "vim.0", "key": "0", "when": "editorTextFocus" },
 
-			{ "command": "vim.$", "key": "shift+4", "when": "editorTextFocus" }
+			{ "command": "vim.#", "key": "shift+3", "when": "editorTextFocus" },
+			{ "command": "vim.$", "key": "shift+4", "when": "editorTextFocus" },
+			{ "command": "vim.%", "key": "shift+5", "when": "editorTextFocus" },
+			{ "command": "vim.*", "key": "shift+8", "when": "editorTextFocus" },
+			{ "command": "vim.=", "key": "=",       "when": "editorTextFocus" },
+			{ "command": "vim.@", "key": "shift+2", "when": "editorTextFocus" },
+			{ "command": "vim.^", "key": "shift+6", "when": "editorTextFocus" },
+			{ "command": "vim._", "key": "shift+-", "when": "editorTextFocus" },
+			{ "command": "vim.`", "key": "`",       "when": "editorTextFocus" },
+			{ "command": "vim.~", "key": "shift+`", "when": "editorTextFocus" },
+			{ "command": "vim.,", "key": ",",       "when": "editorTextFocus" },
+			{ "command": "vim..", "key": ".",       "when": "editorTextFocus" },
+			{ "command": "vim./", "key": "/",       "when": "editorTextFocus" },
+			{ "command": "vim.:", "key": "shift+;", "when": "editorTextFocus" },
+			{ "command": "vim.;", "key": ";",       "when": "editorTextFocus" },
+			{ "command": "vim.?", "key": "shift+/", "when": "editorTextFocus" },
+
+			{ "command": "vim.(", "key": "shift+9", "when": "editorTextFocus" },
+			{ "command": "vim.)", "key": "shift+0", "when": "editorTextFocus" },
+			{ "command": "vim.[", "key": "[",       "when": "editorTextFocus" },
+			{ "command": "vim.]", "key": "]",       "when": "editorTextFocus" },
+			{ "command": "vim.{", "key": "shift+[", "when": "editorTextFocus" },
+			{ "command": "vim.}", "key": "shift+]", "when": "editorTextFocus" },
+			{ "command": "vim.<", "key": "shift+,", "when": "editorTextFocus" },
+			{ "command": "vim.>", "key": "shift+.", "when": "editorTextFocus" },
+			{ "command": "vim.'", "key": "'",       "when": "editorTextFocus" },
+			{ "command": "vim.\"", "key": "shift+'", "when": "editorTextFocus" },
+
+			{ "command": "vim.space", "key": "space", "when": "editorTextFocus" },
+			{ "command": "vim.enter", "key": "enter", "when": "editorTextFocus" },
+			{ "command": "vim.escape", "key": "escape", "when": "editorTextFocus" },
+			{ "command": "vim.backspace", "key": "backspace", "when": "editorTextFocus" },
+
+			{ "command": "vim.ctrl+[", "key": "ctrl+[", "when": "editorTextFocus" },
+			{ "command": "vim.ctrl+b", "key": "ctrl+b", "when": "editorTextFocus" },
+			{ "command": "vim.ctrl+d", "key": "ctrl+d", "when": "editorTextFocus" },
+			{ "command": "vim.ctrl+e", "key": "ctrl+e", "when": "editorTextFocus" },
+			{ "command": "vim.ctrl+f", "key": "ctrl+f", "when": "editorTextFocus" },
+			{ "command": "vim.ctrl+r", "key": "ctrl+r", "when": "editorTextFocus" },
+			{ "command": "vim.ctrl+u", "key": "ctrl+u", "when": "editorTextFocus" },
+			{ "command": "vim.ctrl+w", "key": "ctrl+w", "when": "editorTextFocus" },
+			{ "command": "vim.ctrl+y", "key": "ctrl+y", "when": "editorTextFocus" },
+
+			{ "command": "vim.shift+enter", "key": "shift+enter", "when": "editorTextFocus" }
 		]
 	},
 	"activationEvents": [
