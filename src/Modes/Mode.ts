@@ -14,13 +14,21 @@ export abstract class Mode {
 	}
 
 	input(key: string) {
-		this.inputs.push(key);
+		let inputs: string[];
 
-		const map = this.mapper.match(this.inputs);
+		if (key === 'escape') {
+			inputs = [key];
+		}
+		else {
+			this.inputs.push(key);
+			inputs = this.inputs;
+		}
+
+		const map = this.mapper.match(inputs);
 
 		if (map) {
-			map.command(map.args);
 			this.reset();
+			map.command(map.args);
 		}
 	}
 }

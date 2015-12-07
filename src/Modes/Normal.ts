@@ -14,6 +14,8 @@ export class ModeNormal extends Mode {
 
 		{ keys: 'g g', command: ActionMoveCursor.documentStart },
 		{ keys: 'G', command: ActionMoveCursor.documentEnd },
+
+		{ keys: 'escape', command: () => {} },
 	];
 
 	constructor() {
