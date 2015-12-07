@@ -9,7 +9,7 @@ export interface Map {
 }
 
 export class Mapper {
-	private separator = '->';
+	private separator = ' ';
 	private maps: {[keys: string]: Map} = {};
 
 	private key(inputs: string[]): string {
