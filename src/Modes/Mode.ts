@@ -1,4 +1,4 @@
-import {Mapper} from '../Mapper'
+import {Mapper, MatchResultType} from '../Mapper'
 
 export abstract class Mode {
 	private inputs: string[];
@@ -13,7 +13,7 @@ export abstract class Mode {
 		this.inputs = [];
 	}
 
-	input(key: string) {
+	input(key: string): void {
 		let inputs: string[];
 
 		if (key === 'escape') {
@@ -24,11 +24,17 @@ export abstract class Mode {
 			inputs = this.inputs;
 		}
 
-		const map = this.mapper.match(inputs);
+		const {type, map} = this.mapper.match(inputs);
 
-		if (map) {
+		if (type === MatchResultType.FAILED) {
 			this.reset();
+		}
+		else if (type === MatchResultType.FOUND) {
+			this.reset()
 			map.command(map.args);
+		}
+		else if (type === MatchResultType.WAITING) {
+			// TODO: Update status bar
 		}
 	}
 }

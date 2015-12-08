@@ -8,26 +8,73 @@ export interface Map {
 	args?: {};
 }
 
-export class Mapper {
-	private maps: {[keys: string]: Map} = {};
+export enum MatchResultType {FAILED, WAITING, FOUND}
 
-	map(keys: string, command: Command, args?: {}): void {
-		this.maps[keys] = {
-			keys: keys,
+interface RecursiveMap {
+	[key: string]: RecursiveMap | Map;
+}
+
+export class Mapper {
+	private static saparator: string = ' ';
+
+	private root: RecursiveMap = {};
+
+	private static isMap(node: RecursiveMap | Map): boolean {
+		return typeof (node as Map).command === 'function';
+	}
+
+	map(joinedKeys: string, command: Command, args?: {}): void {
+		let node: RecursiveMap | Map = this.root;
+
+		const keys = joinedKeys.split(Mapper.saparator);
+		const lastKey = keys.pop();
+
+		keys.forEach(key => {
+			if (! node[key] || Mapper.isMap(node[key])) {
+				node[key] = {};
+			}
+			node = node[key];
+		});
+
+		node[lastKey] = {
+			keys: joinedKeys,
 			command: command,
 			args: args || {},
 		};
 	}
 
-	unmap(keys: string): void {
-		delete this.maps[keys];
+	unmap(joinedKeys: string): void {
+		let node: RecursiveMap | Map = this.root;
+
+		const keys = joinedKeys.split(Mapper.saparator);
+		const lastKey = keys.pop();
+
+		keys.every(key => {
+			node = node[key];
+			return node ? true : false;
+		});
+
+		if (node) {
+			delete node[lastKey];
+		}
 	}
 
-	match(inputs: string[]): Map {
-		let map = this.maps[inputs.join(' ')];
+	match(inputs: string[]): {type: MatchResultType, map?: Map} {
+		let node: RecursiveMap | Map = this.root;
 
-		// TODO: part match
+		const exists = inputs.every(input => {
+			node = node[input];
+			return node ? true : false;
+		});
 
-		return map;
+		if (! exists) {
+			return {type: MatchResultType.FAILED};
+		}
+		else if (Mapper.isMap(node)) {
+			return {type: MatchResultType.FOUND, map: node as Map};
+		}
+		else {
+			return {type: MatchResultType.WAITING};
+		}
 	}
 }
