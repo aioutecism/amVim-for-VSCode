@@ -8,8 +8,8 @@ export function activate(context: ExtensionContext) {
 	let keys = [
 		'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ',
 		'1234567890',
-		'#$%*=@^_`~,./:;?',
-		'()[]{}<>\'"',
+		'!@#$%^&*(',
+		'`~-_=+[{]}\\|;:\'",<.>/?'
 	].join('').split('');
 
 	keys.push(
@@ -17,6 +17,8 @@ export function activate(context: ExtensionContext) {
 		'enter',
 		'escape',
 		'backspace',
+
+		'shift+enter',
 
 		'alt+b',
 		'alt+w',
@@ -30,9 +32,7 @@ export function activate(context: ExtensionContext) {
 		'ctrl+u',
 		'ctrl+v',
 		'ctrl+w',
-		'ctrl+y',
-
-		'shift+enter'
+		'ctrl+y'
 	);
 
 	keys.forEach(key => {
