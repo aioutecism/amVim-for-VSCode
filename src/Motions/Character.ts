@@ -1,4 +1,4 @@
-import {Motion} from './Motion'
+import {Motion} from './Motion';
 
 export class MotionCharacter extends Motion {
 	left(): void {

@@ -1,4 +1,4 @@
-import {window, Position} from 'vscode'
+import {window, Position} from 'vscode';
 
 export class Motion {
 	private _targetPosition: Position;

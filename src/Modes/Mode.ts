@@ -1,4 +1,4 @@
-import {Mapper, Map, MatchResultType} from '../Mapper'
+import {Mapper, Map, MatchResultType} from '../Mapper';
 
 export abstract class Mode {
 	name: string;

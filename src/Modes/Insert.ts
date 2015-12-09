@@ -1,5 +1,5 @@
-import {Mode} from './Mode'
-import {Map} from '../Mapper';
+import {Mode} from './Mode';
+import {Map, possibleCharacters} from '../Mapper';
 import {ActionMode} from '../Actions/Mode';
 
 export class ModeInsert extends Mode {

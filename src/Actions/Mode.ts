@@ -1,5 +1,5 @@
-import {commands} from 'vscode'
-import {MODE} from '../Dispatcher'
+import {commands} from 'vscode';
+import {MODE} from '../Dispatcher';
 
 export class ActionMode {
 	static toNormal(): void {

@@ -1,7 +1,7 @@
-import {window, Position, Selection} from 'vscode'
-import {MotionCharacter} from '../Motions/Character'
-import {MotionLine} from '../Motions/Line'
-import {MotionDocument} from '../Motions/Document'
+import {window, Position, Selection} from 'vscode';
+import {MotionCharacter} from '../Motions/Character';
+import {MotionLine} from '../Motions/Line';
+import {MotionDocument} from '../Motions/Document';
 
 export class ActionMoveCursor {
 	private static moveTo(position: Position): void {

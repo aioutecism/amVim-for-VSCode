@@ -1,4 +1,4 @@
-import {Mode} from './Mode'
+import {Mode} from './Mode';
 import {Map} from '../Mapper';
 import {ActionMoveCursor} from '../Actions/MoveCursor';
 import {ActionMode} from '../Actions/Mode';
