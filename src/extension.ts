@@ -28,6 +28,7 @@ export function activate(context: ExtensionContext) {
 		'ctrl+f',
 		'ctrl+r',
 		'ctrl+u',
+		'ctrl+v',
 		'ctrl+w',
 		'ctrl+y',
 

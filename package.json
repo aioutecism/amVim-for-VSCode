@@ -122,6 +122,7 @@
 			{ "command": "vim.ctrl+f", "key": "ctrl+f", "when": "editorTextFocus" },
 			{ "command": "vim.ctrl+r", "key": "ctrl+r", "when": "editorTextFocus" },
 			{ "command": "vim.ctrl+u", "key": "ctrl+u", "when": "editorTextFocus" },
+			{ "command": "vim.ctrl+v", "key": "ctrl+v", "when": "editorTextFocus" },
 			{ "command": "vim.ctrl+w", "key": "ctrl+w", "when": "editorTextFocus" },
 			{ "command": "vim.ctrl+y", "key": "ctrl+y", "when": "editorTextFocus" },
 

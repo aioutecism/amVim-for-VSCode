@@ -1,8 +1,11 @@
 import {Mode} from './Mode'
 import {Map} from '../Mapper';
 import {ActionMoveCursor} from '../Actions/MoveCursor';
+import {ActionMode} from '../Actions/Mode';
 
 export class ModeNormal extends Mode {
+	name = 'NORMAL';
+
 	private maps: Map[] = [
 		{ keys: 'h', command: ActionMoveCursor.characterLeft },
 		{ keys: 'l', command: ActionMoveCursor.characterRight },
@@ -14,6 +17,10 @@ export class ModeNormal extends Mode {
 
 		{ keys: 'g g', command: ActionMoveCursor.documentStart },
 		{ keys: 'G', command: ActionMoveCursor.documentEnd },
+
+		{ keys: 'i', command: ActionMode.toInsert },
+		{ keys: 'v', command: ActionMode.toVisual },
+		{ keys: 'ctrl+v', command: ActionMode.toVisualBlock },
 
 		{ keys: 'escape', command: () => {} },
 	];

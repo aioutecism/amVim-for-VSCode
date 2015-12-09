@@ -1,3 +1,4 @@
+import {window} from 'vscode';
 import {Mode} from './Modes/Mode';
 import {ModeNormal} from './Modes/Normal';
 import {ModeVisual} from './Modes/Visual';
@@ -8,7 +9,7 @@ export enum MODE {NORMAL, VISUAL, VISUAL_BLOCK, INSERT};
 
 export class Dispatcher {
 
-	private currentMode;
+	private currentMode: Mode;
 	private modes: {[k: number]: Mode} = {
 		[MODE.NORMAL]: new ModeNormal(),
 		[MODE.VISUAL]: new ModeVisual(),
@@ -22,17 +23,19 @@ export class Dispatcher {
 
 	inputHandler(key: string): () => void {
 		return () => {
-			this.modes[this.currentMode].input(key);
+			this.currentMode.input(key);
 		};
 	}
 
-	switchMode(mode: MODE): void {
-		if (this.currentMode === mode) {
+	switchMode(id: MODE): void {
+		if (this.currentMode === this.modes[id]) {
 			return;
 		}
 
-		this.currentMode = mode;
-		this.modes[this.currentMode].reset();
+		this.currentMode = this.modes[id];
+		this.currentMode.cleanup();
+
+		window.setStatusBarMessage(`- ${this.currentMode.name} -`);
 	}
 
 	dispose(): void {

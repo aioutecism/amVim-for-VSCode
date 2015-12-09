@@ -1,15 +1,17 @@
-import {Mapper, MatchResultType} from '../Mapper'
+import {Mapper, Map, MatchResultType} from '../Mapper'
 
 export abstract class Mode {
-	private inputs: string[];
+	name: string;
+
+	private inputs: string[] = [];
 	protected mapper: Mapper;
 
 	constructor() {
 		this.mapper = new Mapper();
-		this.reset();
+		this.cleanup();
 	}
 
-	reset(): void {
+	cleanup(): void {
 		this.inputs = [];
 	}
 
@@ -27,10 +29,10 @@ export abstract class Mode {
 		const {type, map} = this.mapper.match(inputs);
 
 		if (type === MatchResultType.FAILED) {
-			this.reset();
+			this.cleanup();
 		}
 		else if (type === MatchResultType.FOUND) {
-			this.reset()
+			this.cleanup()
 			map.command(map.args);
 		}
 		else if (type === MatchResultType.WAITING) {
