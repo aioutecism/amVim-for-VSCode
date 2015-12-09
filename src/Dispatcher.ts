@@ -35,7 +35,7 @@ export class Dispatcher {
 		this.currentMode = this.modes[id];
 		this.currentMode.cleanup();
 
-		window.setStatusBarMessage(`- ${this.currentMode.name} -`);
+		window.setStatusBarMessage(`-- ${this.currentMode.name} --`);
 	}
 
 	dispose(): void {
