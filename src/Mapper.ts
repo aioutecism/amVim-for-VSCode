@@ -14,6 +14,25 @@ interface RecursiveMap {
 	[key: string]: RecursiveMap | Map;
 }
 
+export const possibleKeys = [].concat(
+	'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!@#$%^&*(`~-_=+[{]}\\|;:\'",<.>/?'
+		.split(''),
+
+	'space enter escape backspace'
+		.split(' '),
+
+	'enter'
+		.split(' ').map(key => `shift+${key}`),
+
+	'bw'
+		.split('').map(key => `alt+${key}`),
+
+	'[bdefruvwy'
+		.split('').map(key => `ctrl+${key}`)
+);
+
+console.log(possibleKeys);
+
 export class Mapper {
 	private static saparator: string = ' ';
 
