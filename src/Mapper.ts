@@ -14,11 +14,16 @@ interface RecursiveMap {
 	[key: string]: RecursiveMap | Map;
 }
 
-export const possibleKeys = [].concat(
+export const possibleCharacters = [].concat(
 	'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!@#$%^&*(`~-_=+[{]}\\|;:\'",<.>/?'
 		.split(''),
 
-	'space enter escape backspace'
+	'space enter backspace'
+		.split(' ')
+);
+
+export const possibleKeys = possibleCharacters.concat(
+	'escape'
 		.split(' '),
 
 	'enter'
