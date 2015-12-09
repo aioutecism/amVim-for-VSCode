@@ -36,8 +36,6 @@ export const possibleKeys = possibleCharacters.concat(
 		.split('').map(key => `ctrl+${key}`)
 );
 
-console.log(possibleKeys);
-
 export class Mapper {
 	private static saparator: string = ' ';
 
