@@ -11,6 +11,8 @@ export class ActionMoveCursor {
 			return;
 		}
 
+		// TODO: Support multi selections
+
 		activeTextEditor.selection = new Selection(position, position);
 
 		// TODO: Scroll View
