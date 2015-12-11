@@ -1,4 +1,5 @@
-import {window} from 'vscode';
+import {window, commands, ExtensionContext} from 'vscode';
+import * as Keys from './Keys';
 import {Mode, ModeID} from './Modes/Mode';
 import {ModeNormal} from './Modes/Normal';
 import {ModeVisual} from './Modes/Visual';
@@ -15,7 +16,22 @@ export class Dispatcher {
 		[ModeID.INSERT]: new ModeInsert(),
 	};
 
-	constructor() {
+	constructor(context: ExtensionContext) {
+		[
+			ModeID.NORMAL,
+			ModeID.VISUAL,
+			ModeID.VISUAL_BLOCK,
+			ModeID.INSERT
+		].forEach(mode => {
+			context.subscriptions.push(commands.registerCommand(`vim.mode.${mode}`, () => {
+				this.switchMode(mode);
+			}));
+		})
+
+		Keys.all.forEach(key => {
+			context.subscriptions.push(commands.registerCommand(`vim.${key}`, this.inputHandler(key)));
+		});
+
 		this.switchMode(ModeID.NORMAL);
 	}
 
