@@ -1,12 +1,12 @@
 import {commands, ExtensionContext} from 'vscode';
 import {Dispatcher, MODE} from './Dispatcher';
-import {possibleKeys} from './Mapper';
+import * as Keys from './Keys';
 
 export function activate(context: ExtensionContext) {
 	const dispatcher = new Dispatcher();
 	context.subscriptions.push(dispatcher);
 
-	possibleKeys.forEach(key => {
+	Keys.all.forEach(key => {
 		context.subscriptions.push(commands.registerCommand(`vim.${key}`, dispatcher.inputHandler(key)));
 	});
 

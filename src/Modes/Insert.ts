@@ -1,5 +1,6 @@
 import {Mode} from './Mode';
-import {Map, possibleCharacters} from '../Mapper';
+import * as Keys from '../Keys';
+import {Map} from '../Mapper';
 import {ActionInsert} from '../Actions/Insert';
 import {ActionMode} from '../Actions/Mode';
 
@@ -8,7 +9,7 @@ export class ModeInsert extends Mode {
 
 	private maps: Map[] = [
 		{ keys: 'escape', command: ActionMode.toNormal },
-	].concat(possibleCharacters.map(key => {
+	].concat(Keys.characters.map(key => {
 		return { keys: key, command: () => {
 			ActionInsert.characterAtSelections(key);
 		} };

@@ -14,28 +14,6 @@ interface RecursiveMap {
 	[key: string]: RecursiveMap | Map;
 }
 
-export const possibleCharacters = [].concat(
-	'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!@#$%^&*(`~-_=+[{]}\\|;:\'",<.>/?'
-		.split(''),
-
-	'space enter backspace'
-		.split(' ')
-);
-
-export const possibleKeys = possibleCharacters.concat(
-	'escape'
-		.split(' '),
-
-	'enter'
-		.split(' ').map(key => `shift+${key}`),
-
-	'bw'
-		.split('').map(key => `alt+${key}`),
-
-	'[bdefruvwy'
-		.split('').map(key => `ctrl+${key}`)
-);
-
 export class Mapper {
 	private static saparator: string = ' ';
 
