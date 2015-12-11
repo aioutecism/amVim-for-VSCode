@@ -1,5 +1,5 @@
 import {window} from 'vscode';
-import {Mode, MODE} from './Modes/Mode';
+import {Mode, ModeID} from './Modes/Mode';
 import {ModeNormal} from './Modes/Normal';
 import {ModeVisual} from './Modes/Visual';
 import {ModeVisualBlock} from './Modes/VisualBlock';
@@ -9,14 +9,14 @@ export class Dispatcher {
 
 	private currentMode: Mode;
 	private modes: {[k: number]: Mode} = {
-		[MODE.NORMAL]: new ModeNormal(),
-		[MODE.VISUAL]: new ModeVisual(),
-		[MODE.VISUAL_BLOCK]: new ModeVisualBlock(),
-		[MODE.INSERT]: new ModeInsert(),
+		[ModeID.NORMAL]: new ModeNormal(),
+		[ModeID.VISUAL]: new ModeVisual(),
+		[ModeID.VISUAL_BLOCK]: new ModeVisualBlock(),
+		[ModeID.INSERT]: new ModeInsert(),
 	};
 
 	constructor() {
-		this.switchMode(MODE.NORMAL);
+		this.switchMode(ModeID.NORMAL);
 	}
 
 	inputHandler(key: string): () => void {
@@ -25,7 +25,7 @@ export class Dispatcher {
 		};
 	}
 
-	switchMode(id: MODE): void {
+	switchMode(id: ModeID): void {
 		if (this.currentMode === this.modes[id]) {
 			return;
 		}

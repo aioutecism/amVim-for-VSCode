@@ -1,5 +1,5 @@
 import {commands, ExtensionContext} from 'vscode';
-import {MODE} from './Modes/Mode';
+import {ModeID} from './Modes/Mode';
 import {Dispatcher} from './Dispatcher';
 import * as Keys from './Keys';
 
@@ -12,10 +12,10 @@ export function activate(context: ExtensionContext) {
 	});
 
 	let modes = [
-		MODE.NORMAL,
-		MODE.VISUAL,
-		MODE.VISUAL_BLOCK,
-		MODE.INSERT
+		ModeID.NORMAL,
+		ModeID.VISUAL,
+		ModeID.VISUAL_BLOCK,
+		ModeID.INSERT
 	];
 
 	modes.forEach(mode => {
