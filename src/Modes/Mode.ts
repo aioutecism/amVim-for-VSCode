@@ -11,7 +11,9 @@ export abstract class Mode {
 	name: string;
 
 	private pendings: Command[] = [];
+	private executing: boolean = false;
 	private inputs: string[] = [];
+
 	protected mapper: Mapper = new Mapper();
 
 	start(): void {
@@ -64,15 +66,26 @@ export abstract class Mode {
 	}
 
 	private	execute(): Thenable<boolean> {
-		const action = this.pendings.shift();
-
-		if (! action) {
-			return Promise.resolve(true);
+		if (this.executing) {
+			return;
 		}
 
-		action().then(
-			() => { this.execute(); },
-			() => { this.clearPendings(); }
-		);
+		this.executing = true;
+
+		const one = () => {
+			const action = this.pendings.shift();
+
+			if (! action) {
+				this.executing = false;
+				return;
+			}
+
+			action().then(
+				one.bind(this),
+				this.clearPendings.bind(this)
+			);
+		};
+
+		one();
 	}
 }

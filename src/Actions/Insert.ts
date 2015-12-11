@@ -10,7 +10,6 @@ export class ActionInsert {
 
 		let selections = activeTextEditor.selections;
 
-		// TODO: Buggy on fast input
 		return activeTextEditor.edit((editBuilder) => {
 			let fakeSelections: Selection[] = [];
 
