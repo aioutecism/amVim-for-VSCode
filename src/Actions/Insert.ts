@@ -1,17 +1,17 @@
 import {window, Selection} from 'vscode';
 
 export class ActionInsert {
-	static characterAtSelections(character: string): void {
+	static characterAtSelections(character: string): Thenable<boolean> {
 		const activeTextEditor = window.activeTextEditor;
 
 		if (! activeTextEditor) {
-			return;
+			return Promise.resolve(false);
 		}
 
 		let selections = activeTextEditor.selections;
 
 		// TODO: Buggy on fast input
-		activeTextEditor.edit((editBuilder) => {
+		return activeTextEditor.edit((editBuilder) => {
 			let fakeSelections: Selection[] = [];
 
 			selections.forEach(selection => {

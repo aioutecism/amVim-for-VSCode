@@ -1,6 +1,4 @@
-export interface Command {
-	(args?: {}): void;
-}
+import {Command} from './Modes/Mode';
 
 export interface Map {
 	keys: string;

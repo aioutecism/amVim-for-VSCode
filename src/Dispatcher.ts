@@ -46,13 +46,17 @@ export class Dispatcher {
 			return;
 		}
 
-		this.currentMode = this.modes[id];
-		this.currentMode.clearInputs();
+		if (this.currentMode) {
+			this.currentMode.end();
+		}
 
-		window.setStatusBarMessage(`-- ${this.currentMode.name} --`);
+		this.currentMode = this.modes[id];
+		this.currentMode.start();
 	}
 
 	dispose(): void {
-		// Nothing to clear now.
+		Object.keys(this.modes).forEach(id => {
+			(this.modes[id] as Mode).dispose();
+		});
 	}
 }

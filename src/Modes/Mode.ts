@@ -1,20 +1,38 @@
+import {window} from 'vscode';
 import {Mapper, Map, MatchResultType} from '../Mapper';
 
 export enum ModeID {NORMAL, VISUAL, VISUAL_BLOCK, INSERT};
 
+export interface Command {
+	(args?: {}): Thenable<boolean>;
+}
+
 export abstract class Mode {
 	name: string;
 
+	private pendings: Command[] = [];
 	private inputs: string[] = [];
-	protected mapper: Mapper;
+	protected mapper: Mapper = new Mapper();
 
-	constructor() {
-		this.mapper = new Mapper();
-		this.clearInputs();
+	start(): void {
+		window.setStatusBarMessage(`-- ${this.name} --`);
 	}
 
-	clearInputs(): void {
+	end(): void {
+		this.clearInputs();
+		this.clearPendings();
+	}
+
+	dispose(): void {
+		this.end();
+	}
+
+	private clearInputs(): void {
 		this.inputs = [];
+	}
+
+	private clearPendings(): void {
+		this.pendings = [];
 	}
 
 	input(key: string): void {
@@ -34,11 +52,27 @@ export abstract class Mode {
 			this.clearInputs();
 		}
 		else if (type === MatchResultType.FOUND) {
-			map.command(map.args);
 			this.clearInputs();
+			this.pendings.push(() => {
+				return map.command(map.args);
+			});
+			this.execute();
 		}
 		else if (type === MatchResultType.WAITING) {
 			// TODO: Update status bar
 		}
+	}
+
+	private	execute(): Thenable<boolean> {
+		const action = this.pendings.shift();
+
+		if (! action) {
+			return Promise.resolve(true);
+		}
+
+		action().then(
+			() => { this.execute(); },
+			() => { this.clearPendings(); }
+		);
 	}
 }

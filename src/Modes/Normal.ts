@@ -22,7 +22,7 @@ export class ModeNormal extends Mode {
 		{ keys: 'v', command: ActionMode.toVisual },
 		{ keys: 'ctrl+v', command: ActionMode.toVisualBlock },
 
-		{ keys: 'escape', command: () => {} },
+		{ keys: 'escape', command: () => Promise.resolve(true) },
 	];
 
 	constructor() {

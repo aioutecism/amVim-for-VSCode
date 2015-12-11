@@ -4,11 +4,11 @@ import {MotionLine} from '../Motions/Line';
 import {MotionDocument} from '../Motions/Document';
 
 export class ActionMoveCursor {
-	private static moveTo(position: Position): void {
+	private static moveTo(position: Position): Thenable<boolean> {
 		const activeTextEditor = window.activeTextEditor;
 
 		if (! activeTextEditor) {
-			return;
+			return Promise.resolve(false);
 		}
 
 		// TODO: Support multi selections
@@ -16,53 +16,55 @@ export class ActionMoveCursor {
 		activeTextEditor.selection = new Selection(position, position);
 
 		// TODO: Scroll View
+
+		return Promise.resolve(true);
 	}
 
-	static characterLeft(): void {
+	static characterLeft(): Thenable<boolean> {
 		const motion = new MotionCharacter();
 		motion.left();
-		ActionMoveCursor.moveTo(motion.targetPosition);
+		return ActionMoveCursor.moveTo(motion.targetPosition);
 	}
 
-	static characterRight(): void {
+	static characterRight(): Thenable<boolean> {
 		const motion = new MotionCharacter();
 		motion.right();
-		ActionMoveCursor.moveTo(motion.targetPosition);
+		return ActionMoveCursor.moveTo(motion.targetPosition);
 	}
 
-	static characterUp(): void {
+	static characterUp(): Thenable<boolean> {
 		const motion = new MotionCharacter();
 		motion.up();
-		ActionMoveCursor.moveTo(motion.targetPosition);
+		return ActionMoveCursor.moveTo(motion.targetPosition);
 	}
 
-	static characterDown(): void {
+	static characterDown(): Thenable<boolean> {
 		const motion = new MotionCharacter();
 		motion.down();
-		ActionMoveCursor.moveTo(motion.targetPosition);
+		return ActionMoveCursor.moveTo(motion.targetPosition);
 	}
 
-	static lineStart(): void {
+	static lineStart(): Thenable<boolean> {
 		const motion = new MotionLine();
 		motion.start();
-		ActionMoveCursor.moveTo(motion.targetPosition);
+		return ActionMoveCursor.moveTo(motion.targetPosition);
 	}
 
-	static lineEnd(): void {
+	static lineEnd(): Thenable<boolean> {
 		const motion = new MotionLine();
 		motion.end();
-		ActionMoveCursor.moveTo(motion.targetPosition);
+		return ActionMoveCursor.moveTo(motion.targetPosition);
 	}
 
-	static documentStart(): void {
+	static documentStart(): Thenable<boolean> {
 		const motion = new MotionDocument();
 		motion.start();
-		ActionMoveCursor.moveTo(motion.targetPosition);
+		return ActionMoveCursor.moveTo(motion.targetPosition);
 	}
 
-	static documentEnd(): void {
+	static documentEnd(): Thenable<boolean> {
 		const motion = new MotionDocument();
 		motion.end();
-		ActionMoveCursor.moveTo(motion.targetPosition);
+		return ActionMoveCursor.moveTo(motion.targetPosition);
 	}
 }

@@ -11,7 +11,7 @@ export class ModeInsert extends Mode {
 		{ keys: 'escape', command: ActionMode.toNormal },
 	].concat(Keys.characters.map(key => {
 		return { keys: key, command: () => {
-			ActionInsert.characterAtSelections(key);
+			return ActionInsert.characterAtSelections(key);
 		} };
 	}));
 
