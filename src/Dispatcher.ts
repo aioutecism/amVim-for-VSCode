@@ -33,7 +33,7 @@ export class Dispatcher {
 		}
 
 		this.currentMode = this.modes[id];
-		this.currentMode.cleanup();
+		this.currentMode.clearInputs();
 
 		window.setStatusBarMessage(`-- ${this.currentMode.name} --`);
 	}

@@ -8,10 +8,10 @@ export abstract class Mode {
 
 	constructor() {
 		this.mapper = new Mapper();
-		this.cleanup();
+		this.clearInputs();
 	}
 
-	cleanup(): void {
+	clearInputs(): void {
 		this.inputs = [];
 	}
 
@@ -29,11 +29,11 @@ export abstract class Mode {
 		const {type, map} = this.mapper.match(inputs);
 
 		if (type === MatchResultType.FAILED) {
-			this.cleanup();
+			this.clearInputs();
 		}
 		else if (type === MatchResultType.FOUND) {
-			this.cleanup()
 			map.command(map.args);
+			this.clearInputs();
 		}
 		else if (type === MatchResultType.WAITING) {
 			// TODO: Update status bar
