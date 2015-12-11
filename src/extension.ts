@@ -1,5 +1,6 @@
 import {commands, ExtensionContext} from 'vscode';
-import {Dispatcher, MODE} from './Dispatcher';
+import {MODE} from './Modes/Mode';
+import {Dispatcher} from './Dispatcher';
 import * as Keys from './Keys';
 
 export function activate(context: ExtensionContext) {

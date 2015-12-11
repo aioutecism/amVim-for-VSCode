@@ -1,11 +1,9 @@
 import {window} from 'vscode';
-import {Mode} from './Modes/Mode';
+import {Mode, MODE} from './Modes/Mode';
 import {ModeNormal} from './Modes/Normal';
 import {ModeVisual} from './Modes/Visual';
 import {ModeVisualBlock} from './Modes/VisualBlock';
 import {ModeInsert} from './Modes/Insert';
-
-export enum MODE {NORMAL, VISUAL, VISUAL_BLOCK, INSERT};
 
 export class Dispatcher {
 

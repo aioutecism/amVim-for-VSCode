@@ -1,5 +1,7 @@
 import {Mapper, Map, MatchResultType} from '../Mapper';
 
+export enum MODE {NORMAL, VISUAL, VISUAL_BLOCK, INSERT};
+
 export abstract class Mode {
 	name: string;
 

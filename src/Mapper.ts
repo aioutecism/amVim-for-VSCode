@@ -8,11 +8,11 @@ export interface Map {
 	args?: {};
 }
 
-export enum MatchResultType {FAILED, WAITING, FOUND}
-
 interface RecursiveMap {
 	[key: string]: RecursiveMap | Map;
 }
+
+export enum MatchResultType {FAILED, WAITING, FOUND}
 
 export class Mapper {
 	private static saparator: string = ' ';
