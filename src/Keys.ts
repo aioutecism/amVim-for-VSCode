@@ -1,5 +1,5 @@
 export const characters = [].concat(
-	'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!@#$%^&*(`~-_=+[{]}\\|;:\'",<.>/?'
+	'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!@#$%^&*()`~-_=+[{]}\\|;:\'",<.>/?'
 		.split(''),
 
 	'space enter backspace'
