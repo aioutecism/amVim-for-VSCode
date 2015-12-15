@@ -1,30 +1,39 @@
-import {window, Position} from 'vscode';
+import {window, Selection, Position} from 'vscode';
 
 export class Motion {
-	private _targetPosition: Position;
-	get targetPosition() { return this._targetPosition; }
+	private lineDelta = 0;
+	private characterDelta = 0;
 
-	protected relative(lineOffset: number, characterOffset: number): void {
+	protected translate(lineDelta: number, characterDelta: number): void {
+		this.lineDelta = lineDelta;
+		this.characterDelta = characterDelta;
+	}
+
+	apply(from: Selection): Selection {
 		const activeTextEditor = window.activeTextEditor;
 
 		if (! activeTextEditor) {
-			return;
+			return from;
 		}
 
 		const document = activeTextEditor.document;
 
-		const currentPosition = activeTextEditor.selection.start;
-		const currentLineLength = document.lineAt(currentPosition.line).text.length;
+		let toLine = from.active.line + this.lineDelta;
+		let toCharacter = from.active.character + this.characterDelta;
 
-		let targetLine = currentPosition.line + lineOffset;
-		let targetCharacter = currentPosition.character + characterOffset;
+		toLine = Math.max(toLine, 0);
+		toLine = Math.min(toLine, document.lineCount - 1);
 
-		targetLine = Math.max(targetLine, 0);
-		targetLine = Math.min(targetLine, document.lineCount - 1);
+		toCharacter = Math.max(toCharacter, 0);
+		toCharacter = Math.min(toCharacter, document.lineAt(toLine).text.length);
 
-		targetCharacter = Math.max(targetCharacter, 0);
-		targetCharacter = Math.min(targetCharacter, currentLineLength);
+		const toPosition = new Position(toLine, toCharacter);
 
-		this._targetPosition = new Position(targetLine, targetCharacter);
+		if (from.isEmpty) {
+			return new Selection(toPosition, toPosition);
+		}
+		else {
+			return new Selection(from.anchor, toPosition);
+		}
 	}
 }
