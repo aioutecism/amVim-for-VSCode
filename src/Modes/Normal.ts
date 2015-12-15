@@ -1,6 +1,7 @@
 import {Mode} from './Mode';
 import {Map} from '../Mapper';
 import {ActionMoveCursor} from '../Actions/MoveCursor';
+import {ActionHistory} from '../Actions/History';
 import {ActionMode} from '../Actions/Mode';
 
 export class ModeNormal extends Mode {
@@ -27,6 +28,9 @@ export class ModeNormal extends Mode {
 		{ keys: 'v', command: ActionMode.toVisual },
 		{ keys: 'ctrl+v', command: ActionMode.toVisualBlock },
 		{ keys: 'V', command: ActionMode.toVisualLine },
+
+		{ keys: 'u', command: ActionHistory.undo },
+		{ keys: 'ctrl+r', command: ActionHistory.redo },
 
 		{ keys: 'escape', command: () => Promise.resolve(true) },
 	];
