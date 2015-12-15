@@ -15,6 +15,10 @@ export class ActionMode {
 		return commands.executeCommand(`vim.mode.${ModeID.VISUAL_BLOCK}`);
 	}
 
+	static toVisualLine(): Thenable<boolean> {
+		return commands.executeCommand(`vim.mode.${ModeID.VISUAL_LINE}`);
+	}
+
 	static toInsert(): Thenable<boolean> {
 		return commands.executeCommand(`vim.mode.${ModeID.INSERT}`);
 	}

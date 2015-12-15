@@ -22,6 +22,7 @@ export class ModeNormal extends Mode {
 		{ keys: 'i', command: ActionMode.toInsert },
 		{ keys: 'v', command: ActionMode.toVisual },
 		{ keys: 'ctrl+v', command: ActionMode.toVisualBlock },
+		{ keys: 'V', command: ActionMode.toVisualLine },
 
 		{ keys: 'escape', command: () => Promise.resolve(true) },
 	];

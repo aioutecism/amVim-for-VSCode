@@ -4,6 +4,7 @@ import {Mode, ModeID} from './Modes/Mode';
 import {ModeNormal} from './Modes/Normal';
 import {ModeVisual} from './Modes/Visual';
 import {ModeVisualBlock} from './Modes/VisualBlock';
+import {ModeVisualLine} from './Modes/VisualLine';
 import {ModeInsert} from './Modes/Insert';
 
 export class Dispatcher {
@@ -13,6 +14,7 @@ export class Dispatcher {
 		[ModeID.NORMAL]: new ModeNormal(),
 		[ModeID.VISUAL]: new ModeVisual(),
 		[ModeID.VISUAL_BLOCK]: new ModeVisualBlock(),
+		[ModeID.VISUAL_LINE]: new ModeVisualLine(),
 		[ModeID.INSERT]: new ModeInsert(),
 	};
 
@@ -21,6 +23,7 @@ export class Dispatcher {
 			ModeID.NORMAL,
 			ModeID.VISUAL,
 			ModeID.VISUAL_BLOCK,
+			ModeID.VISUAL_LINE,
 			ModeID.INSERT
 		].forEach(mode => {
 			context.subscriptions.push(commands.registerCommand(`vim.mode.${mode}`, () => {

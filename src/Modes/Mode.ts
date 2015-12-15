@@ -1,7 +1,7 @@
 import {window} from 'vscode';
 import {Mapper, Map, MatchResultType} from '../Mapper';
 
-export enum ModeID {NORMAL, VISUAL, VISUAL_BLOCK, INSERT};
+export enum ModeID {NORMAL, VISUAL, VISUAL_BLOCK, VISUAL_LINE, INSERT};
 
 export interface Command {
 	(args?: {}): Thenable<boolean>;
