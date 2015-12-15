@@ -13,8 +13,8 @@ interface RecursiveMap {
 export enum MatchResultType {FAILED, WAITING, FOUND}
 
 export class Mapper {
-	private static saparator: string = ' ';
 
+	private static saparator: string = ' ';
 	private root: RecursiveMap = {};
 
 	private static isMap(node: RecursiveMap | Map): boolean {
@@ -75,4 +75,5 @@ export class Mapper {
 			return {type: MatchResultType.WAITING};
 		}
 	}
+
 }

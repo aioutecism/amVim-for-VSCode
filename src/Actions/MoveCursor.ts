@@ -5,6 +5,7 @@ import {MotionLine} from '../Motions/Line';
 import {MotionDocument} from '../Motions/Document';
 
 export class ActionMoveCursor {
+
 	private static move(motion: Motion): Thenable<boolean> {
 		const activeTextEditor = window.activeTextEditor;
 
@@ -68,4 +69,5 @@ export class ActionMoveCursor {
 		motion.end();
 		return ActionMoveCursor.move(motion);
 	}
+
 }

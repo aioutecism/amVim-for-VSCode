@@ -1,6 +1,7 @@
 import {Motion} from './Motion';
 
 export class MotionCharacter extends Motion {
+
 	left(): void {
 		this.translate(0, -1);
 	}
@@ -16,4 +17,5 @@ export class MotionCharacter extends Motion {
 	down(): void {
 		this.translate(+1, 0);
 	}
+
 }

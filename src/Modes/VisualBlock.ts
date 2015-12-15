@@ -3,6 +3,7 @@ import {Map} from '../Mapper';
 import {ActionMode} from '../Actions/Mode';
 
 export class ModeVisualBlock extends Mode {
+
 	name = 'VISUAL BLOCK';
 
 	private maps: Map[] = [
@@ -16,4 +17,5 @@ export class ModeVisualBlock extends Mode {
 			this.mapper.map(map.keys, map.command, map.args);
 		});
 	}
+
 }

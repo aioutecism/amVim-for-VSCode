@@ -1,6 +1,7 @@
 import {window, Selection, Position} from 'vscode';
 
 export class Motion {
+
 	private lineDelta = 0;
 	private characterDelta = 0;
 
@@ -32,4 +33,5 @@ export class Motion {
 
 		return new Selection(anchorPosition, activePosition);
 	}
+
 }

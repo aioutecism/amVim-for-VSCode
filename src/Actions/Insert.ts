@@ -1,6 +1,7 @@
 import {window, Selection} from 'vscode';
 
 export class ActionInsert {
+
 	static characterAtSelections(character: string): Thenable<boolean> {
 		const activeTextEditor = window.activeTextEditor;
 
@@ -31,4 +32,5 @@ export class ActionInsert {
 			activeTextEditor.selections = fakeSelections;
 		});
 	}
+
 }

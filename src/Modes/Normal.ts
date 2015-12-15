@@ -4,6 +4,7 @@ import {ActionMoveCursor} from '../Actions/MoveCursor';
 import {ActionMode} from '../Actions/Mode';
 
 export class ModeNormal extends Mode {
+
 	name = 'NORMAL';
 
 	private maps: Map[] = [
@@ -32,4 +33,5 @@ export class ModeNormal extends Mode {
 			this.mapper.map(map.keys, map.command, map.args);
 		});
 	}
+
 }

@@ -2,6 +2,7 @@ import {commands} from 'vscode';
 import {ModeID} from '../Modes/Mode';
 
 export class ActionMode {
+
 	static toNormal(): Thenable<boolean> {
 		return commands.executeCommand(`vim.mode.${ModeID.NORMAL}`);
 	}
@@ -17,4 +18,5 @@ export class ActionMode {
 	static toInsert(): Thenable<boolean> {
 		return commands.executeCommand(`vim.mode.${ModeID.INSERT}`);
 	}
+
 };

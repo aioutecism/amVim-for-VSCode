@@ -8,6 +8,7 @@ export interface Command {
 }
 
 export abstract class Mode {
+
 	name: string;
 
 	private pendings: Command[] = [];
@@ -88,4 +89,5 @@ export abstract class Mode {
 
 		one();
 	}
+
 }

@@ -5,6 +5,7 @@ import {ActionInsert} from '../Actions/Insert';
 import {ActionMode} from '../Actions/Mode';
 
 export class ModeInsert extends Mode {
+
 	name = 'INSERT';
 
 	private maps: Map[] = [
@@ -22,4 +23,5 @@ export class ModeInsert extends Mode {
 			this.mapper.map(map.keys, map.command, map.args);
 		});
 	}
+
 }

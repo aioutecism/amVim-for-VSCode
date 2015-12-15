@@ -1,6 +1,7 @@
 import {Motion} from './Motion';
 
 export class MotionDocument extends Motion {
+
 	start(): void {
 		this.translate(-Infinity, -Infinity);
 	}
@@ -8,4 +9,5 @@ export class MotionDocument extends Motion {
 	end(): void {
 		this.translate(+Infinity, +Infinity);
 	}
+
 }

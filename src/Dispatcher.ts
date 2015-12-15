@@ -59,4 +59,5 @@ export class Dispatcher {
 			(this.modes[id] as Mode).dispose();
 		});
 	}
+
 }
