@@ -12,6 +12,8 @@ export class ActionInsert {
 
 		let selections = activeTextEditor.selections;
 
+		// TODO: Support backspace, enter and space
+
 		return activeTextEditor.edit((editBuilder) => {
 			let fakeSelections: Selection[] = [];
 
