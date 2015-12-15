@@ -27,13 +27,9 @@ export class Motion {
 		toCharacter = Math.max(toCharacter, 0);
 		toCharacter = Math.min(toCharacter, document.lineAt(toLine).text.length);
 
-		const toPosition = new Position(toLine, toCharacter);
+		const activePosition = new Position(toLine, toCharacter);
+		const anchorPosition = from.isEmpty ? activePosition : from.anchor;
 
-		if (from.isEmpty) {
-			return new Selection(toPosition, toPosition);
-		}
-		else {
-			return new Selection(from.anchor, toPosition);
-		}
+		return new Selection(anchorPosition, activePosition);
 	}
 }
