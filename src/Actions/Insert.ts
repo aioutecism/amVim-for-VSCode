@@ -2,6 +2,7 @@ import {window, Selection} from 'vscode';
 
 export class ActionInsert {
 
+	// TODO: Support string with length > 1
 	static characterAtSelections(character: string): Thenable<boolean> {
 		const activeTextEditor = window.activeTextEditor;
 

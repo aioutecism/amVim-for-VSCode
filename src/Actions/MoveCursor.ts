@@ -14,6 +14,8 @@ export class ActionMoveCursor {
 			return Promise.resolve(false);
 		}
 
+		// TODO: Preserve character position
+
 		activeTextEditor.selections = activeTextEditor.selections.map(selection => {
 			return motion.apply(selection);
 		});
