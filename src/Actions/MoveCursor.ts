@@ -1,6 +1,7 @@
 import {window, Position, Selection} from 'vscode';
 import {Motion} from '../Motions/Motion';
 import {MotionCharacter} from '../Motions/Character';
+import {MotionWord} from '../Motions/Word';
 import {MotionLine} from '../Motions/Line';
 import {MotionDocument} from '../Motions/Document';
 
@@ -43,6 +44,24 @@ export class ActionMoveCursor {
 	static characterDown(): Thenable<boolean> {
 		const motion = new MotionCharacter();
 		motion.down();
+		return ActionMoveCursor.move(motion);
+	}
+
+	static wordNextStart(): Thenable<boolean> {
+		const motion = new MotionWord();
+		motion.nextStart();
+		return ActionMoveCursor.move(motion);
+	}
+
+	static wordNextEnd(): Thenable<boolean> {
+		const motion = new MotionWord();
+		motion.nextEnd();
+		return ActionMoveCursor.move(motion);
+	}
+
+	static wordPrevStart(): Thenable<boolean> {
+		const motion = new MotionWord();
+		motion.prevStart();
 		return ActionMoveCursor.move(motion);
 	}
 

@@ -13,6 +13,10 @@ export class ModeNormal extends Mode {
 		{ keys: 'k', command: ActionMoveCursor.characterUp },
 		{ keys: 'j', command: ActionMoveCursor.characterDown },
 
+		{ keys: 'w', command: ActionMoveCursor.wordNextStart },
+		{ keys: 'e', command: ActionMoveCursor.wordNextEnd },
+		{ keys: 'b', command: ActionMoveCursor.wordPrevStart },
+
 		{ keys: '0', command: ActionMoveCursor.lineStart },
 		{ keys: '$', command: ActionMoveCursor.lineEnd },
 
