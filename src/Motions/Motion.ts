@@ -25,6 +25,8 @@ export class Motion {
 
 		const document = activeTextEditor.document;
 
+        // Count tab as editor.tabSize
+
 		let toLine = from.active.line;
 		toLine += this.lineDelta;
 		toLine = Math.max(toLine, 0);
