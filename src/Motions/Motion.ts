@@ -21,13 +21,18 @@ export class Motion {
 
         // Count tab as editor.tabSize
 
-        let toLine = from.active.line;
-        toLine += this.lineDelta;
-        toLine = Math.max(toLine, 0);
-        toLine = Math.min(toLine, document.lineCount - 1);
+        let toLine = from.active.line + this.lineDelta;
+        let toCharacter = from.active.character + this.characterDelta;
 
-        let toCharacter = from.active.character;
-        toCharacter += this.characterDelta;
+        if (toLine < 0) {
+            toLine = 0;
+            toCharacter = 0;
+        }
+        else if (toLine > document.lineCount - 1) {
+            toLine = document.lineCount - 1;
+            toCharacter = Infinity;
+        }
+
         toCharacter = Math.max(toCharacter, 0);
         toCharacter = Math.min(toCharacter, document.lineAt(toLine).text.length);
 
