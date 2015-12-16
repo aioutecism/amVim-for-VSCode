@@ -25,8 +25,6 @@ export class ActionMoveCursor {
         return Promise.resolve(true);
     }
 
-    // TODO: Consider using builtin commands
-
     static characterLeft(): Thenable<boolean> {
         const motion = new MotionCharacter();
         motion.left();
