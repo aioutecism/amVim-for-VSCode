@@ -2,7 +2,7 @@ export const characters = [].concat(
     'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!@#$%^&*()`~-_=+[{]}\\|;:\'",<.>/?'
         .split(''),
 
-    'space enter backspace'
+    'space enter tab backspace'
         .split(' ')
 );
 

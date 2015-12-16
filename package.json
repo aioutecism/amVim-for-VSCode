@@ -120,6 +120,7 @@
             { "command": "vim.space",     "key": "space",     "when": "editorTextFocus" },
             { "command": "vim.enter",     "key": "enter",     "when": "editorTextFocus" },
             { "command": "vim.escape",    "key": "escape",    "when": "editorTextFocus" },
+            { "command": "vim.tab",       "key": "tab",       "when": "editorTextFocus" },
             { "command": "vim.backspace", "key": "backspace", "when": "editorTextFocus" },
 
             { "command": "vim.shift+enter", "key": "shift+enter", "when": "editorTextFocus" },
