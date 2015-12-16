@@ -58,8 +58,8 @@ export class ModeNormal extends Mode {
         });
     }
 
-    start(): void {
-        super.start();
+    enter(): void {
+        super.enter();
 
         const activeTextEditor = window.activeTextEditor;
         if (activeTextEditor) {
@@ -71,8 +71,8 @@ export class ModeNormal extends Mode {
         }));
     }
 
-    end(): void {
-        super.end();
+    exit(): void {
+        super.exit();
 
         Disposable.from(...this.disposables).dispose();
 

@@ -50,11 +50,11 @@ export class Dispatcher {
         }
 
         if (this.currentMode) {
-            this.currentMode.end();
+            this.currentMode.exit();
         }
 
         this.currentMode = this.modes[id];
-        this.currentMode.start();
+        this.currentMode.enter();
     }
 
     dispose(): void {

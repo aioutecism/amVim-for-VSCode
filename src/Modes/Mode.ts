@@ -17,17 +17,17 @@ export abstract class Mode {
 
     protected mapper: Mapper = new Mapper();
 
-    start(): void {
+    enter(): void {
         window.setStatusBarMessage(`-- ${this.name} --`);
     }
 
-    end(): void {
+    exit(): void {
         this.clearInputs();
         this.clearPendings();
     }
 
     dispose(): void {
-        this.end();
+        this.exit();
     }
 
     private clearInputs(): void {
