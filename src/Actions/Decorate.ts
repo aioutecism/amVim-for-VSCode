@@ -24,4 +24,10 @@ export class ActionDecorate {
         return Promise.resolve(true);
     }
 
+    static remove(textEditor: TextEditor): Thenable<boolean> {
+        textEditor.setDecorations(ActionDecorate.decoration, []);
+
+        return Promise.resolve(true);
+    }
+
 }

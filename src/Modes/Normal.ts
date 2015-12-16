@@ -61,6 +61,11 @@ export class ModeNormal extends Mode {
     start(): void {
         super.start();
 
+        const activeTextEditor = window.activeTextEditor;
+        if (activeTextEditor) {
+            ActionDecorate.activeCursors(activeTextEditor, activeTextEditor.selections);
+        }
+
         this.disposables.push(window.onDidChangeTextEditorSelection((e) => {
             ActionDecorate.activeCursors(e.textEditor, e.selections);
         }));
@@ -70,6 +75,11 @@ export class ModeNormal extends Mode {
         super.end();
 
         Disposable.from(...this.disposables).dispose();
+
+        const activeTextEditor = window.activeTextEditor;
+        if (activeTextEditor) {
+            ActionDecorate.remove(activeTextEditor);
+        }
     }
 
 }
