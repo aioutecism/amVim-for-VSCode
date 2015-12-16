@@ -30,6 +30,7 @@ export class ModeNormal extends Mode {
         { keys: 'G', command: ActionMoveCursor.documentEnd },
 
         { keys: 'i', command: ActionMode.toInsert },
+        { keys: 'a', command: () => ActionMoveCursor.characterRight().then(ActionMode.toInsert) },
         { keys: 'v', command: ActionMode.toVisual },
         { keys: 'ctrl+v', command: ActionMode.toVisualBlock },
         { keys: 'V', command: ActionMode.toVisualLine },
