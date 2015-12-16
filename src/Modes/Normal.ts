@@ -1,5 +1,7 @@
+import {window, Disposable} from 'vscode';
 import {Mode} from './Mode';
 import {Map} from '../Mapper';
+import {ActionDecorate} from '../Actions/Decorate';
 import {ActionMoveCursor} from '../Actions/MoveCursor';
 import {ActionInsert} from '../Actions/Insert';
 import {ActionDelete} from '../Actions/Delete';
@@ -32,8 +34,8 @@ export class ModeNormal extends Mode {
         { keys: 'ctrl+v', command: ActionMode.toVisualBlock },
         { keys: 'V', command: ActionMode.toVisualLine },
 
-        { keys: 'o', command: () => { return ActionInsert.newLineAfter().then(ActionMode.toInsert) } },
-        { keys: 'O', command: () => { return ActionInsert.newLineBefore().then(ActionMode.toInsert) } },
+        { keys: 'o', command: () => ActionInsert.newLineAfter().then(ActionMode.toInsert) },
+        { keys: 'O', command: () => ActionInsert.newLineBefore().then(ActionMode.toInsert) },
 
         { keys: 'd d', command: ActionDelete.line },
 
@@ -46,12 +48,28 @@ export class ModeNormal extends Mode {
         { keys: 'escape', command: () => Promise.resolve(true) },
     ];
 
+    private disposables: Disposable[] = [];
+
     constructor() {
         super();
 
         this.maps.forEach(map => {
             this.mapper.map(map.keys, map.command, map.args);
         });
+    }
+
+    start(): void {
+        super.start();
+
+        this.disposables.push(window.onDidChangeTextEditorSelection((e) => {
+            ActionDecorate.activeCursors(e.textEditor, e.selections);
+        }));
+    }
+
+    end(): void {
+        super.end();
+
+        Disposable.from(...this.disposables).dispose();
     }
 
 }
