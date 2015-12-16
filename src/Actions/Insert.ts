@@ -1,4 +1,5 @@
 import {window, commands, Selection} from 'vscode';
+import {ActionReveal} from './Reveal';
 
 export class ActionInsert {
 
@@ -33,7 +34,8 @@ export class ActionInsert {
 
             // This is executed before changes are applied
             activeTextEditor.selections = fakeSelections;
-        });
+        })
+            .then(ActionReveal.primaryCursor);
     }
 
     static newLineBefore(): Thenable<boolean> {

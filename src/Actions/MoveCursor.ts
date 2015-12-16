@@ -1,4 +1,5 @@
 import {window, Position, Range, Selection} from 'vscode';
+import {ActionReveal} from './Reveal';
 import {Motion} from '../Motions/Motion';
 import {MotionCharacter} from '../Motions/Character';
 import {MotionWord} from '../Motions/Word';
@@ -20,10 +21,7 @@ export class ActionMoveCursor {
             return motion.apply(selection);
         });
 
-        const activePosition = activeTextEditor.selection.active;
-        activeTextEditor.revealRange(new Range(activePosition, activePosition));
-
-        return Promise.resolve(true);
+        return ActionReveal.primaryCursor();
     }
 
     static characterLeft(): Thenable<boolean> {
