@@ -3,7 +3,7 @@ import {window, Selection} from 'vscode';
 export class ActionInsert {
 
 	// TODO: Support string with length > 1
-	static characterAtSelections(character: string): Thenable<boolean> {
+	static characterAtSelections(args: {character: string}): Thenable<boolean> {
 		const activeTextEditor = window.activeTextEditor;
 
 		if (! activeTextEditor) {
@@ -21,10 +21,10 @@ export class ActionInsert {
 				let fakePosition = selection.start;
 
 				if (selection.isEmpty) {
-					editBuilder.insert(selection.active, character);
+					editBuilder.insert(selection.active, args.character);
 				}
 				else {
-					editBuilder.replace(selection, character);
+					editBuilder.replace(selection, args.character);
 					fakePosition = fakePosition.translate(0, 1);
 				}
 
