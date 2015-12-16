@@ -2,6 +2,7 @@ import {Mode} from './Mode';
 import {Map} from '../Mapper';
 import {ActionMoveCursor} from '../Actions/MoveCursor';
 import {ActionHistory} from '../Actions/History';
+import {ActionIndent} from '../Actions/Indent';
 import {ActionMode} from '../Actions/Mode';
 
 export class ModeNormal extends Mode {
@@ -31,6 +32,9 @@ export class ModeNormal extends Mode {
 
         { keys: 'u', command: ActionHistory.undo },
         { keys: 'ctrl+r', command: ActionHistory.redo },
+
+        { keys: '< <', command: ActionIndent.decrease },
+        { keys: '> >', command: ActionIndent.increase },
 
         { keys: 'escape', command: () => Promise.resolve(true) },
     ];
