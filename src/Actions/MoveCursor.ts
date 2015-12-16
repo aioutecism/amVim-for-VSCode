@@ -1,4 +1,4 @@
-import {window, Position, Selection} from 'vscode';
+import {window, Position, Range, Selection} from 'vscode';
 import {Motion} from '../Motions/Motion';
 import {MotionCharacter} from '../Motions/Character';
 import {MotionWord} from '../Motions/Word';
@@ -20,7 +20,8 @@ export class ActionMoveCursor {
             return motion.apply(selection);
         });
 
-        // TODO: Scroll View
+        const activePosition = activeTextEditor.selection.active;
+        activeTextEditor.revealRange(new Range(activePosition, activePosition));
 
         return Promise.resolve(true);
     }

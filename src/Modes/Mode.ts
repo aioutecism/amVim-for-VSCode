@@ -66,7 +66,7 @@ export abstract class Mode {
         }
     }
 
-    private    execute(): Thenable<boolean> {
+    private execute(): Thenable<boolean> {
         if (this.executing) {
             return;
         }
