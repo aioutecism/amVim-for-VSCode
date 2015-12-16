@@ -34,6 +34,8 @@ export class MotionWord extends Motion {
         let toLine = from.active.line;
         let toCharacter = from.active.character;
 
+        // TODO: Move to next line if needed
+
         let targetText = document.lineAt(toLine).text;
 
         if (this.wordDelta === MotionWordPosition.NEXT_START) {
