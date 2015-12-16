@@ -2,6 +2,7 @@ import {Mode} from './Mode';
 import {Map} from '../Mapper';
 import {ActionMoveCursor} from '../Actions/MoveCursor';
 import {ActionInsert} from '../Actions/Insert';
+import {ActionDelete} from '../Actions/Delete';
 import {ActionHistory} from '../Actions/History';
 import {ActionIndent} from '../Actions/Indent';
 import {ActionMode} from '../Actions/Mode';
@@ -33,6 +34,8 @@ export class ModeNormal extends Mode {
 
         { keys: 'o', command: () => { return ActionInsert.newLineAfter().then(ActionMode.toInsert) } },
         { keys: 'O', command: () => { return ActionInsert.newLineBefore().then(ActionMode.toInsert) } },
+
+        { keys: 'd d', command: ActionDelete.line },
 
         { keys: 'u', command: ActionHistory.undo },
         { keys: 'ctrl+r', command: ActionHistory.redo },
