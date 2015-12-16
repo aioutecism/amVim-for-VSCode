@@ -1,6 +1,7 @@
 import {Mode} from './Mode';
 import {Map} from '../Mapper';
 import {ActionMoveCursor} from '../Actions/MoveCursor';
+import {ActionInsert} from '../Actions/Insert';
 import {ActionHistory} from '../Actions/History';
 import {ActionIndent} from '../Actions/Indent';
 import {ActionMode} from '../Actions/Mode';
@@ -29,6 +30,9 @@ export class ModeNormal extends Mode {
         { keys: 'v', command: ActionMode.toVisual },
         { keys: 'ctrl+v', command: ActionMode.toVisualBlock },
         { keys: 'V', command: ActionMode.toVisualLine },
+
+        { keys: 'o', command: () => { return ActionInsert.newLineAfter().then(ActionMode.toInsert) } },
+        { keys: 'O', command: () => { return ActionInsert.newLineBefore().then(ActionMode.toInsert) } },
 
         { keys: 'u', command: ActionHistory.undo },
         { keys: 'ctrl+r', command: ActionHistory.redo },

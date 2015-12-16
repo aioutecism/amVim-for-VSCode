@@ -1,4 +1,4 @@
-import {window, Selection} from 'vscode';
+import {window, commands, Selection} from 'vscode';
 
 export class ActionInsert {
 
@@ -34,6 +34,14 @@ export class ActionInsert {
             // This is executed before changes are applied
             activeTextEditor.selections = fakeSelections;
         });
+    }
+
+    static newLineBefore(): Thenable<boolean> {
+        return commands.executeCommand('editor.action.insertLineBefore');
+    }
+
+    static newLineAfter(): Thenable<boolean> {
+        return commands.executeCommand('editor.action.insertLineAfter');
     }
 
 }
