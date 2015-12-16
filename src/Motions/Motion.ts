@@ -1,19 +1,13 @@
 import {window, Selection, Position} from 'vscode';
 
-export enum MotionWordPosition {NEXT_START, NEXT_END, PREV_START};
-
 export class Motion {
 
 	private lineDelta = 0;
 	private characterDelta = 0;
-	private wordDelta: MotionWordPosition;
 
-	private wordSeparators = './\\\\()"\'\\-:,.;<>~!@#$%^&*|+=\\[\\]{}`~?';
-
-	protected translate(lineDelta: number, characterDelta: number, wordDelta?: MotionWordPosition): void {
+	protected translate(lineDelta: number, characterDelta: number): void {
 		this.lineDelta += lineDelta;
 		this.characterDelta += characterDelta;
-		this.wordDelta = wordDelta;
 	}
 
 	apply(from: Selection): Selection {
@@ -25,7 +19,7 @@ export class Motion {
 
 		const document = activeTextEditor.document;
 
-        // Count tab as editor.tabSize
+		// Count tab as editor.tabSize
 
 		let toLine = from.active.line;
 		toLine += this.lineDelta;
@@ -33,40 +27,7 @@ export class Motion {
 		toLine = Math.min(toLine, document.lineCount - 1);
 
 		let toCharacter = from.active.character;
-
-		if (this.wordDelta !== undefined) {
-			let targetText = document.lineAt(toLine).text;
-
-			if (this.wordDelta === MotionWordPosition.NEXT_START) {
-				targetText = targetText.substr(toCharacter);
-
-				const matches = targetText.match(new RegExp(
-					`^(\\s+)?((?:[${this.wordSeparators}]+|[^\\s${this.wordSeparators}]+)\\s*)?`
-				));
-				toCharacter += matches[1] ? matches[1].length : matches[2] ? matches[2].length : matches[0].length;
-			}
-			else if (this.wordDelta === MotionWordPosition.NEXT_END) {
-				targetText = targetText.substr(toCharacter);
-
-				const matches = targetText.match(new RegExp(
-					`^(\\s+)?((?:[${this.wordSeparators}]+|[^\\s${this.wordSeparators}]+))?`
-				));
-				toCharacter += matches[0].length;
-			}
-			else if (this.wordDelta === MotionWordPosition.PREV_START) {
-				targetText = targetText
-					.substr(0, toCharacter)
-					.split('').reverse().join('');
-
-				const matches = targetText.match(new RegExp(
-					`^(\\s+)?((?:[${this.wordSeparators}]+|[^\\s${this.wordSeparators}]+))?`
-				));
-				toCharacter -= matches[0].length;
-			}
-		}
-
 		toCharacter += this.characterDelta;
-
 		toCharacter = Math.max(toCharacter, 0);
 		toCharacter = Math.min(toCharacter, document.lineAt(toLine).text.length);
 
