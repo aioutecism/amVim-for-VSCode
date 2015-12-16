@@ -46,7 +46,7 @@ export class MotionWord extends Motion {
         }
 
         else if (this.wordDelta === MotionWordPosition.NEXT_END) {
-            targetText = targetText.substr(toCharacter);
+            targetText = targetText.substr(toCharacter + 1);
 
             const matches = targetText.match(new RegExp(
                 `^(\\s+)?((?:[${this.wordSeparators}]+|[^\\s${this.wordSeparators}]+))?`
