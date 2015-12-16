@@ -2,38 +2,38 @@ import {window, Selection} from 'vscode';
 
 export class ActionInsert {
 
-	// TODO: Support string with length > 1
-	static characterAtSelections(args: {character: string}): Thenable<boolean> {
-		const activeTextEditor = window.activeTextEditor;
+    // TODO: Support string with length > 1
+    static characterAtSelections(args: {character: string}): Thenable<boolean> {
+        const activeTextEditor = window.activeTextEditor;
 
-		if (! activeTextEditor) {
-			return Promise.resolve(false);
-		}
+        if (! activeTextEditor) {
+            return Promise.resolve(false);
+        }
 
-		let selections = activeTextEditor.selections;
+        let selections = activeTextEditor.selections;
 
-		// TODO: Support backspace, enter and space
+        // TODO: Support backspace, enter and space
 
-		return activeTextEditor.edit((editBuilder) => {
-			let fakeSelections: Selection[] = [];
+        return activeTextEditor.edit((editBuilder) => {
+            let fakeSelections: Selection[] = [];
 
-			selections.forEach(selection => {
-				let fakePosition = selection.start;
+            selections.forEach(selection => {
+                let fakePosition = selection.start;
 
-				if (selection.isEmpty) {
-					editBuilder.insert(selection.active, args.character);
-				}
-				else {
-					editBuilder.replace(selection, args.character);
-					fakePosition = fakePosition.translate(0, 1);
-				}
+                if (selection.isEmpty) {
+                    editBuilder.insert(selection.active, args.character);
+                }
+                else {
+                    editBuilder.replace(selection, args.character);
+                    fakePosition = fakePosition.translate(0, 1);
+                }
 
-				fakeSelections.push(new Selection(fakePosition, fakePosition));
-			});
+                fakeSelections.push(new Selection(fakePosition, fakePosition));
+            });
 
-			// This is executed before changes are applied
-			activeTextEditor.selections = fakeSelections;
-		});
-	}
+            // This is executed before changes are applied
+            activeTextEditor.selections = fakeSelections;
+        });
+    }
 
 }

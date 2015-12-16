@@ -9,58 +9,58 @@ import {ModeInsert} from './Modes/Insert';
 
 export class Dispatcher {
 
-	private currentMode: Mode;
-	private modes: {[k: number]: Mode} = {
-		[ModeID.NORMAL]: new ModeNormal(),
-		[ModeID.VISUAL]: new ModeVisual(),
-		[ModeID.VISUAL_BLOCK]: new ModeVisualBlock(),
-		[ModeID.VISUAL_LINE]: new ModeVisualLine(),
-		[ModeID.INSERT]: new ModeInsert(),
-	};
+    private currentMode: Mode;
+    private modes: {[k: number]: Mode} = {
+        [ModeID.NORMAL]: new ModeNormal(),
+        [ModeID.VISUAL]: new ModeVisual(),
+        [ModeID.VISUAL_BLOCK]: new ModeVisualBlock(),
+        [ModeID.VISUAL_LINE]: new ModeVisualLine(),
+        [ModeID.INSERT]: new ModeInsert(),
+    };
 
-	constructor(context: ExtensionContext) {
-		[
-			ModeID.NORMAL,
-			ModeID.VISUAL,
-			ModeID.VISUAL_BLOCK,
-			ModeID.VISUAL_LINE,
-			ModeID.INSERT
-		].forEach(mode => {
-			context.subscriptions.push(commands.registerCommand(`vim.mode.${mode}`, () => {
-				this.switchMode(mode);
-			}));
-		})
+    constructor(context: ExtensionContext) {
+        [
+            ModeID.NORMAL,
+            ModeID.VISUAL,
+            ModeID.VISUAL_BLOCK,
+            ModeID.VISUAL_LINE,
+            ModeID.INSERT
+        ].forEach(mode => {
+            context.subscriptions.push(commands.registerCommand(`vim.mode.${mode}`, () => {
+                this.switchMode(mode);
+            }));
+        })
 
-		Keys.all.forEach(key => {
-			context.subscriptions.push(commands.registerCommand(`vim.${key}`, this.inputHandler(key)));
-		});
+        Keys.all.forEach(key => {
+            context.subscriptions.push(commands.registerCommand(`vim.${key}`, this.inputHandler(key)));
+        });
 
-		this.switchMode(ModeID.NORMAL);
-	}
+        this.switchMode(ModeID.NORMAL);
+    }
 
-	inputHandler(key: string): () => void {
-		return () => {
-			this.currentMode.input(key);
-		};
-	}
+    inputHandler(key: string): () => void {
+        return () => {
+            this.currentMode.input(key);
+        };
+    }
 
-	switchMode(id: ModeID): void {
-		if (this.currentMode === this.modes[id]) {
-			return;
-		}
+    switchMode(id: ModeID): void {
+        if (this.currentMode === this.modes[id]) {
+            return;
+        }
 
-		if (this.currentMode) {
-			this.currentMode.end();
-		}
+        if (this.currentMode) {
+            this.currentMode.end();
+        }
 
-		this.currentMode = this.modes[id];
-		this.currentMode.start();
-	}
+        this.currentMode = this.modes[id];
+        this.currentMode.start();
+    }
 
-	dispose(): void {
-		Object.keys(this.modes).forEach(id => {
-			(this.modes[id] as Mode).dispose();
-		});
-	}
+    dispose(): void {
+        Object.keys(this.modes).forEach(id => {
+            (this.modes[id] as Mode).dispose();
+        });
+    }
 
 }

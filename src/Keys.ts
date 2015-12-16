@@ -1,21 +1,21 @@
 export const characters = [].concat(
-	'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!@#$%^&*()`~-_=+[{]}\\|;:\'",<.>/?'
-		.split(''),
+    'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!@#$%^&*()`~-_=+[{]}\\|;:\'",<.>/?'
+        .split(''),
 
-	'space enter backspace'
-		.split(' ')
+    'space enter backspace'
+        .split(' ')
 );
 
 export const all = characters.concat(
-	'escape'
-		.split(' '),
+    'escape'
+        .split(' '),
 
-	'enter'
-		.split(' ').map(key => `shift+${key}`),
+    'enter'
+        .split(' ').map(key => `shift+${key}`),
 
-	'bw'
-		.split('').map(key => `alt+${key}`),
+    'bw'
+        .split('').map(key => `alt+${key}`),
 
-	'[bdefruvwy'
-		.split('').map(key => `ctrl+${key}`)
+    '[bdefruvwy'
+        .split('').map(key => `ctrl+${key}`)
 );

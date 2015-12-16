@@ -6,41 +6,41 @@ import {ActionMode} from '../Actions/Mode';
 
 export class ModeNormal extends Mode {
 
-	name = 'NORMAL';
+    name = 'NORMAL';
 
-	private maps: Map[] = [
-		{ keys: 'h', command: ActionMoveCursor.characterLeft },
-		{ keys: 'l', command: ActionMoveCursor.characterRight },
-		{ keys: 'k', command: ActionMoveCursor.characterUp },
-		{ keys: 'j', command: ActionMoveCursor.characterDown },
+    private maps: Map[] = [
+        { keys: 'h', command: ActionMoveCursor.characterLeft },
+        { keys: 'l', command: ActionMoveCursor.characterRight },
+        { keys: 'k', command: ActionMoveCursor.characterUp },
+        { keys: 'j', command: ActionMoveCursor.characterDown },
 
-		{ keys: 'w', command: ActionMoveCursor.wordNextStart },
-		{ keys: 'e', command: ActionMoveCursor.wordNextEnd },
-		{ keys: 'b', command: ActionMoveCursor.wordPrevStart },
+        { keys: 'w', command: ActionMoveCursor.wordNextStart },
+        { keys: 'e', command: ActionMoveCursor.wordNextEnd },
+        { keys: 'b', command: ActionMoveCursor.wordPrevStart },
 
-		{ keys: '0', command: ActionMoveCursor.lineStart },
-		{ keys: '$', command: ActionMoveCursor.lineEnd },
+        { keys: '0', command: ActionMoveCursor.lineStart },
+        { keys: '$', command: ActionMoveCursor.lineEnd },
 
-		{ keys: 'g g', command: ActionMoveCursor.documentStart },
-		{ keys: 'G', command: ActionMoveCursor.documentEnd },
+        { keys: 'g g', command: ActionMoveCursor.documentStart },
+        { keys: 'G', command: ActionMoveCursor.documentEnd },
 
-		{ keys: 'i', command: ActionMode.toInsert },
-		{ keys: 'v', command: ActionMode.toVisual },
-		{ keys: 'ctrl+v', command: ActionMode.toVisualBlock },
-		{ keys: 'V', command: ActionMode.toVisualLine },
+        { keys: 'i', command: ActionMode.toInsert },
+        { keys: 'v', command: ActionMode.toVisual },
+        { keys: 'ctrl+v', command: ActionMode.toVisualBlock },
+        { keys: 'V', command: ActionMode.toVisualLine },
 
-		{ keys: 'u', command: ActionHistory.undo },
-		{ keys: 'ctrl+r', command: ActionHistory.redo },
+        { keys: 'u', command: ActionHistory.undo },
+        { keys: 'ctrl+r', command: ActionHistory.redo },
 
-		{ keys: 'escape', command: () => Promise.resolve(true) },
-	];
+        { keys: 'escape', command: () => Promise.resolve(true) },
+    ];
 
-	constructor() {
-		super();
+    constructor() {
+        super();
 
-		this.maps.forEach(map => {
-			this.mapper.map(map.keys, map.command, map.args);
-		});
-	}
+        this.maps.forEach(map => {
+            this.mapper.map(map.keys, map.command, map.args);
+        });
+    }
 
 }
