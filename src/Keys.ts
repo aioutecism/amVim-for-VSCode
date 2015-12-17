@@ -1,13 +1,10 @@
-export const characters = [].concat(
-    'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!@#$%^&*()`~-_=+[{]}\\|;:\'",<.>/?'
-        .split(''),
-
-    'space enter tab backspace'
-        .split(' ')
-);
+export const characters = [
+    'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890',
+    '!@#$%^&*()`~-_=+[{]}\\|;:\'",<.>/?',
+].join('').split('');
 
 export const all = characters.concat(
-    'escape'
+    'space enter tab backspace escape'
         .split(' '),
 
     'enter'

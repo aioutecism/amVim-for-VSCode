@@ -1,7 +1,32 @@
-import {window, commands, Selection} from 'vscode';
+import {window, commands, Position, Selection, TextDocument} from 'vscode';
 import {ActionReveal} from './Reveal';
 
 export class ActionInsert {
+
+    static tabAtSelections(): Thenable<boolean> {
+        return commands.executeCommand('tab');
+    }
+
+    static lineBreakAtSelections(): Thenable<boolean> {
+        const activeTextEditor = window.activeTextEditor;
+
+        if (! activeTextEditor) {
+            return Promise.resolve(false);
+        }
+
+        return commands.executeCommand('lineBreakInsert')
+            .then(() => {
+                activeTextEditor.selections = activeTextEditor.selections.map(selection => {
+                    const text = activeTextEditor.document.lineAt(selection.active.line + 1).text;
+                    const leadingSpaces = (text.match(/^\s+/) || [''])[0];
+                    const position = new Position(selection.active.line + 1, leadingSpaces.length);
+                    // TODO: Wrong position when breaking before whitespaces
+                    return new Selection(position, position);
+                });
+
+                return Promise.resolve(true);
+            });
+    }
 
     // TODO: Support string with length > 1
     static characterAtSelections(args: {character: string}): Thenable<boolean> {
@@ -11,14 +36,10 @@ export class ActionInsert {
             return Promise.resolve(false);
         }
 
-        let selections = activeTextEditor.selections;
-
-        // TODO: Support backspace, enter, tab and space
-
         return activeTextEditor.edit((editBuilder) => {
             let fakeSelections: Selection[] = [];
 
-            selections.forEach(selection => {
+            activeTextEditor.selections.forEach(selection => {
                 let fakePosition = selection.start;
 
                 if (selection.isEmpty) {
