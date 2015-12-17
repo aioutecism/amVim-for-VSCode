@@ -112,7 +112,7 @@ And they need a complete refactoring to meet my needs.
   - [x] Indent
     - [x] increase
     - [x] decrease
-  - [ ] JoinLines
+  - [x] JoinLines
   - [ ] Case
     - [ ] swap
     - [ ] upper
