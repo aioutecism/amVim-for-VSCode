@@ -5,6 +5,7 @@ import {ActionDecorate} from '../Actions/Decorate';
 import {ActionMoveCursor} from '../Actions/MoveCursor';
 import {ActionInsert} from '../Actions/Insert';
 import {ActionDelete} from '../Actions/Delete';
+import {ActionSuggestion} from '../Actions/Suggestion';
 import {ActionJoinLines} from '../Actions/JoinLines';
 import {ActionHistory} from '../Actions/History';
 import {ActionIndent} from '../Actions/Indent';
@@ -39,6 +40,9 @@ export class ModeNormal extends Mode {
         { keys: 'o', command: () => ActionInsert.newLineAfter().then(ActionMode.toInsert) },
         { keys: 'O', command: () => ActionInsert.newLineBefore().then(ActionMode.toInsert) },
 
+        { keys: 'X', command: () => ActionDelete.selectionsOrLeft().then(ActionSuggestion.hide) },
+        { keys: 'x', command: () => ActionDelete.selectionsOrRight().then(ActionSuggestion.hide) },
+        { keys: 'delete', command: () => ActionDelete.selectionsOrRight().then(ActionSuggestion.hide) },
         { keys: 'd d', command: ActionDelete.line },
         { keys: 'J', command: ActionJoinLines.onSelections },
 
