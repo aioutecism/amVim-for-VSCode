@@ -7,6 +7,10 @@ export class ActionDelete {
         return commands.executeCommand('deleteLeft');
     }
 
+    static selectionsOrRight(): Thenable<boolean> {
+        return commands.executeCommand('deleteRight');
+    }
+
     static line(): Thenable<boolean> {
         return commands.executeCommand('editor.action.deleteLines')
             .then(ActionReveal.primaryCursor);

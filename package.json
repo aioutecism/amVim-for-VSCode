@@ -122,6 +122,7 @@
             { "command": "vim.escape",    "key": "escape",    "when": "editorTextFocus && !suggestWidgetVisible" },
             { "command": "vim.tab",       "key": "tab",       "when": "editorTextFocus && !suggestWidgetVisible" },
             { "command": "vim.backspace", "key": "backspace", "when": "editorTextFocus && !suggestWidgetVisible" },
+            { "command": "vim.delete",    "key": "delete",    "when": "editorTextFocus && !suggestWidgetVisible" },
 
             { "command": "vim.shift+enter", "key": "shift+enter", "when": "editorTextFocus && !suggestWidgetVisible" },
 

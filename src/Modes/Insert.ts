@@ -14,6 +14,7 @@ export class ModeInsert extends Mode {
         { keys: 'enter', command: ActionInsert.lineBreakAtSelections },
         { keys: 'tab', command: ActionInsert.tabAtSelections },
         { keys: 'backspace', command: ActionDelete.selectionsOrLeft },
+        { keys: 'delete', command: ActionDelete.selectionsOrRight },
 
         { keys: 'escape', command: ActionMode.toNormal },
     ]

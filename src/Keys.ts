@@ -4,7 +4,7 @@ export const characters = [
 ].join('').split('');
 
 export const all = characters.concat(
-    'space enter tab backspace escape'
+    'space enter tab backspace delete escape'
         .split(' '),
 
     'enter'
