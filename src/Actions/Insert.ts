@@ -29,7 +29,6 @@ export class ActionInsert {
     }
 
     // TODO: Support string with length > 1
-    // TODO: Support suggestion
     static characterAtSelections(args: {character: string}): Thenable<boolean> {
         const activeTextEditor = window.activeTextEditor;
 
@@ -57,6 +56,8 @@ export class ActionInsert {
             // This is executed before changes are applied
             activeTextEditor.selections = fakeSelections;
         })
+            // TODO: Don't trigger suggest when no suggestion is available
+            .then(commands.executeCommand.bind(commands, 'editor.action.triggerSuggest'))
             .then(ActionReveal.primaryCursor);
     }
 
