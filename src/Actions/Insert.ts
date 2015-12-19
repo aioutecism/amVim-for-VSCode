@@ -56,8 +56,6 @@ export class ActionInsert {
             // This is executed before changes are applied
             activeTextEditor.selections = fakeSelections;
         })
-            // TODO: Don't trigger suggest when no suggestion is available
-            .then(commands.executeCommand.bind(commands, 'editor.action.triggerSuggest'))
             .then(ActionReveal.primaryCursor);
     }
 

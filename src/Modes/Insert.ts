@@ -3,6 +3,7 @@ import * as Keys from '../Keys';
 import {Map} from '../Mapper';
 import {ActionInsert} from '../Actions/Insert';
 import {ActionDelete} from '../Actions/Delete';
+import {ActionSuggestion} from '../Actions/Suggestion';
 import {ActionMode} from '../Actions/Mode';
 
 export class ModeInsert extends Mode {
@@ -19,7 +20,10 @@ export class ModeInsert extends Mode {
         { keys: 'escape', command: ActionMode.toNormal },
     ]
         .concat(Keys.characters.map(key => {
-            return { keys: key, command: ActionInsert.characterAtSelections, args: { character: key } };
+            return { keys: key, command: (args) => {
+                return ActionInsert.characterAtSelections(args)
+                    .then(ActionSuggestion.trigger);
+            }, args: { character: key } };
         }));
 
     constructor() {
