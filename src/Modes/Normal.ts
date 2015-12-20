@@ -25,6 +25,7 @@ export class ModeNormal extends Mode {
         { keys: 'e', command: ActionMoveCursor.wordNextEnd },
         { keys: 'b', command: ActionMoveCursor.wordPrevStart },
 
+        { keys: '^', command: ActionMoveCursor.firstNonBlankInLine },
         { keys: '0', command: ActionMoveCursor.lineStart },
         { keys: '$', command: ActionMoveCursor.lineEnd },
 

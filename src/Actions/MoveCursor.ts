@@ -66,6 +66,12 @@ export class ActionMoveCursor {
         return ActionMoveCursor.move(motion);
     }
 
+    static firstNonBlankInLine(): Thenable<boolean> {
+        const motion = new MotionLine();
+        motion.firstNonBlank();
+        return ActionMoveCursor.move(motion);
+    }
+
     static lineStart(): Thenable<boolean> {
         const motion = new MotionLine();
         motion.start();
