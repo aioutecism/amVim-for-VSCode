@@ -3,6 +3,7 @@ import {ActionReveal} from './Reveal';
 import {Motion} from '../Motions/Motion';
 import {MotionCharacter} from '../Motions/Character';
 import {MotionWord} from '../Motions/Word';
+import {MotionMatch} from '../Motions/Match';
 import {MotionLine} from '../Motions/Line';
 import {MotionDocument} from '../Motions/Document';
 
@@ -70,6 +71,18 @@ export class ActionMoveCursor {
     static wordPrevStart(): Thenable<boolean> {
         const motion = new MotionWord();
         motion.prevStart();
+        return ActionMoveCursor.move(motion);
+    }
+
+    static matchCharacterNext(args: {character: string}): Thenable<boolean> {
+        const motion = new MotionMatch();
+        motion.next(args.character);
+        return ActionMoveCursor.move(motion);
+    }
+
+    static matchCharacterPrev(args: {character: string}): Thenable<boolean> {
+        const motion = new MotionMatch();
+        motion.prev(args.character);
         return ActionMoveCursor.move(motion);
     }
 

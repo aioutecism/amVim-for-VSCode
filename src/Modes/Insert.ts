@@ -11,7 +11,7 @@ export class ModeInsert extends Mode {
     name = 'INSERT';
 
     private maps: Map[] = [
-        { keys: 'space', command: ActionInsert.characterAtSelections, args: { character: ' ' } },
+        { keys: 'space', command: ActionInsert.characterAtSelections, args: {character: ' '} },
         { keys: 'enter', command: ActionInsert.lineBreakAtSelections },
         { keys: 'tab', command: ActionInsert.tabAtSelections },
         { keys: 'backspace', command: ActionDelete.selectionsOrLeft },
@@ -23,7 +23,7 @@ export class ModeInsert extends Mode {
             return { keys: key, command: (args) => {
                 return ActionInsert.characterAtSelections(args)
                     .then(ActionSuggestion.trigger);
-            }, args: { character: key } };
+            }, args: {character: key} };
         }));
 
     constructor() {

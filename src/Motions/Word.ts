@@ -1,7 +1,7 @@
 import {window, Selection, Position} from 'vscode';
 import {Motion} from './Motion';
 
-export enum MotionWordPosition {NEXT_START, NEXT_END, PREV_START};
+enum MotionWordPosition {NEXT_START, NEXT_END, PREV_START};
 
 export class MotionWord extends Motion {
 

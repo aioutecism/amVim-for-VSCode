@@ -75,7 +75,7 @@ export class Mapper {
             _node = node[Mapper.characterIndicator];
             if (_node) {
                 node = _node;
-                additionalArgs['character'] = input;
+                additionalArgs['character'] = input === 'space' ? ' ' : input;
                 return true;
             }
 
