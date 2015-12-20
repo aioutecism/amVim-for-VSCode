@@ -29,6 +29,9 @@ export class ModeNormal extends Mode {
         { keys: '0', command: ActionMoveCursor.lineStart },
         { keys: '$', command: ActionMoveCursor.lineEnd },
 
+        { keys: '-', command: ActionMoveCursor.firstNonBlankInLineUp },
+        { keys: '+', command: ActionMoveCursor.firstNonBlankInLineDown },
+
         { keys: 'g g', command: ActionMoveCursor.documentStart },
         { keys: 'G', command: ActionMoveCursor.documentEnd },
 

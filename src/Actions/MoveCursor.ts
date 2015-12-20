@@ -8,7 +8,7 @@ import {MotionDocument} from '../Motions/Document';
 
 export class ActionMoveCursor {
 
-    private static move(motion: Motion): Thenable<boolean> {
+    private static move(_motions: Motion | Motion[]): Thenable<boolean> {
         const activeTextEditor = window.activeTextEditor;
 
         if (! activeTextEditor) {
@@ -17,8 +17,15 @@ export class ActionMoveCursor {
 
         // TODO: Preserve character position
 
+        const motions = Array.isArray(_motions)
+            ? _motions as Motion[]
+            : [_motions as Motion];
+
         activeTextEditor.selections = activeTextEditor.selections.map(selection => {
-            return motion.apply(selection);
+            motions.forEach((motion) => {
+                selection = motion.apply(selection);
+            });
+            return selection;
         });
 
         return ActionReveal.primaryCursor();
@@ -70,6 +77,26 @@ export class ActionMoveCursor {
         const motion = new MotionLine();
         motion.firstNonBlank();
         return ActionMoveCursor.move(motion);
+    }
+
+    static firstNonBlankInLineUp(): Thenable<boolean> {
+        const motion1 = new MotionCharacter();
+        motion1.up();
+
+        const motion2 = new MotionLine();
+        motion2.firstNonBlank();
+
+        return ActionMoveCursor.move([motion1, motion2]);
+    }
+
+    static firstNonBlankInLineDown(): Thenable<boolean> {
+        const motion1 = new MotionCharacter();
+        motion1.down();
+
+        const motion2 = new MotionLine();
+        motion2.firstNonBlank();
+
+        return ActionMoveCursor.move([motion1, motion2]);
     }
 
     static lineStart(): Thenable<boolean> {
