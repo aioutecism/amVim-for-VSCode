@@ -18,7 +18,17 @@ export abstract class Mode {
     protected mapper: Mapper = new Mapper();
 
     enter(): void {
-        window.setStatusBarMessage(`-- ${this.name} --`);
+        this.updateStatusBar();
+    }
+
+    private updateStatusBar(message?: string): void {
+        let status = `-- ${this.name} --`;
+
+        if (message) {
+            status += ` ${message}`;
+        }
+
+        window.setStatusBarMessage(status);
     }
 
     exit(): void {
@@ -52,9 +62,11 @@ export abstract class Mode {
         const {type, map} = this.mapper.match(inputs);
 
         if (type === MatchResultType.FAILED) {
+            this.updateStatusBar();
             this.clearInputs();
         }
         else if (type === MatchResultType.FOUND) {
+            this.updateStatusBar();
             this.clearInputs();
             this.pendings.push(() => {
                 return map.command(map.args);
@@ -62,7 +74,7 @@ export abstract class Mode {
             this.execute();
         }
         else if (type === MatchResultType.WAITING) {
-            // TODO: Update status bar
+            this.updateStatusBar(`${this.inputs.join(' ')} and...`);
         }
     }
 
