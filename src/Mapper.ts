@@ -10,11 +10,13 @@ interface RecursiveMap {
     [key: string]: RecursiveMap | Map;
 }
 
-export enum MatchResultType {FAILED, WAITING, FOUND}
+export enum MatchResultType {FAILED, WAITING, FOUND};
 
 export class Mapper {
 
     private static saparator: string = ' ';
+    private static characterIndicator: string = '{char}';
+
     private root: RecursiveMap = {};
 
     private static isMap(node: RecursiveMap | Map): boolean {
@@ -59,17 +61,38 @@ export class Mapper {
 
     match(inputs: string[]): {type: MatchResultType, map?: Map} {
         let node: RecursiveMap | Map = this.root;
+        let additionalArgs = {};
 
         const exists = inputs.every(input => {
-            node = node[input];
-            return node ? true : false;
+            let _node = node;
+
+            _node = node[input];
+            if (_node) {
+                node = _node;
+                return true;
+            }
+
+            _node = node[Mapper.characterIndicator];
+            if (_node) {
+                node = _node;
+                additionalArgs['character'] = input;
+                return true;
+            }
+
+            return false;
         });
 
         if (! exists) {
             return {type: MatchResultType.FAILED};
         }
         else if (Mapper.isMap(node)) {
-            return {type: MatchResultType.FOUND, map: node as Map};
+            const map = node as Map;
+
+            Object.getOwnPropertyNames(additionalArgs).forEach(key => {
+                map.args[key] = additionalArgs[key];
+            })
+
+            return {type: MatchResultType.FOUND, map};
         }
         else {
             return {type: MatchResultType.WAITING};
