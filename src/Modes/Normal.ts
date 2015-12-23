@@ -1,6 +1,6 @@
 import {window, Disposable} from 'vscode';
 import {Mode} from './Mode';
-import {Map} from '../Mapper';
+import {CommandMap} from '../CommandMapper';
 import {ActionDecorate} from '../Actions/Decorate';
 import {ActionMoveCursor} from '../Actions/MoveCursor';
 import {ActionInsert} from '../Actions/Insert';
@@ -15,7 +15,7 @@ export class ModeNormal extends Mode {
 
     name = 'NORMAL';
 
-    private maps: Map[] = [
+    private maps: CommandMap[] = [
         { keys: 'h', command: ActionMoveCursor.characterLeft },
         { keys: '{N} h', command: ActionMoveCursor.characterLeft },
         { keys: 'l', command: ActionMoveCursor.characterRight },

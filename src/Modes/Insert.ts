@@ -1,6 +1,6 @@
 import {Mode} from './Mode';
 import * as Keys from '../Keys';
-import {Map} from '../Mapper';
+import {CommandMap} from '../CommandMapper';
 import {ActionInsert} from '../Actions/Insert';
 import {ActionDelete} from '../Actions/Delete';
 import {ActionSuggestion} from '../Actions/Suggestion';
@@ -10,7 +10,7 @@ export class ModeInsert extends Mode {
 
     name = 'INSERT';
 
-    private maps: Map[] = [
+    private maps: CommandMap[] = [
         { keys: 'space', command: ActionInsert.characterAtSelections, args: {character: ' '} },
         { keys: 'enter', command: ActionInsert.lineBreakAtSelections },
         { keys: 'tab', command: ActionInsert.tabAtSelections },

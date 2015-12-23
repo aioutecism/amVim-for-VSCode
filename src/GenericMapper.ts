@@ -1,22 +1,20 @@
-import {Command} from './Modes/Mode';
 import {SpecialKeyCommon, SpecialKeyMatchResult} from './SpecialKeys/Common';
 
-export interface Map {
+export enum MatchResultType {FAILED, WAITING, FOUND};
+
+export interface GenericMap {
     keys: string;
-    command: Command;
     args?: {};
 }
 
 export interface RecursiveMap {
-    [key: string]: RecursiveMap | Map;
+    [key: string]: RecursiveMap | GenericMap;
 }
 
-export enum MatchResultType {FAILED, WAITING, FOUND};
+export abstract class GenericMapper {
 
-export class Mapper {
-
-    protected static saparator: string = ' ';
-    protected specialKeys: SpecialKeyCommon[];
+    private static saparator: string = ' ';
+    private specialKeys: SpecialKeyCommon[];
 
     private root: RecursiveMap = {};
 
@@ -24,55 +22,42 @@ export class Mapper {
         this.specialKeys = specialKeys;
     }
 
-    private static isMap(node: RecursiveMap | Map): boolean {
-        return node && typeof (node as Map).command === 'function';
+    private static isGenericMap(node: RecursiveMap | GenericMap): boolean {
+        return node && typeof (node as GenericMap).keys === 'string';
     }
 
-    map(joinedKeys: string, command: Command, args?: {}): void {
-        let node: RecursiveMap | Map = this.root;
-        const keys = joinedKeys.split(Mapper.saparator);
+    protected _map(joinedKeys: string, args?: {}): GenericMap {
+        const map = {
+            keys: joinedKeys,
+            args: args || {},
+        };
+
+        let node: RecursiveMap | GenericMap = this.root;
+        const keys = joinedKeys.split(GenericMapper.saparator);
 
         keys.forEach((key, index) => {
             this.specialKeys.forEach(specialKey => {
                 specialKey.unmapConflicts(node as RecursiveMap, key);
             })
 
-            if (Mapper.isMap(node[key])) {
+            if (GenericMapper.isGenericMap(node[key])) {
                 delete node[key];
             }
 
             if (index === keys.length - 1) {
-                node[key] = {
-                    keys: joinedKeys,
-                    command,
-                    args: args || {},
-                };
+                node[key] = map;
             }
             else {
                 node[key] = node[key] || {};
                 node = node[key];
             }
         });
+
+        return map;
     }
 
-    unmap(joinedKeys: string): void {
-        let node: RecursiveMap | Map = this.root;
-
-        const keys = joinedKeys.split(Mapper.saparator);
-        const lastKey = keys.pop();
-
-        keys.every(key => {
-            node = node[key];
-            return node ? true : false;
-        });
-
-        if (node) {
-            delete node[lastKey];
-        }
-    }
-
-    match(inputs: string[]): {type: MatchResultType, map?: Map} {
-        let node: RecursiveMap | Map = this.root;
+    protected _match(inputs: string[]): {type: MatchResultType, map?: GenericMap} {
+        let node: RecursiveMap | GenericMap = this.root;
 
         let matched = true;
         let additionalArgs = {};
@@ -120,8 +105,8 @@ export class Mapper {
         if (! matched) {
             return {type: MatchResultType.FAILED};
         }
-        else if (Mapper.isMap(node)) {
-            const map = node as Map;
+        else if (GenericMapper.isGenericMap(node)) {
+            const map = node as GenericMap;
 
             Object.getOwnPropertyNames(additionalArgs).forEach(key => {
                 map.args[key] = additionalArgs[key];

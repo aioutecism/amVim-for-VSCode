@@ -1,12 +1,24 @@
-import {Command} from '../Modes/Mode';
-import {RecursiveMap, Mapper, MatchResultType} from '../Mapper';
+import {Motion} from '../Motions/Motion';
+import {GenericMapper, GenericMap, RecursiveMap, MatchResultType} from '../GenericMapper';
 import {SpecialKeyCommon, SpecialKeyMatchResult} from './Common';
 import {SpecialKeyN} from './N';
 import {SpecialKeyChar} from './Char';
+import {MotionCharacter} from '../Motions/Character';
 
-export class SpecialKeyMotion extends Mapper implements SpecialKeyCommon {
+interface MotionMap extends GenericMap {
+    motion: Motion;
+}
+
+export class SpecialKeyMotion extends GenericMapper implements SpecialKeyCommon {
 
     indicator = '{motion}';
+
+    private maps: MotionMap[] = [
+        { keys: 'h', motion: new MotionCharacter() },
+        { keys: 'l', motion: new MotionCharacter() },
+        { keys: 'k', motion: new MotionCharacter() },
+        { keys: 'j', motion: new MotionCharacter() },
+    ];
 
     constructor() {
         super([
@@ -14,18 +26,14 @@ export class SpecialKeyMotion extends Mapper implements SpecialKeyCommon {
             new SpecialKeyChar(),
         ]);
 
-        // TODO: Bind
+        this.maps.forEach(map => {
+            this.map(map.keys, map.motion, map.args);
+        });
     }
 
-    map(joinedKeys: string, command: Command, args?: {}): void {
-        const keys = joinedKeys.split(Mapper.saparator);
-
-        if (keys.some(key => key === this.indicator)) {
-            throw new Error(`${this.indicator} can't be mapped recursively.`);
-            return;
-        }
-
-        super.map(joinedKeys, command, args);
+    map(joinedKeys: string, motion: Motion, args?: {}): void {
+        const map = super._map(joinedKeys, args);
+        (map as MotionMap).motion = motion;
     }
 
     unmapConflicts(node: RecursiveMap, keyToMap: string): void {
@@ -37,19 +45,22 @@ export class SpecialKeyMotion extends Mapper implements SpecialKeyCommon {
     }
 
     match(inputs: string[]): SpecialKeyMatchResult {
-        const {type, map} = super.match(inputs);
+        const {type, map} = super._match(inputs);
 
         if (type === MatchResultType.FAILED) {
             return null;
+        }
+
+        let additionalArgs: {motion?: Motion} = {};
+        if (map) {
+            additionalArgs.motion = (map as MotionMap).motion;
         }
 
         return {
             specialKey: this,
             type,
             matchedCount: inputs.length,
-            additionalArgs: {
-                motion: map
-            }
+            additionalArgs
         };
     }
 

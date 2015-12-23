@@ -1,4 +1,4 @@
-import {RecursiveMap, MatchResultType} from '../Mapper';
+import {RecursiveMap, MatchResultType} from '../GenericMapper';
 import {SpecialKeyCommon, SpecialKeyMatchResult} from './Common';
 
 export class SpecialKeyChar implements SpecialKeyCommon {

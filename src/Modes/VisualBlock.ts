@@ -1,12 +1,12 @@
 import {Mode} from './Mode';
-import {Map} from '../Mapper';
+import {CommandMap} from '../CommandMapper';
 import {ActionMode} from '../Actions/Mode';
 
 export class ModeVisualBlock extends Mode {
 
     name = 'VISUAL BLOCK';
 
-    private maps: Map[] = [
+    private maps: CommandMap[] = [
         { keys: 'escape', command: ActionMode.toNormal },
     ];
 

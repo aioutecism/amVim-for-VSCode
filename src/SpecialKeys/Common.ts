@@ -1,4 +1,4 @@
-import {RecursiveMap, MatchResultType} from '../Mapper';
+import {RecursiveMap, MatchResultType} from '../GenericMapper';
 
 export interface SpecialKeyMatchResult {
     specialKey: SpecialKeyCommon;
