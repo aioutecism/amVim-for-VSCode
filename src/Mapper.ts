@@ -1,4 +1,5 @@
 import {Command} from './Modes/Mode';
+import {SpecialKey, SpecialKeyN} from './SpecialKey';
 
 export interface Map {
     keys: string;
@@ -6,7 +7,7 @@ export interface Map {
     args?: {};
 }
 
-interface RecursiveMap {
+export interface RecursiveMap {
     [key: string]: RecursiveMap | Map;
 }
 
@@ -17,30 +18,45 @@ export class Mapper {
     private static saparator: string = ' ';
     private static characterIndicator: string = '{char}';
 
+    private specialKeys: {[indicator: string]: SpecialKey} = {};
     private root: RecursiveMap = {};
 
     private static isMap(node: RecursiveMap | Map): boolean {
-        return typeof (node as Map).command === 'function';
+        return node && typeof (node as Map).command === 'function';
+    }
+
+    constructor() {
+        const specialKeyN = new SpecialKeyN();
+        this.specialKeys = {
+            [specialKeyN.indicator]: specialKeyN,
+        };
     }
 
     map(joinedKeys: string, command: Command, args?: {}): void {
         let node: RecursiveMap | Map = this.root;
-
         const keys = joinedKeys.split(Mapper.saparator);
-        const lastKey = keys.pop();
 
-        keys.forEach(key => {
-            if (! node[key] || Mapper.isMap(node[key])) {
-                node[key] = {};
+        keys.forEach((key, index) => {
+            Object.getOwnPropertyNames(this.specialKeys).forEach(indicator => {
+                this.specialKeys[indicator].unmapConflicts(node as RecursiveMap, key);
+            });
+
+            if (Mapper.isMap(node[key])) {
+                delete node[key];
             }
-            node = node[key];
-        });
 
-        node[lastKey] = {
-            keys: joinedKeys,
-            command: command,
-            args: args || {},
-        };
+            if (index === keys.length - 1) {
+                node[key] = {
+                    keys: joinedKeys,
+                    command,
+                    args: args || {},
+                };
+            }
+            else {
+                node[key] = node[key] || {};
+                node = node[key];
+            }
+        });
     }
 
     unmap(joinedKeys: string): void {
