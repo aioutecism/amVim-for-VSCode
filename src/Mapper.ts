@@ -73,20 +73,20 @@ export class Mapper {
 
     match(inputs: string[]): {type: MatchResultType, map?: Map} {
         let node: RecursiveMap | Map = this.root;
-        let additionalArgs = {};
 
-        let matched = false;
+        let matched = true;
+        let additionalArgs = {};
 
         for (var index = 0; index < inputs.length; index++) {
             const input = inputs[index];
 
             if (node[input]) {
                 node = node[input];
-                matched = true;
                 continue;
             }
 
-            var match: SpecialKeyMatchResult;
+            // match must be reassigned or it will use last loops's value
+            var match: SpecialKeyMatchResult = null;
             this.specialKeys.some(specialKey => {
                 if (! node[specialKey.indicator]) {
                     return false;
@@ -98,17 +98,22 @@ export class Mapper {
             });
 
             if (match) {
-                node = node[match.specialKey.indicator];
-                matched = true;
+                if (match.type === MatchResultType.FOUND) {
+                    node = node[match.specialKey.indicator];
 
-                Object.getOwnPropertyNames(match.additionalArgs).forEach(key => {
-                    additionalArgs[key] = match.additionalArgs[key];
-                });
+                    Object.getOwnPropertyNames(match.additionalArgs).forEach(key => {
+                        additionalArgs[key] = match.additionalArgs[key];
+                    });
 
-                index += match.matchedCount - 1;
-                continue;
+                    index += match.matchedCount - 1;
+                    continue;
+                }
+                else if (match.type === MatchResultType.WAITING) {
+                    break;
+                }
             }
 
+            matched = false;
             break;
         }
 
