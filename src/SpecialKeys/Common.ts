@@ -6,5 +6,5 @@ export interface SpecialKeyCommon {
 
     unmapConflicts(node: RecursiveMap, keyToMap: string): void;
     // map(joinedKeys: string, command: Command, args?: {}): void;
-    // match(inputs: string[], root: Map): {} | boolean;
+    match(inputs: string[], node: RecursiveMap): {} | boolean;
 }

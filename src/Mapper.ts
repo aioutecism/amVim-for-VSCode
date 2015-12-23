@@ -19,7 +19,6 @@ export enum MatchResultType {FAILED, WAITING, FOUND};
 export class Mapper {
 
     private static saparator: string = ' ';
-    private static characterIndicator: string = '{char}';
     private static specialKeys: SpecialKeyCommon[] = [
         new SpecialKeyN(),
         new SpecialKeyMotion(),
@@ -79,7 +78,7 @@ export class Mapper {
         let node: RecursiveMap | Map = this.root;
         let additionalArgs = {};
 
-        const exists = inputs.every(input => {
+        const exists = inputs.every((input, index) => {
             let _node = node;
 
             _node = node[input];
@@ -88,14 +87,18 @@ export class Mapper {
                 return true;
             }
 
-            _node = node[Mapper.characterIndicator];
-            if (_node) {
-                node = _node;
-                additionalArgs['character'] = input === 'space' ? ' ' : input;
-                return true;
-            }
-
-            return false;
+            return Mapper.specialKeys.some(specialKey => {
+                const matches = specialKey.match(inputs.slice(index), node as RecursiveMap);
+                if (matches) {
+                    Object.getOwnPropertyNames(matches).forEach(key => {
+                        additionalArgs[key] = matches[key];
+                    });
+                    return true;
+                }
+                else {
+                    return false;
+                }
+            });
         });
 
         if (! exists) {

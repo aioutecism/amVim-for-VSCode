@@ -20,4 +20,8 @@ export class SpecialKeyN implements SpecialKeyCommon {
         }
     }
 
+    match(inputs: string[], node: RecursiveMap): {} | boolean {
+        return false;
+    }
+
 }
