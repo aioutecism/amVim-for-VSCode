@@ -2,20 +2,20 @@ import {Motion} from './Motion';
 
 export class MotionCharacter extends Motion {
 
-    left(): void {
-        this.translate(0, -1);
+    left(n = 1): void {
+        this.translate(0, -n);
     }
 
-    right(): void {
-        this.translate(0, +1);
+    right(n = 1): void {
+        this.translate(0, +n);
     }
 
-    up(): void {
-        this.translate(-1, 0);
+    up(n = 1): void {
+        this.translate(-n, 0);
     }
 
-    down(): void {
-        this.translate(+1, 0);
+    down(n = 1): void {
+        this.translate(+n, 0);
     }
 
 }

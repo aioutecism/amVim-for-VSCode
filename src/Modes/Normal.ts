@@ -17,9 +17,13 @@ export class ModeNormal extends Mode {
 
     private maps: Map[] = [
         { keys: 'h', command: ActionMoveCursor.characterLeft },
+        { keys: '{N} h', command: ActionMoveCursor.characterLeft },
         { keys: 'l', command: ActionMoveCursor.characterRight },
+        { keys: '{N} l', command: ActionMoveCursor.characterRight },
         { keys: 'k', command: ActionMoveCursor.characterUp },
+        { keys: '{N} k', command: ActionMoveCursor.characterUp },
         { keys: 'j', command: ActionMoveCursor.characterDown },
+        { keys: '{N} j', command: ActionMoveCursor.characterDown },
 
         { keys: 'w', command: ActionMoveCursor.wordNextStart },
         { keys: 'e', command: ActionMoveCursor.wordNextEnd },
@@ -33,7 +37,9 @@ export class ModeNormal extends Mode {
         { keys: '$', command: ActionMoveCursor.lineEnd },
 
         { keys: '-', command: ActionMoveCursor.firstNonBlankInLineUp },
+        { keys: '{N} -', command: ActionMoveCursor.firstNonBlankInLineUp },
         { keys: '+', command: ActionMoveCursor.firstNonBlankInLineDown },
+        { keys: '{N} +', command: ActionMoveCursor.firstNonBlankInLineDown },
 
         { keys: 'g g', command: ActionMoveCursor.documentStart },
         { keys: 'G', command: ActionMoveCursor.documentEnd },
