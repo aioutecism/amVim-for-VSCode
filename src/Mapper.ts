@@ -1,5 +1,8 @@
 import {Command} from './Modes/Mode';
-import * as SpecialKey from './SpecialKey';
+import {SpecialKeyCommon} from './SpecialKeys/Common';
+import {SpecialKeyN} from './SpecialKeys/N';
+import {SpecialKeyChar} from './SpecialKeys/Char';
+import {SpecialKeyMotion} from './SpecialKeys/Motion';
 
 export interface Map {
     keys: string;
@@ -17,12 +20,12 @@ export class Mapper {
 
     private static saparator: string = ' ';
     private static characterIndicator: string = '{char}';
-
-    private specialKeys: SpecialKey.Common[] = [
-        new SpecialKey.N(),
-        new SpecialKey.Motion(),
-        new SpecialKey.Char(),
+    private static specialKeys: SpecialKeyCommon[] = [
+        new SpecialKeyN(),
+        new SpecialKeyMotion(),
+        new SpecialKeyChar(),
     ];
+
     private root: RecursiveMap = {};
 
     private static isMap(node: RecursiveMap | Map): boolean {
@@ -34,7 +37,7 @@ export class Mapper {
         const keys = joinedKeys.split(Mapper.saparator);
 
         keys.forEach((key, index) => {
-            this.specialKeys.forEach(specialKey => {
+            Mapper.specialKeys.forEach(specialKey => {
                 specialKey.unmapConflicts(node as RecursiveMap, key);
             })
 
