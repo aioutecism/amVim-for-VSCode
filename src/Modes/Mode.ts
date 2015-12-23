@@ -1,5 +1,8 @@
 import {window} from 'vscode';
 import {Mapper, Map, MatchResultType} from '../Mapper';
+import {SpecialKeyN} from '../SpecialKeys/N';
+import {SpecialKeyChar} from '../SpecialKeys/Char';
+import {SpecialKeyMotion} from '../SpecialKeys/Motion';
 
 export enum ModeID {NORMAL, VISUAL, VISUAL_BLOCK, VISUAL_LINE, INSERT};
 
@@ -15,7 +18,11 @@ export abstract class Mode {
     private executing: boolean = false;
     private inputs: string[] = [];
 
-    protected mapper: Mapper = new Mapper();
+    protected mapper: Mapper = new Mapper([
+        new SpecialKeyN(),
+        new SpecialKeyMotion(),
+        new SpecialKeyChar(),
+    ]);
 
     enter(): void {
         this.updateStatusBar();

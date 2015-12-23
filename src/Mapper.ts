@@ -1,8 +1,5 @@
 import {Command} from './Modes/Mode';
 import {SpecialKeyCommon} from './SpecialKeys/Common';
-import {SpecialKeyN} from './SpecialKeys/N';
-import {SpecialKeyChar} from './SpecialKeys/Char';
-import {SpecialKeyMotion} from './SpecialKeys/Motion';
 
 export interface Map {
     keys: string;
@@ -18,14 +15,14 @@ export enum MatchResultType {FAILED, WAITING, FOUND};
 
 export class Mapper {
 
-    private static saparator: string = ' ';
-    private static specialKeys: SpecialKeyCommon[] = [
-        new SpecialKeyN(),
-        new SpecialKeyMotion(),
-        new SpecialKeyChar(),
-    ];
+    protected static saparator: string = ' ';
+    protected specialKeys: SpecialKeyCommon[];
 
     private root: RecursiveMap = {};
+
+    constructor(specialKeys: SpecialKeyCommon[] = []) {
+        this.specialKeys = specialKeys;
+    }
 
     private static isMap(node: RecursiveMap | Map): boolean {
         return node && typeof (node as Map).command === 'function';
@@ -36,7 +33,7 @@ export class Mapper {
         const keys = joinedKeys.split(Mapper.saparator);
 
         keys.forEach((key, index) => {
-            Mapper.specialKeys.forEach(specialKey => {
+            this.specialKeys.forEach(specialKey => {
                 specialKey.unmapConflicts(node as RecursiveMap, key);
             })
 
@@ -90,7 +87,7 @@ export class Mapper {
             }
 
             var matchedCount: number;
-            const specialKeyMatched = Mapper.specialKeys.some(specialKey => {
+            const specialKeyMatched = this.specialKeys.some(specialKey => {
                 if (! node[specialKey.indicator]) {
                     return false;
                 }
