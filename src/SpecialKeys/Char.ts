@@ -14,11 +14,7 @@ export class SpecialKeyChar implements SpecialKeyCommon {
         }
     }
 
-    match(inputs: string[], node: RecursiveMap): {} | boolean {
-        if (! node[this.indicator]) {
-            return false;
-        }
-
+    match(inputs: string[]): {} | boolean {
         let character = inputs[0];
 
         if (character === 'space') {

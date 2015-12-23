@@ -88,16 +88,20 @@ export class Mapper {
             }
 
             return Mapper.specialKeys.some(specialKey => {
-                const matches = specialKey.match(inputs.slice(index), node as RecursiveMap);
+                if (! node[specialKey.indicator]) {
+                    return false;
+                }
+
+                const matches = specialKey.match(inputs.slice(index));
                 if (matches) {
+                    node = node[specialKey.indicator];
                     Object.getOwnPropertyNames(matches).forEach(key => {
                         additionalArgs[key] = matches[key];
                     });
                     return true;
                 }
-                else {
-                    return false;
-                }
+
+                return false;
             });
         });
 

@@ -14,7 +14,7 @@ export class SpecialKeyMotion implements SpecialKeyCommon {
         }
     }
 
-    match(inputs: string[], node: RecursiveMap): {} | boolean {
+    match(inputs: string[]): {} | boolean {
         return false;
     }
 
