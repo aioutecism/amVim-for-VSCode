@@ -14,14 +14,14 @@ export class SpecialKeyChar implements SpecialKeyCommon {
         }
     }
 
-    match(inputs: string[]): {} | boolean {
+    match(inputs: string[]): [number, {}] {
         let character = inputs[0];
 
         if (character === 'space') {
             character = ' ';
         }
 
-        return {character};
+        return [1, {character}];
     }
 
 }

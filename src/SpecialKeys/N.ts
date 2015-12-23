@@ -20,8 +20,22 @@ export class SpecialKeyN implements SpecialKeyCommon {
         }
     }
 
-    match(inputs: string[]): {} | boolean {
-        return false;
+    match(inputs: string[]): [number, {}] {
+        if (! /1-9/.test(inputs[0])) {
+            return null;
+        }
+
+        let n = [inputs[0]];
+
+        inputs.slice(1).every(input => {
+            if (/0-9/.test(input)) {
+                n.push(input);
+                return true;
+            }
+            return false;
+        });
+
+        return [n.length, {n: parseInt(n.join(''), 10)}];
     }
 
 }

@@ -14,8 +14,8 @@ export class SpecialKeyMotion implements SpecialKeyCommon {
         }
     }
 
-    match(inputs: string[]): {} | boolean {
-        return false;
+    match(inputs: string[]): [number, {}] {
+        return null;
     }
 
 }

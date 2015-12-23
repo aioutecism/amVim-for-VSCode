@@ -92,11 +92,11 @@ export class Mapper {
                     return false;
                 }
 
-                const matches = specialKey.match(inputs.slice(index));
-                if (matches) {
+                const match = specialKey.match(inputs.slice(index));
+                if (match) {
                     node = node[specialKey.indicator];
-                    Object.getOwnPropertyNames(matches).forEach(key => {
-                        additionalArgs[key] = matches[key];
+                    Object.getOwnPropertyNames(match[1]).forEach(key => {
+                        additionalArgs[key] = match[1][key];
                     });
                     return true;
                 }
