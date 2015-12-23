@@ -1,7 +1,7 @@
 import {Command} from './Modes/Mode';
 import {RecursiveMap} from './Mapper';
 
-export interface SpecialKey {
+export interface Common {
     indicator: string;
 
     unmapConflicts(node: RecursiveMap, keyToMap: string): void;
@@ -11,7 +11,7 @@ export interface SpecialKey {
     // match(inputs: string[], root: Map): {} | boolean;
 }
 
-export class SpecialKeyN implements SpecialKey {
+export class N implements Common {
     indicator = '{N}';
 
     private conflictRegExp = /^[1-9]|\{motion\}|\{char\}$/;
@@ -29,7 +29,7 @@ export class SpecialKeyN implements SpecialKey {
     }
 }
 
-export class SpecialKeyChar implements SpecialKey {
+export class Char implements Common {
     indicator = '{char}';
 
     unmapConflicts(node: RecursiveMap, keyToMap: string): void {
@@ -41,7 +41,7 @@ export class SpecialKeyChar implements SpecialKey {
     }
 }
 
-export class SpecialKeyMotion implements SpecialKey {
+export class Motion implements Common {
     indicator = '{motion}';
 
     unmapConflicts(node: RecursiveMap, keyToMap: string): void {
