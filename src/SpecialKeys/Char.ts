@@ -1,4 +1,4 @@
-import {RecursiveMap} from '../Mapper';
+import {RecursiveMap, MatchResultType} from '../Mapper';
 import {SpecialKeyCommon} from './Common';
 
 export class SpecialKeyChar implements SpecialKeyCommon {
@@ -13,14 +13,18 @@ export class SpecialKeyChar implements SpecialKeyCommon {
         }
     }
 
-    match(inputs: string[]): [number, {}] {
+    match(inputs: string[]): {type: MatchResultType, matchedCount?: number, additionalArgs? : {}} {
         let character = inputs[0];
 
         if (character === 'space') {
             character = ' ';
         }
 
-        return [1, {character}];
+        return {
+            type: MatchResultType.FOUND,
+            matchedCount: 1,
+            additionalArgs: {character}
+        };
     }
 
 }

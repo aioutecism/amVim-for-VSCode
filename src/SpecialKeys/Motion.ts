@@ -1,5 +1,5 @@
 import {Command} from '../Modes/Mode';
-import {RecursiveMap} from '../Mapper';
+import {RecursiveMap, Mapper, MatchResultType} from '../Mapper';
 import {SpecialKeyCommon} from './Common';
 
 export class SpecialKeyMotion implements SpecialKeyCommon {
@@ -14,7 +14,7 @@ export class SpecialKeyMotion implements SpecialKeyCommon {
         }
     }
 
-    match(inputs: string[]): [number, {}] {
+    match(inputs: string[]): {type: MatchResultType, matchedCount?: number, additionalArgs? : {}} {
         // TODO: Implement this
         return null;
     }
