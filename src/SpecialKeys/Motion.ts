@@ -6,7 +6,7 @@ import {SpecialKeyChar} from './Char';
 import {MotionCharacter} from '../Motions/Character';
 
 interface MotionMap extends GenericMap {
-    motion: Motion;
+    motionGenerator(args?: {}): Motion;
 }
 
 export class SpecialKeyMotion extends GenericMapper implements SpecialKeyCommon {
@@ -14,10 +14,14 @@ export class SpecialKeyMotion extends GenericMapper implements SpecialKeyCommon 
     indicator = '{motion}';
 
     private maps: MotionMap[] = [
-        { keys: 'h', motion: new MotionCharacter() },
-        { keys: 'l', motion: new MotionCharacter() },
-        { keys: 'k', motion: new MotionCharacter() },
-        { keys: 'j', motion: new MotionCharacter() },
+        { keys: 'h', motionGenerator: () => (new MotionCharacter()).left() },
+        { keys: '{N} h', motionGenerator: (args: {n: number}) => (new MotionCharacter()).left(args.n) },
+        { keys: 'l', motionGenerator: () => (new MotionCharacter()).right() },
+        { keys: '{N} l', motionGenerator: (args: {n: number}) => (new MotionCharacter()).right(args.n) },
+        { keys: 'k', motionGenerator: () => (new MotionCharacter()).up() },
+        { keys: '{N} k', motionGenerator: (args: {n: number}) => (new MotionCharacter()).up(args.n) },
+        { keys: 'j', motionGenerator: () => (new MotionCharacter()).down() },
+        { keys: '{N} j', motionGenerator: (args: {n: number}) => (new MotionCharacter()).down(args.n) },
     ];
 
     constructor() {
@@ -27,13 +31,13 @@ export class SpecialKeyMotion extends GenericMapper implements SpecialKeyCommon 
         ]);
 
         this.maps.forEach(map => {
-            this.map(map.keys, map.motion, map.args);
+            this.map(map.keys, map.motionGenerator, map.args);
         });
     }
 
-    map(joinedKeys: string, motion: Motion, args?: {}): void {
+    map(joinedKeys: string, motionGenerator: (args?: {}) => Motion, args?: {}): void {
         const map = super._map(joinedKeys, args);
-        (map as MotionMap).motion = motion;
+        (map as MotionMap).motionGenerator = motionGenerator;
     }
 
     unmapConflicts(node: RecursiveMap, keyToMap: string): void {
@@ -53,7 +57,7 @@ export class SpecialKeyMotion extends GenericMapper implements SpecialKeyCommon 
 
         let additionalArgs: {motion?: Motion} = {};
         if (map) {
-            additionalArgs.motion = (map as MotionMap).motion;
+            additionalArgs.motion = (map as MotionMap).motionGenerator(map.args);
         }
 
         return {

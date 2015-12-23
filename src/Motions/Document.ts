@@ -2,12 +2,14 @@ import {Motion} from './Motion';
 
 export class MotionDocument extends Motion {
 
-    start(): void {
+    start(): Motion {
         this.translate(-Infinity, -Infinity);
+        return this;
     }
 
-    end(): void {
+    end(): Motion {
         this.translate(+Infinity, +Infinity);
+        return this;
     }
 
 }

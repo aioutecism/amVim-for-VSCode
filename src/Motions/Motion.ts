@@ -19,7 +19,7 @@ export class Motion {
 
         const document = activeTextEditor.document;
 
-        // Count tab as editor.tabSize
+        // TODO: Count tab as editor.tabSize
 
         let toLine = from.active.line + this.lineDelta;
         let toCharacter = from.active.character + this.characterDelta;
