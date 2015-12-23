@@ -78,34 +78,50 @@ export class Mapper {
         let node: RecursiveMap | Map = this.root;
         let additionalArgs = {};
 
-        const exists = inputs.every((input, index) => {
-            let _node = node;
+        let matched = false;
 
-            _node = node[input];
-            if (_node) {
-                node = _node;
-                return true;
+        for (var index = 0; index < inputs.length; index++) {
+            const input = inputs[index];
+
+            if (node[input]) {
+                node = node[input];
+                matched = true;
+                continue;
             }
 
-            return Mapper.specialKeys.some(specialKey => {
+            var matchedCount: number;
+            const specialKeyMatched = Mapper.specialKeys.some(specialKey => {
                 if (! node[specialKey.indicator]) {
                     return false;
                 }
 
                 const match = specialKey.match(inputs.slice(index));
                 if (match) {
+                    matchedCount = match[0];
+
                     node = node[specialKey.indicator];
                     Object.getOwnPropertyNames(match[1]).forEach(key => {
                         additionalArgs[key] = match[1][key];
                     });
+
                     return true;
                 }
 
                 return false;
             });
-        });
 
-        if (! exists) {
+            if (specialKeyMatched) {
+                index += matchedCount - 1;
+                matched = true;
+                continue;
+            }
+
+            if (! matched) {
+                break;
+            }
+        }
+
+        if (! matched) {
             return {type: MatchResultType.FAILED};
         }
         else if (Mapper.isMap(node)) {
