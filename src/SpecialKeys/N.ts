@@ -1,4 +1,3 @@
-import {Command} from '../Modes/Mode';
 import {RecursiveMap} from '../Mapper';
 import {SpecialKeyCommon} from './Common';
 
