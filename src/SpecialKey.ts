@@ -28,3 +28,27 @@ export class SpecialKeyN implements SpecialKey {
         }
     }
 }
+
+export class SpecialKeyChar implements SpecialKey {
+    indicator = '{char}';
+
+    unmapConflicts(node: RecursiveMap, keyToMap: string): void {
+        delete node[this.indicator];
+
+        if (keyToMap === this.indicator) {
+            node = {};
+        }
+    }
+}
+
+export class SpecialKeyMotion implements SpecialKey {
+    indicator = '{motion}';
+
+    unmapConflicts(node: RecursiveMap, keyToMap: string): void {
+        delete node[this.indicator];
+
+        if (keyToMap === this.indicator) {
+            node = {};
+        }
+    }
+}
