@@ -1,5 +1,5 @@
 import {Command} from './Modes/Mode';
-import {SpecialKeyCommon} from './SpecialKeys/Common';
+import {SpecialKeyCommon, SpecialKeyMatchResult} from './SpecialKeys/Common';
 
 export interface Map {
     keys: string;
@@ -86,36 +86,30 @@ export class Mapper {
                 continue;
             }
 
-            var matchedCount: number;
-            const specialKeyMatched = this.specialKeys.some(specialKey => {
+            var match: SpecialKeyMatchResult;
+            this.specialKeys.some(specialKey => {
                 if (! node[specialKey.indicator]) {
                     return false;
                 }
 
-                const match = specialKey.match(inputs.slice(index));
-                if (match) {
-                    matchedCount = match.matchedCount;
+                match = specialKey.match(inputs.slice(index));
 
-                    node = node[specialKey.indicator];
-                    Object.getOwnPropertyNames(match.additionalArgs).forEach(key => {
-                        additionalArgs[key] = match.additionalArgs[key];
-                    });
-
-                    return true;
-                }
-
-                return false;
+                return match ? true : false;
             });
 
-            if (specialKeyMatched) {
-                index += matchedCount - 1;
+            if (match) {
+                node = node[match.specialKey.indicator];
                 matched = true;
+
+                Object.getOwnPropertyNames(match.additionalArgs).forEach(key => {
+                    additionalArgs[key] = match.additionalArgs[key];
+                });
+
+                index += match.matchedCount - 1;
                 continue;
             }
 
-            if (! matched) {
-                break;
-            }
+            break;
         }
 
         if (! matched) {

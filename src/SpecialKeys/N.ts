@@ -1,5 +1,5 @@
 import {RecursiveMap, MatchResultType} from '../Mapper';
-import {SpecialKeyCommon} from './Common';
+import {SpecialKeyCommon, SpecialKeyMatchResult} from './Common';
 
 export class SpecialKeyN implements SpecialKeyCommon {
 
@@ -19,7 +19,7 @@ export class SpecialKeyN implements SpecialKeyCommon {
         }
     }
 
-    match(inputs: string[]): {type: MatchResultType, matchedCount?: number, additionalArgs? : {}} {
+    match(inputs: string[]): SpecialKeyMatchResult {
         if (! /[1-9]/.test(inputs[0])) {
             return null;
         }
@@ -35,6 +35,7 @@ export class SpecialKeyN implements SpecialKeyCommon {
         });
 
         return {
+            specialKey: this,
             type: MatchResultType.FOUND,
             matchedCount: n.length,
             additionalArgs: {n: parseInt(n.join(''), 10)}
