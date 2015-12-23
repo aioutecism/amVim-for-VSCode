@@ -13,6 +13,8 @@ export class SpecialKeyMotion extends GenericMapper implements SpecialKeyCommon 
 
     indicator = '{motion}';
 
+    private conflictRegExp = /^[1-9]|\{N\}|\{char\}$/;
+
     private maps: MotionMap[] = [
         { keys: 'h', motionGenerator: () => (new MotionCharacter()).left() },
         { keys: '{N} h', motionGenerator: (args: {n: number}) => (new MotionCharacter()).left(args.n) },
@@ -41,11 +43,17 @@ export class SpecialKeyMotion extends GenericMapper implements SpecialKeyCommon 
     }
 
     unmapConflicts(node: RecursiveMap, keyToMap: string): void {
-        delete node[this.indicator];
-
         if (keyToMap === this.indicator) {
-            node = {};
+            Object.getOwnPropertyNames(node).forEach(key => {
+                this.conflictRegExp.test(key) && delete node[key];
+            });
         }
+
+        if (this.conflictRegExp.test(keyToMap)) {
+            delete node[this.indicator];
+        }
+
+        // This class has lower priority than other keys.
     }
 
     match(inputs: string[]): SpecialKeyMatchResult {
