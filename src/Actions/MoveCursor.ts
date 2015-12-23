@@ -32,27 +32,27 @@ export class ActionMoveCursor {
         return ActionReveal.primaryCursor();
     }
 
-    static characterLeft(): Thenable<boolean> {
+    static characterLeft(args?: {n: number}): Thenable<boolean> {
         const motion = new MotionCharacter();
-        motion.left();
+        motion.left(args && args.n);
         return ActionMoveCursor.move(motion);
     }
 
-    static characterRight(): Thenable<boolean> {
+    static characterRight(args?: {n: number}): Thenable<boolean> {
         const motion = new MotionCharacter();
-        motion.right();
+        motion.right(args && args.n);
         return ActionMoveCursor.move(motion);
     }
 
-    static characterUp(): Thenable<boolean> {
+    static characterUp(args?: {n: number}): Thenable<boolean> {
         const motion = new MotionCharacter();
-        motion.up();
+        motion.up(args && args.n);
         return ActionMoveCursor.move(motion);
     }
 
-    static characterDown(): Thenable<boolean> {
+    static characterDown(args?: {n: number}): Thenable<boolean> {
         const motion = new MotionCharacter();
-        motion.down();
+        motion.down(args && args.n);
         return ActionMoveCursor.move(motion);
     }
 
@@ -92,9 +92,9 @@ export class ActionMoveCursor {
         return ActionMoveCursor.move(motion);
     }
 
-    static firstNonBlankInLineUp(): Thenable<boolean> {
+    static firstNonBlankInLineUp(args?: {n: number}): Thenable<boolean> {
         const motion1 = new MotionCharacter();
-        motion1.up();
+        motion1.up(args && args.n);
 
         const motion2 = new MotionLine();
         motion2.firstNonBlank();
@@ -102,9 +102,9 @@ export class ActionMoveCursor {
         return ActionMoveCursor.move([motion1, motion2]);
     }
 
-    static firstNonBlankInLineDown(): Thenable<boolean> {
+    static firstNonBlankInLineDown(args?: {n: number}): Thenable<boolean> {
         const motion1 = new MotionCharacter();
-        motion1.down();
+        motion1.down(args && args.n);
 
         const motion2 = new MotionLine();
         motion2.firstNonBlank();

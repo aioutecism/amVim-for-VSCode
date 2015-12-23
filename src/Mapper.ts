@@ -1,4 +1,8 @@
 import {Command} from './Modes/Mode';
+import {SpecialKeyCommon} from './SpecialKeys/Common';
+import {SpecialKeyN} from './SpecialKeys/N';
+import {SpecialKeyChar} from './SpecialKeys/Char';
+import {SpecialKeyMotion} from './SpecialKeys/Motion';
 
 export interface Map {
     keys: string;
@@ -6,7 +10,7 @@ export interface Map {
     args?: {};
 }
 
-interface RecursiveMap {
+export interface RecursiveMap {
     [key: string]: RecursiveMap | Map;
 }
 
@@ -15,32 +19,43 @@ export enum MatchResultType {FAILED, WAITING, FOUND};
 export class Mapper {
 
     private static saparator: string = ' ';
-    private static characterIndicator: string = '{char}';
+    private static specialKeys: SpecialKeyCommon[] = [
+        new SpecialKeyN(),
+        new SpecialKeyMotion(),
+        new SpecialKeyChar(),
+    ];
 
     private root: RecursiveMap = {};
 
     private static isMap(node: RecursiveMap | Map): boolean {
-        return typeof (node as Map).command === 'function';
+        return node && typeof (node as Map).command === 'function';
     }
 
     map(joinedKeys: string, command: Command, args?: {}): void {
         let node: RecursiveMap | Map = this.root;
-
         const keys = joinedKeys.split(Mapper.saparator);
-        const lastKey = keys.pop();
 
-        keys.forEach(key => {
-            if (! node[key] || Mapper.isMap(node[key])) {
-                node[key] = {};
+        keys.forEach((key, index) => {
+            Mapper.specialKeys.forEach(specialKey => {
+                specialKey.unmapConflicts(node as RecursiveMap, key);
+            })
+
+            if (Mapper.isMap(node[key])) {
+                delete node[key];
             }
-            node = node[key];
-        });
 
-        node[lastKey] = {
-            keys: joinedKeys,
-            command: command,
-            args: args || {},
-        };
+            if (index === keys.length - 1) {
+                node[key] = {
+                    keys: joinedKeys,
+                    command,
+                    args: args || {},
+                };
+            }
+            else {
+                node[key] = node[key] || {};
+                node = node[key];
+            }
+        });
     }
 
     unmap(joinedKeys: string): void {
@@ -63,26 +78,50 @@ export class Mapper {
         let node: RecursiveMap | Map = this.root;
         let additionalArgs = {};
 
-        const exists = inputs.every(input => {
-            let _node = node;
+        let matched = false;
 
-            _node = node[input];
-            if (_node) {
-                node = _node;
-                return true;
+        for (var index = 0; index < inputs.length; index++) {
+            const input = inputs[index];
+
+            if (node[input]) {
+                node = node[input];
+                matched = true;
+                continue;
             }
 
-            _node = node[Mapper.characterIndicator];
-            if (_node) {
-                node = _node;
-                additionalArgs['character'] = input === 'space' ? ' ' : input;
-                return true;
+            var matchedCount: number;
+            const specialKeyMatched = Mapper.specialKeys.some(specialKey => {
+                if (! node[specialKey.indicator]) {
+                    return false;
+                }
+
+                const match = specialKey.match(inputs.slice(index));
+                if (match) {
+                    matchedCount = match[0];
+
+                    node = node[specialKey.indicator];
+                    Object.getOwnPropertyNames(match[1]).forEach(key => {
+                        additionalArgs[key] = match[1][key];
+                    });
+
+                    return true;
+                }
+
+                return false;
+            });
+
+            if (specialKeyMatched) {
+                index += matchedCount - 1;
+                matched = true;
+                continue;
             }
 
-            return false;
-        });
+            if (! matched) {
+                break;
+            }
+        }
 
-        if (! exists) {
+        if (! matched) {
             return {type: MatchResultType.FAILED};
         }
         else if (Mapper.isMap(node)) {
