@@ -29,7 +29,7 @@ export abstract class GenericMapper {
     protected map(joinedKeys: string, args?: {}): void | GenericMap {
         const map = {
             keys: joinedKeys,
-            args: args || {},
+            args: args || undefined,
         };
 
         let node: RecursiveMap | GenericMap = this.root;
@@ -109,6 +109,7 @@ export abstract class GenericMapper {
             const map = node as GenericMap;
 
             Object.getOwnPropertyNames(additionalArgs).forEach(key => {
+                map.args = map.args || {};
                 map.args[key] = additionalArgs[key];
             })
 
