@@ -33,6 +33,7 @@ export class ModeNormal extends Mode {
         { keys: 'x', command: () => ActionDelete.selectionsOrRight().then(ActionSuggestion.hide) },
         { keys: 'delete', command: () => ActionDelete.selectionsOrRight().then(ActionSuggestion.hide) },
         { keys: 'd d', command: ActionDelete.line },
+        { keys: 'd {motion}', command: ActionDelete.byMotions },
         { keys: 'J', command: ActionJoinLines.onSelections },
 
         { keys: 'u', command: ActionHistory.undo },
