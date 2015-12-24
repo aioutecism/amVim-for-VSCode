@@ -2,23 +2,23 @@ import {Motion} from './Motion';
 
 export class MotionCharacter extends Motion {
 
-    left(n = 1): Motion {
-        this.translate(0, -n);
+    left(args: {n: number} = {n: 1}): Motion {
+        this.translate(0, -args.n);
         return this;
     }
 
-    right(n = 1): Motion {
-        this.translate(0, +n);
+    right(args: {n: number} = {n: 1}): Motion {
+        this.translate(0, +args.n);
         return this;
     }
 
-    up(n = 1): Motion {
-        this.translate(-n, 0);
+    up(args: {n: number} = {n: 1}): Motion {
+        this.translate(-args.n, 0);
         return this;
     }
 
-    down(n = 1): Motion {
-        this.translate(+n, 0);
+    down(args: {n: number} = {n: 1}): Motion {
+        this.translate(+args.n, 0);
         return this;
     }
 

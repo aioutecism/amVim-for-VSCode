@@ -34,25 +34,25 @@ export class ActionMoveCursor {
 
     static characterLeft(args?: {n: number}): Thenable<boolean> {
         const motion = new MotionCharacter();
-        motion.left(args && args.n);
+        motion.left(args);
         return ActionMoveCursor.move(motion);
     }
 
     static characterRight(args?: {n: number}): Thenable<boolean> {
         const motion = new MotionCharacter();
-        motion.right(args && args.n);
+        motion.right(args);
         return ActionMoveCursor.move(motion);
     }
 
     static characterUp(args?: {n: number}): Thenable<boolean> {
         const motion = new MotionCharacter();
-        motion.up(args && args.n);
+        motion.up(args);
         return ActionMoveCursor.move(motion);
     }
 
     static characterDown(args?: {n: number}): Thenable<boolean> {
         const motion = new MotionCharacter();
-        motion.down(args && args.n);
+        motion.down(args);
         return ActionMoveCursor.move(motion);
     }
 
@@ -94,7 +94,7 @@ export class ActionMoveCursor {
 
     static firstNonBlankInLineUp(args?: {n: number}): Thenable<boolean> {
         const motion1 = new MotionCharacter();
-        motion1.up(args && args.n);
+        motion1.up(args);
 
         const motion2 = new MotionLine();
         motion2.firstNonBlank();
@@ -104,7 +104,7 @@ export class ActionMoveCursor {
 
     static firstNonBlankInLineDown(args?: {n: number}): Thenable<boolean> {
         const motion1 = new MotionCharacter();
-        motion1.down(args && args.n);
+        motion1.down(args);
 
         const motion2 = new MotionLine();
         motion2.firstNonBlank();

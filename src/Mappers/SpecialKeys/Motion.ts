@@ -16,14 +16,14 @@ export class SpecialKeyMotion extends GenericMapper implements SpecialKeyCommon 
     private conflictRegExp = /^[1-9]|\{N\}|\{char\}$/;
 
     private maps: MotionMap[] = [
-        { keys: 'h', motionGenerator: () => (new MotionCharacter()).left() },
-        { keys: '{N} h', motionGenerator: (args: {n: number}) => (new MotionCharacter()).left(args.n) },
-        { keys: 'l', motionGenerator: () => (new MotionCharacter()).right() },
-        { keys: '{N} l', motionGenerator: (args: {n: number}) => (new MotionCharacter()).right(args.n) },
-        { keys: 'k', motionGenerator: () => (new MotionCharacter()).up() },
-        { keys: '{N} k', motionGenerator: (args: {n: number}) => (new MotionCharacter()).up(args.n) },
-        { keys: 'j', motionGenerator: () => (new MotionCharacter()).down() },
-        { keys: '{N} j', motionGenerator: (args: {n: number}) => (new MotionCharacter()).down(args.n) },
+        { keys: 'h', motionGenerator: (new MotionCharacter()).left },
+        { keys: '{N} h', motionGenerator: (new MotionCharacter()).left },
+        { keys: 'l', motionGenerator: (new MotionCharacter()).right },
+        { keys: '{N} l', motionGenerator: (new MotionCharacter()).right },
+        { keys: 'k', motionGenerator: (new MotionCharacter()).up },
+        { keys: '{N} k', motionGenerator: (new MotionCharacter()).up },
+        { keys: 'j', motionGenerator: (new MotionCharacter()).down },
+        { keys: '{N} j', motionGenerator: (new MotionCharacter()).down },
     ];
 
     constructor() {
