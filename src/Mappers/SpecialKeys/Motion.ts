@@ -38,7 +38,7 @@ export class SpecialKeyMotion extends GenericMapper implements SpecialKeyCommon 
     }
 
     map(joinedKeys: string, motionGenerator: (args?: {}) => Motion, args?: {}): void {
-        const map = super._map(joinedKeys, args);
+        const map = super.map(joinedKeys, args);
         (map as MotionMap).motionGenerator = motionGenerator;
     }
 
@@ -57,7 +57,7 @@ export class SpecialKeyMotion extends GenericMapper implements SpecialKeyCommon 
     }
 
     match(inputs: string[]): SpecialKeyMatchResult {
-        const {type, map} = super._match(inputs);
+        const {type, map} = super.match(inputs);
 
         if (type === MatchResultType.FAILED) {
             return null;

@@ -19,12 +19,12 @@ export class CommandMapper extends GenericMapper {
     }
 
     map(joinedKeys: string, command: Command, args?: {}): void {
-        const map = super._map(joinedKeys, args);
+        const map = super.map(joinedKeys, args);
         (map as CommandMap).command = command;
     }
 
     match(inputs: string[]): {type: MatchResultType, map: CommandMap} {
-        const {type, map} = super._match(inputs);
+        const {type, map} = super.match(inputs);
 
         return {
             type: type,

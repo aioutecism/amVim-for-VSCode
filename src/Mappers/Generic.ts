@@ -26,7 +26,7 @@ export abstract class GenericMapper {
         return node && typeof (node as GenericMap).keys === 'string';
     }
 
-    protected _map(joinedKeys: string, args?: {}): GenericMap {
+    protected map(joinedKeys: string, args?: {}): void | GenericMap {
         const map = {
             keys: joinedKeys,
             args: args || {},
@@ -56,7 +56,7 @@ export abstract class GenericMapper {
         return map;
     }
 
-    protected _match(inputs: string[]): {type: MatchResultType, map?: GenericMap} {
+    protected match(inputs: string[]): {type: MatchResultType, map?: GenericMap} {
         let node: RecursiveMap | GenericMap = this.root;
 
         let matched = true;
