@@ -27,6 +27,8 @@ export class ModeNormal extends Mode {
         { keys: 'o', command: () => ActionInsert.newLineAfter().then(ActionMode.toInsert) },
         { keys: 'O', command: () => ActionInsert.newLineBefore().then(ActionMode.toInsert) },
 
+        { keys: 's', command: () => ActionDelete.selectionsOrRight().then(ActionMode.toInsert) },
+
         { keys: 'X', command: () => ActionDelete.selectionsOrLeft().then(ActionSuggestion.hide) },
         { keys: 'x', command: () => ActionDelete.selectionsOrRight().then(ActionSuggestion.hide) },
         { keys: 'delete', command: () => ActionDelete.selectionsOrRight().then(ActionSuggestion.hide) },
