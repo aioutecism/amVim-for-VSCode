@@ -1,5 +1,5 @@
 import {Mode} from './Mode';
-import {CommandMap} from '../CommandMapper';
+import {CommandMap} from '../Mappers/Command';
 import {ActionMode} from '../Actions/Mode';
 
 export class ModeVisual extends Mode {

@@ -1,6 +1,6 @@
 import {window, Disposable} from 'vscode';
 import {Mode} from './Mode';
-import {CommandMap} from '../CommandMapper';
+import {CommandMap} from '../Mappers/Command';
 import {ActionDecorate} from '../Actions/Decorate';
 import {ActionMoveCursor} from '../Actions/MoveCursor';
 import {ActionInsert} from '../Actions/Insert';

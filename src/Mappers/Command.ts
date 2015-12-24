@@ -1,5 +1,5 @@
-import {Command} from './Modes/Mode';
-import {GenericMapper, GenericMap, MatchResultType} from './GenericMapper';
+import {Command} from '../Modes/Mode';
+import {GenericMapper, GenericMap, MatchResultType} from './Generic';
 import {SpecialKeyN} from './SpecialKeys/N';
 import {SpecialKeyChar} from './SpecialKeys/Char';
 import {SpecialKeyMotion} from './SpecialKeys/Motion';

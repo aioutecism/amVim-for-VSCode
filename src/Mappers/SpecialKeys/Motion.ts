@@ -1,9 +1,9 @@
-import {Motion} from '../Motions/Motion';
-import {GenericMapper, GenericMap, RecursiveMap, MatchResultType} from '../GenericMapper';
+import {GenericMapper, GenericMap, RecursiveMap, MatchResultType} from '../Generic';
 import {SpecialKeyCommon, SpecialKeyMatchResult} from './Common';
 import {SpecialKeyN} from './N';
 import {SpecialKeyChar} from './Char';
-import {MotionCharacter} from '../Motions/Character';
+import {Motion} from '../../Motions/Motion';
+import {MotionCharacter} from '../../Motions/Character';
 
 interface MotionMap extends GenericMap {
     motionGenerator(args?: {}): Motion;

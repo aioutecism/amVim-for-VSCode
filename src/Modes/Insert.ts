@@ -1,6 +1,6 @@
 import {Mode} from './Mode';
 import * as Keys from '../Keys';
-import {CommandMap} from '../CommandMapper';
+import {CommandMap} from '../Mappers/Command';
 import {ActionInsert} from '../Actions/Insert';
 import {ActionDelete} from '../Actions/Delete';
 import {ActionSuggestion} from '../Actions/Suggestion';

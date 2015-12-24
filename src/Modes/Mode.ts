@@ -1,6 +1,6 @@
 import {window} from 'vscode';
-import {MatchResultType} from '../GenericMapper';
-import {CommandMapper} from '../CommandMapper';
+import {MatchResultType} from '../Mappers/Generic';
+import {CommandMapper} from '../Mappers/Command';
 
 export enum ModeID {NORMAL, VISUAL, VISUAL_BLOCK, VISUAL_LINE, INSERT};
 
