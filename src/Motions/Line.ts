@@ -5,19 +5,22 @@ export class MotionLine extends Motion {
 
     private shouldToFirstNonBlank = false;
 
-    firstNonBlank(): Motion {
-        this.shouldToFirstNonBlank = true;
-        return this;
+    static firstNonBlank(): Motion {
+        const obj = new MotionLine();
+        obj.shouldToFirstNonBlank = true;
+        return obj;
     }
 
-    start(): Motion {
-        this.translate(0, -Infinity);
-        return this;
+    static start(): Motion {
+        const obj = new MotionLine();
+        obj.translate(0, -Infinity);
+        return obj;
     }
 
-    end(): Motion {
-        this.translate(0, +Infinity);
-        return this;
+    static end(): Motion {
+        const obj = new MotionLine();
+        obj.translate(0, +Infinity);
+        return obj;
     }
 
     apply(from: Selection): Selection {

@@ -2,24 +2,28 @@ import {Motion} from './Motion';
 
 export class MotionCharacter extends Motion {
 
-    left(args: {n: number} = {n: 1}): Motion {
-        this.translate(0, -args.n);
-        return this;
+    static left(args: {n: number} = {n: 1}): Motion {
+        const obj = new MotionCharacter();
+        obj.translate(0, -args.n);
+        return obj;
     }
 
-    right(args: {n: number} = {n: 1}): Motion {
-        this.translate(0, +args.n);
-        return this;
+    static right(args: {n: number} = {n: 1}): Motion {
+        const obj = new MotionCharacter();
+        obj.translate(0, +args.n);
+        return obj;
     }
 
-    up(args: {n: number} = {n: 1}): Motion {
-        this.translate(-args.n, 0);
-        return this;
+    static up(args: {n: number} = {n: 1}): Motion {
+        const obj = new MotionCharacter();
+        obj.translate(-args.n, 0);
+        return obj;
     }
 
-    down(args: {n: number} = {n: 1}): Motion {
-        this.translate(+args.n, 0);
-        return this;
+    static down(args: {n: number} = {n: 1}): Motion {
+        const obj = new MotionCharacter();
+        obj.translate(+args.n, 0);
+        return obj;
     }
 
 }

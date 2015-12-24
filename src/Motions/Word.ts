@@ -8,19 +8,22 @@ export class MotionWord extends Motion {
     private wordDelta: MotionWordPosition;
     private wordSeparators = './\\\\()"\'\\-:,.;<>~!@#$%^&*|+=\\[\\]{}`~?';
 
-    nextStart(): Motion {
-        this.wordDelta = MotionWordPosition.NEXT_START;
-        return this;
+    static nextStart(): Motion {
+        const obj = new MotionWord();
+        obj.wordDelta = MotionWordPosition.NEXT_START;
+        return obj;
     }
 
-    nextEnd(): Motion {
-        this.wordDelta = MotionWordPosition.NEXT_END;
-        return this;
+    static nextEnd(): Motion {
+        const obj = new MotionWord();
+        obj.wordDelta = MotionWordPosition.NEXT_END;
+        return obj;
     }
 
-    prevStart(): Motion {
-        this.wordDelta = MotionWordPosition.PREV_START;
-        return this;
+    static prevStart(): Motion {
+        const obj = new MotionWord();
+        obj.wordDelta = MotionWordPosition.PREV_START;
+        return obj;
     }
 
     apply(from: Selection): Selection {

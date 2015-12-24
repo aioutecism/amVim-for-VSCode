@@ -16,33 +16,7 @@ export class ModeNormal extends Mode {
     name = 'NORMAL';
 
     private maps: CommandMap[] = [
-        { keys: 'h', command: ActionMoveCursor.characterLeft },
-        { keys: '{N} h', command: ActionMoveCursor.characterLeft },
-        { keys: 'l', command: ActionMoveCursor.characterRight },
-        { keys: '{N} l', command: ActionMoveCursor.characterRight },
-        { keys: 'k', command: ActionMoveCursor.characterUp },
-        { keys: '{N} k', command: ActionMoveCursor.characterUp },
-        { keys: 'j', command: ActionMoveCursor.characterDown },
-        { keys: '{N} j', command: ActionMoveCursor.characterDown },
-
-        { keys: 'w', command: ActionMoveCursor.wordNextStart },
-        { keys: 'e', command: ActionMoveCursor.wordNextEnd },
-        { keys: 'b', command: ActionMoveCursor.wordPrevStart },
-
-        { keys: 'f {char}', command: ActionMoveCursor.matchCharacterNext },
-        { keys: 'F {char}', command: ActionMoveCursor.matchCharacterPrev },
-
-        { keys: '^', command: ActionMoveCursor.firstNonBlankInLine },
-        { keys: '0', command: ActionMoveCursor.lineStart },
-        { keys: '$', command: ActionMoveCursor.lineEnd },
-
-        { keys: '-', command: ActionMoveCursor.firstNonBlankInLineUp },
-        { keys: '{N} -', command: ActionMoveCursor.firstNonBlankInLineUp },
-        { keys: '+', command: ActionMoveCursor.firstNonBlankInLineDown },
-        { keys: '{N} +', command: ActionMoveCursor.firstNonBlankInLineDown },
-
-        { keys: 'g g', command: ActionMoveCursor.documentStart },
-        { keys: 'G', command: ActionMoveCursor.documentEnd },
+        { keys: '{motion}', command: ActionMoveCursor.byMotions },
 
         { keys: 'i', command: ActionMode.toInsert },
         { keys: 'a', command: () => ActionMoveCursor.characterRight().then(ActionMode.toInsert) },

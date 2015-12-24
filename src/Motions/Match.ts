@@ -8,16 +8,18 @@ export class MotionMatch extends Motion {
     private character: string;
     private direction: MotionMatchDirection;
 
-    next(character: string): Motion {
-        this.character = character;
-        this.direction = MotionMatchDirection.NEXT;
-        return this;
+    static next(args: {character: string}): Motion {
+        const obj = new MotionMatch();
+        obj.character = args.character;
+        obj.direction = MotionMatchDirection.NEXT;
+        return obj;
     }
 
-    prev(character: string): Motion {
-        this.character = character;
-        this.direction = MotionMatchDirection.PREV;
-        return this;
+    static prev(args: {character: string}): Motion {
+        const obj = new MotionMatch();
+        obj.character = args.character;
+        obj.direction = MotionMatchDirection.PREV;
+        return obj;
     }
 
     apply(from: Selection): Selection {

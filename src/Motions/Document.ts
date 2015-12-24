@@ -2,14 +2,16 @@ import {Motion} from './Motion';
 
 export class MotionDocument extends Motion {
 
-    start(): Motion {
-        this.translate(-Infinity, -Infinity);
-        return this;
+    static start(): Motion {
+        const obj = new MotionDocument();
+        obj.translate(-Infinity, -Infinity);
+        return obj;
     }
 
-    end(): Motion {
-        this.translate(+Infinity, +Infinity);
-        return this;
+    static end(): Motion {
+        const obj = new MotionDocument();
+        obj.translate(+Infinity, +Infinity);
+        return obj;
     }
 
 }
