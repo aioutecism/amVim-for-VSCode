@@ -22,7 +22,7 @@ export class MotionMatch extends Motion {
         return obj;
     }
 
-    apply(from: Position): Position {
+    apply(from: Position, option: {inclusive: boolean} = {inclusive: false}): Position {
         from = super.apply(from);
 
         const activeTextEditor = window.activeTextEditor;
@@ -43,6 +43,10 @@ export class MotionMatch extends Motion {
 
             const offset = targetText.indexOf(this.character);
             toCharacter += !!~offset ? offset + 1 : 0;
+
+            if (option.inclusive) {
+                toCharacter += 1;
+            }
         }
 
         else if (this.direction === MotionMatchDirection.PREV) {

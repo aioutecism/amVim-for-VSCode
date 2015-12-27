@@ -26,7 +26,7 @@ export class MotionWord extends Motion {
         return obj;
     }
 
-    apply(from: Position): Position {
+    apply(from: Position, option: {inclusive: boolean} = {inclusive: false}): Position {
         from = super.apply(from);
 
         const activeTextEditor = window.activeTextEditor;
@@ -60,6 +60,10 @@ export class MotionWord extends Motion {
                 `^(\\s+)?((?:[${this.wordSeparators}]+|[^\\s${this.wordSeparators}]+))?`
             ));
             toCharacter += matches[0].length;
+
+            if (option.inclusive) {
+                toCharacter += 1;
+            }
         }
 
         else if (this.wordDelta === MotionWordPosition.PREV_START) {

@@ -10,7 +10,7 @@ export class Motion {
         this.characterDelta += characterDelta;
     }
 
-    apply(from: Position): Position {
+    apply(from: Position, option?): Position {
         const activeTextEditor = window.activeTextEditor;
 
         if (! activeTextEditor) {

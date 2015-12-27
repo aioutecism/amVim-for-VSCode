@@ -1,4 +1,4 @@
-import {window, commands} from 'vscode';
+import {window, commands, Range} from 'vscode';
 import {ActionReveal} from './Reveal';
 import {Motion} from '../Motions/Motion';
 
@@ -11,16 +11,20 @@ export class ActionDelete {
             return Promise.resolve(false);
         }
 
-        activeTextEditor.selections = activeTextEditor.selections.map(selection => {
-            args.motions.forEach((motion) => {
-                selection = motion.apply(selection);
-            });
-            return selection;
+        const ranges = activeTextEditor.selections.map(selection => {
+            const start = selection.active;
+            const end = args.motions.reduce((position, motion) => {
+                return motion.apply(position, {inclusive: true});
+            }, start);
+            return new Range(start, end);
         });
 
+        // TODO: Deal wits motions' overlaps
+        // TODO: Use linewise
+
         activeTextEditor.edit((editBuilder) => {
-            // editBuilder.delete();
-        })
+            ranges.forEach((range) => editBuilder.delete(range));
+        });
 
         return ActionReveal.primaryCursor();
     }
