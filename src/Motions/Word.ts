@@ -1,4 +1,4 @@
-import {window, Selection, Position} from 'vscode';
+import {window, Position} from 'vscode';
 import {Motion} from './Motion';
 
 enum MotionWordPosition {NEXT_START, NEXT_END, PREV_START};
@@ -26,7 +26,7 @@ export class MotionWord extends Motion {
         return obj;
     }
 
-    apply(from: Selection): Selection {
+    apply(from: Position): Position {
         from = super.apply(from);
 
         const activeTextEditor = window.activeTextEditor;
@@ -37,8 +37,8 @@ export class MotionWord extends Motion {
 
         const document = activeTextEditor.document;
 
-        let toLine = from.active.line;
-        let toCharacter = from.active.character;
+        let toLine = from.line;
+        let toCharacter = from.character;
 
         // TODO: Move to next line if needed
 
@@ -73,10 +73,7 @@ export class MotionWord extends Motion {
             toCharacter -= matches[0].length;
         }
 
-        const activePosition = new Position(toLine, toCharacter);
-        const anchorPosition = from.isEmpty ? activePosition : from.anchor;
-
-        return new Selection(anchorPosition, activePosition);
+        return new Position(toLine, toCharacter);
     }
 
 }

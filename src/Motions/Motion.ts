@@ -1,4 +1,4 @@
-import {window, Selection, Position} from 'vscode';
+import {window, Position} from 'vscode';
 
 export class Motion {
 
@@ -10,7 +10,7 @@ export class Motion {
         this.characterDelta += characterDelta;
     }
 
-    apply(from: Selection): Selection {
+    apply(from: Position): Position {
         const activeTextEditor = window.activeTextEditor;
 
         if (! activeTextEditor) {
@@ -21,8 +21,8 @@ export class Motion {
 
         // TODO: Count tab as editor.tabSize
 
-        let toLine = from.active.line + this.lineDelta;
-        let toCharacter = from.active.character + this.characterDelta;
+        let toLine = from.line + this.lineDelta;
+        let toCharacter = from.character + this.characterDelta;
 
         if (toLine < 0) {
             toLine = 0;
@@ -36,10 +36,7 @@ export class Motion {
         toCharacter = Math.max(toCharacter, 0);
         toCharacter = Math.min(toCharacter, document.lineAt(toLine).text.length);
 
-        const activePosition = new Position(toLine, toCharacter);
-        const anchorPosition = from.isEmpty ? activePosition : from.anchor;
-
-        return new Selection(anchorPosition, activePosition);
+        return new Position(toLine, toCharacter);
     }
 
 }
