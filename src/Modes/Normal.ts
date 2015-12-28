@@ -42,8 +42,7 @@ export class ModeNormal extends Mode {
         { keys: 'd {motion}', command: ActionDelete.byMotions },
         { keys: 'C', command: () => ActionDelete.byMotions({motions: [MotionLine.end()]}).then(ActionMode.toInsert) },
         { keys: 'c c', command: () => {
-            return ActionDelete.selections()
-                .then(ActionMoveCursor.byMotions.bind(undefined, {motions: [MotionLine.firstNonBlank()]}))
+            return ActionMoveCursor.byMotions({motions: [MotionLine.firstNonBlank()]})
                 .then(ActionDelete.byMotions.bind(undefined, {motions: [MotionLine.end()]}))
                 .then(ActionMode.toInsert);
         } },

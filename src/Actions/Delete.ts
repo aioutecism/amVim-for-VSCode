@@ -34,23 +34,6 @@ export class ActionDelete {
             .then(ActionReveal.primaryCursor);
     }
 
-    static selections(): Thenable<boolean> {
-        const activeTextEditor = window.activeTextEditor;
-
-        if (! activeTextEditor) {
-            return Promise.resolve(false);
-        }
-
-        return activeTextEditor.edit((editBuilder) => {
-            activeTextEditor.selections.forEach(selection => {
-                if (! selection.isEmpty) {
-                    editBuilder.delete(selection);
-                }
-            });
-        })
-            .then(ActionReveal.primaryCursor);
-    }
-
     static selectionsOrLeft(): Thenable<boolean> {
         return commands.executeCommand('deleteLeft');
     }
