@@ -70,7 +70,7 @@ export abstract class GenericMapper {
                 continue;
             }
 
-            // match must be reassigned or it will use last loops's value
+            // match is in function scope
             var match: SpecialKeyMatchResult = null;
             this.specialKeys.some(specialKey => {
                 if (! node[specialKey.indicator]) {

@@ -1,4 +1,4 @@
-import {window} from 'vscode';
+import {window, Selection} from 'vscode';
 import {ActionReveal} from './Reveal';
 import {Motion} from '../Motions/Motion';
 import {MotionCharacter} from '../Motions/Character';
@@ -15,17 +15,16 @@ export class ActionMoveCursor {
         // TODO: Preserve character position
 
         activeTextEditor.selections = activeTextEditor.selections.map(selection => {
-            args.motions.forEach((motion) => {
-                selection = motion.apply(selection);
-            });
-            return selection;
+            const active = args.motions.reduce((position, motion) => {
+                return motion.apply(position);
+            }, selection.active);
+
+            const anchor = selection.isEmpty ? active : selection.anchor;
+
+            return new Selection(anchor, active);
         });
 
         return ActionReveal.primaryCursor();
-    }
-
-    static characterRight(args?: {n: number}): Thenable<boolean> {
-        return ActionMoveCursor.byMotions({motions: [MotionCharacter.right(args)]});
     }
 
 }

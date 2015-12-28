@@ -1,4 +1,4 @@
-import {window, Selection} from 'vscode';
+import {window, Position} from 'vscode';
 import {Motion} from './Motion';
 
 export class MotionLine extends Motion {
@@ -23,7 +23,7 @@ export class MotionLine extends Motion {
         return obj;
     }
 
-    apply(from: Selection): Selection {
+    apply(from: Position): Position {
         from = super.apply(from);
 
         const activeTextEditor = window.activeTextEditor;
@@ -34,12 +34,10 @@ export class MotionLine extends Motion {
 
         const document = activeTextEditor.document;
 
-        const matches = document.lineAt(from.active.line).text.match(/^\s+/);
+        const matches = document.lineAt(from.line).text.match(/^\s+/);
         const toCharacter = matches ? matches[0].length : 0;
 
-        const position = from.active.with(undefined, toCharacter);
-
-        return new Selection(position, position);
+        return from.with(undefined, toCharacter);
     }
 
 }

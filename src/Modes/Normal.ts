@@ -10,6 +10,7 @@ import {ActionJoinLines} from '../Actions/JoinLines';
 import {ActionHistory} from '../Actions/History';
 import {ActionIndent} from '../Actions/Indent';
 import {ActionMode} from '../Actions/Mode';
+import {MotionCharacter} from '../Motions/Character';
 
 export class ModeNormal extends Mode {
 
@@ -19,7 +20,7 @@ export class ModeNormal extends Mode {
         { keys: '{motion}', command: ActionMoveCursor.byMotions },
 
         { keys: 'i', command: ActionMode.toInsert },
-        { keys: 'a', command: () => ActionMoveCursor.characterRight().then(ActionMode.toInsert) },
+        { keys: 'a', command: () => ActionMoveCursor.byMotions({motions: [MotionCharacter.right()]}).then(ActionMode.toInsert) },
         { keys: 'v', command: ActionMode.toVisual },
         { keys: 'ctrl+v', command: ActionMode.toVisualBlock },
         { keys: 'V', command: ActionMode.toVisualLine },
@@ -33,6 +34,7 @@ export class ModeNormal extends Mode {
         { keys: 'x', command: () => ActionDelete.selectionsOrRight().then(ActionSuggestion.hide) },
         { keys: 'delete', command: () => ActionDelete.selectionsOrRight().then(ActionSuggestion.hide) },
         { keys: 'd d', command: ActionDelete.line },
+        { keys: 'd {motion}', command: ActionDelete.byMotions },
         { keys: 'J', command: ActionJoinLines.onSelections },
 
         { keys: 'u', command: ActionHistory.undo },

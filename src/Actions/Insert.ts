@@ -1,5 +1,8 @@
 import {window, commands, Position, Selection, TextDocument} from 'vscode';
 import {ActionReveal} from './Reveal';
+import {ActionMoveCursor} from './MoveCursor';
+import {MotionCharacter} from '../Motions/Character';
+import {MotionLine} from '../Motions/Line';
 
 export class ActionInsert {
 
@@ -15,17 +18,12 @@ export class ActionInsert {
         }
 
         return commands.executeCommand('lineBreakInsert')
-            .then(() => {
-                activeTextEditor.selections = activeTextEditor.selections.map(selection => {
-                    const text = activeTextEditor.document.lineAt(selection.active.line + 1).text;
-                    const leadingSpaces = (text.match(/^\s+/) || [''])[0];
-                    const position = new Position(selection.active.line + 1, leadingSpaces.length);
-                    // TODO: Wrong position when breaking before whitespaces
-                    return new Selection(position, position);
-                });
-
-                return Promise.resolve(true);
-            });
+            .then(() => ActionMoveCursor.byMotions({
+                motions: [
+                    MotionCharacter.down(),
+                    MotionLine.firstNonBlank(),
+                ]
+            }));
     }
 
     // TODO: Support string with length > 1
