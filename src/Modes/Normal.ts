@@ -10,6 +10,7 @@ import {ActionJoinLines} from '../Actions/JoinLines';
 import {ActionHistory} from '../Actions/History';
 import {ActionIndent} from '../Actions/Indent';
 import {ActionMode} from '../Actions/Mode';
+import {Motion} from '../Motions/Motion';
 import {MotionCharacter} from '../Motions/Character';
 
 export class ModeNormal extends Mode {
@@ -35,6 +36,7 @@ export class ModeNormal extends Mode {
         { keys: 'delete', command: () => ActionDelete.selectionsOrRight().then(ActionSuggestion.hide) },
         { keys: 'd d', command: ActionDelete.line },
         { keys: 'd {motion}', command: ActionDelete.byMotions },
+        { keys: 'c {motion}', command: (args: {motions: Motion[]}) => ActionDelete.byMotions(args).then(ActionMode.toInsert) },
         { keys: 'J', command: ActionJoinLines.onSelections },
 
         { keys: 'u', command: ActionHistory.undo },
