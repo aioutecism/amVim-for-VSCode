@@ -27,8 +27,4 @@ export class ActionMoveCursor {
         return ActionReveal.primaryCursor();
     }
 
-    static characterRight(args?: {n: number}): Thenable<boolean> {
-        return ActionMoveCursor.byMotions({motions: [MotionCharacter.right(args)]});
-    }
-
 }

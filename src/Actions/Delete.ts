@@ -26,11 +26,12 @@ export class ActionDelete {
 
         ranges = UtilRange.unionOverlaps(ranges);
 
-        activeTextEditor.edit((editBuilder) => {
-            ranges.forEach((range) => editBuilder.delete(range));
-        });
+        // TODO: Move cursor to first non-space if needed
 
-        return ActionReveal.primaryCursor();
+        return activeTextEditor.edit((editBuilder) => {
+            ranges.forEach((range) => editBuilder.delete(range));
+        })
+            .then(ActionReveal.primaryCursor);
     }
 
     static selectionsOrLeft(): Thenable<boolean> {
