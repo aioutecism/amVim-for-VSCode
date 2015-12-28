@@ -21,4 +21,11 @@ export class UtilRange {
         return to;
     }
 
+    static toLinewise(from: Range): Range {
+        return new Range(
+            from.start.line, 0,
+            from.end.line + 1, 0
+        )
+    }
+
 }

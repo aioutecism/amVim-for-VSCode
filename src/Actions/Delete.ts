@@ -20,9 +20,11 @@ export class ActionDelete {
             return new Range(start, end);
         });
 
-        ranges = UtilRange.unionOverlaps(ranges);
+        ranges = ranges.map(range => {
+            return range.isSingleLine ? range : UtilRange.toLinewise(range);
+        })
 
-        // TODO: Use linewise
+        ranges = UtilRange.unionOverlaps(ranges);
 
         activeTextEditor.edit((editBuilder) => {
             ranges.forEach((range) => editBuilder.delete(range));
