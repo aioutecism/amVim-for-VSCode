@@ -1,6 +1,7 @@
 import {window, commands, Range} from 'vscode';
 import {ActionReveal} from './Reveal';
 import {Motion} from '../Motions/Motion';
+import {UtilRange} from '../Utils/Range';
 
 export class ActionDelete {
 
@@ -11,7 +12,7 @@ export class ActionDelete {
             return Promise.resolve(false);
         }
 
-        const ranges = activeTextEditor.selections.map(selection => {
+        let ranges = activeTextEditor.selections.map(selection => {
             const start = selection.active;
             const end = args.motions.reduce((position, motion) => {
                 return motion.apply(position, {inclusive: true});
@@ -19,7 +20,8 @@ export class ActionDelete {
             return new Range(start, end);
         });
 
-        // TODO: Deal wits motions' overlaps
+        ranges = UtilRange.unionOverlaps(ranges);
+
         // TODO: Use linewise
 
         activeTextEditor.edit((editBuilder) => {
