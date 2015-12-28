@@ -12,6 +12,7 @@ import {ActionIndent} from '../Actions/Indent';
 import {ActionMode} from '../Actions/Mode';
 import {Motion} from '../Motions/Motion';
 import {MotionCharacter} from '../Motions/Character';
+import {MotionLine} from '../Motions/Line';
 
 export class ModeNormal extends Mode {
 
@@ -21,7 +22,9 @@ export class ModeNormal extends Mode {
         { keys: '{motion}', command: ActionMoveCursor.byMotions },
 
         { keys: 'i', command: ActionMode.toInsert },
+        { keys: 'I', command: () => ActionMoveCursor.byMotions({motions: [MotionLine.firstNonBlank()]}).then(ActionMode.toInsert) },
         { keys: 'a', command: () => ActionMoveCursor.byMotions({motions: [MotionCharacter.right()]}).then(ActionMode.toInsert) },
+        { keys: 'A', command: () => ActionMoveCursor.byMotions({motions: [MotionLine.end()]}).then(ActionMode.toInsert) },
         { keys: 'v', command: ActionMode.toVisual },
         { keys: 'ctrl+v', command: ActionMode.toVisualBlock },
         { keys: 'V', command: ActionMode.toVisualLine },
