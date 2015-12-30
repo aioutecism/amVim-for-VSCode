@@ -22,8 +22,8 @@ export class MotionMatch extends Motion {
         return obj;
     }
 
-    apply(from: Position, option: {inclusive?: boolean} = {}): Position {
-        option.inclusive = option.inclusive === undefined ? false : option.inclusive;
+    apply(from: Position, option: {isInclusive?: boolean} = {}): Position {
+        option.isInclusive = option.isInclusive === undefined ? false : option.isInclusive;
 
         from = super.apply(from);
 
@@ -46,7 +46,7 @@ export class MotionMatch extends Motion {
             const offset = targetText.indexOf(this.character);
             toCharacter += !!~offset ? offset + 1 : 0;
 
-            if (option.inclusive) {
+            if (option.isInclusive) {
                 toCharacter += 1;
             }
         }

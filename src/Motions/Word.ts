@@ -26,8 +26,8 @@ export class MotionWord extends Motion {
         return obj;
     }
 
-    apply(from: Position, option: {inclusive?: boolean} = {}): Position {
-        option.inclusive = option.inclusive === undefined ? false : option.inclusive;
+    apply(from: Position, option: {isInclusive?: boolean} = {}): Position {
+        option.isInclusive = option.isInclusive === undefined ? false : option.isInclusive;
 
         from = super.apply(from);
 
@@ -63,7 +63,7 @@ export class MotionWord extends Motion {
             ));
             toCharacter += matches[0].length;
 
-            if (option.inclusive) {
+            if (option.isInclusive) {
                 toCharacter += 1;
             }
         }
