@@ -57,6 +57,8 @@ export class ModeNormal extends Mode {
 
         { keys: 'n', command: ActionFind.next },
         { keys: 'N', command: ActionFind.prev },
+        { keys: '*', command: () => ActionFind.byIndicator().then(ActionFind.next) },
+        { keys: '#', command: () => ActionFind.byIndicator().then(ActionFind.prev) },
 
         { keys: 'u', command: ActionHistory.undo },
         { keys: 'ctrl+r', command: ActionHistory.redo },

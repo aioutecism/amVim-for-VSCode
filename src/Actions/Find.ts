@@ -4,6 +4,18 @@ export class ActionFind {
 
     // TODO: Implement independent find function to avoid visual flashing.
 
+    static byIndicator(): Thenable<boolean> {
+        const activeTextEditor = window.activeTextEditor;
+
+        if (! activeTextEditor) {
+            return Promise.resolve(false);
+        }
+
+        activeTextEditor.selection = new Selection(activeTextEditor.selection.active, activeTextEditor.selection.active);
+
+        return commands.executeCommand('editor.action.addSelectionToNextFindMatch');
+    }
+
     static next(): Thenable<boolean> {
         const activeTextEditor = window.activeTextEditor;
 
