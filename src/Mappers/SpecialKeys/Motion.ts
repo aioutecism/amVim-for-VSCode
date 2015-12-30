@@ -39,6 +39,8 @@ export class SpecialKeyMotion extends GenericMapper implements SpecialKeyCommon 
 
         { keys: 'f {char}', motionGenerators: [MotionMatch.next] },
         { keys: 'F {char}', motionGenerators: [MotionMatch.prev] },
+        { keys: 't {char}', motionGenerators: [MotionMatch.next], args: {isTill: true} },
+        { keys: 'T {char}', motionGenerators: [MotionMatch.prev], args: {isTill: true} },
 
         { keys: '^', motionGenerators: [MotionLine.firstNonBlank] },
         { keys: '0', motionGenerators: [MotionLine.start] },

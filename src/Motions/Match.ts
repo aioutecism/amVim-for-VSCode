@@ -7,18 +7,27 @@ export class MotionMatch extends Motion {
 
     private character: string;
     private direction: MotionMatchDirection;
+    private isTill: boolean;
 
-    static next(args: {character: string}): Motion {
+    static next(args: {character: string, isTill?: boolean}): Motion {
+        args.isTill = args.isTill === undefined ? false : args.isTill;
+
         const obj = new MotionMatch();
         obj.character = args.character;
         obj.direction = MotionMatchDirection.NEXT;
+        obj.isTill = args.isTill;
+
         return obj;
     }
 
-    static prev(args: {character: string}): Motion {
+    static prev(args: {character: string, isTill?: boolean}): Motion {
+        args.isTill = args.isTill === undefined ? false : args.isTill;
+
         const obj = new MotionMatch();
         obj.character = args.character;
         obj.direction = MotionMatchDirection.PREV;
+        obj.isTill = args.isTill;
+
         return obj;
     }
 
@@ -44,10 +53,17 @@ export class MotionMatch extends Motion {
             targetText = targetText.substr(toCharacter + 1);
 
             const offset = targetText.indexOf(this.character);
-            toCharacter += !!~offset ? offset + 1 : 0;
 
-            if (option.isInclusive) {
-                toCharacter += 1;
+            if (!!~offset) {
+                toCharacter += offset + 1;
+
+                if (option.isInclusive) {
+                    toCharacter += 1;
+                }
+
+                if (this.isTill) {
+                    toCharacter -= 1;
+                }
             }
         }
 
@@ -57,7 +73,14 @@ export class MotionMatch extends Motion {
                 .split('').reverse().join('');
 
             const offset = targetText.indexOf(this.character);
-            toCharacter -= !!~offset ? offset + 1 : 0;
+
+            if (!!~offset) {
+                toCharacter -= offset + 1;
+
+                if (this.isTill) {
+                    toCharacter += 1;
+                }
+            }
         }
 
         return new Position(toLine, toCharacter);
