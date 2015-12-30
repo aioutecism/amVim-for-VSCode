@@ -22,7 +22,9 @@ export class MotionMatch extends Motion {
         return obj;
     }
 
-    apply(from: Position, option: {inclusive: boolean} = {inclusive: false}): Position {
+    apply(from: Position, option: {inclusive?: boolean} = {}): Position {
+        option.inclusive = option.inclusive === undefined ? false : option.inclusive;
+
         from = super.apply(from);
 
         const activeTextEditor = window.activeTextEditor;
