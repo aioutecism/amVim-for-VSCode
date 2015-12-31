@@ -28,8 +28,6 @@ export class ModeNormal extends Mode {
         { keys: 'I', command: () => ActionMoveCursor.byMotions({motions: [MotionLine.firstNonBlank()]}).then(ActionMode.toInsert) },
         { keys: 'a', command: () => ActionMoveCursor.byMotions({motions: [MotionCharacter.right()]}).then(ActionMode.toInsert) },
         { keys: 'A', command: () => ActionMoveCursor.byMotions({motions: [MotionLine.end()]}).then(ActionMode.toInsert) },
-        { keys: 'v', command: ActionMode.toVisual },
-        { keys: 'V', command: ActionMode.toVisualLine },
 
         { keys: 'o', command: () => ActionInsert.newLineAfter().then(ActionMode.toInsert) },
         { keys: 'O', command: () => ActionInsert.newLineBefore().then(ActionMode.toInsert) },
@@ -73,6 +71,8 @@ export class ModeNormal extends Mode {
         { keys: '< <', command: ActionIndent.decrease },
         { keys: '> >', command: ActionIndent.increase },
 
+        { keys: 'v', command: ActionMode.toVisual },
+        { keys: 'V', command: ActionMode.toVisualLine },
         { keys: 'escape', command: () => Promise.resolve(true) },
     ];
 

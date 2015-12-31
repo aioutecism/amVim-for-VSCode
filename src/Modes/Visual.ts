@@ -19,7 +19,12 @@ export class ModeVisual extends Mode {
         { keys: 'I', command: () => ActionSelection.shrinkToStarts().then(ActionMode.toInsert) },
         { keys: 'A', command: () => ActionSelection.shrinkToEnds().then(ActionMode.toInsert) },
 
+        { keys: 'backspace', command: ActionDelete.selectionsOrRight },
+        { keys: 'delete', command: ActionDelete.selectionsOrRight },
+        { keys: 'x', command: ActionDelete.selectionsOrRight },
+        { keys: 'X', command: ActionDelete.line },
         { keys: 'd', command: ActionDelete.selectionsOrRight },
+        { keys: 'D', command: ActionDelete.line },
         { keys: 'c', command: () => ActionDelete.selectionsOrRight().then(ActionMode.toInsert) },
         { keys: 'C', command: () => ActionSelection.shrinkToStarts()
             .then(ActionDelete.byMotions.bind(undefined, {motions: [MotionLine.end()]}))
@@ -27,7 +32,9 @@ export class ModeVisual extends Mode {
         { keys: 'y', command: () => ActionRegister.yankSelections().then(ActionSelection.shrinkToStarts) },
         { keys: 'J', command: () => ActionJoinLines.onSelections().then(ActionSelection.shrinkToActives) },
 
-        { keys: 'v',      command: ActionSelection.shrinkToPrimaryActive },
+        { keys: 'V', command: ActionMode.toVisualLine },
+        { keys: 'v', command: ActionSelection.shrinkToPrimaryActive },
+
         { keys: 'escape', command: ActionSelection.shrinkToPrimaryActive },
     ];
 
