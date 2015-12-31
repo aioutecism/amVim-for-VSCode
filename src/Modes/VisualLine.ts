@@ -1,5 +1,6 @@
 import {Mode, ModeID} from './Mode';
 import {CommandMap} from '../Mappers/Command';
+import {ActionMoveCursor} from '../Actions/MoveCursor';
 import {ActionSelection} from '../Actions/Selection';
 
 export class ModeVisualLine extends Mode {
@@ -8,7 +9,9 @@ export class ModeVisualLine extends Mode {
     name = 'VISUAL LINE';
 
     private maps: CommandMap[] = [
-        { keys: 'escape', command: ActionSelection.shrinkAStep },
+        { keys: '{motion}', command: ActionMoveCursor.byMotions, args: {isVisualLineMode: true} },
+
+        { keys: 'escape', command: ActionSelection.shrinkToPrimaryActive },
     ];
 
     constructor() {

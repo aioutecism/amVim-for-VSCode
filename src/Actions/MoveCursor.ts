@@ -5,8 +5,9 @@ import {MotionCharacter} from '../Motions/Character';
 
 export class ActionMoveCursor {
 
-    static byMotions(args: {motions: Motion[], isVisualMode?: boolean}): Thenable<boolean> {
+    static byMotions(args: {motions: Motion[], isVisualMode?: boolean, isVisualLineMode?: boolean}): Thenable<boolean> {
         args.isVisualMode = args.isVisualMode === undefined ? false : args.isVisualMode;
+        args.isVisualLineMode = args.isVisualLineMode === undefined ? false : args.isVisualLineMode;
 
         const activeTextEditor = window.activeTextEditor;
 
@@ -39,6 +40,18 @@ export class ActionMoveCursor {
                         }
                         active = active.translate(0, +1);
                     }
+                }
+            }
+            else if (args.isVisualLineMode) {
+                anchor = selection.anchor;
+
+                if (anchor.isBefore(active)) {
+                    anchor = anchor.with(undefined, 0);
+                    active = active.with(undefined, activeTextEditor.document.lineAt(active.line).text.length);
+                }
+                else {
+                    anchor = anchor.with(undefined, activeTextEditor.document.lineAt(anchor.line).text.length);
+                    active = active.with(undefined, 0);
                 }
             }
             else {
