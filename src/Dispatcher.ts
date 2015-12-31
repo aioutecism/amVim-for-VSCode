@@ -1,4 +1,4 @@
-import {window, commands, ExtensionContext} from 'vscode';
+import {window, commands, Disposable, ExtensionContext} from 'vscode';
 import * as Keys from './Keys';
 import {Mode, ModeID} from './Modes/Mode';
 import {ModeNormal} from './Modes/Normal';
@@ -6,6 +6,7 @@ import {ModeVisual} from './Modes/Visual';
 import {ModeVisualBlock} from './Modes/VisualBlock';
 import {ModeVisualLine} from './Modes/VisualLine';
 import {ModeInsert} from './Modes/Insert';
+import {ActionMode} from './Actions/Mode';
 
 export class Dispatcher {
 
@@ -17,6 +18,7 @@ export class Dispatcher {
         [ModeID.VISUAL_LINE]: new ModeVisualLine(),
         [ModeID.INSERT]: new ModeInsert(),
     };
+    private disposables: Disposable[] = [];
 
     constructor(context: ExtensionContext) {
         [
@@ -36,6 +38,10 @@ export class Dispatcher {
         });
 
         this.switchMode(ModeID.NORMAL);
+
+        this.disposables.push(window.onDidChangeTextEditorSelection((e) => {
+            ActionMode.switchBySelections(this.currentMode.id, e.selections);
+        }));
     }
 
     inputHandler(key: string): () => void {
@@ -58,6 +64,8 @@ export class Dispatcher {
     }
 
     dispose(): void {
+        Disposable.from(...this.disposables).dispose();
+
         Object.keys(this.modes).forEach(id => {
             (this.modes[id] as Mode).dispose();
         });

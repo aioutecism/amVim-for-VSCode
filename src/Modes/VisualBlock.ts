@@ -1,10 +1,11 @@
-import {Mode} from './Mode';
+import {Mode, ModeID} from './Mode';
 import {CommandMap} from '../Mappers/Command';
 import {ActionSelection} from '../Actions/Selection';
 import {ActionMode} from '../Actions/Mode';
 
 export class ModeVisualBlock extends Mode {
 
+    id = ModeID.VISUAL_BLOCK;
     name = 'VISUAL BLOCK';
 
     private maps: CommandMap[] = [

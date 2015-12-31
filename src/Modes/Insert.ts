@@ -1,4 +1,4 @@
-import {Mode} from './Mode';
+import {Mode, ModeID} from './Mode';
 import * as Keys from '../Keys';
 import {CommandMap} from '../Mappers/Command';
 import {ActionInsert} from '../Actions/Insert';
@@ -11,6 +11,7 @@ import {MotionLine} from '../Motions/Line';
 
 export class ModeInsert extends Mode {
 
+    id = ModeID.INSERT;
     name = 'INSERT';
 
     private maps: CommandMap[] = [

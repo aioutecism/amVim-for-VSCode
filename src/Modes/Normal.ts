@@ -1,5 +1,5 @@
 import {window, Disposable} from 'vscode';
-import {Mode} from './Mode';
+import {Mode, ModeID} from './Mode';
 import {CommandMap} from '../Mappers/Command';
 import {ActionDecorate} from '../Actions/Decorate';
 import {ActionMoveCursor} from '../Actions/MoveCursor';
@@ -19,6 +19,7 @@ import {MotionLine} from '../Motions/Line';
 
 export class ModeNormal extends Mode {
 
+    id = ModeID.NORMAL;
     name = 'NORMAL';
 
     private maps: CommandMap[] = [
