@@ -19,4 +19,10 @@ export class ModeVisualLine extends Mode {
         });
     }
 
+    enter(): void {
+        super.enter();
+
+        ActionSelection.expandToLine();
+    }
+
 }

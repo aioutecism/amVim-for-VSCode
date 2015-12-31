@@ -98,4 +98,21 @@ export class ActionSelection {
         return Promise.resolve(true);
     }
 
+    static expandToLine(): Thenable<boolean> {
+        const activeTextEditor = window.activeTextEditor;
+
+        if (! activeTextEditor) {
+            return Promise.resolve(false);
+        }
+
+        activeTextEditor.selections = activeTextEditor.selections.map(selection => {
+            return new Selection(
+                selection.start.with(undefined, 0),
+                selection.end.with(undefined, activeTextEditor.document.lineAt(selection.end.line).text.length)
+            );
+        });
+
+        return Promise.resolve(true);
+    }
+
 };
