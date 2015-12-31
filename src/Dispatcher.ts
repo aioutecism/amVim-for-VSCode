@@ -3,7 +3,6 @@ import * as Keys from './Keys';
 import {Mode, ModeID} from './Modes/Mode';
 import {ModeNormal} from './Modes/Normal';
 import {ModeVisual} from './Modes/Visual';
-import {ModeVisualBlock} from './Modes/VisualBlock';
 import {ModeVisualLine} from './Modes/VisualLine';
 import {ModeInsert} from './Modes/Insert';
 import {ActionMode} from './Actions/Mode';
@@ -14,7 +13,6 @@ export class Dispatcher {
     private modes: {[k: number]: Mode} = {
         [ModeID.NORMAL]: new ModeNormal(),
         [ModeID.VISUAL]: new ModeVisual(),
-        [ModeID.VISUAL_BLOCK]: new ModeVisualBlock(),
         [ModeID.VISUAL_LINE]: new ModeVisualLine(),
         [ModeID.INSERT]: new ModeInsert(),
     };
@@ -24,7 +22,6 @@ export class Dispatcher {
         [
             ModeID.NORMAL,
             ModeID.VISUAL,
-            ModeID.VISUAL_BLOCK,
             ModeID.VISUAL_LINE,
             ModeID.INSERT
         ].forEach(mode => {

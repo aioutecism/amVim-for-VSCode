@@ -11,10 +11,6 @@ export class ActionMode {
         return commands.executeCommand(`vim.mode.${ModeID.VISUAL}`);
     }
 
-    static toVisualBlock(): Thenable<boolean> {
-        return commands.executeCommand(`vim.mode.${ModeID.VISUAL_BLOCK}`);
-    }
-
     static toVisualLine(): Thenable<boolean> {
         return commands.executeCommand(`vim.mode.${ModeID.VISUAL_LINE}`);
     }
@@ -30,17 +26,17 @@ export class ActionMode {
             return Promise.resolve(true);
         }
 
-        if (selections.length > 1) {
-            mode = ModeID.VISUAL_BLOCK;
-        }
-        else if (! selections[0].isEmpty) {
-            mode = ModeID.VISUAL;
+        if (selections.every(selection => selection.isEmpty)) {
+            mode = ModeID.NORMAL;
         }
         else {
-            mode = ModeID.NORMAL;
+            mode = ModeID.VISUAL;
         }
 
         if (mode === currentMode) {
+            return Promise.resolve(true);
+        }
+        else if (mode === ModeID.VISUAL && currentMode === ModeID.VISUAL_LINE) {
             return Promise.resolve(true);
         }
         else {
