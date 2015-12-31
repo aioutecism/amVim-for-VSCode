@@ -5,6 +5,8 @@ import {ActionInsert} from '../Actions/Insert';
 import {ActionDelete} from '../Actions/Delete';
 import {ActionSuggestion} from '../Actions/Suggestion';
 import {ActionMode} from '../Actions/Mode';
+import {MotionWord} from '../Motions/Word';
+import {MotionLine} from '../Motions/Line';
 
 export class ModeInsert extends Mode {
 
@@ -16,6 +18,9 @@ export class ModeInsert extends Mode {
         { keys: 'tab', command: ActionInsert.tabAtSelections },
         { keys: 'backspace', command: ActionDelete.selectionsOrLeft },
         { keys: 'delete', command: ActionDelete.selectionsOrRight },
+
+        { keys: 'ctrl+w', command: () => ActionDelete.byMotions({motions: [MotionWord.prevStart()]}) },
+        { keys: 'ctrl+u', command: () => ActionDelete.byMotions({motions: [MotionLine.firstNonBlank()]}) },
 
         { keys: 'escape', command: ActionMode.toNormal },
     ]
