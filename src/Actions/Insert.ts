@@ -26,7 +26,6 @@ export class ActionInsert {
             }));
     }
 
-    // TODO: Support string with length > 1
     static characterAtSelections(args: {character: string}): Thenable<boolean> {
         const activeTextEditor = window.activeTextEditor;
 
