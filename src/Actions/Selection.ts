@@ -13,11 +13,29 @@ export class ActionSelection {
             activeTextEditor.selections = [activeTextEditor.selection];
         }
         else if (! activeTextEditor.selection.isEmpty) {
-            activeTextEditor.selection = new Selection(activeTextEditor.selection.active, activeTextEditor.selection.active);
+            return ActionSelection.shrinkToPrimaryActive();
         }
         else {
             return Promise.resolve(false);
         }
+
+        return Promise.resolve(true);
+    }
+
+    static shrinkToPrimaryActive(): Thenable<boolean> {
+        const activeTextEditor = window.activeTextEditor;
+
+        if (! activeTextEditor) {
+            return Promise.resolve(false);
+        }
+
+        let position = activeTextEditor.selection.active;
+
+        if (! activeTextEditor.selection.isReversed) {
+            position = position.translate(0, -1);
+        }
+
+        activeTextEditor.selection = new Selection(position, position);
 
         return Promise.resolve(true);
     }

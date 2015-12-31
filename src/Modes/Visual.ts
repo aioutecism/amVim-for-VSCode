@@ -27,7 +27,8 @@ export class ModeVisual extends Mode {
         { keys: 'y', command: () => ActionRegister.yankSelections().then(ActionSelection.shrinkToStarts) },
         { keys: 'J', command: () => ActionJoinLines.onSelections().then(ActionSelection.shrinkToActives) },
 
-        { keys: 'escape', command: ActionSelection.shrinkAStep },
+        { keys: 'v',      command: ActionSelection.shrinkToPrimaryActive },
+        { keys: 'escape', command: ActionSelection.shrinkToPrimaryActive },
     ];
 
     constructor() {
