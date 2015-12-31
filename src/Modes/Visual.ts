@@ -6,6 +6,7 @@ import {ActionRegister} from '../Actions/Register';
 import {ActionDelete} from '../Actions/Delete';
 import {ActionJoinLines} from '../Actions/JoinLines';
 import {ActionMode} from '../Actions/Mode';
+import {MotionLine} from '../Motions/Line';
 
 export class ModeVisual extends Mode {
 
@@ -19,6 +20,10 @@ export class ModeVisual extends Mode {
         { keys: 'A', command: () => ActionSelection.shrinkToEnds().then(ActionMode.toInsert) },
 
         { keys: 'd', command: ActionDelete.selectionsOrRight },
+        { keys: 'c', command: () => ActionDelete.selectionsOrRight().then(ActionMode.toInsert) },
+        { keys: 'C', command: () => ActionSelection.shrinkToStarts()
+            .then(ActionDelete.byMotions.bind(undefined, {motions: [MotionLine.end()]}))
+            .then(ActionMode.toInsert) },
         { keys: 'y', command: () => ActionRegister.yankSelections().then(ActionSelection.shrinkToStarts) },
         { keys: 'J', command: () => ActionJoinLines.onSelections().then(ActionSelection.shrinkToActives) },
 
