@@ -10,12 +10,10 @@ export class ModeVisual extends Mode {
     name = 'VISUAL';
 
     private maps: CommandMap[] = [
-        { keys: '{motion}', command: ActionMoveCursor.byMotions, args: {shouldKeepEmpty: false} },
+        { keys: '{motion}', command: ActionMoveCursor.byMotions, args: {isVisualMode: true} },
 
         { keys: 'I', command: () => ActionSelection.shrinkToStarts().then(ActionMode.toInsert) },
-        { keys: 'A', command: () => ActionSelection.shrinkToEnds()
-            .then(ActionMoveCursor.byMotions.bind(undefined, {motions: [MotionCharacter.right()]}))
-            .then(ActionMode.toInsert) },
+        { keys: 'A', command: () => ActionSelection.shrinkToEnds().then(ActionMode.toInsert) },
 
         { keys: 'escape', command: ActionSelection.shrinkAStep },
     ];
