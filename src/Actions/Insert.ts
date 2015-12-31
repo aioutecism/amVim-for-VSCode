@@ -45,7 +45,7 @@ export class ActionInsert {
                 }
                 else {
                     editBuilder.replace(selection, args.character);
-                    fakePosition = fakePosition.translate(0, 1);
+                    fakePosition = fakePosition.translate(0, +1);
                 }
 
                 fakeSelections.push(new Selection(fakePosition, fakePosition));

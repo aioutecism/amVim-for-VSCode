@@ -31,7 +31,7 @@ export class ActionSelection {
 
         let position = activeTextEditor.selection.active;
 
-        if (! activeTextEditor.selection.isReversed) {
+        if (! activeTextEditor.selection.isReversed && position.character > 0) {
             position = position.translate(0, -1);
         }
 

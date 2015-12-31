@@ -10,7 +10,7 @@ export class ActionDecorate {
 
     static activeCursors(textEditor: TextEditor, selections: Selection[]): Thenable<boolean> {
         const ranges = selections.map(selection => {
-            return new Range(selection.active, selection.active.translate(0, 1));
+            return new Range(selection.active, selection.active.translate(0, +1));
         });
 
         textEditor.setDecorations(ActionDecorate.decoration, ranges);

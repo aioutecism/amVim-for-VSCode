@@ -29,10 +29,14 @@ export class ActionMoveCursor {
                 if (anchor.isEqual(active)) {
                     if (active.isBefore(selection.active)) {
                         anchor = anchor.translate(0, +1);
-                        active = active.translate(0, -1);
+                        if (active.character > 0) {
+                            active = active.translate(0, -1);
+                        }
                     }
                     else {
-                        anchor = anchor.translate(0, -1);
+                        if (anchor.character > 0) {
+                            anchor = anchor.translate(0, -1);
+                        }
                         active = active.translate(0, +1);
                     }
                 }
