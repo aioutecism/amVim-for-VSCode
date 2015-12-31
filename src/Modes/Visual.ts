@@ -49,7 +49,7 @@ export class ModeVisual extends Mode {
     enter(): void {
         super.enter();
 
-        ActionSelection.expandEmptiesToOne();
+        ActionSelection.expandToOne();
     }
 
 }

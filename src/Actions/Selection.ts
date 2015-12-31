@@ -82,7 +82,7 @@ export class ActionSelection {
         return Promise.resolve(true);
     }
 
-    static expandEmptiesToOne(): Thenable<boolean> {
+    static expandToOne(): Thenable<boolean> {
         const activeTextEditor = window.activeTextEditor;
 
         if (! activeTextEditor) {
