@@ -5,7 +5,9 @@ import {MotionCharacter} from '../Motions/Character';
 
 export class ActionMoveCursor {
 
-    static byMotions(args: {motions: Motion[]}): Thenable<boolean> {
+    static byMotions(args: {motions: Motion[], shouldKeepEmpty?: boolean}): Thenable<boolean> {
+        args.shouldKeepEmpty = args.shouldKeepEmpty === undefined ? true : args.shouldKeepEmpty;
+
         const activeTextEditor = window.activeTextEditor;
 
         if (! activeTextEditor) {
@@ -19,7 +21,7 @@ export class ActionMoveCursor {
                 return motion.apply(position);
             }, selection.active);
 
-            const anchor = selection.isEmpty ? active : selection.anchor;
+            const anchor = selection.isEmpty && args.shouldKeepEmpty ? active : selection.anchor;
 
             return new Selection(anchor, active);
         });
