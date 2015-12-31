@@ -11,7 +11,6 @@ import {ActionJoinLines} from '../Actions/JoinLines';
 import {ActionFind} from '../Actions/Find';
 import {ActionHistory} from '../Actions/History';
 import {ActionIndent} from '../Actions/Indent';
-import {ActionSelection} from '../Actions/Selection';
 import {ActionMode} from '../Actions/Mode';
 import {Motion} from '../Motions/Motion';
 import {MotionCharacter} from '../Motions/Character';
@@ -75,7 +74,7 @@ export class ModeNormal extends Mode {
         { keys: '< <', command: ActionIndent.decrease },
         { keys: '> >', command: ActionIndent.increase },
 
-        { keys: 'escape', command: ActionSelection.shrinkAStep },
+        { keys: 'escape', command: () => Promise.resolve(true) },
     ];
 
     private disposables: Disposable[] = [];

@@ -17,9 +17,7 @@ export class ModeVisual extends Mode {
             .then(ActionMoveCursor.byMotions.bind(undefined, {motions: [MotionCharacter.right()]}))
             .then(ActionMode.toInsert) },
 
-        { keys: 'escape', command: () => ActionSelection.shrinkAStep().then((isShrinked) => {
-            return isShrinked ? Promise.resolve(true) : ActionMode.toNormal();
-        }) },
+        { keys: 'escape', command: ActionSelection.shrinkAStep },
     ];
 
     constructor() {
