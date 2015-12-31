@@ -2,6 +2,7 @@ import {Mode, ModeID} from './Mode';
 import {CommandMap} from '../Mappers/Command';
 import {ActionMoveCursor} from '../Actions/MoveCursor';
 import {ActionSelection} from '../Actions/Selection';
+import {ActionDelete} from '../Actions/Delete';
 import {ActionMode} from '../Actions/Mode';
 
 export class ModeVisual extends Mode {
@@ -14,6 +15,8 @@ export class ModeVisual extends Mode {
 
         { keys: 'I', command: () => ActionSelection.shrinkToStarts().then(ActionMode.toInsert) },
         { keys: 'A', command: () => ActionSelection.shrinkToEnds().then(ActionMode.toInsert) },
+
+        { keys: 'd', command: ActionDelete.selectionsOrRight },
 
         { keys: 'escape', command: ActionSelection.shrinkAStep },
     ];
