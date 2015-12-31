@@ -41,6 +41,20 @@ export class ActionRegister {
         return Promise.resolve(true);
     }
 
+    static yankSelections(): Thenable<boolean> {
+        const activeTextEditor = window.activeTextEditor;
+
+        if (! activeTextEditor) {
+            return Promise.resolve(false);
+        }
+
+        ActionRegister.stash = activeTextEditor.selections.map(range => {
+            return activeTextEditor.document.getText(range);
+        }).join('');
+
+        return Promise.resolve(true);
+    }
+
     static yankLine(): Thenable<boolean> {
         const activeTextEditor = window.activeTextEditor;
 
