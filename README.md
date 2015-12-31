@@ -5,6 +5,8 @@
 
 # Vim for VSCode
 
+![icon](images/icon.png)
+
 The [Vim](http://www.vim.org/) mode for [Visual Studio Code](https://code.visualstudio.com/) that works as expected.
 
 
