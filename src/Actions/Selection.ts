@@ -2,6 +2,26 @@ import {window, Selection} from 'vscode';
 
 export class ActionSelection {
 
+    static shrinkAStep(): Thenable<boolean> {
+        const activeTextEditor = window.activeTextEditor;
+
+        if (! activeTextEditor) {
+            return Promise.resolve(false);
+        }
+
+        if (activeTextEditor.selections.length > 1) {
+            activeTextEditor.selections = [activeTextEditor.selection];
+        }
+        else if (! activeTextEditor.selection.isEmpty) {
+            activeTextEditor.selection = new Selection(activeTextEditor.selection.active, activeTextEditor.selection.active);
+        }
+        else {
+            return Promise.resolve(false);
+        }
+
+        return Promise.resolve(true);
+    }
+
     static shrinkToActives(): Thenable<boolean> {
         const activeTextEditor = window.activeTextEditor;
 

@@ -1,5 +1,6 @@
 import {Mode} from './Mode';
 import {CommandMap} from '../Mappers/Command';
+import {ActionSelection} from '../Actions/Selection';
 import {ActionMode} from '../Actions/Mode';
 
 export class ModeVisualLine extends Mode {
@@ -7,7 +8,9 @@ export class ModeVisualLine extends Mode {
     name = 'VISUAL LINE';
 
     private maps: CommandMap[] = [
-        { keys: 'escape', command: ActionMode.toNormal },
+        { keys: 'escape', command: () => ActionSelection.shrinkAStep().then((isShrinked) => {
+            return isShrinked ? Promise.resolve(true) : ActionMode.toNormal();
+        }) },
     ];
 
     constructor() {
