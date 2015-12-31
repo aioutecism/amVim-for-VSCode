@@ -28,6 +28,8 @@ export class ActionJoinLines {
                     return matches ? matches[0].length : 0;
                 })();
 
+                // TODO: Overlap may occurs when joining empty lines
+
                 editBuilder.replace(new Range(
                     line, thisLine.length - thisLineTrimLength,
                     line + 1, nextLineTrimLength

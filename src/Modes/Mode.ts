@@ -10,6 +10,7 @@ export interface Command {
 
 export abstract class Mode {
 
+    id: ModeID;
     name: string;
 
     private pendings: Command[] = [];

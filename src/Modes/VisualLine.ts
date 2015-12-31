@@ -1,13 +1,14 @@
-import {Mode} from './Mode';
+import {Mode, ModeID} from './Mode';
 import {CommandMap} from '../Mappers/Command';
-import {ActionMode} from '../Actions/Mode';
+import {ActionSelection} from '../Actions/Selection';
 
 export class ModeVisualLine extends Mode {
 
+    id = ModeID.VISUAL_LINE;
     name = 'VISUAL LINE';
 
     private maps: CommandMap[] = [
-        { keys: 'escape', command: ActionMode.toNormal },
+        { keys: 'escape', command: ActionSelection.shrinkAStep },
     ];
 
     constructor() {
