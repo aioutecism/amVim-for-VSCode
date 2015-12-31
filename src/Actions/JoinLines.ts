@@ -1,5 +1,6 @@
 import {window, Range} from 'vscode';
 import {ActionReveal} from './Reveal';
+import {UtilRange} from '../Utils/Range';
 
 export class ActionJoinLines {
 
@@ -11,7 +12,7 @@ export class ActionJoinLines {
         }
 
         return activeTextEditor.edit((editBuilder) => {
-            const joinLineUnder = (line: number): void => {
+            const rangeByLine = (line: number): Range => {
                 if (line >= activeTextEditor.document.lineCount - 1) {
                     return;
                 }
@@ -28,29 +29,36 @@ export class ActionJoinLines {
                     return matches ? matches[0].length : 0;
                 })();
 
-                // TODO: Overlap may occurs when joining empty lines
-
-                editBuilder.replace(new Range(
+                return new Range(
                     line, thisLine.length - thisLineTrimLength,
                     line + 1, nextLineTrimLength
-                ), ' ');
+                );
             };
 
-            let linesToJoin: {[line: number]: number} = {};
-
+            let linesToJoin: number[] = [];
             activeTextEditor.selections.forEach(selection => {
                 if (selection.isSingleLine) {
-                    linesToJoin[selection.active.line] = selection.active.line;
+                    linesToJoin.push(selection.active.line);
                 }
                 else {
                     for (let line = selection.start.line; line < selection.end.line; line++) {
-                        linesToJoin[line] = line;
+                        linesToJoin.push(line);
                     }
                 }
             });
 
-            Object.getOwnPropertyNames(linesToJoin).forEach(key => {
-                joinLineUnder(linesToJoin[key]);
+            let ranges: Range[] = [];
+            linesToJoin.forEach(line => {
+                const range = rangeByLine(line);
+                if (range) {
+                    ranges.push(range);
+                }
+            });
+
+            ranges = UtilRange.unionOverlaps(ranges);
+
+            ranges.forEach(range => {
+                editBuilder.replace(range, ' ');
             });
         })
             .then(ActionReveal.primaryCursor);
