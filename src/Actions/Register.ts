@@ -1,6 +1,7 @@
 import {window, Position, Range, Selection} from 'vscode';
 import {ActionReveal} from './Reveal';
 import {ActionMoveCursor} from './MoveCursor';
+import {ActionSelection} from './Selection';
 import {Motion} from '../Motions/Motion';
 import {MotionCharacter} from '../Motions/Character';
 import {MotionLine} from '../Motions/Line';
@@ -79,15 +80,14 @@ export class ActionRegister {
                 : new Position(selection.active.line + 1, 0);
         });
 
-        activeTextEditor.selections = activeTextEditor.selections.map(selection => {
-            return new Selection(selection.active, selection.active);
-        });
-
-        return activeTextEditor.edit((editBuilder) => {
-            putPositions.forEach(position => {
-                editBuilder.insert(position, ActionRegister.stash);
-            });
-        })
+        return ActionSelection.shrinkToActives()
+            .then(() => {
+                return activeTextEditor.edit((editBuilder) => {
+                    putPositions.forEach(position => {
+                        editBuilder.insert(position, ActionRegister.stash);
+                    });
+                });
+            })
             .then(() => {
                 if (lines === 1) {
                     return ActionMoveCursor.byMotions({motions: [
@@ -119,15 +119,14 @@ export class ActionRegister {
                 : selection.active.with(undefined, 0);
         });
 
-        activeTextEditor.selections = activeTextEditor.selections.map(selection => {
-            return new Selection(selection.active, selection.active);
-        });
-
-        return activeTextEditor.edit((editBuilder) => {
-            putPositions.forEach(position => {
-                editBuilder.insert(position, ActionRegister.stash);
-            });
-        })
+        return ActionSelection.shrinkToActives()
+            .then(() => {
+                return activeTextEditor.edit((editBuilder) => {
+                    putPositions.forEach(position => {
+                        editBuilder.insert(position, ActionRegister.stash);
+                    });
+                });
+            })
             .then(() => {
                 if (lines === 1) {
                     return ActionMoveCursor.byMotions({motions: [
