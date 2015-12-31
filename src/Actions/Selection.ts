@@ -64,4 +64,20 @@ export class ActionSelection {
         return Promise.resolve(true);
     }
 
+    static expandEmptiesToOne(): Thenable<boolean> {
+        const activeTextEditor = window.activeTextEditor;
+
+        if (! activeTextEditor) {
+            return Promise.resolve(false);
+        }
+
+        activeTextEditor.selections = activeTextEditor.selections.map(selection => {
+            return selection.isEmpty
+                ? new Selection(selection.anchor, selection.anchor.translate(0, +1))
+                : selection;
+        });
+
+        return Promise.resolve(true);
+    }
+
 };

@@ -1,11 +1,8 @@
-import {window, Disposable} from 'vscode';
 import {Mode, ModeID} from './Mode';
 import {CommandMap} from '../Mappers/Command';
-import {ActionDecorate} from '../Actions/Decorate';
 import {ActionMoveCursor} from '../Actions/MoveCursor';
 import {ActionSelection} from '../Actions/Selection';
 import {ActionMode} from '../Actions/Mode';
-import {MotionCharacter} from '../Motions/Character';
 
 export class ModeVisual extends Mode {
 
@@ -25,8 +22,6 @@ export class ModeVisual extends Mode {
         }) },
     ];
 
-    private disposables: Disposable[] = [];
-
     constructor() {
         super();
 
@@ -38,25 +33,7 @@ export class ModeVisual extends Mode {
     enter(): void {
         super.enter();
 
-        const activeTextEditor = window.activeTextEditor;
-        if (activeTextEditor) {
-            ActionDecorate.activeCursors(activeTextEditor, activeTextEditor.selections);
-        }
-
-        this.disposables.push(window.onDidChangeTextEditorSelection((e) => {
-            ActionDecorate.activeCursors(e.textEditor, e.selections);
-        }));
-    }
-
-    exit(): void {
-        super.exit();
-
-        Disposable.from(...this.disposables).dispose();
-
-        const activeTextEditor = window.activeTextEditor;
-        if (activeTextEditor) {
-            ActionDecorate.remove(activeTextEditor);
-        }
+        ActionSelection.expandEmptiesToOne();
     }
 
 }
