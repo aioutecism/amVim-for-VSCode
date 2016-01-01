@@ -4,7 +4,7 @@
     "publisher": "auiworks",
     "icon": "images/icon.png",
     "displayName": "amVim Beta",
-    "description": "Vim mode for Visual Studio Code.",
+    "description": "The Vim mode for Visual Studio Code that works as expected.",
     "galleryBanner": {
         "color": "#232323",
         "theme": "dark"
@@ -20,12 +20,12 @@
     ],
     "repository": {
         "type": "git",
-        "url": "https://github.com/aioutecism/Visual-Studio-Code-Vim.git"
+        "url": "https://github.com/aioutecism/amVim-for-VSCode.git"
     },
     "bugs": {
-        "url": "https://github.com/aioutecism/Visual-Studio-Code-Vim/issues"
+        "url": "https://github.com/aioutecism/amVim-for-VSCode/issues"
     },
-    "homepage": "https://github.com/aioutecism/Visual-Studio-Code-Vim#readme",
+    "homepage": "https://github.com/aioutecism/amVim-for-VSCode#readme",
     "author": "aioutecism",
     "license": "ISC",
     "engines": {

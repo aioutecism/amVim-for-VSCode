@@ -1,7 +1,8 @@
 # Beta
 
-This extension is in beta state. Functions may have bugs, but they will be fixed soon.  
-Feel free to fire [issues](https://github.com/aioutecism/Visual-Studio-Code-Vim/issues) to report bugs or require functions.
+This extension is in beta state. Functions may have bugs, but they will be fixed soon.
+
+Feel free to open [issues](https://github.com/aioutecism/amVim-for-VSCode/issues) to report bugs or require functions.
 
 
 # amVim for VSCode
@@ -33,4 +34,4 @@ And they need a complete refactoring to meet my needs.
 
 ## Commands
 
-Check the list [here](https://github.com/aioutecism/Visual-Studio-Code-Vim/issues/1).
+Check the list [here](https://github.com/aioutecism/amVim-for-VSCode/issues/1).
