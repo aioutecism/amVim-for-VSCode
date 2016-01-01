@@ -1,7 +1,7 @@
 {
     "name": "vim",
     "version": "0.0.1",
-    "publisher": "aioutecism",
+    "publisher": "auiworks",
     "icon": "images/icon.png",
     "displayName": "Vim",
     "description": "Vim mode for Visual Studio Code.",
