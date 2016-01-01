@@ -1,20 +1,26 @@
 {
-    "name": "vim",
+    "name": "amvim",
     "version": "0.0.1",
     "publisher": "auiworks",
     "icon": "images/icon.png",
-    "displayName": "Vim",
+    "displayName": "amVim Beta",
     "description": "Vim mode for Visual Studio Code.",
+    "galleryBanner": {
+        "color": "#232323",
+        "theme": "dark"
+    },
     "keywords": [
         "vim",
-        "vintage"
+        "vintage",
+        "keybinding",
+        "mode"
     ],
     "categories": [
         "Other"
     ],
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/aioutecism/Visual-Studio-Code-Vim.git"
+        "url": "https://github.com/aioutecism/Visual-Studio-Code-Vim.git"
     },
     "bugs": {
         "url": "https://github.com/aioutecism/Visual-Studio-Code-Vim/issues"
