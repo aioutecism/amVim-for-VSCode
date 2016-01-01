@@ -1,9 +1,10 @@
-# WIP
+# Beta
 
-**This extension is working in progress. It's not ready for anyone to use.**
+This extension is in beta state. Functions may have bugs, but they will be fixed soon.  
+Feel free to fire [issues](https://github.com/aioutecism/Visual-Studio-Code-Vim/issues) to report bugs or require functions.
 
 
-# Vim for VSCode
+# amVim for VSCode
 
 ![icon](images/icon.png)
 
@@ -20,12 +21,14 @@ And they need a complete refactoring to meet my needs.
 ## Key features
 
 - Vim style keybindings & looks
+- Normal, Visual and Visual Line modes support
 - Multi-cursor support
 
 
 ## Not supported
 
 - `:` started commands: Please use `Command Palette` (`Shift+Cmd+P` on OSX, `Shift+Ctrl+P` on Windows) instead.
+- Visual Block mode: Please use multi-cursor instead.
 
 
 ## Commands
