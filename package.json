@@ -140,16 +140,9 @@
             { "command": "vim.alt+b", "key": "alt+b", "when": "editorTextFocus && !suggestWidgetVisible" },
             { "command": "vim.alt+w", "key": "alt+w", "when": "editorTextFocus && !suggestWidgetVisible" },
 
-            { "command": "vim.ctrl+[", "key": "ctrl+[", "when": "editorTextFocus && !suggestWidgetVisible" },
-            { "command": "vim.ctrl+b", "key": "ctrl+b", "when": "editorTextFocus && !suggestWidgetVisible" },
-            { "command": "vim.ctrl+d", "key": "ctrl+d", "when": "editorTextFocus && !suggestWidgetVisible" },
-            { "command": "vim.ctrl+e", "key": "ctrl+e", "when": "editorTextFocus && !suggestWidgetVisible" },
-            { "command": "vim.ctrl+f", "key": "ctrl+f", "when": "editorTextFocus && !suggestWidgetVisible" },
             { "command": "vim.ctrl+r", "key": "ctrl+r", "when": "editorTextFocus && !suggestWidgetVisible" },
             { "command": "vim.ctrl+u", "key": "ctrl+u", "when": "editorTextFocus && !suggestWidgetVisible" },
-            { "command": "vim.ctrl+v", "key": "ctrl+v", "when": "editorTextFocus && !suggestWidgetVisible" },
-            { "command": "vim.ctrl+w", "key": "ctrl+w", "when": "editorTextFocus && !suggestWidgetVisible" },
-            { "command": "vim.ctrl+y", "key": "ctrl+y", "when": "editorTextFocus && !suggestWidgetVisible" }
+            { "command": "vim.ctrl+w", "key": "ctrl+w", "when": "editorTextFocus && !suggestWidgetVisible" }
         ]
     },
     "activationEvents": [

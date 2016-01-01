@@ -13,6 +13,6 @@ export const all = characters.concat(
     'bw'
         .split('').map(key => `alt+${key}`),
 
-    '[bdefruvwy'
+    'ruw'
         .split('').map(key => `ctrl+${key}`)
 );
