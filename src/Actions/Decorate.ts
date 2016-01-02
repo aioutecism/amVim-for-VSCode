@@ -6,6 +6,7 @@ export class ActionDecorate {
         borderStyle: 'solid',
         borderWidth: '0 0 0 1ch',
         borderColor: 'rgba(128, 128, 128, 0.7)',
+        borderRadius: '2px',
     });
 
     static activeCursors(textEditor: TextEditor, selections: Selection[]): Thenable<boolean> {
