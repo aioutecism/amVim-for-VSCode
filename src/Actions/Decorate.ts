@@ -3,7 +3,9 @@ import {window, Selection, Range, TextEditor, TextEditorDecorationType} from 'vs
 export class ActionDecorate {
 
     private static decoration = window.createTextEditorDecorationType({
-        backgroundColor: 'rgba(128, 128, 128, 0.7)',
+        borderStyle: 'solid',
+        borderWidth: '0 0 0 1ch',
+        borderColor: 'rgba(128, 128, 128, 0.7)',
         borderRadius: '2px',
     });
 
