@@ -3,9 +3,7 @@ import {window, Selection, Range, TextEditor, TextEditorDecorationType} from 'vs
 export class ActionDecorate {
 
     private static decoration = window.createTextEditorDecorationType({
-        borderStyle: 'solid',
-        borderWidth: '0 0 0 1ch',
-        borderColor: 'rgba(128, 128, 128, 0.7)',
+        backgroundColor: 'rgba(128, 128, 128, 0.7)',
         borderRadius: '2px',
     });
 
@@ -15,12 +13,6 @@ export class ActionDecorate {
         });
 
         textEditor.setDecorations(ActionDecorate.decoration, ranges);
-
-        return Promise.resolve(true);
-    }
-
-    static seletions(textEditor: TextEditor, selections: Selection[]): Thenable<boolean> {
-        textEditor.setDecorations(ActionDecorate.decoration, selections);
 
         return Promise.resolve(true);
     }
