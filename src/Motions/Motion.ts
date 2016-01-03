@@ -33,7 +33,7 @@ export class Motion {
             toCharacter = Infinity;
         }
 
-        toCharacter = Math.min(toCharacter, document.lineAt(toLine).text.length - 1);
+        toCharacter = Math.min(toCharacter, document.lineAt(toLine).text.length);
         toCharacter = Math.max(toCharacter, 0);
 
         return new Position(toLine, toCharacter);

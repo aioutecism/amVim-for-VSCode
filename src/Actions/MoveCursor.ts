@@ -5,9 +5,15 @@ import {MotionCharacter} from '../Motions/Character';
 
 export class ActionMoveCursor {
 
-    static byMotions(args: {motions: Motion[], isVisualMode?: boolean, isVisualLineMode?: boolean}): Thenable<boolean> {
+    static byMotions(args: {
+        motions: Motion[],
+        isVisualMode?: boolean,
+        isVisualLineMode?: boolean,
+        noEmptyAtLineEnd?: boolean
+    }): Thenable<boolean> {
         args.isVisualMode = args.isVisualMode === undefined ? false : args.isVisualMode;
         args.isVisualLineMode = args.isVisualLineMode === undefined ? false : args.isVisualLineMode;
+        args.noEmptyAtLineEnd = args.noEmptyAtLineEnd === undefined ? false : args.noEmptyAtLineEnd;
 
         const activeTextEditor = window.activeTextEditor;
 
@@ -16,6 +22,8 @@ export class ActionMoveCursor {
         }
 
         // TODO: Preserve character position
+
+        const document = activeTextEditor.document;
 
         activeTextEditor.selections = activeTextEditor.selections.map(selection => {
             let anchor: Position;
@@ -55,6 +63,13 @@ export class ActionMoveCursor {
                 }
             }
             else {
+                if (args.noEmptyAtLineEnd) {
+                    const lineEndCharacter = document.lineAt(active.line).text.length;
+                    if (lineEndCharacter !== 0 && active.character === lineEndCharacter) {
+                        active = active.translate(0, -1);
+                    }
+                }
+
                 anchor = active;
             }
 

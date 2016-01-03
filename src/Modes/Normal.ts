@@ -23,7 +23,7 @@ export class ModeNormal extends Mode {
     name = 'NORMAL';
 
     private maps: CommandMap[] = [
-        { keys: '{motion}', command: ActionMoveCursor.byMotions },
+        { keys: '{motion}', command: ActionMoveCursor.byMotions, args: {noEmptyAtLineEnd: true} },
 
         { keys: 'i', command: ActionMode.toInsert },
         { keys: 'I', command: () => ActionMoveCursor.byMotions({motions: [MotionLine.firstNonBlank()]}).then(ActionMode.toInsert) },
