@@ -27,7 +27,7 @@ export class ModeNormal extends Mode {
 
         { keys: 'i', command: ActionMode.toInsert },
         { keys: 'I', command: () => ActionMoveCursor.byMotions({motions: [MotionLine.firstNonBlank()]}).then(ActionMode.toInsert) },
-        { keys: 'a', command: () => ActionMoveCursor.byMotions({motions: [MotionCharacter.right()]}).then(ActionMode.toInsert) },
+        { keys: 'a', command: () => ActionMoveCursor.byMotions({motions: [MotionCharacter.appendRight()]}).then(ActionMode.toInsert) },
         { keys: 'A', command: () => ActionMoveCursor.byMotions({motions: [MotionLine.end()]}).then(ActionMode.toInsert) },
 
         { keys: 'o', command: () => ActionInsert.newLineAfter().then(ActionMode.toInsert) },

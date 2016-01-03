@@ -20,6 +20,15 @@ export class MotionCharacter extends Motion {
         return obj;
     }
 
+    static appendRight(args: {n?: number} = {}): Motion {
+        args.n = args.n === undefined ? 1 : args.n;
+
+        const obj = new MotionCharacter();
+        obj.translate(0, +args.n, {eofAppend: true});
+
+        return obj;
+    }
+
     static up(args: {n?: number} = {}): Motion {
         args.n = args.n === undefined ? 1 : args.n;
 
