@@ -30,8 +30,6 @@ export class ActionReplace {
             return Promise.resolve(false);
         }
 
-        const characters = Array(args.n + 1).join(args.character);
-
         let ranges = activeTextEditor.selections.map(selection => {
             return new Range(selection.active, selection.active.translate(0, args.n));
         });
@@ -40,7 +38,8 @@ export class ActionReplace {
 
         return activeTextEditor.edit((editBuilder) => {
             ranges.forEach(range => {
-                editBuilder.replace(range, characters);
+                let text = activeTextEditor.document.getText(range);
+                editBuilder.replace(range, text.replace(/[^\n]/g, args.character));
             });
         })
             .then(ActionReveal.primaryCursor);
