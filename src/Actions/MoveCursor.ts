@@ -21,7 +21,7 @@ export class ActionMoveCursor {
             let anchor: Position;
 
             let active = args.motions.reduce((position, motion) => {
-                return motion.apply(position);
+                return motion.apply(position, {isInclusive: args.isVisualMode});
             }, selection.active);
 
             if (args.isVisualMode) {
