@@ -5,6 +5,7 @@ import {ActionDecorate} from '../Actions/Decorate';
 import {ActionMoveCursor} from '../Actions/MoveCursor';
 import {ActionInsert} from '../Actions/Insert';
 import {ActionDelete} from '../Actions/Delete';
+import {ActionReplace} from '../Actions/Replace';
 import {ActionRegister} from '../Actions/Register';
 import {ActionSuggestion} from '../Actions/Suggestion';
 import {ActionJoinLines} from '../Actions/JoinLines';
@@ -53,6 +54,8 @@ export class ModeNormal extends Mode {
         } },
         { keys: 'c {motion}', command: (args: {motions: Motion[]}) => ActionDelete.byMotions(args).then(ActionMode.toInsert) },
         { keys: 'J', command: ActionJoinLines.onSelections },
+
+        { keys: 'r {char}', command: ActionReplace.characters },
 
         { keys: 'y y', command: ActionRegister.yankLine },
         { keys: 'Y', command: ActionRegister.yankLine },

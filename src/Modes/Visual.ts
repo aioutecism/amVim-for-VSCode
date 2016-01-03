@@ -4,6 +4,7 @@ import {ActionMoveCursor} from '../Actions/MoveCursor';
 import {ActionSelection} from '../Actions/Selection';
 import {ActionRegister} from '../Actions/Register';
 import {ActionDelete} from '../Actions/Delete';
+import {ActionReplace} from '../Actions/Replace';
 import {ActionIndent} from '../Actions/Indent';
 import {ActionJoinLines} from '../Actions/JoinLines';
 import {ActionMode} from '../Actions/Mode';
@@ -32,6 +33,8 @@ export class ModeVisual extends Mode {
             .then(ActionMode.toInsert) },
         { keys: 'y', command: () => ActionRegister.yankSelections().then(ActionSelection.shrinkToStarts) },
         { keys: 'J', command: () => ActionJoinLines.onSelections().then(ActionSelection.shrinkToActives) },
+
+        { keys: 'r {char}', command: ActionReplace.selections },
 
         { keys: '< <', command: ActionIndent.decrease },
         { keys: '> >', command: ActionIndent.increase },
