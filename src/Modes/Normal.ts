@@ -98,6 +98,7 @@ export class ModeNormal extends Mode {
         }
 
         this.disposables.push(window.onDidChangeTextEditorSelection((e) => {
+            // TODO: Cursor souldn't on linebreak.
             ActionDecorate.activeCursors(e.textEditor, e.selections);
         }));
     }

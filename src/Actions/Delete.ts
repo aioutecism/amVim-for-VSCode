@@ -5,6 +5,8 @@ import {UtilRange} from '../Utils/Range';
 
 export class ActionDelete {
 
+    // TODO: Yank deleted text to register.
+
     static byMotions(args: {motions: Motion[]}): Thenable<boolean> {
         const activeTextEditor = window.activeTextEditor;
 
