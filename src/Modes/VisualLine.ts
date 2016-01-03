@@ -6,6 +6,7 @@ import {ActionRegister} from '../Actions/Register';
 import {ActionDelete} from '../Actions/Delete';
 import {ActionJoinLines} from '../Actions/JoinLines';
 import {ActionMode} from '../Actions/Mode';
+import {ActionIndent} from '../Actions/Indent';
 import {MotionLine} from '../Motions/Line';
 
 export class ModeVisualLine extends Mode {
@@ -31,6 +32,9 @@ export class ModeVisualLine extends Mode {
             .then(ActionMode.toInsert) },
         { keys: 'y', command: () => ActionRegister.yankSelections().then(ActionSelection.shrinkToStarts) },
         { keys: 'J', command: () => ActionJoinLines.onSelections().then(ActionSelection.shrinkToActives) },
+
+        { keys: '< <', command: ActionIndent.decrease },
+        { keys: '> >', command: ActionIndent.increase },
 
         { keys: 'v', command: ActionMode.toVisual },
         { keys: 'V', command: ActionSelection.shrinkToPrimaryActive },
