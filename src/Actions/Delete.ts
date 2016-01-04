@@ -1,11 +1,10 @@
 import {window, commands, Range} from 'vscode';
+import {ActionRegister} from './Register';
 import {ActionReveal} from './Reveal';
 import {Motion} from '../Motions/Motion';
 import {UtilRange} from '../Utils/Range';
 
 export class ActionDelete {
-
-    // TODO: Yank deleted text to register.
 
     static byMotions(args: {motions: Motion[]}): Thenable<boolean> {
         const activeTextEditor = window.activeTextEditor;
@@ -28,13 +27,20 @@ export class ActionDelete {
 
         ranges = UtilRange.unionOverlaps(ranges);
 
+        ActionRegister.yankRanges(ranges);
+
         // TODO: Move cursor to first non-space if needed
 
-        return activeTextEditor.edit((editBuilder) => {
-            ranges.forEach((range) => editBuilder.delete(range));
-        })
+        return ActionRegister.yankRanges(ranges)
+            .then(() => {
+                return activeTextEditor.edit((editBuilder) => {
+                    ranges.forEach((range) => editBuilder.delete(range));
+                });
+            })
             .then(ActionReveal.primaryCursor);
     }
+
+    // TODO: Yank deleted text to register.
 
     static selectionsOrLeft(): Thenable<boolean> {
         return commands.executeCommand('deleteLeft');

@@ -55,6 +55,20 @@ export class ActionRegister {
         return Promise.resolve(true);
     }
 
+    static yankRanges(ranges: Range[]): Thenable<boolean> {
+        const activeTextEditor = window.activeTextEditor;
+
+        if (! activeTextEditor) {
+            return Promise.resolve(false);
+        }
+
+        ActionRegister.stash = ranges.map(range => {
+            return activeTextEditor.document.getText(range);
+        }).join('');
+
+        return Promise.resolve(true);
+    }
+
     static yankLine(): Thenable<boolean> {
         const activeTextEditor = window.activeTextEditor;
 
