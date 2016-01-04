@@ -1,7 +1,7 @@
 import {window, Disposable} from 'vscode';
 import {Mode, ModeID} from './Mode';
 import {CommandMap} from '../Mappers/Command';
-import {ActionDecorate} from '../Actions/Decorate';
+import {ActionBlockCursor} from '../Actions/Decorate';
 import {ActionMoveCursor} from '../Actions/MoveCursor';
 import {ActionInsert} from '../Actions/Insert';
 import {ActionDelete} from '../Actions/Delete';
@@ -79,8 +79,6 @@ export class ModeNormal extends Mode {
         { keys: 'escape', command: () => Promise.resolve(true) },
     ];
 
-    private disposables: Disposable[] = [];
-
     constructor() {
         super();
 
@@ -92,26 +90,13 @@ export class ModeNormal extends Mode {
     enter(): void {
         super.enter();
 
-        const activeTextEditor = window.activeTextEditor;
-        if (activeTextEditor) {
-            ActionDecorate.activeCursors(activeTextEditor, activeTextEditor.selections);
-        }
-
-        this.disposables.push(window.onDidChangeTextEditorSelection((e) => {
-            // TODO: Cursor souldn't on linebreak.
-            ActionDecorate.activeCursors(e.textEditor, e.selections);
-        }));
+        ActionBlockCursor.on();
     }
 
     exit(): void {
         super.exit();
 
-        Disposable.from(...this.disposables).dispose();
-
-        const activeTextEditor = window.activeTextEditor;
-        if (activeTextEditor) {
-            ActionDecorate.remove(activeTextEditor);
-        }
+        ActionBlockCursor.off();
     }
 
 }

@@ -1,6 +1,6 @@
-import {window, Selection, Range, TextEditor, TextEditorDecorationType} from 'vscode';
+import {window, Disposable, Selection, Range, TextEditor} from 'vscode';
 
-export class ActionDecorate {
+export class ActionBlockCursor {
 
     private static decoration = window.createTextEditorDecorationType({
         borderStyle: 'solid',
@@ -9,18 +9,42 @@ export class ActionDecorate {
         borderRadius: '2px',
     });
 
-    static activeCursors(textEditor: TextEditor, selections: Selection[]): Thenable<boolean> {
-        const ranges = selections.map(selection => {
-            return new Range(selection.active, selection.active.translate(0, +1));
-        });
+    private static isOn = false;
+    private static disposables: Disposable[] = [];
 
-        textEditor.setDecorations(ActionDecorate.decoration, ranges);
+    static on(): Thenable<boolean> {
+        ActionBlockCursor.isOn = true;
+
+        ActionBlockCursor.disposables.push(window.onDidChangeTextEditorSelection(e => {
+            ActionBlockCursor.handler(e.textEditor, e.selections);
+        }));
 
         return Promise.resolve(true);
     }
 
-    static remove(textEditor: TextEditor): Thenable<boolean> {
-        textEditor.setDecorations(ActionDecorate.decoration, []);
+    static off(): Thenable<boolean> {
+        ActionBlockCursor.isOn = false;
+
+        Disposable.from(...ActionBlockCursor.disposables).dispose();
+
+        const activeTextEditor = window.activeTextEditor;
+        if (activeTextEditor) {
+            activeTextEditor.setDecorations(ActionBlockCursor.decoration, []);
+        }
+
+        return Promise.resolve(true);
+    }
+
+    private static handler(textEditor: TextEditor, selections: Selection[]): Thenable<boolean> {
+        if (! ActionBlockCursor.isOn) {
+            return Promise.resolve(false);
+        }
+
+        const ranges = selections.map(selection => {
+            return new Range(selection.active, selection.active.translate(0, +1));
+        });
+
+        textEditor.setDecorations(ActionBlockCursor.decoration, ranges);
 
         return Promise.resolve(true);
     }
