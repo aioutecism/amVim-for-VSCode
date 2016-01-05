@@ -27,8 +27,6 @@ export class ActionDelete {
 
         ranges = UtilRange.unionOverlaps(ranges);
 
-        ActionRegister.yankRanges(ranges);
-
         // TODO: Move cursor to first non-space if needed
 
         return ActionRegister.yankRanges(ranges)
@@ -43,15 +41,75 @@ export class ActionDelete {
     // TODO: Yank deleted text to register.
 
     static selectionsOrLeft(): Thenable<boolean> {
-        return commands.executeCommand('deleteLeft');
+        const activeTextEditor = window.activeTextEditor;
+
+        if (! activeTextEditor) {
+            return Promise.resolve(false);
+        }
+
+        let ranges = activeTextEditor.selections.map(selection => {
+            return selection.isEmpty
+                ? new Range(selection.active, selection.active.translate(0, -1))
+                : selection;
+        });
+
+        ranges = UtilRange.unionOverlaps(ranges);
+
+        return ActionRegister.yankRanges(ranges)
+            .then(() => {
+                return activeTextEditor.edit((editBuilder) => {
+                    ranges.forEach((range) => editBuilder.delete(range));
+                });
+            })
+            .then(ActionReveal.primaryCursor);
     }
 
     static selectionsOrRight(): Thenable<boolean> {
-        return commands.executeCommand('deleteRight');
+        const activeTextEditor = window.activeTextEditor;
+
+        if (! activeTextEditor) {
+            return Promise.resolve(false);
+        }
+
+        let ranges = activeTextEditor.selections.map(selection => {
+            return selection.isEmpty
+                ? new Range(selection.active, selection.active.translate(0, +1))
+                : selection;
+        });
+
+        ranges = UtilRange.unionOverlaps(ranges);
+
+        return ActionRegister.yankRanges(ranges)
+            .then(() => {
+                return activeTextEditor.edit((editBuilder) => {
+                    ranges.forEach((range) => editBuilder.delete(range));
+                });
+            })
+            .then(ActionReveal.primaryCursor);
     }
 
     static line(): Thenable<boolean> {
-        return commands.executeCommand('editor.action.deleteLines')
+        const activeTextEditor = window.activeTextEditor;
+
+        if (! activeTextEditor) {
+            return Promise.resolve(false);
+        }
+
+        let ranges = activeTextEditor.selections.map(selection => {
+            return new Range(
+                selection.start.line, 0,
+                selection.end.line + 1, 0
+            );
+        });
+
+        ranges = UtilRange.unionOverlaps(ranges);
+
+        return ActionRegister.yankRanges(ranges)
+            .then(() => {
+                return activeTextEditor.edit((editBuilder) => {
+                    ranges.forEach((range) => editBuilder.delete(range));
+                });
+            })
             .then(ActionReveal.primaryCursor);
     }
 
