@@ -19,6 +19,11 @@ export class ActionBlockCursor {
             ActionBlockCursor.handler(e.textEditor, e.selections);
         }));
 
+        const activeTextEditor = window.activeTextEditor;
+        if (activeTextEditor) {
+            return ActionBlockCursor.handler(activeTextEditor, activeTextEditor.selections);
+        }
+
         return Promise.resolve(true);
     }
 

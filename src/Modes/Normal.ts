@@ -1,7 +1,7 @@
 import {window, Disposable} from 'vscode';
 import {Mode, ModeID} from './Mode';
 import {CommandMap} from '../Mappers/Command';
-import {ActionBlockCursor} from '../Actions/Decorate';
+import {ActionBlockCursor} from '../Actions/BlockCursor';
 import {ActionMoveCursor} from '../Actions/MoveCursor';
 import {ActionInsert} from '../Actions/Insert';
 import {ActionDelete} from '../Actions/Delete';
