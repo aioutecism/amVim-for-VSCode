@@ -48,7 +48,7 @@ export class ActionDelete {
         }
 
         let ranges = activeTextEditor.selections.map(selection => {
-            return selection.isEmpty
+            return selection.isEmpty && selection.active.character !== 0
                 ? new Range(selection.active, selection.active.translate(0, -1))
                 : selection;
         });
