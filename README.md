@@ -12,13 +12,6 @@ Feel free to open [issues](https://github.com/aioutecism/amVim-for-VSCode/issues
 The [Vim](http://www.vim.org/) mode for [Visual Studio Code](https://code.visualstudio.com/) that works as expected.
 
 
-## Why
-
-Because [this](https://github.com/74th/vscode-vim) and [this](https://github.com/VSCodeVim/Vim)
-are missing basic functions(such as multi-cursor support) I need.
-And they need a complete refactoring to meet my needs.
-
-
 ## Key features
 
 - Vim style keybindings & looks
@@ -35,3 +28,9 @@ And they need a complete refactoring to meet my needs.
 ## Commands
 
 Check the list [here](https://github.com/aioutecism/amVim-for-VSCode/issues/1).
+
+
+## Similar projects
+
+- [74th/vscode-vim](https://github.com/74th/vscode-vim)
+- [VSCodeVim/Vim](https://github.com/VSCodeVim/Vim)
