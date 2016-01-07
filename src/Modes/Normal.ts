@@ -33,26 +33,26 @@ export class ModeNormal extends Mode {
         { keys: 'o', command: () => ActionInsert.newLineAfter().then(ActionMode.toInsert) },
         { keys: 'O', command: () => ActionInsert.newLineBefore().then(ActionMode.toInsert) },
 
-        { keys: 's', command: () => ActionDelete.selectionsOrRight().then(ActionMode.toInsert) },
+        { keys: 's', command: () => ActionDelete.selectionsOrRight({shouldYank: true}).then(ActionMode.toInsert) },
 
-        { keys: 'X', command: () => ActionDelete.selectionsOrLeft().then(ActionSuggestion.hide) },
-        { keys: 'x', command: () => ActionDelete.selectionsOrRight().then(ActionSuggestion.hide) },
-        { keys: 'delete', command: () => ActionDelete.selectionsOrRight().then(ActionSuggestion.hide) },
-        { keys: 'd d', command: ActionDelete.line },
-        { keys: 'D', command: () => ActionDelete.byMotions({motions: [MotionLine.end()]}) },
-        { keys: 'd {motion}', command: ActionDelete.byMotions },
-        { keys: 'C', command: () => ActionDelete.byMotions({motions: [MotionLine.end()]}).then(ActionMode.toInsert) },
+        { keys: 'X', command: () => ActionDelete.selectionsOrLeft({shouldYank: true}).then(ActionSuggestion.hide) },
+        { keys: 'x', command: () => ActionDelete.selectionsOrRight({shouldYank: true}).then(ActionSuggestion.hide) },
+        { keys: 'delete', command: () => ActionDelete.selectionsOrRight({shouldYank: true}).then(ActionSuggestion.hide) },
+        { keys: 'd d', command: ActionDelete.line, args: {shouldYank: true} },
+        { keys: 'D', command: () => ActionDelete.byMotions({motions: [MotionLine.end()], shouldYank: true}) },
+        { keys: 'd {motion}', command: ActionDelete.byMotions, args: {shouldYank: true} },
+        { keys: 'C', command: () => ActionDelete.byMotions({motions: [MotionLine.end()], shouldYank: true}).then(ActionMode.toInsert) },
         { keys: 'c c', command: () => {
             return ActionMoveCursor.byMotions({motions: [MotionLine.firstNonBlank()]})
-                .then(ActionDelete.byMotions.bind(undefined, {motions: [MotionLine.end()]}))
+                .then(ActionDelete.byMotions.bind(undefined, {motions: [MotionLine.end()], shouldYank: true}))
                 .then(ActionMode.toInsert);
         } },
         { keys: 'S', command: () => {
             return ActionMoveCursor.byMotions({motions: [MotionLine.firstNonBlank()]})
-                .then(ActionDelete.byMotions.bind(undefined, {motions: [MotionLine.end()]}))
+                .then(ActionDelete.byMotions.bind(undefined, {motions: [MotionLine.end()], shouldYank: true}))
                 .then(ActionMode.toInsert);
         } },
-        { keys: 'c {motion}', command: (args: {motions: Motion[]}) => ActionDelete.byMotions(args).then(ActionMode.toInsert) },
+        { keys: 'c {motion}', command: (args: {motions: Motion[], shouldYank?: boolean}) => ActionDelete.byMotions(args).then(ActionMode.toInsert), args: {shouldYank: true} },
         { keys: 'J', command: ActionJoinLines.onSelections },
 
         { keys: 'r {char}', command: ActionReplace.characters },

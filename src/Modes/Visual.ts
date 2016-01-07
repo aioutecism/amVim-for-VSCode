@@ -21,15 +21,15 @@ export class ModeVisual extends Mode {
         { keys: 'I', command: () => ActionSelection.shrinkToStarts().then(ActionMode.toInsert) },
         { keys: 'A', command: () => ActionSelection.shrinkToEnds().then(ActionMode.toInsert) },
 
-        { keys: 'backspace', command: ActionDelete.selectionsOrRight },
-        { keys: 'delete', command: ActionDelete.selectionsOrRight },
-        { keys: 'x', command: ActionDelete.selectionsOrRight },
-        { keys: 'X', command: ActionDelete.line },
-        { keys: 'd', command: ActionDelete.selectionsOrRight },
-        { keys: 'D', command: ActionDelete.line },
-        { keys: 'c', command: () => ActionDelete.selectionsOrRight().then(ActionMode.toInsert) },
+        { keys: 'backspace', command: ActionDelete.selectionsOrRight, args: {shouldYank: true} },
+        { keys: 'delete', command: ActionDelete.selectionsOrRight, args: {shouldYank: true} },
+        { keys: 'x', command: ActionDelete.selectionsOrRight, args: {shouldYank: true} },
+        { keys: 'X', command: ActionDelete.line, args: {shouldYank: true} },
+        { keys: 'd', command: ActionDelete.selectionsOrRight, args: {shouldYank: true} },
+        { keys: 'D', command: ActionDelete.line, args: {shouldYank: true} },
+        { keys: 'c', command: () => ActionDelete.selectionsOrRight({shouldYank: true}).then(ActionMode.toInsert) },
         { keys: 'C', command: () => ActionSelection.shrinkToStarts()
-            .then(ActionDelete.byMotions.bind(undefined, {motions: [MotionLine.end()]}))
+            .then(ActionDelete.byMotions.bind(undefined, {motions: [MotionLine.end()], shouldYank: true}))
             .then(ActionMode.toInsert) },
         { keys: 'y', command: () => ActionRegister.yankSelections().then(ActionSelection.shrinkToStarts) },
         { keys: 'J', command: () => ActionJoinLines.onSelections().then(ActionSelection.shrinkToActives) },

@@ -6,7 +6,12 @@ import {UtilRange} from '../Utils/Range';
 
 export class ActionDelete {
 
-    static byMotions(args: {motions: Motion[]}): Thenable<boolean> {
+    static byMotions(args: {
+        motions: Motion[],
+        shouldYank?: boolean
+    }): Thenable<boolean> {
+        args.shouldYank = args.shouldYank === undefined ? false : args.shouldYank;
+
         const activeTextEditor = window.activeTextEditor;
 
         if (! activeTextEditor) {
@@ -29,7 +34,7 @@ export class ActionDelete {
 
         // TODO: Move cursor to first non-space if needed
 
-        return ActionRegister.yankRanges(ranges)
+        return (args.shouldYank ? ActionRegister.yankRanges(ranges) : Promise.resolve(true))
             .then(() => {
                 return activeTextEditor.edit((editBuilder) => {
                     ranges.forEach((range) => editBuilder.delete(range));
@@ -38,8 +43,12 @@ export class ActionDelete {
             .then(ActionReveal.primaryCursor);
     }
 
-    static selectionsOrLeft(args: {isMultiLine?: boolean} = {}): Thenable<boolean> {
+    static selectionsOrLeft(args: {
+        isMultiLine?: boolean,
+        shouldYank?: boolean
+    } = {}): Thenable<boolean> {
         args.isMultiLine = args.isMultiLine === undefined ? false : args.isMultiLine;
+        args.shouldYank = args.shouldYank === undefined ? false : args.shouldYank;
 
         const activeTextEditor = window.activeTextEditor;
 
@@ -85,7 +94,7 @@ export class ActionDelete {
 
         ranges = UtilRange.unionOverlaps(ranges);
 
-        return ActionRegister.yankRanges(ranges)
+        return (args.shouldYank ? ActionRegister.yankRanges(ranges) : Promise.resolve(true))
             .then(() => {
                 return activeTextEditor.edit((editBuilder) => {
                     ranges.forEach((range) => editBuilder.delete(range));
@@ -94,8 +103,12 @@ export class ActionDelete {
             .then(ActionReveal.primaryCursor);
     }
 
-    static selectionsOrRight(args: {isMultiLine?: boolean} = {}): Thenable<boolean> {
+    static selectionsOrRight(args: {
+        isMultiLine?: boolean,
+        shouldYank?: boolean
+    } = {}): Thenable<boolean> {
         args.isMultiLine = args.isMultiLine === undefined ? false : args.isMultiLine;
+        args.shouldYank = args.shouldYank === undefined ? false : args.shouldYank;
 
         const activeTextEditor = window.activeTextEditor;
 
@@ -141,7 +154,7 @@ export class ActionDelete {
 
         ranges = UtilRange.unionOverlaps(ranges);
 
-        return ActionRegister.yankRanges(ranges)
+        return (args.shouldYank ? ActionRegister.yankRanges(ranges) : Promise.resolve(true))
             .then(() => {
                 return activeTextEditor.edit((editBuilder) => {
                     ranges.forEach((range) => editBuilder.delete(range));
@@ -150,7 +163,11 @@ export class ActionDelete {
             .then(ActionReveal.primaryCursor);
     }
 
-    static line(): Thenable<boolean> {
+    static line(args: {
+        shouldYank?: boolean
+    }): Thenable<boolean> {
+        args.shouldYank = args.shouldYank === undefined ? false : args.shouldYank;
+
         const activeTextEditor = window.activeTextEditor;
 
         if (! activeTextEditor) {
@@ -166,7 +183,7 @@ export class ActionDelete {
 
         ranges = UtilRange.unionOverlaps(ranges);
 
-        return ActionRegister.yankRanges(ranges)
+        return (args.shouldYank ? ActionRegister.yankRanges(ranges) : Promise.resolve(true))
             .then(() => {
                 return activeTextEditor.edit((editBuilder) => {
                     ranges.forEach((range) => editBuilder.delete(range));
