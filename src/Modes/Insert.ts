@@ -18,8 +18,8 @@ export class ModeInsert extends Mode {
         { keys: 'space', command: ActionInsert.characterAtSelections, args: {character: ' '} },
         { keys: 'enter', command: ActionInsert.lineBreakAtSelections },
         { keys: 'tab', command: ActionInsert.tabAtSelections },
-        { keys: 'backspace', command: ActionDelete.selectionsOrLeft },
-        { keys: 'delete', command: ActionDelete.selectionsOrRight },
+        { keys: 'backspace', command: ActionDelete.selectionsOrLeft, args: {isMultiLine: true} },
+        { keys: 'delete', command: ActionDelete.selectionsOrRight, args: {isMultiLine: true} },
 
         { keys: 'ctrl+w', command: () => ActionDelete.byMotions({motions: [MotionWord.prevStart()]}) },
         { keys: 'ctrl+u', command: () => ActionDelete.byMotions({motions: [MotionLine.firstNonBlank()]}) },
