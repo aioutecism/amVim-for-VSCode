@@ -10,6 +10,7 @@ import {ActionRegister} from '../Actions/Register';
 import {ActionSuggestion} from '../Actions/Suggestion';
 import {ActionJoinLines} from '../Actions/JoinLines';
 import {ActionFind} from '../Actions/Find';
+import {ActionSelection} from '../Actions/Selection';
 import {ActionHistory} from '../Actions/History';
 import {ActionIndent} from '../Actions/Indent';
 import {ActionMode} from '../Actions/Mode';
@@ -76,7 +77,7 @@ export class ModeNormal extends Mode {
 
         { keys: 'v', command: ActionMode.toVisual },
         { keys: 'V', command: ActionMode.toVisualLine },
-        { keys: 'escape', command: () => Promise.resolve(true) },
+        { keys: 'escape', command: ActionSelection.shrinkToPrimaryActive },
     ];
 
     constructor() {
