@@ -25,6 +25,9 @@ export class ActionMoveCursor {
 
         const document = activeTextEditor.document;
 
+        // HACK: Work arounds revealRange's horizontal scroll bug
+        const primaryCursorCharacter = activeTextEditor.selection.active.character;
+
         activeTextEditor.selections = activeTextEditor.selections.map(selection => {
             let anchor: Position;
 
@@ -76,7 +79,10 @@ export class ActionMoveCursor {
             return new Selection(anchor, active);
         });
 
-        return ActionReveal.primaryCursor();
+        // HACK: Work arounds revealRange's horizontal scroll bug
+        const shouldCenterIfOutsideViewport = activeTextEditor.selection.active.character !== primaryCursorCharacter;
+
+        return ActionReveal.primaryCursor({shouldCenterIfOutsideViewport: shouldCenterIfOutsideViewport});
     }
 
 }
