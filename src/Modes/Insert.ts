@@ -31,7 +31,7 @@ export class ModeInsert extends Mode {
         .concat(Keys.characters.map(key => {
             return { keys: key, command: (args) => {
                 return ActionInsert.characterAtSelections(args)
-                    .then(ActionSuggestion.trigger);
+                    .then(ActionSuggestion.trigger.bind(undefined, {key: key}));
             }, args: {character: key} };
         }));
 
