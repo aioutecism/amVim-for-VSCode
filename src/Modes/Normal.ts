@@ -75,8 +75,11 @@ export class ModeNormal extends Mode {
         { keys: '< <', command: ActionIndent.decrease },
         { keys: '> >', command: ActionIndent.increase },
 
+        { keys: '/', command: ActionFind.focusFindWidget },
+
         { keys: 'v', command: ActionMode.toVisual },
         { keys: 'V', command: ActionMode.toVisualLine },
+
         { keys: 'escape', command: ActionSelection.shrinkToPrimaryActive },
     ];
 

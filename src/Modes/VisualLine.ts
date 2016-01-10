@@ -7,6 +7,7 @@ import {ActionDelete} from '../Actions/Delete';
 import {ActionInsert} from '../Actions/Insert';
 import {ActionReplace} from '../Actions/Replace';
 import {ActionJoinLines} from '../Actions/JoinLines';
+import {ActionFind} from '../Actions/Find';
 import {ActionMode} from '../Actions/Mode';
 import {ActionIndent} from '../Actions/Indent';
 import {MotionLine} from '../Motions/Line';
@@ -37,6 +38,8 @@ export class ModeVisualLine extends Mode {
 
         { keys: '< <', command: ActionIndent.decrease },
         { keys: '> >', command: ActionIndent.increase },
+
+        { keys: '/', command: ActionFind.focusFindWidget },
 
         { keys: 'v', command: ActionMode.toVisual },
         { keys: 'V', command: ActionSelection.shrinkToPrimaryActive },

@@ -2,6 +2,10 @@ import {window, commands, Selection} from 'vscode';
 
 export class ActionFind {
 
+    static focusFindWidget(): Thenable<boolean> {
+        return commands.executeCommand('actions.find');
+    }
+
     // TODO: Implement independent find function to avoid visual flashing.
 
     static byIndicator(): Thenable<boolean> {
