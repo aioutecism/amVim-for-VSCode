@@ -2,6 +2,8 @@ import {window, Position, Range} from 'vscode';
 
 export class Motion {
 
+    isCharacterUpdated = true;
+
     private lineDelta = 0;
     private characterDelta = 0;
 

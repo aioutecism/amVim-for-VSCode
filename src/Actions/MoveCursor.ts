@@ -5,6 +5,41 @@ import {MotionCharacter} from '../Motions/Character';
 
 export class ActionMoveCursor {
 
+    private static preferedCharacterBySelectionIndex: {[i: number]: number} = [];
+    private static isUpdatePreferedCharacterBlocked = false;
+    private static preferedCharacterLockTimer: number;
+
+    private static blockUpdatePreferedCharacter(): void {
+        if (ActionMoveCursor.preferedCharacterLockTimer) {
+            clearTimeout(ActionMoveCursor.preferedCharacterLockTimer);
+        }
+
+        ActionMoveCursor.isUpdatePreferedCharacterBlocked = true;
+
+        ActionMoveCursor.preferedCharacterLockTimer = setTimeout(function() {
+            ActionMoveCursor.isUpdatePreferedCharacterBlocked = false;
+            ActionMoveCursor.preferedCharacterLockTimer = null;
+        }, 100);
+    }
+
+    static updatePreferedCharacter(): Thenable<boolean> {
+        if (ActionMoveCursor.isUpdatePreferedCharacterBlocked) {
+            return Promise.resolve(false);
+        }
+
+        const activeTextEditor = window.activeTextEditor;
+
+        if (! activeTextEditor) {
+            return Promise.resolve(false);
+        }
+
+        ActionMoveCursor.preferedCharacterBySelectionIndex = activeTextEditor.selections.map((selection, i) => {
+            return selection.active.character;
+        });
+
+        return Promise.resolve(true);
+    }
+
     static byMotions(args: {
         motions: Motion[],
         isVisualMode?: boolean,
@@ -21,18 +56,24 @@ export class ActionMoveCursor {
             return Promise.resolve(false);
         }
 
-        // TODO: Preserve character position
+        // Prevent prefered character update if no motion updates character.
+        if (args.motions.every(motion => ! motion.isCharacterUpdated)) {
+            ActionMoveCursor.blockUpdatePreferedCharacter();
+        }
 
         const document = activeTextEditor.document;
 
         // HACK: Work arounds revealRange's horizontal scroll bug
         const primaryCursorCharacter = activeTextEditor.selection.active.character;
 
-        activeTextEditor.selections = activeTextEditor.selections.map(selection => {
+        activeTextEditor.selections = activeTextEditor.selections.map((selection, i) => {
             let anchor: Position;
 
             let active = args.motions.reduce((position, motion) => {
-                return motion.apply(position, {isInclusive: args.isVisualMode});
+                return motion.apply(position, {
+                    isInclusive: args.isVisualMode,
+                    preferedCharacter: ActionMoveCursor.preferedCharacterBySelectionIndex[i]
+                });
             }, selection.active);
 
             if (args.isVisualMode) {

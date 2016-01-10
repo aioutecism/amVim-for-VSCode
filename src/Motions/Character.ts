@@ -1,3 +1,4 @@
+import {Position} from 'vscode';
 import {Motion} from './Motion';
 
 export class MotionCharacter extends Motion {
@@ -26,6 +27,8 @@ export class MotionCharacter extends Motion {
         const obj = new MotionCharacter();
         obj.translate(-args.n, 0);
 
+        obj.isCharacterUpdated = false;
+
         return obj;
     }
 
@@ -35,7 +38,17 @@ export class MotionCharacter extends Motion {
         const obj = new MotionCharacter();
         obj.translate(+args.n, 0);
 
+        obj.isCharacterUpdated = false;
+
         return obj;
+    }
+
+    apply(from: Position, option: {preferedCharacter?: number} = {}): Position {
+        if (! this.isCharacterUpdated && option.preferedCharacter !== undefined) {
+            from = from.with(undefined, option.preferedCharacter);
+        }
+
+        return super.apply(from);
     }
 
 }

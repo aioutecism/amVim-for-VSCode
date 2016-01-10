@@ -6,6 +6,7 @@ import {ModeVisual} from './Modes/Visual';
 import {ModeVisualLine} from './Modes/VisualLine';
 import {ModeInsert} from './Modes/Insert';
 import {ActionMode} from './Actions/Mode';
+import {ActionMoveCursor} from './Actions/MoveCursor';
 
 export class Dispatcher {
 
@@ -34,10 +35,13 @@ export class Dispatcher {
             context.subscriptions.push(commands.registerCommand(`vim.${key}`, this.inputHandler(key)));
         });
 
+        ActionMoveCursor.updatePreferedCharacter();
+
         this.switchMode(ModeID.NORMAL);
 
         this.disposables.push(window.onDidChangeTextEditorSelection((e) => {
             ActionMode.switchBySelections(this.currentMode.id, e.selections);
+            ActionMoveCursor.updatePreferedCharacter();
         }));
     }
 
