@@ -39,10 +39,16 @@ export class Dispatcher {
 
         this.switchMode(ModeID.NORMAL);
 
-        this.disposables.push(window.onDidChangeTextEditorSelection((e) => {
-            ActionMode.switchBySelections(this.currentMode.id, e.selections);
-            ActionMoveCursor.updatePreferedCharacter();
-        }));
+        this.disposables.push(
+            window.onDidChangeTextEditorSelection((e) => {
+                ActionMode.switchBySelections(this.currentMode.id, e.selections);
+                ActionMoveCursor.updatePreferedCharacter();
+            }),
+            window.onDidChangeActiveTextEditor((e) => {
+                ActionMode.switchBySelections(this.currentMode.id, e.selections);
+                ActionMoveCursor.updatePreferedCharacter();
+            })
+        );
     }
 
     inputHandler(key: string): () => void {
