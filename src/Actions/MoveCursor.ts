@@ -7,18 +7,18 @@ export class ActionMoveCursor {
 
     private static preferedCharacterBySelectionIndex: {[i: number]: number} = [];
     private static isUpdatePreferedCharacterBlocked = false;
-    private static preferedCharacterLockTimer: number;
+    private static preferedCharacterBlockTimer: number;
 
     private static blockUpdatePreferedCharacter(): void {
-        if (ActionMoveCursor.preferedCharacterLockTimer) {
-            clearTimeout(ActionMoveCursor.preferedCharacterLockTimer);
+        if (ActionMoveCursor.preferedCharacterBlockTimer) {
+            clearTimeout(ActionMoveCursor.preferedCharacterBlockTimer);
         }
 
         ActionMoveCursor.isUpdatePreferedCharacterBlocked = true;
 
-        ActionMoveCursor.preferedCharacterLockTimer = setTimeout(function() {
+        ActionMoveCursor.preferedCharacterBlockTimer = setTimeout(function() {
             ActionMoveCursor.isUpdatePreferedCharacterBlocked = false;
-            ActionMoveCursor.preferedCharacterLockTimer = null;
+            ActionMoveCursor.preferedCharacterBlockTimer = null;
         }, 100);
     }
 
@@ -33,9 +33,8 @@ export class ActionMoveCursor {
             return Promise.resolve(false);
         }
 
-        ActionMoveCursor.preferedCharacterBySelectionIndex = activeTextEditor.selections.map((selection, i) => {
-            return selection.active.character;
-        });
+        ActionMoveCursor.preferedCharacterBySelectionIndex =
+            activeTextEditor.selections.map(selection => selection.active.character);
 
         return Promise.resolve(true);
     }
