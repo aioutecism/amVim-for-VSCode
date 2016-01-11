@@ -30,6 +30,18 @@ The [Vim](http://www.vim.org/) mode for [Visual Studio Code](https://code.visual
 Check the list [here](https://github.com/aioutecism/amVim-for-VSCode/issues/1).
 
 
+## Configuration
+
+You can overwrite default configurations in
+[User and Workspace Settings](https://code.visualstudio.com/docs/customization/userandworkspace).
+
+#### `bindCtrlC`
+
+`Boolean`, Default: `false`
+
+Set to `true` to bind `Ctrl+C` as the same behaviour in Vim.
+
+
 ## Similar projects
 
 - [74th/vscode-vim](https://github.com/74th/vscode-vim)
