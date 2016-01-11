@@ -1,3 +1,5 @@
+import {commands} from 'vscode';
+import {Configuration} from '../Configuration';
 import {Mode, ModeID} from './Mode';
 import {CommandMap} from '../Mappers/Command';
 import {ActionMoveCursor} from '../Actions/MoveCursor';
@@ -45,6 +47,10 @@ export class ModeVisualLine extends Mode {
         { keys: 'v', command: ActionMode.toVisual },
         { keys: 'V', command: ActionSelection.shrinkToPrimaryActive },
 
+        { keys: 'ctrl+c', command: () => Configuration.get('bindCtrlC')
+            ? ActionSuggestion.hide().then(ActionSelection.shrinkToPrimaryActive)
+            : commands.executeCommand('editor.action.clipboardCopyAction')
+        },
         { keys: 'escape', command: () => ActionSuggestion.hide().then(ActionSelection.shrinkToPrimaryActive) },
     ];
 

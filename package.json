@@ -33,6 +33,16 @@
     },
     "main": "./out/src/extension",
     "contributes": {
+        "configuration": {
+            "title": "amVim configuration",
+            "properties": {
+                "amVim.bindCtrlC": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Bind `ctrl+c` as the same behaviour in Vim."
+                }
+            }
+        },
         "keybindings": [
             { "command": "vim.a", "key": "a", "when": "editorTextFocus && !suggestWidgetVisible" },
             { "command": "vim.b", "key": "b", "when": "editorTextFocus && !suggestWidgetVisible" },
@@ -146,6 +156,7 @@
             { "command": "vim.alt+b", "key": "alt+b", "when": "editorTextFocus && !suggestWidgetVisible" },
             { "command": "vim.alt+w", "key": "alt+w", "when": "editorTextFocus && !suggestWidgetVisible" },
 
+            { "command": "vim.ctrl+c", "key": "ctrl+c", "when": "editorTextFocus" },
             { "command": "vim.ctrl+r", "key": "ctrl+r", "when": "editorTextFocus && !suggestWidgetVisible" },
             { "command": "vim.ctrl+u", "key": "ctrl+u", "when": "editorTextFocus && !suggestWidgetVisible" },
             { "command": "vim.ctrl+w", "key": "ctrl+w", "when": "editorTextFocus && !suggestWidgetVisible" }
