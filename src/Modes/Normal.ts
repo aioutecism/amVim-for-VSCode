@@ -80,7 +80,7 @@ export class ModeNormal extends Mode {
         { keys: 'v', command: ActionMode.toVisual },
         { keys: 'V', command: ActionMode.toVisualLine },
 
-        { keys: 'escape', command: ActionSelection.shrinkToPrimaryActive },
+        { keys: 'escape', command: () => ActionSuggestion.hide().then(ActionSelection.shrinkToPrimaryActive) },
     ];
 
     constructor() {

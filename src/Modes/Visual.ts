@@ -2,6 +2,7 @@ import {Mode, ModeID} from './Mode';
 import {CommandMap} from '../Mappers/Command';
 import {ActionMoveCursor} from '../Actions/MoveCursor';
 import {ActionSelection} from '../Actions/Selection';
+import {ActionSuggestion} from '../Actions/Suggestion';
 import {ActionRegister} from '../Actions/Register';
 import {ActionDelete} from '../Actions/Delete';
 import {ActionReplace} from '../Actions/Replace';
@@ -45,7 +46,7 @@ export class ModeVisual extends Mode {
         { keys: 'V', command: ActionMode.toVisualLine },
         { keys: 'v', command: ActionSelection.shrinkToPrimaryActive },
 
-        { keys: 'escape', command: ActionSelection.shrinkToPrimaryActive },
+        { keys: 'escape', command: () => ActionSuggestion.hide().then(ActionSelection.shrinkToPrimaryActive) },
     ];
 
     constructor() {

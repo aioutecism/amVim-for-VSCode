@@ -24,9 +24,12 @@ export class ModeInsert extends Mode {
         { keys: 'ctrl+w', command: () => ActionDelete.byMotions({motions: [MotionWord.prevStart()]}) },
         { keys: 'ctrl+u', command: () => ActionDelete.byMotions({motions: [MotionLine.firstNonBlank()]}) },
 
-        { keys: 'escape', command: () => ActionSelection.shrinkAStep().then((isShrinked) => {
-            return isShrinked ? Promise.resolve(true) : ActionMode.toNormal();
-        }) },
+        { keys: 'escape', command: () => ActionSuggestion.hide()
+            .then(ActionSelection.shrinkAStep)
+            .then((isShrinked) => {
+                return isShrinked ? Promise.resolve(true) : ActionMode.toNormal();
+            })
+        },
     ]
         .concat(Keys.characters.map(key => {
             return { keys: key, command: (args) => {

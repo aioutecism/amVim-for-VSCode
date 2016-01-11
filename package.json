@@ -136,10 +136,10 @@
 
             { "command": "vim.space",     "key": "space",     "when": "editorTextFocus && !suggestWidgetVisible" },
             { "command": "vim.enter",     "key": "enter",     "when": "editorTextFocus && !suggestWidgetVisible" },
-            { "command": "vim.escape",    "key": "escape",    "when": "editorTextFocus && !suggestWidgetVisible" },
             { "command": "vim.tab",       "key": "tab",       "when": "editorTextFocus && !suggestWidgetVisible" },
             { "command": "vim.backspace", "key": "backspace", "when": "editorTextFocus && !suggestWidgetVisible" },
             { "command": "vim.delete",    "key": "delete",    "when": "editorTextFocus && !suggestWidgetVisible" },
+            { "command": "vim.escape",    "key": "escape",    "when": "editorTextFocus" },
 
             { "command": "vim.shift+enter", "key": "shift+enter", "when": "editorTextFocus && !suggestWidgetVisible" },
 
