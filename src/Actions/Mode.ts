@@ -1,4 +1,4 @@
-import {commands, Selection} from 'vscode';
+import {window, commands} from 'vscode';
 import {ModeID} from '../Modes/Mode';
 
 export class ActionMode {
@@ -19,7 +19,15 @@ export class ActionMode {
         return commands.executeCommand(`vim.mode.${ModeID.INSERT}`);
     }
 
-    static switchBySelections(currentMode: ModeID, selections: Selection[]): Thenable<boolean> {
+    static switchByActiveSelections(currentMode: ModeID): Thenable<boolean> {
+        const activeTextEditor = window.activeTextEditor;
+
+        if (! activeTextEditor) {
+            return Promise.resolve(false);
+        }
+
+        const selections = activeTextEditor.selections;
+
         let mode: ModeID;
 
         if (currentMode === ModeID.INSERT) {

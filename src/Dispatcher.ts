@@ -40,12 +40,12 @@ export class Dispatcher {
         this.switchMode(ModeID.NORMAL);
 
         this.disposables.push(
-            window.onDidChangeTextEditorSelection((e) => {
-                ActionMode.switchBySelections(this.currentMode.id, e.selections);
+            window.onDidChangeTextEditorSelection(() => {
+                ActionMode.switchByActiveSelections(this.currentMode.id);
                 ActionMoveCursor.updatePreferedCharacter();
             }),
-            window.onDidChangeActiveTextEditor((e) => {
-                ActionMode.switchBySelections(this.currentMode.id, e.selections);
+            window.onDidChangeActiveTextEditor(() => {
+                ActionMode.switchByActiveSelections(this.currentMode.id);
                 ActionMoveCursor.updatePreferedCharacter();
             })
         );
