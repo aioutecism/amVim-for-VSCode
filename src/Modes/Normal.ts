@@ -94,6 +94,8 @@ export class ModeNormal extends Mode {
         this.maps.forEach(map => {
             this.mapper.map(map.keys, map.command, map.args);
         });
+
+        // TODO: No empty at line end when changing selections by mouse
     }
 
     enter(): void {
