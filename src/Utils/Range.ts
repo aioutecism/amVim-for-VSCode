@@ -1,4 +1,5 @@
-import {Range} from 'vscode';
+import {TextDocument, Range} from 'vscode';
+import {UtilPosition} from './Position';
 
 export class UtilRange {
 
@@ -26,6 +27,13 @@ export class UtilRange {
             from.start.line, 0,
             from.end.line + 1, 0
         )
+    }
+
+    static fitIntoDocument(document: TextDocument, from: Range): Range {
+        return new Range(
+            UtilPosition.fitIntoDocument(document, from.start),
+            UtilPosition.fitIntoDocument(document, from.end)
+        );
     }
 
 }
