@@ -13,6 +13,20 @@ export class ActionRegister {
 
     private static stash: string = '';
 
+    static yankRanges(ranges: Range[]): Thenable<boolean> {
+        const activeTextEditor = window.activeTextEditor;
+
+        if (! activeTextEditor) {
+            return Promise.resolve(false);
+        }
+
+        ActionRegister.stash = ranges.map(range => {
+            return activeTextEditor.document.getText(range);
+        }).join('');
+
+        return Promise.resolve(true);
+    }
+
     static yankByMotions(args: {motions: Motion[]}): Thenable<boolean> {
         const activeTextEditor = window.activeTextEditor;
 
@@ -34,11 +48,7 @@ export class ActionRegister {
 
         ranges = UtilRange.unionOverlaps(ranges);
 
-        ActionRegister.stash = ranges.map(range => {
-            return activeTextEditor.document.getText(range);
-        }).join('');
-
-        return Promise.resolve(true);
+        return ActionRegister.yankRanges(ranges);
     }
 
     static yankSelections(): Thenable<boolean> {
@@ -48,28 +58,10 @@ export class ActionRegister {
             return Promise.resolve(false);
         }
 
-        ActionRegister.stash = activeTextEditor.selections.map(range => {
-            return activeTextEditor.document.getText(range);
-        }).join('');
-
-        return Promise.resolve(true);
+        return ActionRegister.yankRanges(activeTextEditor.selections);
     }
 
-    static yankRanges(ranges: Range[]): Thenable<boolean> {
-        const activeTextEditor = window.activeTextEditor;
-
-        if (! activeTextEditor) {
-            return Promise.resolve(false);
-        }
-
-        ActionRegister.stash = ranges.map(range => {
-            return activeTextEditor.document.getText(range);
-        }).join('');
-
-        return Promise.resolve(true);
-    }
-
-    static yankLine(): Thenable<boolean> {
+    static yankLines(): Thenable<boolean> {
         const activeTextEditor = window.activeTextEditor;
 
         if (! activeTextEditor) {
@@ -77,19 +69,12 @@ export class ActionRegister {
         }
 
         let ranges = activeTextEditor.selections.map(selection => {
-            return new Range(
-                selection.active.line, 0,
-                selection.active.line + 1, 0
-            );
+            return UtilRange.toLinewise(selection);
         });
 
         ranges = UtilRange.unionOverlaps(ranges);
 
-        ActionRegister.stash = ranges.map(range => {
-            return activeTextEditor.document.getText(range);
-        }).join('');
-
-        return Promise.resolve(true);
+        return ActionRegister.yankRanges(ranges);
     }
 
     static putAfter(): Thenable<boolean> {
