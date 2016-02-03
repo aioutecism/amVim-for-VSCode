@@ -22,7 +22,7 @@ export abstract class GenericMapper {
         this.specialKeys = specialKeys;
     }
 
-    private static isGenericMap(node: RecursiveMap | GenericMap): boolean {
+    private static isMapLeaf(node: RecursiveMap | GenericMap): boolean {
         return node && typeof (node as GenericMap).keys === 'string';
     }
 
@@ -40,7 +40,7 @@ export abstract class GenericMapper {
                 specialKey.unmapConflicts(node as RecursiveMap, key);
             })
 
-            if (GenericMapper.isGenericMap(node[key])) {
+            if (GenericMapper.isMapLeaf(node[key])) {
                 delete node[key];
             }
 
@@ -105,7 +105,7 @@ export abstract class GenericMapper {
         if (! matched) {
             return {type: MatchResultType.FAILED};
         }
-        else if (GenericMapper.isGenericMap(node)) {
+        else if (GenericMapper.isMapLeaf(node)) {
             const map = node as GenericMap;
 
             Object.getOwnPropertyNames(additionalArgs).forEach(key => {
