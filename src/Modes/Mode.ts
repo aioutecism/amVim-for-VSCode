@@ -1,5 +1,5 @@
 import {window} from 'vscode';
-import {MatchResultType} from '../Mappers/Generic';
+import {MatchResultKind} from '../Mappers/Generic';
 import {CommandMapper} from '../Mappers/Command';
 
 export enum ModeID {NORMAL, VISUAL, VISUAL_LINE, INSERT};
@@ -61,13 +61,13 @@ export abstract class Mode {
             inputs = this.inputs;
         }
 
-        const {type, map} = this.mapper.match(inputs);
+        const {kind, map} = this.mapper.match(inputs);
 
-        if (type === MatchResultType.FAILED) {
+        if (kind === MatchResultKind.FAILED) {
             this.updateStatusBar();
             this.clearInputs();
         }
-        else if (type === MatchResultType.FOUND) {
+        else if (kind === MatchResultKind.FOUND) {
             this.updateStatusBar();
             this.clearInputs();
             this.pendings.push(() => {
@@ -75,7 +75,7 @@ export abstract class Mode {
             });
             this.execute();
         }
-        else if (type === MatchResultType.WAITING) {
+        else if (kind === MatchResultKind.WAITING) {
             this.updateStatusBar(`${this.inputs.join(' ')} and...`);
         }
     }

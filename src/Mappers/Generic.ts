@@ -1,6 +1,6 @@
 import {SpecialKeyCommon, SpecialKeyMatchResult} from './SpecialKeys/Common';
 
-export enum MatchResultType {FAILED, WAITING, FOUND};
+export enum MatchResultKind {FAILED, WAITING, FOUND};
 
 export interface GenericMap {
     keys: string;
@@ -56,7 +56,7 @@ export abstract class GenericMapper {
         return map;
     }
 
-    protected match(inputs: string[]): {type: MatchResultType, map?: GenericMap} {
+    protected match(inputs: string[]): {kind: MatchResultKind, map?: GenericMap} {
         let node: RecursiveMap | GenericMap = this.root;
 
         let matched = true;
@@ -83,7 +83,7 @@ export abstract class GenericMapper {
             });
 
             if (match) {
-                if (match.type === MatchResultType.FOUND) {
+                if (match.kind === MatchResultKind.FOUND) {
                     node = node[match.specialKey.indicator];
 
                     Object.getOwnPropertyNames(match.additionalArgs).forEach(key => {
@@ -93,7 +93,7 @@ export abstract class GenericMapper {
                     index += match.matchedCount - 1;
                     continue;
                 }
-                else if (match.type === MatchResultType.WAITING) {
+                else if (match.kind === MatchResultKind.WAITING) {
                     break;
                 }
             }
@@ -103,7 +103,7 @@ export abstract class GenericMapper {
         }
 
         if (! matched) {
-            return {type: MatchResultType.FAILED};
+            return {kind: MatchResultKind.FAILED};
         }
         else if (GenericMapper.isMapLeaf(node)) {
             const map = node as GenericMap;
@@ -113,10 +113,10 @@ export abstract class GenericMapper {
                 map.args[key] = additionalArgs[key];
             })
 
-            return {type: MatchResultType.FOUND, map};
+            return {kind: MatchResultKind.FOUND, map};
         }
         else {
-            return {type: MatchResultType.WAITING};
+            return {kind: MatchResultKind.WAITING};
         }
     }
 

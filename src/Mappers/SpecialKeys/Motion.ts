@@ -1,4 +1,4 @@
-import {GenericMapper, GenericMap, RecursiveMap, MatchResultType} from '../Generic';
+import {GenericMapper, GenericMap, RecursiveMap, MatchResultKind} from '../Generic';
 import {SpecialKeyCommon, SpecialKeyMatchResult} from './Common';
 import {SpecialKeyN} from './N';
 import {SpecialKeyChar} from './Char';
@@ -88,9 +88,9 @@ export class SpecialKeyMotion extends GenericMapper implements SpecialKeyCommon 
     }
 
     match(inputs: string[]): SpecialKeyMatchResult {
-        const {type, map} = super.match(inputs);
+        const {kind, map} = super.match(inputs);
 
-        if (type === MatchResultType.FAILED) {
+        if (kind === MatchResultKind.FAILED) {
             return null;
         }
 
@@ -101,7 +101,7 @@ export class SpecialKeyMotion extends GenericMapper implements SpecialKeyCommon 
 
         return {
             specialKey: this,
-            type,
+            kind,
             matchedCount: inputs.length,
             additionalArgs
         };

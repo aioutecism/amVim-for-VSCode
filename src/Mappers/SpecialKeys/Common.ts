@@ -1,8 +1,8 @@
-import {RecursiveMap, MatchResultType} from '../Generic';
+import {RecursiveMap, MatchResultKind} from '../Generic';
 
 export interface SpecialKeyMatchResult {
     specialKey: SpecialKeyCommon;
-    type: MatchResultType;
+    kind: MatchResultKind;
     matchedCount: number;
     additionalArgs: {};
 }
