@@ -13,7 +13,7 @@ export interface RecursiveMap {
 
 export abstract class GenericMapper {
 
-    private static saparator: string = ' ';
+    private static separator: string = ' ';
     private specialKeys: SpecialKeyCommon[];
 
     private root: RecursiveMap = {};
@@ -33,7 +33,7 @@ export abstract class GenericMapper {
         };
 
         let node: RecursiveMap | GenericMap = this.root;
-        const keys = joinedKeys.split(GenericMapper.saparator);
+        const keys = joinedKeys.split(GenericMapper.separator);
 
         keys.forEach((key, index) => {
             this.specialKeys.forEach(specialKey => {
