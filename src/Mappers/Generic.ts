@@ -82,7 +82,7 @@ export abstract class GenericMapper {
                     return false;
                 }
 
-                match = specialKey.match(inputs.slice(index));
+                match = specialKey.matchSpecial(inputs.slice(index));
 
                 return match ? true : false;
             });

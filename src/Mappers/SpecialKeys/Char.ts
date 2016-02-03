@@ -13,7 +13,7 @@ export class SpecialKeyChar implements SpecialKeyCommon {
         }
     }
 
-    match(inputs: string[]): SpecialKeyMatchResult {
+    matchSpecial(inputs: string[]): SpecialKeyMatchResult {
         let character = inputs[0];
 
         if (character === 'space') {
