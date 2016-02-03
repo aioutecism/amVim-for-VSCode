@@ -2,6 +2,11 @@ import {SpecialKeyCommon, SpecialKeyMatchResult} from './SpecialKeys/Common';
 
 export enum MatchResultKind {FAILED, WAITING, FOUND};
 
+export interface MatchResult {
+    kind: MatchResultKind;
+    map?: GenericMap;
+}
+
 export interface GenericMap {
     keys: string;
     args?: {};
@@ -56,7 +61,7 @@ export abstract class GenericMapper {
         return map;
     }
 
-    protected match(inputs: string[]): {kind: MatchResultKind, map?: GenericMap} {
+    protected match(inputs: string[]): MatchResult {
         let node: RecursiveMap | GenericMap = this.root;
 
         let matched = true;
