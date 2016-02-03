@@ -113,9 +113,9 @@ export abstract class GenericMapper {
         else if (GenericMapper.isMapLeaf(node)) {
             const map = node as GenericMap;
 
-            Object.getOwnPropertyNames(additionalArgs).forEach(key => {
+            Object.getOwnPropertyNames(additionalArgs).forEach(name => {
                 map.args = map.args || {};
-                map.args[key] = additionalArgs[key];
+                map.args[name] = additionalArgs[name];
             })
 
             return {kind: MatchResultKind.FOUND, map};
