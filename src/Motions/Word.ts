@@ -53,14 +53,10 @@ export class MotionWord extends Motion {
 
         else if (wordDelta === MotionWordPosition.PREV_START) {
             text = text
-                .substr(0, fromCharacter)
+                .substr(0, fromCharacter + 1)
                 .split('').reverse().join('');
 
-            const matches = text.match(new RegExp(
-                `^(\\s+)?((?:[${this.wordSeparators}]+|[^\\s${this.wordSeparators}]+))?`
-            ));
-
-            return -matches[0].length;
+            return -this.characterDelta(text, MotionWordPosition.NEXT_END, 0);
         }
 
     }
