@@ -1,7 +1,7 @@
 import {window, Position} from 'vscode';
 import {Motion} from './Motion';
 
-export enum MotionWordPosition {NEXT_START, NEXT_END, PREV_START};
+export enum MotionWordPosition {NEXT_START, NEXT_END, PREV_START, PREV_END};
 
 export class MotionWord extends Motion {
 
@@ -24,6 +24,12 @@ export class MotionWord extends Motion {
     static prevStart(): Motion {
         const obj = new MotionWord();
         obj.wordDelta = MotionWordPosition.PREV_START;
+        return obj;
+    }
+
+    static prevEnd(): Motion {
+        const obj = new MotionWord();
+        obj.wordDelta = MotionWordPosition.PREV_END;
         return obj;
     }
 
@@ -57,6 +63,14 @@ export class MotionWord extends Motion {
                 .split('').reverse().join('');
 
             return -this.characterDelta(text, MotionWordPosition.NEXT_END, 0);
+        }
+
+        else if (wordDelta === MotionWordPosition.PREV_END) {
+            text = text
+                .substr(0, fromCharacter + 1)
+                .split('').reverse().join('');
+
+            return -this.characterDelta(text, MotionWordPosition.NEXT_START, 0);
         }
 
     }
