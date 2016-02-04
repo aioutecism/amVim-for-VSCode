@@ -140,4 +140,134 @@ export function run() {
         //                         ^*
         assert.equal(nextStart(23), 24 - 23);
     });
+
+    let nextEnd = MotionWord.characterDelta.bind(
+        MotionWord, line, MotionWordPosition.NEXT_END
+    );
+
+    // Defines a Mocha unit test
+    test("MotionWordPosition.NEXT_END", () => {
+
+        //  0123456789112345678921234
+        // "  foo bar baz    fum-nom"
+        //  ^   *                    
+        assert.equal(nextEnd(0), 4 - 0);
+
+        //  0123456789112345678921234
+        // "  foo bar baz    fum-nom"
+        //   ^  *                    
+        assert.equal(nextEnd(1), 4 - 1);
+
+        //  0123456789112345678921234
+        // "  foo bar baz    fum-nom"
+        //    ^ *                    
+        assert.equal(nextEnd(2), 4 - 2);
+
+        //  0123456789112345678921234
+        // "  foo bar baz    fum-nom"
+        //     ^*                    
+        assert.equal(nextEnd(2), 4 - 2);
+
+        //  0123456789112345678921234
+        // "  foo bar baz    fum-nom"
+        //      ^   *                
+        assert.equal(nextEnd(4), 8 - 4);
+
+        //  0123456789112345678921234
+        // "  foo bar baz    fum-nom"
+        //       ^  *                
+        assert.equal(nextEnd(5), 8 - 5);
+
+        //  0123456789112345678921234
+        // "  foo bar baz    fum-nom"
+        //        ^ *                
+        assert.equal(nextEnd(6), 8 - 6);
+
+        //  0123456789112345678921234
+        // "  foo bar baz    fum-nom"
+        //         ^*                
+        assert.equal(nextEnd(7), 8 - 7);
+
+        //  0123456789112345678921234
+        // "  foo bar baz    fum-nom"
+        //          ^   *            
+        assert.equal(nextEnd(8), 12 - 8);
+
+        //  0123456789112345678921234
+        // "  foo bar baz    fum-nom"
+        //           ^  *            
+        assert.equal(nextEnd(9), 12 - 9);
+
+        //  0123456789112345678921234
+        // "  foo bar baz    fum-nom"
+        //            ^ *            
+        assert.equal(nextEnd(10), 12 - 10);
+
+        //  0123456789112345678921234
+        // "  foo bar baz    fum-nom"
+        //             ^*            
+        assert.equal(nextEnd(11), 12 - 11);
+
+        //  0123456789112345678921234
+        // "  foo bar baz    fum-nom"
+        //              ^      *     
+        assert.equal(nextEnd(12), 19 - 12);
+
+        //  0123456789112345678921234
+        // "  foo bar baz    fum-nom"
+        //               ^     *     
+        assert.equal(nextEnd(13), 19 - 13);
+
+        //  0123456789112345678921234
+        // "  foo bar baz    fum-nom"
+        //                ^    *     
+        assert.equal(nextEnd(14), 19 - 14);
+
+        //  0123456789112345678921234
+        // "  foo bar baz    fum-nom"
+        //                 ^   *     
+        assert.equal(nextEnd(15), 19 - 15);
+
+        //  0123456789112345678921234
+        // "  foo bar baz    fum-nom"
+        //                  ^  *     
+        assert.equal(nextEnd(16), 19 - 16);
+
+        //  0123456789112345678921234
+        // "  foo bar baz    fum-nom"
+        //                   ^ *     
+        assert.equal(nextEnd(17), 19 - 17);
+
+        //  0123456789112345678921234
+        // "  foo bar baz    fum-nom"
+        //                    ^*     
+        assert.equal(nextEnd(18), 19 - 18);
+
+        //  0123456789112345678921234
+        // "  foo bar baz    fum-nom"
+        //                     ^*    
+        assert.equal(nextEnd(19), 20 - 19);
+
+        //  0123456789112345678921234
+        // "  foo bar baz    fum-nom"
+        //                      ^  * 
+        assert.equal(nextEnd(20), 23 - 20);
+
+        //  0123456789112345678921234
+        // "  foo bar baz    fum-nom"
+        //                       ^ * 
+        assert.equal(nextEnd(21), 23 - 21);
+
+        //  0123456789112345678921234
+        // "  foo bar baz    fum-nom"
+        //                        ^* 
+        assert.equal(nextEnd(22), 23 - 22);
+
+        /* FAILING
+        //  0123456789112345678921234
+        // "  foo bar baz    fum-nom"
+        //                         ^*
+        assert.equal(nextEnd(23), 24 - 23);
+        */
+    });
 }
