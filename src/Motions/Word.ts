@@ -1,12 +1,13 @@
 import {window, Position} from 'vscode';
 import {Motion} from './Motion';
 
-enum MotionWordPosition {NEXT_START, NEXT_END, PREV_START};
+export enum MotionWordPosition {NEXT_START, NEXT_END, PREV_START};
 
 export class MotionWord extends Motion {
 
     private wordDelta: MotionWordPosition;
-    private wordSeparators = './\\\\()"\'\\-:,.;<>~!@#$%^&*|+=\\[\\]{}`~?';
+
+    static wordSeparators = './\\\\()"\'\\-:,.;<>~!@#$%^&*|+=\\[\\]{}`~?';
 
     static nextStart(): Motion {
         const obj = new MotionWord();
@@ -24,6 +25,44 @@ export class MotionWord extends Motion {
         const obj = new MotionWord();
         obj.wordDelta = MotionWordPosition.PREV_START;
         return obj;
+    }
+
+    static characterDelta(text: string, wordDelta: MotionWordPosition, fromCharacter: number, isInclusive?: boolean) {
+
+        if (wordDelta === MotionWordPosition.NEXT_START) {
+            text = text.substr(fromCharacter);
+
+            const matches = text.match(new RegExp(
+                `^(\\s+)?((?:[${this.wordSeparators}]+|[^\\s${this.wordSeparators}]+)\\s*)?`
+            ));
+
+            return matches[1] ? matches[1].length : matches[2] ? matches[2].length : matches[0].length;
+        }
+
+        else if (wordDelta === MotionWordPosition.NEXT_END) {
+            text = text.substr(fromCharacter + 1);
+
+            const matches = text.match(new RegExp(
+                `^(\\s+)?((?:[${this.wordSeparators}]+|[^\\s${this.wordSeparators}]+))?`
+            ));
+
+            return (isInclusive) ?
+                matches[0].length + 1 :
+                matches[0].length;
+        }
+
+        else if (wordDelta === MotionWordPosition.PREV_START) {
+            text = text
+                .substr(0, fromCharacter)
+                .split('').reverse().join('');
+
+            const matches = text.match(new RegExp(
+                `^(\\s+)?((?:[${this.wordSeparators}]+|[^\\s${this.wordSeparators}]+))?`
+            ));
+
+            return -matches[0].length;
+        }
+
     }
 
     apply(from: Position, option: {isInclusive?: boolean} = {}): Position {
@@ -46,38 +85,10 @@ export class MotionWord extends Motion {
 
         let targetText = document.lineAt(toLine).text;
 
-        if (this.wordDelta === MotionWordPosition.NEXT_START) {
-            targetText = targetText.substr(toCharacter);
+        toCharacter += MotionWord.characterDelta(
+            targetText, this.wordDelta, toCharacter, option.isInclusive
+        );
 
-            const matches = targetText.match(new RegExp(
-                `^(\\s+)?((?:[${this.wordSeparators}]+|[^\\s${this.wordSeparators}]+)\\s*)?`
-            ));
-            toCharacter += matches[1] ? matches[1].length : matches[2] ? matches[2].length : matches[0].length;
-        }
-
-        else if (this.wordDelta === MotionWordPosition.NEXT_END) {
-            targetText = targetText.substr(toCharacter + 1);
-
-            const matches = targetText.match(new RegExp(
-                `^(\\s+)?((?:[${this.wordSeparators}]+|[^\\s${this.wordSeparators}]+))?`
-            ));
-            toCharacter += matches[0].length;
-
-            if (option.isInclusive) {
-                toCharacter += 1;
-            }
-        }
-
-        else if (this.wordDelta === MotionWordPosition.PREV_START) {
-            targetText = targetText
-                .substr(0, toCharacter)
-                .split('').reverse().join('');
-
-            const matches = targetText.match(new RegExp(
-                `^(\\s+)?((?:[${this.wordSeparators}]+|[^\\s${this.wordSeparators}]+))?`
-            ));
-            toCharacter -= matches[0].length;
-        }
 
         return new Position(toLine, toCharacter);
     }
