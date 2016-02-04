@@ -270,4 +270,134 @@ export function run() {
         assert.equal(nextEnd(23), 24 - 23);
         */
     });
+
+    let prevStart = MotionWord.characterDelta.bind(
+        MotionWord, line, MotionWordPosition.PREV_START
+    );
+
+    // Defines a Mocha unit test
+    test("MotionWordPosition.PREV_START", () => {
+
+        /* FAILING
+        //  0123456789112345678921234
+        // "  foo bar baz    fum-nom"
+        // *^                        
+        assert.equal(prevStart(0), (-1) - 0);
+
+        //  0123456789112345678921234
+        // "  foo bar baz    fum-nom"
+        // * ^                       
+        assert.equal(prevStart(1), (-1) - 1);
+
+        //  0123456789112345678921234
+        // "  foo bar baz    fum-nom"
+        // *  ^                      
+        assert.equal(prevStart(2), (-1) - 2);
+        */
+
+        //  0123456789112345678921234
+        // "  foo bar baz    fum-nom"
+        //    *^                     
+        assert.equal(prevStart(3), (2) - 3);
+
+        //  0123456789112345678921234
+        // "  foo bar baz    fum-nom"
+        //    * ^                    
+        assert.equal(prevStart(4), (2) - 4);
+
+        //  0123456789112345678921234
+        // "  foo bar baz    fum-nom"
+        //    *  ^                   
+        assert.equal(prevStart(5), (2) - 5);
+
+        //  0123456789112345678921234
+        // "  foo bar baz    fum-nom"
+        //    *   ^                  
+        assert.equal(prevStart(6), (2) - 6);
+
+        //  0123456789112345678921234
+        // "  foo bar baz    fum-nom"
+        //        *^                 
+        assert.equal(prevStart(7), (6) - 7);
+
+        //  0123456789112345678921234
+        // "  foo bar baz    fum-nom"
+        //        * ^                
+        assert.equal(prevStart(8), (6) - 8);
+
+        //  0123456789112345678921234
+        // "  foo bar baz    fum-nom"
+        //        *  ^               
+        assert.equal(prevStart(9), (6) - 9);
+
+        //  0123456789112345678921234
+        // "  foo bar baz    fum-nom"
+        //        *   ^              
+        assert.equal(prevStart(10), (6) - 10);
+
+        //  0123456789112345678921234
+        // "  foo bar baz    fum-nom"
+        //            *^             
+        assert.equal(prevStart(11), (10) - 11);
+
+        //  0123456789112345678921234
+        // "  foo bar baz    fum-nom"
+        //            * ^            
+        assert.equal(prevStart(12), (10) - 12);
+
+        //  0123456789112345678921234
+        // "  foo bar baz    fum-nom"
+        //            *  ^           
+        assert.equal(prevStart(13), (10) - 13);
+
+        //  0123456789112345678921234
+        // "  foo bar baz    fum-nom"
+        //            *   ^          
+        assert.equal(prevStart(14), (10) - 14);
+
+        //  0123456789112345678921234
+        // "  foo bar baz    fum-nom"
+        //            *    ^         
+        assert.equal(prevStart(15), (10) - 15);
+
+        //  0123456789112345678921234
+        // "  foo bar baz    fum-nom"
+        //            *     ^        
+        assert.equal(prevStart(16), (10) - 16);
+
+        //  0123456789112345678921234
+        // "  foo bar baz    fum-nom"
+        //            *      ^       
+        assert.equal(prevStart(17), (10) - 17);
+
+        //  0123456789112345678921234
+        // "  foo bar baz    fum-nom"
+        //                   *^      
+        assert.equal(prevStart(18), (17) - 18);
+
+        //  0123456789112345678921234
+        // "  foo bar baz    fum-nom"
+        //                   * ^     
+        assert.equal(prevStart(19), (17) - 19);
+
+        //  0123456789112345678921234
+        // "  foo bar baz    fum-nom"
+        //                   *  ^    
+        assert.equal(prevStart(20), (17) - 20);
+
+        //  0123456789112345678921234
+        // "  foo bar baz    fum-nom"
+        //                      *^   
+        assert.equal(prevStart(21), (20) - 21);
+
+        //  0123456789112345678921234
+        // "  foo bar baz    fum-nom"
+        //                       *^  
+        assert.equal(prevStart(22), (21) - 22);
+
+        //  0123456789112345678921234
+        // "  foo bar baz    fum-nom"
+        //                       * ^ 
+        assert.equal(prevStart(23), (21) - 23);
+    });
 }
