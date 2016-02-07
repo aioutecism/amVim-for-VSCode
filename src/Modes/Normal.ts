@@ -8,6 +8,7 @@ import {ActionInsert} from '../Actions/Insert';
 import {ActionDelete} from '../Actions/Delete';
 import {ActionReplace} from '../Actions/Replace';
 import {ActionRegister} from '../Actions/Register';
+import {ActionReveal} from '../Actions/Reveal';
 import {ActionSuggestion} from '../Actions/Suggestion';
 import {ActionJoinLines} from '../Actions/JoinLines';
 import {ActionFind} from '../Actions/Find';
@@ -80,6 +81,8 @@ export class ModeNormal extends Mode {
 
         { keys: 'v', command: ActionMode.toVisual },
         { keys: 'V', command: ActionMode.toVisualLine },
+
+        { keys: 'z z', command: ActionReveal.primaryCursor, args: {center: true} },
 
         { keys: 'ctrl+c', command: () => Configuration.get('bindCtrlC')
             ? ActionSuggestion.hide().then(ActionSelection.shrinkToPrimaryActive)

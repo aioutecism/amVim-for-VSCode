@@ -2,7 +2,9 @@ import {window, Range, TextEditorRevealType} from 'vscode';
 
 export class ActionReveal {
 
-    static primaryCursor(): Thenable<boolean> {
+    static primaryCursor(args: {center?: boolean} = {}): Thenable<boolean> {
+        args.center = args.center === undefined ? false : args.center;
+
         const activeTextEditor = window.activeTextEditor;
 
         if (! activeTextEditor) {
@@ -10,9 +12,10 @@ export class ActionReveal {
         }
 
         const activePosition = activeTextEditor.selection.active;
-        activeTextEditor.revealRange(
-            new Range(activePosition, activePosition), TextEditorRevealType.Default
-        );
+        const kind = args.center
+            ? TextEditorRevealType.InCenter
+            : TextEditorRevealType.Default;
+        activeTextEditor.revealRange(new Range(activePosition, activePosition), kind);
 
         return Promise.resolve(true);
     }
