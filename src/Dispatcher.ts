@@ -20,14 +20,10 @@ export class Dispatcher {
     private disposables: Disposable[] = [];
 
     constructor(context: ExtensionContext) {
-        [
-            ModeID.NORMAL,
-            ModeID.VISUAL,
-            ModeID.VISUAL_LINE,
-            ModeID.INSERT
-        ].forEach(mode => {
-            context.subscriptions.push(commands.registerCommand(`vim.mode.${mode}`, () => {
-                this.switchMode(mode);
+        Object.keys(this.modes).forEach(key => {
+            let mode = this.modes[key] as Mode;
+            context.subscriptions.push(commands.registerCommand(`vim.mode.${mode.id}`, () => {
+                this.switchMode(mode.id);
             }));
         })
 
