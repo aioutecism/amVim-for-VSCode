@@ -59,8 +59,8 @@ export class ModeNormal extends Mode {
 
         { keys: 'r {char}', command: ActionReplace.characters },
 
-        { keys: 'y y', command: ActionRegister.yankLine },
-        { keys: 'Y', command: ActionRegister.yankLine },
+        { keys: 'y y', command: ActionRegister.yankLines },
+        { keys: 'Y', command: ActionRegister.yankLines },
         { keys: 'y {motion}', command: ActionRegister.yankByMotions },
         { keys: 'p', command: ActionRegister.putAfter },
         { keys: 'P', command: ActionRegister.putBefore },

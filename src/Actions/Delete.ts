@@ -174,11 +174,13 @@ export class ActionDelete {
             return Promise.resolve(false);
         }
 
+        const document = activeTextEditor.document;
+
         let ranges = activeTextEditor.selections.map(selection => {
-            return new Range(
+            return UtilRange.fitIntoDocument(document, new Range(
                 selection.start.line, 0,
                 selection.end.line + 1, 0
-            );
+            ));
         });
 
         ranges = UtilRange.unionOverlaps(ranges);

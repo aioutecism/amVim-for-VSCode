@@ -35,7 +35,7 @@ Check the list [here](https://github.com/aioutecism/amVim-for-VSCode/issues/1).
 You can overwrite default configurations in
 [User and Workspace Settings](https://code.visualstudio.com/docs/customization/userandworkspace).
 
-#### `bindCtrlC`
+#### `amVim.bindCtrlC`
 
 `Boolean`, Default: `false`
 
