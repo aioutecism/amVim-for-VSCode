@@ -34,6 +34,8 @@ export class ModeVisualLine extends Mode {
         { keys: 'D', command: ActionDelete.line, args: {shouldYank: true} },
         { keys: 'c', command: () => ActionDelete.line({shouldYank: true}).then(ActionInsert.newLineBefore).then(ActionMode.toInsert) },
         { keys: 'C', command: () => ActionDelete.line({shouldYank: true}).then(ActionInsert.newLineBefore).then(ActionMode.toInsert) },
+        { keys: 's', command: () => ActionDelete.line({shouldYank: true}).then(ActionInsert.newLineBefore).then(ActionMode.toInsert) },
+        { keys: 'S', command: () => ActionDelete.line({shouldYank: true}).then(ActionInsert.newLineBefore).then(ActionMode.toInsert) },
         { keys: 'y', command: () => ActionRegister.yankLines().then(ActionSelection.shrinkToStarts) },
         { keys: 'J', command: () => ActionJoinLines.onSelections().then(ActionSelection.shrinkToActives) },
 
