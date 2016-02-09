@@ -40,8 +40,8 @@ export class ModeVisual extends Mode {
 
         { keys: 'r {char}', command: ActionReplace.selections },
 
-        { keys: '< <', command: ActionIndent.decrease },
-        { keys: '> >', command: ActionIndent.increase },
+        { keys: '<', command: ActionIndent.decrease },
+        { keys: '>', command: ActionIndent.increase },
 
         { keys: '/', command: ActionFind.focusFindWidget },
 
