@@ -2,9 +2,7 @@ import {window, Range, TextEditorRevealType} from 'vscode';
 
 export class ActionReveal {
 
-    static primaryCursor(args: {shouldCenterIfOutsideViewport?: boolean} = {}): Thenable<boolean> {
-        args.shouldCenterIfOutsideViewport = args.shouldCenterIfOutsideViewport === undefined ? true : args.shouldCenterIfOutsideViewport;
-
+    static primaryCursor(): Thenable<boolean> {
         const activeTextEditor = window.activeTextEditor;
 
         if (! activeTextEditor) {
@@ -13,10 +11,7 @@ export class ActionReveal {
 
         const activePosition = activeTextEditor.selection.active;
         activeTextEditor.revealRange(
-            new Range(activePosition, activePosition),
-            (args.shouldCenterIfOutsideViewport
-                ? TextEditorRevealType.InCenterIfOutsideViewport
-                : TextEditorRevealType.Default)
+            new Range(activePosition, activePosition), TextEditorRevealType.Default
         );
 
         return Promise.resolve(true);
