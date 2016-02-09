@@ -7,6 +7,7 @@ import {ActionSelection} from '../Actions/Selection';
 import {ActionSuggestion} from '../Actions/Suggestion';
 import {ActionRegister} from '../Actions/Register';
 import {ActionDelete} from '../Actions/Delete';
+import {ActionInsert} from '../Actions/Insert';
 import {ActionReplace} from '../Actions/Replace';
 import {ActionIndent} from '../Actions/Indent';
 import {ActionJoinLines} from '../Actions/JoinLines';
@@ -32,9 +33,7 @@ export class ModeVisual extends Mode {
         { keys: 'd', command: ActionDelete.selectionsOrRight, args: {shouldYank: true} },
         { keys: 'D', command: ActionDelete.line, args: {shouldYank: true} },
         { keys: 'c', command: () => ActionDelete.selectionsOrRight({shouldYank: true}).then(ActionMode.toInsert) },
-        { keys: 'C', command: () => ActionSelection.shrinkToStarts()
-            .then(ActionDelete.byMotions.bind(undefined, {motions: [MotionLine.end()], shouldYank: true}))
-            .then(ActionMode.toInsert) },
+        { keys: 'C', command: () => ActionDelete.line({shouldYank: true}).then(ActionInsert.newLineBefore).then(ActionMode.toInsert) },
         { keys: 'y', command: () => ActionRegister.yankSelections().then(ActionSelection.shrinkToStarts) },
         { keys: 'J', command: () => ActionJoinLines.onSelections().then(ActionSelection.shrinkToActives) },
 
