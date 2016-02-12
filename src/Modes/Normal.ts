@@ -1,4 +1,4 @@
-import {window, commands, Disposable} from 'vscode';
+import {window, commands, Disposable, TextEditorRevealType} from 'vscode';
 import {Configuration} from '../Configuration';
 import {Mode, ModeID} from './Mode';
 import {CommandMap} from '../Mappers/Command';
@@ -82,7 +82,7 @@ export class ModeNormal extends Mode {
         { keys: 'v', command: ActionMode.toVisual },
         { keys: 'V', command: ActionMode.toVisualLine },
 
-        { keys: 'z z', command: ActionReveal.primaryCursor, args: {center: true} },
+        { keys: 'z z', command: ActionReveal.primaryCursor, args: {revealType: TextEditorRevealType.InCenter} },
 
         { keys: 'ctrl+c', command: () => Configuration.get('bindCtrlC')
             ? ActionSuggestion.hide().then(ActionSelection.shrinkToPrimaryActive)

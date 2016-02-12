@@ -2,8 +2,8 @@ import {window, Range, TextEditorRevealType} from 'vscode';
 
 export class ActionReveal {
 
-    static primaryCursor(args: {center?: boolean} = {}): Thenable<boolean> {
-        args.center = args.center === undefined ? false : args.center;
+    static primaryCursor(args: {revealType?: TextEditorRevealType} = {}): Thenable<boolean> {
+        args.revealType = args.revealType === undefined ? TextEditorRevealType.Default : args.revealType;
 
         const activeTextEditor = window.activeTextEditor;
 
@@ -12,10 +12,7 @@ export class ActionReveal {
         }
 
         const activePosition = activeTextEditor.selection.active;
-        const kind = args.center
-            ? TextEditorRevealType.InCenter
-            : TextEditorRevealType.Default;
-        activeTextEditor.revealRange(new Range(activePosition, activePosition), kind);
+        activeTextEditor.revealRange(new Range(activePosition, activePosition), args.revealType);
 
         return Promise.resolve(true);
     }
