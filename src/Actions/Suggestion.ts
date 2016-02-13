@@ -1,4 +1,5 @@
 import {commands, workspace} from 'vscode';
+import {Configuration} from '../Configuration';
 
 export class ActionSuggestion {
 
@@ -7,7 +8,7 @@ export class ActionSuggestion {
     static trigger(args: {key: string}): Thenable<boolean> {
         // HACK: Work around lack of keybinding context API
         if (! ActionSuggestion.triggerCharacters.test(args.key) ||
-            ! workspace.getConfiguration("editor").get("quickSuggestions")) {
+            ! Configuration.getEditorSetting("quickSuggestions")) {
             return;
         }
 

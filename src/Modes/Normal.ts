@@ -81,7 +81,7 @@ export class ModeNormal extends Mode {
         { keys: 'v', command: ActionMode.toVisual },
         { keys: 'V', command: ActionMode.toVisualLine },
 
-        { keys: 'ctrl+c', command: () => Configuration.get('bindCtrlC')
+        { keys: 'ctrl+c', command: () => Configuration.getExtensionSetting('bindCtrlC')
             ? ActionSuggestion.hide().then(ActionSelection.shrinkToPrimaryActive)
             : commands.executeCommand('editor.action.clipboardCopyAction')
         },
