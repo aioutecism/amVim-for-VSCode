@@ -82,6 +82,7 @@ export class ModeNormal extends Mode {
         { keys: 'v', command: ActionMode.toVisual },
         { keys: 'V', command: ActionMode.toVisualLine },
 
+        { keys: 'z .', command: ActionReveal.primaryCursor, args: {revealType: TextEditorRevealType.InCenter} },
         { keys: 'z z', command: ActionReveal.primaryCursor, args: {revealType: TextEditorRevealType.InCenter} },
 
         { keys: 'ctrl+c', command: () => Configuration.get('bindCtrlC')
