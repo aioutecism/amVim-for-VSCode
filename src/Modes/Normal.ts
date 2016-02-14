@@ -54,7 +54,7 @@ export class ModeNormal extends Mode {
                 .then(ActionDelete.byMotions.bind(undefined, {motions: [MotionLine.end()], shouldYank: true}))
                 .then(ActionMode.toInsert);
         } },
-        { keys: 'c {motion}', command: (args: {motions: Motion[], shouldYank?: boolean}) => ActionDelete.byMotions(args).then(ActionMode.toInsert), args: {shouldYank: true} },
+        { keys: 'c {motion}', command: (args: {motions: Motion[], shouldYank?: boolean}) => ActionDelete.byMotions(args).then(ActionMode.toInsert), args: {shouldYank: true, cwNeedsFixup: true} },
         { keys: 'J', command: ActionJoinLines.onSelections },
 
         { keys: 'r {char}', command: ActionReplace.characters },

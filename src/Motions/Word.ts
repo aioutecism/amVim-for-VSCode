@@ -1,13 +1,20 @@
 import {window, Position} from 'vscode';
 import {Motion} from './Motion';
 
-export enum MotionWordPosition {NEXT_START, NEXT_END, PREV_START, PREV_END};
+export enum MotionWordPosition {NEXT_START, NEXT_END, PREV_START, PREV_END, NEXT_BOUNDARY};
 
 export class MotionWord extends Motion {
 
     private wordDelta: MotionWordPosition;
+    private useBoundaryIfChange = false;
 
     static wordSeparators = './\\\\()"\'\\-:,.;<>~!@#$%^&*|+=\\[\\]{}`~?';
+
+    static nextStartOrBoundaryIfChange(): Motion {
+        const obj = MotionWord.nextStart();
+        (obj as MotionWord).useBoundaryIfChange = true;
+        return obj;
+    }
 
     static nextStart(): Motion {
         const obj = new MotionWord();
@@ -42,7 +49,18 @@ export class MotionWord extends Motion {
                 `^(\\s+)?((?:[${this.wordSeparators}]+|[^\\s${this.wordSeparators}]+)\\s*)?`
             ));
 
-            return matches[1] ? matches[1].length : matches[2] ? matches[2].length : matches[0].length;
+            if (matches[1]) {
+                // Not in a word; found whitespace after cursor.
+                return matches[1].length;
+            }
+
+            else if (matches[2]) {
+                // Found some word separators, or some word chars.
+                // NB: Any whitespace after the word is included.
+                return matches[2].length;
+            }
+
+            return 0;
         }
 
         else if (wordDelta === MotionWordPosition.NEXT_END) {
@@ -73,10 +91,21 @@ export class MotionWord extends Motion {
             return -this.characterDelta(text, MotionWordPosition.NEXT_START, 0);
         }
 
+        else if (wordDelta === MotionWordPosition.NEXT_BOUNDARY) {
+            const endDelta = this.characterDelta(text, MotionWordPosition.NEXT_END, fromCharacter, isInclusive);
+            const startDelta = this.characterDelta(text, MotionWordPosition.NEXT_START, fromCharacter, isInclusive);
+            return Math.min(endDelta, startDelta);
+        }
+
     }
 
-    apply(from: Position, option: {isInclusive?: boolean} = {}): Position {
+    apply(from: Position, option: {isInclusive?: boolean, cwNeedsFixup?: boolean} = {}): Position {
         option.isInclusive = option.isInclusive === undefined ? false : option.isInclusive;
+        option.cwNeedsFixup = option.cwNeedsFixup === undefined ? false : option.cwNeedsFixup;
+
+        if (option.cwNeedsFixup && this.useBoundaryIfChange) {
+            this.wordDelta = MotionWordPosition.NEXT_BOUNDARY;
+        }
 
         from = super.apply(from);
 
@@ -98,7 +127,6 @@ export class MotionWord extends Motion {
         toCharacter += MotionWord.characterDelta(
             targetText, this.wordDelta, toCharacter, option.isInclusive
         );
-
 
         return new Position(toLine, toCharacter);
     }
