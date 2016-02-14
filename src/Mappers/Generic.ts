@@ -1,6 +1,11 @@
 import {SpecialKeyCommon, SpecialKeyMatchResult} from './SpecialKeys/Common';
 
-export enum MatchResultType {FAILED, WAITING, FOUND};
+export enum MatchResultKind {FAILED, WAITING, FOUND};
+
+export interface MatchResult {
+    kind: MatchResultKind;
+    map?: GenericMap;
+}
 
 export interface GenericMap {
     keys: string;
@@ -13,7 +18,7 @@ export interface RecursiveMap {
 
 export abstract class GenericMapper {
 
-    private static saparator: string = ' ';
+    private static separator: string = ' ';
     private specialKeys: SpecialKeyCommon[];
 
     private root: RecursiveMap = {};
@@ -22,7 +27,7 @@ export abstract class GenericMapper {
         this.specialKeys = specialKeys;
     }
 
-    private static isGenericMap(node: RecursiveMap | GenericMap): boolean {
+    private static isMapLeaf(node: RecursiveMap | GenericMap): boolean {
         return node && typeof (node as GenericMap).keys === 'string';
     }
 
@@ -33,14 +38,14 @@ export abstract class GenericMapper {
         };
 
         let node: RecursiveMap | GenericMap = this.root;
-        const keys = joinedKeys.split(GenericMapper.saparator);
+        const keys = joinedKeys.split(GenericMapper.separator);
 
         keys.forEach((key, index) => {
             this.specialKeys.forEach(specialKey => {
                 specialKey.unmapConflicts(node as RecursiveMap, key);
             })
 
-            if (GenericMapper.isGenericMap(node[key])) {
+            if (GenericMapper.isMapLeaf(node[key])) {
                 delete node[key];
             }
 
@@ -56,7 +61,7 @@ export abstract class GenericMapper {
         return map;
     }
 
-    protected match(inputs: string[]): {type: MatchResultType, map?: GenericMap} {
+    protected match(inputs: string[]): MatchResult {
         let node: RecursiveMap | GenericMap = this.root;
 
         let matched = true;
@@ -77,13 +82,13 @@ export abstract class GenericMapper {
                     return false;
                 }
 
-                match = specialKey.match(inputs.slice(index));
+                match = specialKey.matchSpecial(inputs.slice(index));
 
                 return match ? true : false;
             });
 
             if (match) {
-                if (match.type === MatchResultType.FOUND) {
+                if (match.kind === MatchResultKind.FOUND) {
                     node = node[match.specialKey.indicator];
 
                     Object.getOwnPropertyNames(match.additionalArgs).forEach(key => {
@@ -93,7 +98,7 @@ export abstract class GenericMapper {
                     index += match.matchedCount - 1;
                     continue;
                 }
-                else if (match.type === MatchResultType.WAITING) {
+                else if (match.kind === MatchResultKind.WAITING) {
                     break;
                 }
             }
@@ -103,20 +108,20 @@ export abstract class GenericMapper {
         }
 
         if (! matched) {
-            return {type: MatchResultType.FAILED};
+            return {kind: MatchResultKind.FAILED};
         }
-        else if (GenericMapper.isGenericMap(node)) {
+        else if (GenericMapper.isMapLeaf(node)) {
             const map = node as GenericMap;
 
-            Object.getOwnPropertyNames(additionalArgs).forEach(key => {
+            Object.getOwnPropertyNames(additionalArgs).forEach(name => {
                 map.args = map.args || {};
-                map.args[key] = additionalArgs[key];
+                map.args[name] = additionalArgs[name];
             })
 
-            return {type: MatchResultType.FOUND, map};
+            return {kind: MatchResultKind.FOUND, map};
         }
         else {
-            return {type: MatchResultType.WAITING};
+            return {kind: MatchResultKind.WAITING};
         }
     }
 

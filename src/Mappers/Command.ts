@@ -1,8 +1,13 @@
 import {Command} from '../Modes/Mode';
-import {GenericMapper, GenericMap, MatchResultType} from './Generic';
+import {GenericMapper, GenericMap, MatchResult, MatchResultKind} from './Generic';
 import {SpecialKeyN} from './SpecialKeys/N';
 import {SpecialKeyChar} from './SpecialKeys/Char';
 import {SpecialKeyMotion} from './SpecialKeys/Motion';
+
+export interface CommandMatchResult extends MatchResult {
+    kind: MatchResultKind;
+    map: CommandMap
+}
 
 export interface CommandMap extends GenericMap {
     command: Command;
@@ -23,12 +28,12 @@ export class CommandMapper extends GenericMapper {
         (map as CommandMap).command = command;
     }
 
-    match(inputs: string[]): {type: MatchResultType, map: CommandMap} {
-        const {type, map} = super.match(inputs);
+    match(inputs: string[]): CommandMatchResult {
+        const {kind, map} = super.match(inputs);
 
         return {
-            type: type,
-            map: map ? map as CommandMap : null,
+            kind,
+            map: map ? map as CommandMap : null
         };
     }
 
