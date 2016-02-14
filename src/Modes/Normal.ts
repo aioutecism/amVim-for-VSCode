@@ -85,7 +85,7 @@ export class ModeNormal extends Mode {
         { keys: 'z .', command: ActionReveal.primaryCursor, args: {revealType: TextEditorRevealType.InCenter} },
         { keys: 'z z', command: ActionReveal.primaryCursor, args: {revealType: TextEditorRevealType.InCenter} },
 
-        { keys: 'ctrl+c', command: () => Configuration.get('bindCtrlC')
+        { keys: 'ctrl+c', command: () => Configuration.getExtensionSetting('bindCtrlC')
             ? ActionSuggestion.hide().then(ActionSelection.shrinkToPrimaryActive)
             : commands.executeCommand('editor.action.clipboardCopyAction')
         },

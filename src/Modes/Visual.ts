@@ -49,7 +49,7 @@ export class ModeVisual extends Mode {
         { keys: 'V', command: ActionMode.toVisualLine },
         { keys: 'v', command: ActionSelection.shrinkToPrimaryActive },
 
-        { keys: 'ctrl+c', command: () => Configuration.get('bindCtrlC')
+        { keys: 'ctrl+c', command: () => Configuration.getExtensionSetting('bindCtrlC')
             ? ActionSuggestion.hide().then(ActionSelection.shrinkToPrimaryActive)
             : commands.executeCommand('editor.action.clipboardCopyAction')
         },
