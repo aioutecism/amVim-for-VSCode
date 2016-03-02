@@ -27,7 +27,7 @@ export class Dispatcher {
             }));
         })
 
-        Keys.all.forEach(key => {
+        Keys.raws.forEach(key => {
             context.subscriptions.push(commands.registerCommand(`vim.${key}`, this.inputHandler(key)));
         });
 
