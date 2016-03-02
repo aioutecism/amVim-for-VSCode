@@ -36,6 +36,11 @@
         "configuration": {
             "title": "amVim configuration",
             "properties": {
+                "amVim.keyboardLayout": {
+                    "type": "string",
+                    "default": "US QWERTY",
+                    "description": "TODO: Your keyboard layout."
+                },
                 "amVim.bindCtrlC": {
                     "type": "boolean",
                     "default": false,
