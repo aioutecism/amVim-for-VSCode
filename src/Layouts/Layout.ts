@@ -9,7 +9,7 @@ export class Layout {
     private static id: string;
     private static layouts: {[id: string]: LayoutMap};
 
-    static use(id: string) {
+    static use(id: string): void {
         if (this.layouts[id]) {
             this.id = id;
         }
@@ -18,7 +18,7 @@ export class Layout {
         }
     }
 
-    static register(id: string, map: LayoutMap) {
+    static register(id: string, map: LayoutMap): void {
         this.layouts[id] = map;
     }
 
