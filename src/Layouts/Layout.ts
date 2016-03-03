@@ -31,6 +31,24 @@ export class Layout {
         }
     }
 
+    static getAllTransformedKeys(): string[] {
+        let transformedKeys: string[] = [];
+
+        Object.keys(this.layouts).forEach(id => {
+            const layout = this.layouts[id];
+
+            Object.keys(layout).forEach(key => {
+                const transformedKey = layout[key];
+
+                if (transformedKeys.indexOf(transformedKey) == -1) {
+                    transformedKeys.push(transformedKey);
+                }
+            });
+        });
+
+        return transformedKeys;
+    }
+
 }
 
 Layout.register(US_QWERTY.id, US_QWERTY.map);

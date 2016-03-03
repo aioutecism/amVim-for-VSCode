@@ -5,11 +5,6 @@ export const vkOems = [
     'vk_oem_minus', 'vk_oem_plus', 'vk_oem_comma', 'vk_oem_period',
 ];
 
-export const characters = [].concat(
-    alphabets,
-    numbers
-);
-
 export const raws = [].concat(
     alphabets,
     numbers,
