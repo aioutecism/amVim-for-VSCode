@@ -39,7 +39,7 @@
                 "amVim.keyboardLayout": {
                     "type": "string",
                     "default": "US QWERTY",
-                    "description": "TODO: Your keyboard layout."
+                    "description": "Your keyboard layout.\nVisit project homepage to find out supported layouts or add your own!"
                 },
                 "amVim.bindCtrlC": {
                     "type": "boolean",
