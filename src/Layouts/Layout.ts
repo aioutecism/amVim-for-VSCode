@@ -7,7 +7,7 @@ export interface LayoutMap {
 export class Layout {
 
     private static id: string;
-    private static layouts: {[id: string]: LayoutMap};
+    private static layouts: {[id: string]: LayoutMap} = {};
 
     static use(id: string): void {
         if (this.layouts[id]) {
