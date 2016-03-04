@@ -44,6 +44,7 @@ Your keyboard layout.
 Values avaliable:
 
 - `US QWERTY`
+- `NO QWERTY` - Norwegian standard 102-key keyboard layout
 
 Can't find your layout?
 Open an [issue](https://github.com/aioutecism/amVim-for-VSCode/issues) with a shot of your keyboard
