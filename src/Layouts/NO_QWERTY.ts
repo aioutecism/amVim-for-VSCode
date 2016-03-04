@@ -37,7 +37,7 @@ export const map: LayoutMap = {
     'vk_oem_period' : '.',
 
     'shift+vk_oem_minus'  : '?',
-    'shift+vk_oem_plus'   : '+',
+    // PROBLEM: Dead key: 'shift+vk_oem_plus'   : '`',
     'shift+vk_oem_comma'  : ';',
     'shift+vk_oem_period' : ':',
 };
