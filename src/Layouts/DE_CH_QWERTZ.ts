@@ -1,6 +1,6 @@
 import {LayoutMap} from './Layout';
 
-export const id = 'DE_CH QWERTY';
+export const id = 'DE_CH QWERTZ';
 export const map: LayoutMap = {
     'shift+1' : '+',
     'shift+2' : '"',
