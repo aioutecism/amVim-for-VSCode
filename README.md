@@ -44,6 +44,7 @@ Your keyboard layout.
 Values avaliable:
 
 - `US QWERTY`
+- `DE_CH QWERTZ`
 
 Can't find your layout?
 Open an [issue](https://github.com/aioutecism/amVim-for-VSCode/issues) with a shot of your keyboard

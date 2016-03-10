@@ -1,4 +1,5 @@
 import * as US_QWERTY from './US_QWERTY';
+import * as DE_CH_QWERTZ from './DE_CH_QWERTZ';
 
 export interface LayoutMap {
     [key: string]: string;
@@ -52,3 +53,4 @@ export class Layout {
 }
 
 Layout.register(US_QWERTY.id, US_QWERTY.map);
+Layout.register(DE_CH_QWERTZ.id, DE_CH_QWERTZ.map);
