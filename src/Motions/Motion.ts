@@ -39,7 +39,8 @@ export class Motion {
                 from.line, from.character
             )).split("\t").length - 1;
 
-            const toVisibleColumn = toCharacter + fromLineTabCount * (activeTextEditor.options.tabSize - 1);
+            const tabSize = activeTextEditor.options.tabSize as number;
+            const toVisibleColumn = toCharacter + fromLineTabCount * (tabSize - 1);
             const toLineText = document.lineAt(toLine).text;
 
             let lastVisibleColumn = -1;
@@ -48,7 +49,7 @@ export class Motion {
 
             for (i = 0; i < toLineText.length && thisVisibleColumn <= toVisibleColumn; i++) {
                 lastVisibleColumn = thisVisibleColumn;
-                thisVisibleColumn += (toLineText.charAt(i) === "\t") ? activeTextEditor.options.tabSize : 1;
+                thisVisibleColumn += (toLineText.charAt(i) === "\t") ? tabSize : 1;
             }
 
             // Choose the closest
