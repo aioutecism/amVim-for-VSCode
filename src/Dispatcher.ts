@@ -1,5 +1,6 @@
 import {window, commands, Disposable, ExtensionContext} from 'vscode';
 import * as Keys from './Keys';
+import {Layout} from './Layouts/Layout';
 import {Mode, ModeID} from './Modes/Mode';
 import {ModeNormal} from './Modes/Normal';
 import {ModeVisual} from './Modes/Visual';
@@ -27,7 +28,7 @@ export class Dispatcher {
             }));
         })
 
-        Keys.all.forEach(key => {
+        Keys.raws.forEach(key => {
             context.subscriptions.push(commands.registerCommand(`vim.${key}`, this.inputHandler(key)));
         });
 
@@ -49,7 +50,7 @@ export class Dispatcher {
 
     inputHandler(key: string): () => void {
         return () => {
-            this.currentMode.input(key);
+            this.currentMode.input(Layout.transformKey(key));
         };
     }
 

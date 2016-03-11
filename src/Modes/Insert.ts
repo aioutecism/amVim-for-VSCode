@@ -2,6 +2,7 @@ import {commands} from 'vscode';
 import {Configuration} from '../Configuration';
 import {Mode, ModeID} from './Mode';
 import * as Keys from '../Keys';
+import {Layout} from '../Layouts/Layout';
 import {CommandMap} from '../Mappers/Command';
 import {ActionInsert} from '../Actions/Insert';
 import {ActionDelete} from '../Actions/Delete';
@@ -26,7 +27,7 @@ export class ModeInsert extends Mode {
         { keys: 'ctrl+w', command: () => ActionDelete.byMotions({motions: [MotionWord.prevStart()]}) },
         { keys: 'ctrl+u', command: () => ActionDelete.byMotions({motions: [MotionLine.firstNonBlank()]}) },
 
-        { keys: 'ctrl+c', command: () => Configuration.getExtensionSetting('bindCtrlC')
+        { keys: 'ctrl+c', command: () => Configuration.getExtensionSetting<boolean>('bindCtrlC')
             ? ActionSuggestion.hide()
                 .then(ActionSelection.shrinkAStep)
                 .then((isShrinked) => {
@@ -41,7 +42,11 @@ export class ModeInsert extends Mode {
             })
         },
     ]
-        .concat(Keys.characters.map(key => {
+        .concat([].concat(
+            Keys.alphabets,
+            Keys.numbers,
+            Layout.getAllTransformedKeys()
+        ).map(key => {
             return { keys: key, command: (args) => {
                 return ActionInsert.characterAtSelections(args)
                     .then(ActionSuggestion.trigger.bind(undefined, {key: key}));

@@ -35,6 +35,21 @@ Check the list [here](https://github.com/aioutecism/amVim-for-VSCode/issues/1).
 You can overwrite default configurations in
 [User and Workspace Settings](https://code.visualstudio.com/docs/customization/userandworkspace).
 
+#### `amVim.keyboardLayout`
+
+`String`, Default: `US QWERTY`
+
+Your keyboard layout.
+
+Values avaliable:
+
+- `US QWERTY`
+- `DE_CH QWERTZ`
+
+Can't find your layout?
+Open an [issue](https://github.com/aioutecism/amVim-for-VSCode/issues) with a shot of your keyboard
+or [contribute](https://github.com/aioutecism/amVim-for-VSCode/pull/45) one!
+
 #### `amVim.bindCtrlC`
 
 `Boolean`, Default: `false`
