@@ -18,7 +18,7 @@ export class ActionReplace {
                 editBuilder.replace(selection, text.replace(/[^\n]/g, args.character));
             });
         })
-            .then(ActionReveal.primaryCursor);
+            .then(() => ActionReveal.primaryCursor());
     }
 
     static characters(args: {character: string, n?: number}): Thenable<boolean> {
@@ -42,7 +42,7 @@ export class ActionReplace {
                 editBuilder.replace(range, text.replace(/[^\n]/g, args.character));
             });
         })
-            .then(ActionReveal.primaryCursor);
+            .then(() => ActionReveal.primaryCursor());
     }
 
 };

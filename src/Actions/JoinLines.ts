@@ -61,7 +61,7 @@ export class ActionJoinLines {
                 editBuilder.replace(range, ' ');
             });
         })
-            .then(ActionReveal.primaryCursor);
+            .then(() => ActionReveal.primaryCursor());
     }
 
 }

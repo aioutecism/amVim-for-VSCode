@@ -29,33 +29,33 @@ export class ModeNormal extends Mode {
         { keys: '{motion}', command: ActionMoveCursor.byMotions, args: {noEmptyAtLineEnd: true} },
 
         { keys: 'i', command: ActionMode.toInsert },
-        { keys: 'I', command: () => ActionMoveCursor.byMotions({motions: [MotionLine.firstNonBlank()]}).then(ActionMode.toInsert) },
-        { keys: 'a', command: () => ActionMoveCursor.byMotions({motions: [MotionCharacter.right()]}).then(ActionMode.toInsert) },
-        { keys: 'A', command: () => ActionMoveCursor.byMotions({motions: [MotionLine.end()]}).then(ActionMode.toInsert) },
+        { keys: 'I', command: () => ActionMoveCursor.byMotions({motions: [MotionLine.firstNonBlank()]}).then(() => ActionMode.toInsert()) },
+        { keys: 'a', command: () => ActionMoveCursor.byMotions({motions: [MotionCharacter.right()]}).then(() => ActionMode.toInsert()) },
+        { keys: 'A', command: () => ActionMoveCursor.byMotions({motions: [MotionLine.end()]}).then(() => ActionMode.toInsert()) },
 
-        { keys: 'o', command: () => ActionInsert.newLineAfter().then(ActionMode.toInsert) },
-        { keys: 'O', command: () => ActionInsert.newLineBefore().then(ActionMode.toInsert) },
+        { keys: 'o', command: () => ActionInsert.newLineAfter().then(() => ActionMode.toInsert()) },
+        { keys: 'O', command: () => ActionInsert.newLineBefore().then(() => ActionMode.toInsert()) },
 
-        { keys: 's', command: () => ActionDelete.selectionsOrRight({shouldYank: true}).then(ActionMode.toInsert) },
+        { keys: 's', command: () => ActionDelete.selectionsOrRight({shouldYank: true}).then(() => ActionMode.toInsert()) },
 
-        { keys: 'X', command: () => ActionDelete.selectionsOrLeft({shouldYank: true}).then(ActionSuggestion.hide) },
-        { keys: 'x', command: () => ActionDelete.selectionsOrRight({shouldYank: true}).then(ActionSuggestion.hide) },
-        { keys: 'delete', command: () => ActionDelete.selectionsOrRight({shouldYank: true}).then(ActionSuggestion.hide) },
+        { keys: 'X', command: () => ActionDelete.selectionsOrLeft({shouldYank: true}).then(() => ActionSuggestion.hide()) },
+        { keys: 'x', command: () => ActionDelete.selectionsOrRight({shouldYank: true}).then(() => ActionSuggestion.hide()) },
+        { keys: 'delete', command: () => ActionDelete.selectionsOrRight({shouldYank: true}).then(() => ActionSuggestion.hide()) },
         { keys: 'd d', command: ActionDelete.line, args: {shouldYank: true} },
         { keys: 'D', command: () => ActionDelete.byMotions({motions: [MotionLine.end()], shouldYank: true}) },
         { keys: 'd {motion}', command: ActionDelete.byMotions, args: {shouldYank: true} },
-        { keys: 'C', command: () => ActionDelete.byMotions({motions: [MotionLine.end()], shouldYank: true}).then(ActionMode.toInsert) },
+        { keys: 'C', command: () => ActionDelete.byMotions({motions: [MotionLine.end()], shouldYank: true}).then(() => ActionMode.toInsert()) },
         { keys: 'c c', command: () => {
             return ActionMoveCursor.byMotions({motions: [MotionLine.firstNonBlank()]})
                 .then(ActionDelete.byMotions.bind(undefined, {motions: [MotionLine.end()], shouldYank: true}))
-                .then(ActionMode.toInsert);
+                .then(() => ActionMode.toInsert());
         } },
         { keys: 'S', command: () => {
             return ActionMoveCursor.byMotions({motions: [MotionLine.firstNonBlank()]})
                 .then(ActionDelete.byMotions.bind(undefined, {motions: [MotionLine.end()], shouldYank: true}))
-                .then(ActionMode.toInsert);
+                .then(() => ActionMode.toInsert());
         } },
-        { keys: 'c {motion}', command: (args: {motions: Motion[], shouldYank?: boolean}) => ActionDelete.byMotions(args).then(ActionMode.toInsert), args: {shouldYank: true, cwNeedsFixup: true} },
+        { keys: 'c {motion}', command: (args: {motions: Motion[], shouldYank?: boolean}) => ActionDelete.byMotions(args).then(() => ActionMode.toInsert()), args: {shouldYank: true, cwNeedsFixup: true} },
         { keys: 'J', command: ActionJoinLines.onSelections },
 
         { keys: 'r {char}', command: ActionReplace.characters },
@@ -68,8 +68,8 @@ export class ModeNormal extends Mode {
 
         { keys: 'n', command: ActionFind.next },
         { keys: 'N', command: ActionFind.prev },
-        { keys: '*', command: () => ActionFind.byIndicator().then(ActionFind.next) },
-        { keys: '#', command: () => ActionFind.byIndicator().then(ActionFind.prev) },
+        { keys: '*', command: () => ActionFind.byIndicator().then(() => ActionFind.next()) },
+        { keys: '#', command: () => ActionFind.byIndicator().then(() => ActionFind.prev()) },
 
         { keys: 'u', command: ActionHistory.undo },
         { keys: 'ctrl+r', command: ActionHistory.redo },
@@ -86,10 +86,10 @@ export class ModeNormal extends Mode {
         { keys: 'z z', command: ActionReveal.primaryCursor, args: {revealType: TextEditorRevealType.InCenter} },
 
         { keys: 'ctrl+c', command: () => Configuration.getExtensionSetting<boolean>('bindCtrlC')
-            ? ActionSuggestion.hide().then(ActionSelection.shrinkToPrimaryActive)
+            ? ActionSuggestion.hide().then(() => ActionSelection.shrinkToPrimaryActive())
             : commands.executeCommand('editor.action.clipboardCopyAction')
         },
-        { keys: 'escape', command: () => ActionSuggestion.hide().then(ActionSelection.shrinkToPrimaryActive) },
+        { keys: 'escape', command: () => ActionSuggestion.hide().then(() => ActionSelection.shrinkToPrimaryActive()) },
     ];
 
     constructor() {
