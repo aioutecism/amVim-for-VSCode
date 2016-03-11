@@ -3,7 +3,7 @@ import {window, Range, TextEditorRevealType} from 'vscode';
 export class ActionReveal {
 
     static primaryCursor(args: {revealType?: TextEditorRevealType} = {}): Thenable<boolean> {
-        const revealType = args.revealType === undefined ? TextEditorRevealType.Default : args.revealType;
+        args.revealType = args.revealType === undefined ? TextEditorRevealType.Default : args.revealType;
 
         const activeTextEditor = window.activeTextEditor;
 
@@ -12,7 +12,7 @@ export class ActionReveal {
         }
 
         const activePosition = activeTextEditor.selection.active;
-        activeTextEditor.revealRange(new Range(activePosition, activePosition), revealType);
+        activeTextEditor.revealRange(new Range(activePosition, activePosition), args.revealType);
 
         return Promise.resolve(true);
     }

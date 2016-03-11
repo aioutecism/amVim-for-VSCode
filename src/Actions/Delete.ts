@@ -42,7 +42,7 @@ export class ActionDelete {
                     ranges.forEach((range) => editBuilder.delete(range));
                 });
             })
-            .then(ActionReveal.primaryCursor);
+            .then(() => ActionReveal.primaryCursor());
     }
 
     static selectionsOrLeft(args: {
@@ -102,7 +102,7 @@ export class ActionDelete {
                     ranges.forEach((range) => editBuilder.delete(range));
                 });
             })
-            .then(ActionReveal.primaryCursor);
+            .then(() => ActionReveal.primaryCursor());
     }
 
     static selectionsOrRight(args: {
@@ -162,7 +162,7 @@ export class ActionDelete {
                     ranges.forEach((range) => editBuilder.delete(range));
                 });
             })
-            .then(ActionReveal.primaryCursor);
+            .then(() => ActionReveal.primaryCursor());
     }
 
     static line(args: {
@@ -193,7 +193,7 @@ export class ActionDelete {
                     ranges.forEach((range) => editBuilder.delete(range));
                 });
             })
-            .then(ActionReveal.primaryCursor);
+            .then(() => ActionReveal.primaryCursor());
     }
 
 };

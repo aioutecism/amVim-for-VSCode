@@ -29,14 +29,14 @@ export class ModeInsert extends Mode {
 
         { keys: 'ctrl+c', command: () => Configuration.getExtensionSetting<boolean>('bindCtrlC')
             ? ActionSuggestion.hide()
-                .then(ActionSelection.shrinkAStep)
+                .then(() => ActionSelection.shrinkAStep())
                 .then((isShrinked) => {
                     return isShrinked ? Promise.resolve(true) : ActionMode.toNormal();
                 })
             : commands.executeCommand('editor.action.clipboardCopyAction')
         },
         { keys: 'escape', command: () => ActionSuggestion.hide()
-            .then(ActionSelection.shrinkAStep)
+            .then(() => ActionSelection.shrinkAStep())
             .then((isShrinked) => {
                 return isShrinked ? Promise.resolve(true) : ActionMode.toNormal();
             })

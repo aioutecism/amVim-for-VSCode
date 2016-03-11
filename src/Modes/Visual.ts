@@ -23,8 +23,8 @@ export class ModeVisual extends Mode {
     private maps: CommandMap[] = [
         { keys: '{motion}', command: ActionMoveCursor.byMotions, args: {isVisualMode: true} },
 
-        { keys: 'I', command: () => ActionSelection.shrinkToStarts().then(ActionMode.toInsert) },
-        { keys: 'A', command: () => ActionSelection.shrinkToEnds().then(ActionMode.toInsert) },
+        { keys: 'I', command: () => ActionSelection.shrinkToStarts().then(() => ActionMode.toInsert()) },
+        { keys: 'A', command: () => ActionSelection.shrinkToEnds().then(() => ActionMode.toInsert()) },
 
         { keys: 'backspace', command: ActionDelete.selectionsOrRight, args: {shouldYank: true} },
         { keys: 'delete', command: ActionDelete.selectionsOrRight, args: {shouldYank: true} },
@@ -32,12 +32,12 @@ export class ModeVisual extends Mode {
         { keys: 'X', command: ActionDelete.line, args: {shouldYank: true} },
         { keys: 'd', command: ActionDelete.selectionsOrRight, args: {shouldYank: true} },
         { keys: 'D', command: ActionDelete.line, args: {shouldYank: true} },
-        { keys: 'c', command: () => ActionDelete.selectionsOrRight({shouldYank: true}).then(ActionMode.toInsert) },
-        { keys: 'C', command: () => ActionDelete.line({shouldYank: true}).then(ActionInsert.newLineBefore).then(ActionMode.toInsert) },
-        { keys: 's', command: () => ActionDelete.selectionsOrRight({shouldYank: true}).then(ActionMode.toInsert) },
-        { keys: 'S', command: () => ActionDelete.line({shouldYank: true}).then(ActionInsert.newLineBefore).then(ActionMode.toInsert) },
-        { keys: 'y', command: () => ActionRegister.yankSelections().then(ActionSelection.shrinkToStarts) },
-        { keys: 'J', command: () => ActionJoinLines.onSelections().then(ActionSelection.shrinkToActives) },
+        { keys: 'c', command: () => ActionDelete.selectionsOrRight({shouldYank: true}).then(() => ActionMode.toInsert()) },
+        { keys: 'C', command: () => ActionDelete.line({shouldYank: true}).then(() => ActionInsert.newLineBefore()).then(() => ActionMode.toInsert()) },
+        { keys: 's', command: () => ActionDelete.selectionsOrRight({shouldYank: true}).then(() => ActionMode.toInsert()) },
+        { keys: 'S', command: () => ActionDelete.line({shouldYank: true}).then(() => ActionInsert.newLineBefore()).then(() => ActionMode.toInsert()) },
+        { keys: 'y', command: () => ActionRegister.yankSelections().then(() => ActionSelection.shrinkToStarts()) },
+        { keys: 'J', command: () => ActionJoinLines.onSelections().then(() => ActionSelection.shrinkToActives()) },
 
         { keys: 'r {char}', command: ActionReplace.selections },
 
@@ -50,10 +50,10 @@ export class ModeVisual extends Mode {
         { keys: 'v', command: ActionSelection.shrinkToPrimaryActive },
 
         { keys: 'ctrl+c', command: () => Configuration.getExtensionSetting<boolean>('bindCtrlC')
-            ? ActionSuggestion.hide().then(ActionSelection.shrinkToPrimaryActive)
+            ? ActionSuggestion.hide().then(() => ActionSelection.shrinkToPrimaryActive())
             : commands.executeCommand('editor.action.clipboardCopyAction')
         },
-        { keys: 'escape', command: () => ActionSuggestion.hide().then(ActionSelection.shrinkToPrimaryActive) },
+        { keys: 'escape', command: () => ActionSuggestion.hide().then(() => ActionSelection.shrinkToPrimaryActive()) },
     ];
 
     constructor() {

@@ -53,7 +53,7 @@ export class ActionInsert {
             // This is executed before changes are applied
             activeTextEditor.selections = fakeSelections;
         })
-            .then(ActionReveal.primaryCursor);
+            .then(() => ActionReveal.primaryCursor());
     }
 
     static newLineBefore(): Thenable<boolean> {
