@@ -46,9 +46,8 @@ Values avaliable:
 - `US QWERTY`
 - `DE_CH QWERTZ`
 
-Can't find your layout?
-Open an [issue](https://github.com/aioutecism/amVim-for-VSCode/issues) with a shot of your keyboard
-or [contribute](https://github.com/aioutecism/amVim-for-VSCode/pull/45) one!
+**This won't be needed after VSCode v0.10.12 is released.**
+
 
 #### `amVim.bindCtrlC`
 
