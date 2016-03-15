@@ -1,6 +1,5 @@
 import {window, commands, Disposable, ExtensionContext} from 'vscode';
 import * as Keys from './Keys';
-import {Layout} from './Layouts/Layout';
 import {Mode, ModeID} from './Modes/Mode';
 import {ModeNormal} from './Modes/Normal';
 import {ModeVisual} from './Modes/Visual';
@@ -50,7 +49,7 @@ export class Dispatcher {
 
     inputHandler(key: string): () => void {
         return () => {
-            this.currentMode.input(Layout.transformKey(key));
+            this.currentMode.input(key);
         };
     }
 
