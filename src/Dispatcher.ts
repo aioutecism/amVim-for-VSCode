@@ -64,6 +64,8 @@ export class Dispatcher {
 
         this.currentMode = this.modes[id];
         this.currentMode.enter();
+
+        commands.executeCommand('setContext', 'amVim.mode', this.currentMode.name);
     }
 
     dispose(): void {
