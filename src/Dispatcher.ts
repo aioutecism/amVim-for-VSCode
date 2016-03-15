@@ -27,6 +27,10 @@ export class Dispatcher {
             }));
         })
 
+        context.subscriptions.push(commands.registerCommand('type', args => {
+            this.inputHandler(args.text)();
+        }));
+
         Keys.raws.forEach(key => {
             context.subscriptions.push(commands.registerCommand(`vim.${key}`, this.inputHandler(key)));
         });
