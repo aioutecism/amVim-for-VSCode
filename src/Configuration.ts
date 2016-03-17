@@ -1,9 +1,6 @@
-import {workspace, WorkspaceConfiguration, Disposable} from 'vscode';
-import {Layout} from './Layouts/Layout';
+import {commands, workspace, WorkspaceConfiguration, Disposable} from 'vscode';
 
 export class Configuration {
-
-    private static defaultKeyboardLayout = 'US QWERTY';
 
     private static isReady = false;
     private static extensionNamespace: WorkspaceConfiguration;
@@ -18,12 +15,12 @@ export class Configuration {
         this.isReady = true;
 
         this.updateCache();
-        this.updateLayout();
+        this.updateKeybindingContexts();
 
         this.disposables.push(
             workspace.onDidChangeConfiguration(() => {
                 this.updateCache();
-                this.updateLayout();
+                this.updateKeybindingContexts();
             })
         );
     }
@@ -33,12 +30,9 @@ export class Configuration {
         this.editorNamespace = workspace.getConfiguration('editor');
     }
 
-    private static updateLayout(): void {
-        try {
-            Layout.use(this.getExtensionSetting<string>('keyboardLayout'));
-        } catch (error) {
-            Layout.use(this.defaultKeyboardLayout);
-        }
+    private static updateKeybindingContexts(): void {
+        commands.executeCommand('setContext',
+            'amVim.configuration.shouldBindCtrlC', this.getExtensionSetting<boolean>('bindCtrlC'));
     }
 
     static getExtensionSetting<T>(section: string, defaultValue?: T): T {

@@ -6,10 +6,6 @@ import {MotionLine} from '../Motions/Line';
 
 export class ActionInsert {
 
-    static tabAtSelections(): Thenable<boolean> {
-        return commands.executeCommand('tab');
-    }
-
     static lineBreakAtSelections(): Thenable<boolean> {
         const activeTextEditor = window.activeTextEditor;
 

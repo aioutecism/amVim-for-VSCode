@@ -4,19 +4,19 @@ import {ModeID} from '../Modes/Mode';
 export class ActionMode {
 
     static toNormal(): Thenable<boolean> {
-        return commands.executeCommand(`vim.mode.${ModeID.NORMAL}`);
+        return commands.executeCommand(`amVim.mode.${ModeID.NORMAL}`);
     }
 
     static toVisual(): Thenable<boolean> {
-        return commands.executeCommand(`vim.mode.${ModeID.VISUAL}`);
+        return commands.executeCommand(`amVim.mode.${ModeID.VISUAL}`);
     }
 
     static toVisualLine(): Thenable<boolean> {
-        return commands.executeCommand(`vim.mode.${ModeID.VISUAL_LINE}`);
+        return commands.executeCommand(`amVim.mode.${ModeID.VISUAL_LINE}`);
     }
 
     static toInsert(): Thenable<boolean> {
-        return commands.executeCommand(`vim.mode.${ModeID.INSERT}`);
+        return commands.executeCommand(`amVim.mode.${ModeID.INSERT}`);
     }
 
     static switchByActiveSelections(currentMode: ModeID): Thenable<boolean> {
@@ -48,7 +48,7 @@ export class ActionMode {
             return Promise.resolve(true);
         }
         else {
-            return commands.executeCommand(`vim.mode.${mode}`);
+            return commands.executeCommand(`amVim.mode.${mode}`);
         }
     }
 

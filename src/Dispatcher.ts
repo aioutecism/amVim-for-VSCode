@@ -1,6 +1,5 @@
 import {window, commands, Disposable, ExtensionContext} from 'vscode';
 import * as Keys from './Keys';
-import {Layout} from './Layouts/Layout';
 import {Mode, ModeID} from './Modes/Mode';
 import {ModeNormal} from './Modes/Normal';
 import {ModeVisual} from './Modes/Visual';
@@ -23,13 +22,17 @@ export class Dispatcher {
     constructor(context: ExtensionContext) {
         Object.keys(this.modes).forEach(key => {
             let mode = this.modes[key] as Mode;
-            context.subscriptions.push(commands.registerCommand(`vim.mode.${mode.id}`, () => {
+            context.subscriptions.push(commands.registerCommand(`amVim.mode.${mode.id}`, () => {
                 this.switchMode(mode.id);
             }));
         })
 
+        context.subscriptions.push(commands.registerCommand('type', args => {
+            this.inputHandler(args.text)();
+        }));
+
         Keys.raws.forEach(key => {
-            context.subscriptions.push(commands.registerCommand(`vim.${key}`, this.inputHandler(key)));
+            context.subscriptions.push(commands.registerCommand(`amVim.${key}`, this.inputHandler(key)));
         });
 
         ActionMoveCursor.updatePreferedCharacter();
@@ -48,13 +51,13 @@ export class Dispatcher {
         );
     }
 
-    inputHandler(key: string): () => void {
+    private inputHandler(key: string): () => void {
         return () => {
-            this.currentMode.input(Layout.transformKey(key));
+            this.currentMode.input(key);
         };
     }
 
-    switchMode(id: ModeID): void {
+    private switchMode(id: ModeID): void {
         if (this.currentMode === this.modes[id]) {
             return;
         }
@@ -65,6 +68,8 @@ export class Dispatcher {
 
         this.currentMode = this.modes[id];
         this.currentMode.enter();
+
+        commands.executeCommand('setContext', 'amVim.mode', this.currentMode.name);
     }
 
     dispose(): void {
