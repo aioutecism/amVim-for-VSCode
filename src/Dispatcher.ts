@@ -22,7 +22,7 @@ export class Dispatcher {
     constructor(context: ExtensionContext) {
         Object.keys(this.modes).forEach(key => {
             let mode = this.modes[key] as Mode;
-            context.subscriptions.push(commands.registerCommand(`vim.mode.${mode.id}`, () => {
+            context.subscriptions.push(commands.registerCommand(`amVim.mode.${mode.id}`, () => {
                 this.switchMode(mode.id);
             }));
         })
@@ -32,7 +32,7 @@ export class Dispatcher {
         }));
 
         Keys.raws.forEach(key => {
-            context.subscriptions.push(commands.registerCommand(`vim.${key}`, this.inputHandler(key)));
+            context.subscriptions.push(commands.registerCommand(`amVim.${key}`, this.inputHandler(key)));
         });
 
         ActionMoveCursor.updatePreferedCharacter();

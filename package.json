@@ -44,15 +44,15 @@
             }
         },
         "keybindings": [
-            { "command": "vim.tab",       "key": "tab",       "when": "editorTextFocus && !suggestWidgetVisible" },
-            { "command": "vim.backspace", "key": "backspace", "when": "editorTextFocus && !suggestWidgetVisible" },
-            { "command": "vim.delete",    "key": "delete",    "when": "editorTextFocus && !suggestWidgetVisible" },
-            { "command": "vim.escape",    "key": "escape",    "when": "editorTextFocus" },
+            { "command": "amVim.tab",       "key": "tab",       "when": "editorTextFocus && !suggestWidgetVisible" },
+            { "command": "amVim.backspace", "key": "backspace", "when": "editorTextFocus && !suggestWidgetVisible" },
+            { "command": "amVim.delete",    "key": "delete",    "when": "editorTextFocus && !suggestWidgetVisible" },
+            { "command": "amVim.escape",    "key": "escape",    "when": "editorTextFocus" },
 
-            { "command": "vim.ctrl+c", "key": "ctrl+c", "when": "editorTextFocus && amVim.configuration.shouldBindCtrlC" },
-            { "command": "vim.ctrl+r", "key": "ctrl+r", "when": "editorTextFocus && amVim.mode == 'NORMAL'" },
-            { "command": "vim.ctrl+u", "key": "ctrl+u", "when": "editorTextFocus && amVim.mode == 'INSERT'" },
-            { "command": "vim.ctrl+w", "key": "ctrl+w", "when": "editorTextFocus && amVim.mode == 'INSERT'" }
+            { "command": "amVim.ctrl+c", "key": "ctrl+c", "when": "editorTextFocus && amVim.configuration.shouldBindCtrlC" },
+            { "command": "amVim.ctrl+r", "key": "ctrl+r", "when": "editorTextFocus && amVim.mode == 'NORMAL'" },
+            { "command": "amVim.ctrl+u", "key": "ctrl+u", "when": "editorTextFocus && amVim.mode == 'INSERT'" },
+            { "command": "amVim.ctrl+w", "key": "ctrl+w", "when": "editorTextFocus && amVim.mode == 'INSERT'" }
         ]
     },
     "activationEvents": [
