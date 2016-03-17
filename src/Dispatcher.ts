@@ -25,7 +25,7 @@ export class Dispatcher {
             context.subscriptions.push(commands.registerCommand(`amVim.mode.${mode.id}`, () => {
                 this.switchMode(mode.id);
             }));
-        })
+        });
 
         context.subscriptions.push(commands.registerCommand('type', args => {
             this.inputHandler(args.text)();
