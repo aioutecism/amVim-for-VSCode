@@ -45,10 +45,7 @@ export class ModeInsert extends Mode {
             Keys.alphabets,
             Keys.numbers
         ).map(key => {
-            return { keys: key, command: (args) => {
-                return ActionInsert.characterAtSelections(args)
-                    .then(ActionSuggestion.trigger.bind(undefined, {key: key}));
-            }, args: {character: key} };
+            return { keys: key, command: ActionInsert.characterAtSelections, args: {character: key} };
         }));
 
     constructor() {
