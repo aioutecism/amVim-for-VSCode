@@ -1,4 +1,4 @@
-import {workspace, WorkspaceConfiguration, Disposable} from 'vscode';
+import {commands, workspace, WorkspaceConfiguration, Disposable} from 'vscode';
 
 export class Configuration {
 
@@ -15,10 +15,12 @@ export class Configuration {
         this.isReady = true;
 
         this.updateCache();
+        this.updateKeybindingContexts();
 
         this.disposables.push(
             workspace.onDidChangeConfiguration(() => {
                 this.updateCache();
+                this.updateKeybindingContexts();
             })
         );
     }
@@ -26,6 +28,11 @@ export class Configuration {
     private static updateCache(): void {
         this.extensionNamespace = workspace.getConfiguration('amVim');
         this.editorNamespace = workspace.getConfiguration('editor');
+    }
+
+    private static updateKeybindingContexts(): void {
+        commands.executeCommand('setContext',
+            'amVim.configuration.shouldBindCtrlC', this.getExtensionSetting<boolean>('bindCtrlC'));
     }
 
     static getExtensionSetting<T>(section: string, defaultValue?: T): T {

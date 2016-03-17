@@ -24,13 +24,11 @@ export class ModeInsert extends Mode {
         { keys: 'ctrl+w', command: () => ActionDelete.byMotions({motions: [MotionWord.prevStart()]}) },
         { keys: 'ctrl+u', command: () => ActionDelete.byMotions({motions: [MotionLine.firstNonBlank()]}) },
 
-        { keys: 'ctrl+c', command: () => Configuration.getExtensionSetting<boolean>('bindCtrlC')
-            ? ActionSuggestion.hide()
-                .then(() => ActionSelection.shrinkAStep())
-                .then((isShrinked) => {
-                    return isShrinked ? Promise.resolve(true) : ActionMode.toNormal();
-                })
-            : commands.executeCommand('editor.action.clipboardCopyAction')
+        { keys: 'ctrl+c', command: () => ActionSuggestion.hide()
+            .then(() => ActionSelection.shrinkAStep())
+            .then((isShrinked) => {
+                return isShrinked ? Promise.resolve(true) : ActionMode.toNormal();
+            })
         },
         { keys: 'escape', command: () => ActionSuggestion.hide()
             .then(() => ActionSelection.shrinkAStep())
