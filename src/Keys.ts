@@ -1,5 +1,5 @@
 export const raws = [].concat(
-    'tab backspace delete escape'
+    'backspace delete escape'
         .split(' '),
 
     'cruw'

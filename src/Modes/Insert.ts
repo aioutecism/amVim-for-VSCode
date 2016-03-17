@@ -18,7 +18,6 @@ export class ModeInsert extends Mode {
     name = 'INSERT';
 
     private maps: CommandMap[] = [
-        { keys: 'tab', command: ActionInsert.tabAtSelections },
         { keys: 'backspace', command: ActionDelete.selectionsOrLeft, args: {isMultiLine: true} },
         { keys: 'delete', command: ActionDelete.selectionsOrRight, args: {isMultiLine: true} },
 

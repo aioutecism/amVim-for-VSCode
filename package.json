@@ -44,7 +44,6 @@
             }
         },
         "keybindings": [
-            { "command": "amVim.tab",       "key": "tab",       "when": "editorTextFocus && !suggestWidgetVisible" },
             { "command": "amVim.backspace", "key": "backspace", "when": "editorTextFocus && !suggestWidgetVisible" },
             { "command": "amVim.delete",    "key": "delete",    "when": "editorTextFocus && !suggestWidgetVisible" },
             { "command": "amVim.escape",    "key": "escape",    "when": "editorTextFocus" },
