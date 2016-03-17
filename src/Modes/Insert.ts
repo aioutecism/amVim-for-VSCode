@@ -18,9 +18,6 @@ export class ModeInsert extends Mode {
     name = 'INSERT';
 
     private maps: CommandMap[] = [
-        { keys: 'backspace', command: ActionDelete.selectionsOrLeft, args: {isMultiLine: true} },
-        { keys: 'delete', command: ActionDelete.selectionsOrRight, args: {isMultiLine: true} },
-
         { keys: 'ctrl+w', command: () => ActionDelete.byMotions({motions: [MotionWord.prevStart()]}) },
         { keys: 'ctrl+u', command: () => ActionDelete.byMotions({motions: [MotionLine.firstNonBlank()]}) },
 

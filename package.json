@@ -44,8 +44,8 @@
             }
         },
         "keybindings": [
-            { "command": "amVim.backspace", "key": "backspace", "when": "editorTextFocus && !suggestWidgetVisible" },
-            { "command": "amVim.delete",    "key": "delete",    "when": "editorTextFocus && !suggestWidgetVisible" },
+            { "command": "amVim.backspace", "key": "backspace", "when": "editorTextFocus && amVim.mode != 'INSERT'" },
+            { "command": "amVim.delete",    "key": "delete",    "when": "editorTextFocus && amVim.mode != 'INSERT'" },
             { "command": "amVim.escape",    "key": "escape",    "when": "editorTextFocus" },
 
             { "command": "amVim.ctrl+c", "key": "ctrl+c", "when": "editorTextFocus && amVim.configuration.shouldBindCtrlC" },
