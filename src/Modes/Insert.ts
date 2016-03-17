@@ -2,6 +2,7 @@ import {commands} from 'vscode';
 import {Configuration} from '../Configuration';
 import {Mode, ModeID} from './Mode';
 import * as Keys from '../Keys';
+import {MatchResultKind} from '../Mappers/Generic';
 import {CommandMap} from '../Mappers/Command';
 import {ActionInsert} from '../Actions/Insert';
 import {ActionDelete} from '../Actions/Delete';
@@ -17,8 +18,6 @@ export class ModeInsert extends Mode {
     name = 'INSERT';
 
     private maps: CommandMap[] = [
-        { keys: 'space', command: ActionInsert.characterAtSelections, args: {character: ' '} },
-        { keys: 'enter', command: ActionInsert.lineBreakAtSelections },
         { keys: 'tab', command: ActionInsert.tabAtSelections },
         { keys: 'backspace', command: ActionDelete.selectionsOrLeft, args: {isMultiLine: true} },
         { keys: 'delete', command: ActionDelete.selectionsOrRight, args: {isMultiLine: true} },
@@ -40,13 +39,7 @@ export class ModeInsert extends Mode {
                 return isShrinked ? Promise.resolve(true) : ActionMode.toNormal();
             })
         },
-    ]
-        .concat([].concat(
-            Keys.alphabets,
-            Keys.numbers
-        ).map(key => {
-            return { keys: key, command: ActionInsert.characterAtSelections, args: {character: key} };
-        }));
+    ];
 
     constructor() {
         super();
@@ -54,6 +47,20 @@ export class ModeInsert extends Mode {
         this.maps.forEach(map => {
             this.mapper.map(map.keys, map.command, map.args);
         });
+    }
+
+    input(key: string): MatchResultKind {
+        const matchResultKind = super.input(key);
+
+        // Pass key to built-in command if match failed.
+        if (matchResultKind === MatchResultKind.FAILED) {
+            this.pushCommand(() => {
+                return commands.executeCommand('default:type', { text: key });
+            });
+            this.execute();
+        }
+
+        return MatchResultKind.FOUND;
     }
 
 }

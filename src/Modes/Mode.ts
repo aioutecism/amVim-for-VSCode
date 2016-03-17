@@ -50,7 +50,7 @@ export abstract class Mode {
         this.pendings = [];
     }
 
-    input(key: string): void {
+    input(key: string): MatchResultKind {
         let inputs: string[];
 
         if (key === 'escape') {
@@ -70,7 +70,7 @@ export abstract class Mode {
         else if (kind === MatchResultKind.FOUND) {
             this.updateStatusBar();
             this.clearInputs();
-            this.pendings.push(() => {
+            this.pushCommand(() => {
                 return map.command(map.args);
             });
             this.execute();
@@ -78,9 +78,15 @@ export abstract class Mode {
         else if (kind === MatchResultKind.WAITING) {
             this.updateStatusBar(`${this.inputs.join(' ')} and...`);
         }
+
+        return kind;
     }
 
-    private execute(): Thenable<boolean> {
+    protected pushCommand(command: Command): void {
+        this.pendings.push(command);
+    }
+
+    protected execute(): Thenable<boolean> {
         if (this.executing) {
             return;
         }

@@ -51,13 +51,13 @@ export class Dispatcher {
         );
     }
 
-    inputHandler(key: string): () => void {
+    private inputHandler(key: string): () => void {
         return () => {
             this.currentMode.input(key);
         };
     }
 
-    switchMode(id: ModeID): void {
+    private switchMode(id: ModeID): void {
         if (this.currentMode === this.modes[id]) {
             return;
         }
