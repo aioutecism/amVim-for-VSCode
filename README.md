@@ -4,7 +4,7 @@ Starting from "amVim 1.0.0", we are using some new APIs that are only avaliable 
 
 These APIs enable amVim to get rid of all anonying problems related to **intellisense, keyboard layout, etc.**.
 
-"VSCode 0.10.12" is not released now. But you can get the insiders version [here]() and install amVim to feel the difference!
+"VSCode 0.10.12" is not released now. But you can get the insiders version [here](https://code.visualstudio.com/insiders) and install amVim to feel the difference!
 
 
 # amVim for VSCode
