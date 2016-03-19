@@ -1,4 +1,3 @@
-import {commands} from 'vscode';
 import {Configuration} from '../Configuration';
 import {Mode, ModeID} from './Mode';
 import * as Keys from '../Keys';
@@ -49,7 +48,7 @@ export class ModeInsert extends Mode {
         // Pass key to built-in command if match failed.
         if (matchResultKind === MatchResultKind.FAILED) {
             this.pushCommand(() => {
-                return commands.executeCommand('default:type', { text: key });
+                return ActionInsert.characterAtSelections({character: key});
             });
             this.execute();
         }
