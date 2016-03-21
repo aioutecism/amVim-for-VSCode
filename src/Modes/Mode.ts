@@ -50,7 +50,7 @@ export abstract class Mode {
         this.pendings = [];
     }
 
-    input(key: string): MatchResultKind {
+    input(key: string, args: {} = {}): MatchResultKind {
         let inputs: string[];
 
         if (key === 'escape') {

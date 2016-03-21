@@ -31,6 +31,10 @@ export class Dispatcher {
             this.inputHandler(args.text)();
         }));
 
+        context.subscriptions.push(commands.registerCommand('replacePreviousChar', args => {
+            this.inputHandler(args.text, { replaceCharCnt: args.replaceCharCnt })();
+        }));
+
         Keys.raws.forEach(key => {
             context.subscriptions.push(commands.registerCommand(`amVim.${key}`, this.inputHandler(key)));
         });
@@ -51,9 +55,9 @@ export class Dispatcher {
         );
     }
 
-    private inputHandler(key: string): () => void {
+    private inputHandler(key: string, args: {} = {}): () => void {
         return () => {
-            this.currentMode.input(key);
+            this.currentMode.input(key, args);
         };
     }
 

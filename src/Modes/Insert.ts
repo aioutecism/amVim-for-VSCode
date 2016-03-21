@@ -4,6 +4,7 @@ import * as Keys from '../Keys';
 import {MatchResultKind} from '../Mappers/Generic';
 import {CommandMap} from '../Mappers/Command';
 import {ActionInsert} from '../Actions/Insert';
+import {ActionReplace} from '../Actions/Replace';
 import {ActionDelete} from '../Actions/Delete';
 import {ActionSuggestion} from '../Actions/Suggestion';
 import {ActionSelection} from '../Actions/Selection';
@@ -42,16 +43,28 @@ export class ModeInsert extends Mode {
         });
     }
 
-    input(key: string): MatchResultKind {
+    input(key: string, args: {replaceCharCnt?: number} = {}): MatchResultKind {
         const matchResultKind = super.input(key);
 
         // Pass key to built-in command if match failed.
-        if (matchResultKind === MatchResultKind.FAILED) {
+        if (matchResultKind !== MatchResultKind.FAILED) {
+            return matchResultKind;
+        }
+
+        if (args.replaceCharCnt && args.replaceCharCnt > 0) {
+            this.pushCommand(() => {
+                return ActionReplace.characters({
+                    character: key,
+                    n: -args.replaceCharCnt
+                });
+            });
+        }
+        else {
             this.pushCommand(() => {
                 return ActionInsert.characterAtSelections({character: key});
             });
-            this.execute();
         }
+        this.execute();
 
         return MatchResultKind.FOUND;
     }
