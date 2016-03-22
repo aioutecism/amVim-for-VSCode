@@ -44,7 +44,7 @@ export class ActionRegister {
 
         ranges = ranges.map(range => {
             return range.isSingleLine ? range : UtilRange.toLinewise(range);
-        })
+        });
 
         ranges = UtilRange.unionOverlaps(ranges);
 

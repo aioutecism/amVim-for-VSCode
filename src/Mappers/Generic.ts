@@ -43,7 +43,7 @@ export abstract class GenericMapper {
         keys.forEach((key, index) => {
             this.specialKeys.forEach(specialKey => {
                 specialKey.unmapConflicts(node as RecursiveMap, key);
-            })
+            });
 
             if (GenericMapper.isMapLeaf(node[key])) {
                 delete node[key];
@@ -67,7 +67,7 @@ export abstract class GenericMapper {
         let matched = true;
         let additionalArgs = {};
 
-        for (var index = 0; index < inputs.length; index++) {
+        for (let index = 0; index < inputs.length; index++) {
             const input = inputs[index];
 
             if (node[input]) {
@@ -75,8 +75,7 @@ export abstract class GenericMapper {
                 continue;
             }
 
-            // match is in function scope
-            var match: SpecialKeyMatchResult = null;
+            let match: SpecialKeyMatchResult;
             this.specialKeys.some(specialKey => {
                 if (! node[specialKey.indicator]) {
                     return false;
@@ -116,7 +115,7 @@ export abstract class GenericMapper {
             Object.getOwnPropertyNames(additionalArgs).forEach(name => {
                 map.args = map.args || {};
                 map.args[name] = additionalArgs[name];
-            })
+            });
 
             return {kind: MatchResultKind.FOUND, map};
         }

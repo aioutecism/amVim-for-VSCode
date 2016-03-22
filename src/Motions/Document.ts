@@ -12,7 +12,7 @@ export class MotionDocument extends Motion {
     }
 
     apply(from: Position): Position {
-        from = super.apply(from)
+        from = super.apply(from);
 
         const activeTextEditor = window.activeTextEditor;
 

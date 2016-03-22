@@ -6,7 +6,7 @@ import {SpecialKeyMotion} from './SpecialKeys/Motion';
 
 export interface CommandMatchResult extends MatchResult {
     kind: MatchResultKind;
-    map: CommandMap
+    map: CommandMap;
 }
 
 export interface CommandMap extends GenericMap {
