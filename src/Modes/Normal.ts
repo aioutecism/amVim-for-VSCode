@@ -19,6 +19,8 @@ import {ActionMode} from '../Actions/Mode';
 import {Motion} from '../Motions/Motion';
 import {MotionCharacter} from '../Motions/Character';
 import {MotionLine} from '../Motions/Line';
+import {MotionPairMatch} from '../Motions/PairMatch';
+
 
 export class ModeNormal extends Mode {
 
@@ -50,6 +52,13 @@ export class ModeNormal extends Mode {
                 .then(ActionDelete.byMotions.bind(undefined, {motions: [MotionLine.end()], shouldYank: true}))
                 .then(() => ActionMode.toInsert());
         } },
+        { keys: 'c i {char}', 
+            command: (args: {character: string}) => 
+                ActionMoveCursor.byMotions({motions: [MotionPairMatch.matchOpening(args)]}).then(() =>
+                ActionDelete.byMotions({motions: [MotionPairMatch.matchEnding(args)], shouldYank: true}).then(() => 
+                ActionMode.toInsert())), 
+                args: {shouldYank: true, cwNeedsFixup: true} 
+        },
         { keys: 'S', command: () => {
             return ActionMoveCursor.byMotions({motions: [MotionLine.firstNonBlank()]})
                 .then(ActionDelete.byMotions.bind(undefined, {motions: [MotionLine.end()], shouldYank: true}))
