@@ -19,7 +19,9 @@ import {ActionMode} from '../Actions/Mode';
 import {Motion} from '../Motions/Motion';
 import {MotionCharacter} from '../Motions/Character';
 import {MotionLine} from '../Motions/Line';
-import {MotionPairMatch} from '../Motions/PairMatch';
+import {MotionMatchOpening} from '../Motions/MatchOpening';
+import {MotionMatchClosing} from '../Motions/MatchClosing';
+
 
 
 export class ModeNormal extends Mode {
@@ -53,12 +55,25 @@ export class ModeNormal extends Mode {
                 .then(() => ActionMode.toInsert());
         } },
         { keys: 'c i {char}', 
-            command: (args: {character: string}) => 
-                ActionMoveCursor.byMotions({motions: [MotionPairMatch.matchOpening(args)]}).then(() =>
-                ActionDelete.byMotions({motions: [MotionPairMatch.matchEnding(args)], shouldYank: true}).then(() => 
-                ActionMode.toInsert())), 
-                args: {shouldYank: true, cwNeedsFixup: true} 
+            command: (args: {character: string}) => ActionMoveCursor.byMotions({motions: 
+            [MotionMatchOpening.matchOpening({character: args.character}, false, true)             
+            ]}).then(() =>
+                ActionDelete.byMotions({motions: [MotionMatchClosing.matchClosing({character: args.character}, true, false)], shouldYank: true})), 
+                args: {shouldYank: true}  
         },
+        
+    //     { keys: '9', command: () => ActionMoveCursor.byMotions({motions: 
+    //         [MotionPairMatchOpening.matchOpening({character: "("}, false, true)             
+    //         ]}).then(() =>
+    //             ActionDelete.byMotions({motions: [MotionPairMatchClosing.matchClosing({character: ")"}, true, false)], shouldYank: true})), 
+    //             args: {shouldYank: true}  
+    //     },
+    //    { keys: '3', command: () => ActionMoveCursor.byMotions({motions: 
+    //         [ MotionPairMatchOpening.matchOpening({character: "("}, false, true) 
+    //         ]}) },
+    //     { keys: '6', command: () => ActionMoveCursor.byMotions({motions: 
+    //         [ MotionPairMatchClosing.matchClosing({character: ")"}, true, false)
+    //         ]}) },
         { keys: 'S', command: () => {
             return ActionMoveCursor.byMotions({motions: [MotionLine.firstNonBlank()]})
                 .then(ActionDelete.byMotions.bind(undefined, {motions: [MotionLine.end()], shouldYank: true}))
