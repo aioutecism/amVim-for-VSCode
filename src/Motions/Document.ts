@@ -3,6 +3,9 @@ import {Motion} from './Motion';
 
 export class MotionDocument extends Motion {
 
+    // TODO: Get by window height.
+    private static linesPerPage: number = 30;
+
     private line: number;
 
     static toLine(args: {n: number}): Motion {
@@ -11,7 +14,35 @@ export class MotionDocument extends Motion {
         return obj;
     }
 
-    apply(from: Position): Position {
+    static forward(args: {n?: number} = {}): Motion {
+        args.n = args.n === undefined ? 1 : args.n;
+
+        const obj = new MotionDocument();
+        const lines = args.n * MotionDocument.linesPerPage;
+        obj.translate(lines, 0);
+
+        obj.isCharacterUpdated = false;
+
+        return obj;
+    }
+
+    static backward(args: {n: number}): Motion {
+        args.n = args.n === undefined ? 1 : args.n;
+
+        const obj = new MotionDocument();
+        const lines = - args.n * MotionDocument.linesPerPage;
+        obj.translate(lines, 0);
+
+        obj.isCharacterUpdated = false;
+
+        return obj;
+    }
+
+    apply(from: Position, option: {preferedCharacter?: number} = {}): Position {
+        if (! this.isCharacterUpdated && option.preferedCharacter !== undefined) {
+            from = from.with(undefined, option.preferedCharacter);
+        }
+
         from = super.apply(from);
 
         const activeTextEditor = window.activeTextEditor;

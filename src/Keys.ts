@@ -2,6 +2,6 @@ export const raws = [].concat(
     'backspace delete escape'
         .split(' '),
 
-    'cruw'
+    'cruwfb'
         .split('').map(key => `ctrl+${key}`)
 );
