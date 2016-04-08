@@ -4,6 +4,7 @@ import {Mode, ModeID} from './Mode';
 import {CommandMap} from '../Mappers/Command';
 import {ActionBlockCursor} from '../Actions/BlockCursor';
 import {ActionMoveCursor} from '../Actions/MoveCursor';
+import {ActionPage} from '../Actions/Page';
 import {ActionInsert} from '../Actions/Insert';
 import {ActionDelete} from '../Actions/Delete';
 import {ActionReplace} from '../Actions/Replace';
@@ -27,6 +28,9 @@ export class ModeNormal extends Mode {
 
     private maps: CommandMap[] = [
         { keys: '{motion}', command: ActionMoveCursor.byMotions, args: {noEmptyAtLineEnd: true} },
+
+        { keys: 'ctrl+b', command: ActionPage.up },
+        { keys: 'ctrl+f', command: ActionPage.down },
 
         { keys: 'i', command: ActionMode.toInsert },
         { keys: 'I', command: () => ActionMoveCursor.byMotions({motions: [MotionLine.firstNonBlank()]}).then(() => ActionMode.toInsert()) },
