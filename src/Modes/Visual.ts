@@ -3,6 +3,7 @@ import {Configuration} from '../Configuration';
 import {Mode, ModeID} from './Mode';
 import {CommandMap} from '../Mappers/Command';
 import {ActionMoveCursor} from '../Actions/MoveCursor';
+import {ActionPage, PageMoveType} from '../Actions/Page';
 import {ActionSelection} from '../Actions/Selection';
 import {ActionSuggestion} from '../Actions/Suggestion';
 import {ActionRegister} from '../Actions/Register';
@@ -22,6 +23,9 @@ export class ModeVisual extends Mode {
 
     private maps: CommandMap[] = [
         { keys: '{motion}', command: ActionMoveCursor.byMotions, args: {isVisualMode: true} },
+
+        { keys: 'ctrl+b', command: ActionPage.up, args: {moveType: PageMoveType.Select} },
+        { keys: 'ctrl+f', command: ActionPage.down, args: {moveType: PageMoveType.Select} },
 
         { keys: 'I', command: () => ActionSelection.shrinkToStarts().then(() => ActionMode.toInsert()) },
         { keys: 'A', command: () => ActionSelection.shrinkToEnds().then(() => ActionMode.toInsert()) },

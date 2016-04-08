@@ -51,7 +51,9 @@
             { "command": "amVim.ctrl+c", "key": "ctrl+c", "when": "editorTextFocus && amVim.configuration.shouldBindCtrlC" },
             { "command": "amVim.ctrl+r", "key": "ctrl+r", "when": "editorTextFocus && amVim.mode == 'NORMAL'" },
             { "command": "amVim.ctrl+u", "key": "ctrl+u", "when": "editorTextFocus && amVim.mode == 'INSERT'" },
-            { "command": "amVim.ctrl+w", "key": "ctrl+w", "when": "editorTextFocus && amVim.mode == 'INSERT'" }
+            { "command": "amVim.ctrl+w", "key": "ctrl+w", "when": "editorTextFocus && amVim.mode == 'INSERT'" },
+            { "command": "amVim.ctrl+f", "key": "ctrl+f", "when": "editorTextFocus && amVim.mode != 'INSERT'" },
+            { "command": "amVim.ctrl+b", "key": "ctrl+b", "when": "editorTextFocus && amVim.mode != 'INSERT'" }
         ]
     },
     "activationEvents": [
