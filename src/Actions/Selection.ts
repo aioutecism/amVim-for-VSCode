@@ -106,10 +106,11 @@ export class ActionSelection {
         }
 
         activeTextEditor.selections = activeTextEditor.selections.map(selection => {
-            return new Selection(
-                selection.start.with(undefined, 0),
-                selection.end.with(undefined, activeTextEditor.document.lineAt(selection.end.line).text.length)
-            );
+            const start = selection.start.with(undefined, 0);
+            const end = selection.end.with(undefined, activeTextEditor.document.lineAt(selection.end.line).text.length);
+            return selection.isReversed
+                ? new Selection(end, start)
+                : new Selection(start, end);
         });
 
         return Promise.resolve(true);
