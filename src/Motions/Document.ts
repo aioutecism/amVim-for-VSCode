@@ -11,11 +11,7 @@ export class MotionDocument extends Motion {
         return obj;
     }
 
-    apply(from: Position, option: {preferedCharacter?: number} = {}): Position {
-        if (! this.isCharacterUpdated && option.preferedCharacter !== undefined) {
-            from = from.with(undefined, option.preferedCharacter);
-        }
-
+    apply(from: Position): Position {
         from = super.apply(from);
 
         const activeTextEditor = window.activeTextEditor;
