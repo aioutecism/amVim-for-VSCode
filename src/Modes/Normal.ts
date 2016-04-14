@@ -134,6 +134,8 @@ export class ModeNormal extends Mode {
         { keys: 'z .', actions: [ActionReveal.primaryCursor], args: {revealType: TextEditorRevealType.InCenter} },
         { keys: 'z z', actions: [ActionReveal.primaryCursor], args: {revealType: TextEditorRevealType.InCenter} },
 
+        { keys: '.', actions: [this.repeatSavedCommandMap.bind(this)] },
+
         { keys: 'ctrl+c', actions: [
             ActionSuggestion.hide,
             ActionSelection.shrinkToPrimaryActive,
@@ -143,6 +145,8 @@ export class ModeNormal extends Mode {
             ActionSelection.shrinkToPrimaryActive,
         ] },
     ];
+
+    private savedCommandMap: CommandMap;
 
     constructor() {
         super();
@@ -164,6 +168,22 @@ export class ModeNormal extends Mode {
         super.exit();
 
         ActionBlockCursor.off();
+    }
+
+    protected onWillCommandMapMakesChanges(map: CommandMap): void {
+        this.savedCommandMap = map;
+    }
+
+    private repeatSavedCommandMap(): Thenable<boolean> {
+        if (this.savedCommandMap === undefined) {
+            return Promise.resolve(false);
+        }
+
+        // TODO: Replace `this.savedCommandMap.args.n` if provided
+        this.pushCommandMap(this.savedCommandMap);
+        this.execute();
+
+        return Promise.resolve(true);
     }
 
 }

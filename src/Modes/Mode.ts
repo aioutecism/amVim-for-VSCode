@@ -1,4 +1,6 @@
 import {window} from 'vscode';
+import {PrototypeReflect} from '../LanguageExtensions/PrototypeReflect';
+import {SymbolMetadata} from '../Symbols/Metadata';
 import {MatchResultKind} from '../Mappers/Generic';
 import {CommandMap, CommandMapper} from '../Mappers/Command';
 
@@ -80,7 +82,12 @@ export abstract class Mode {
         this.pendings.push(map);
     }
 
-    protected execute(): Thenable<boolean> {
+    /**
+     * Override this to do something before command map makes changes.
+     */
+    protected onWillCommandMapMakesChanges(map: CommandMap): void {}
+
+    protected execute(): void {
         if (this.executing) {
             return;
         }
@@ -93,6 +100,14 @@ export abstract class Mode {
             if (! map) {
                 this.executing = false;
                 return;
+            }
+
+            // TODO: Replace with willChangeStart and willChangeEnd!!!
+            const isAnyActionIsChange = map.actions.some(action => {
+                return PrototypeReflect.getMetadata(SymbolMetadata.Action.isChange, action);
+            });
+            if (isAnyActionIsChange) {
+                this.onWillCommandMapMakesChanges(map);
             }
 
             let promise = Promise.resolve(true);
