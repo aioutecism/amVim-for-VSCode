@@ -18,28 +18,26 @@ export class ModeInsert extends Mode {
     name = 'INSERT';
 
     private maps: CommandMap[] = [
-        { keys: 'ctrl+w', command: () => ActionDelete.byMotions({motions: [MotionWord.prevStart()]}) },
-        { keys: 'ctrl+u', command: () => ActionDelete.byMotions({motions: [MotionLine.firstNonBlank()]}) },
+        { keys: 'ctrl+w', actions: [() => ActionDelete.byMotions({motions: [MotionWord.prevStart()]})] },
+        { keys: 'ctrl+u', actions: [() => ActionDelete.byMotions({motions: [MotionLine.firstNonBlank()]})] },
 
-        { keys: 'ctrl+c', command: () => ActionSuggestion.hide()
-            .then(() => ActionSelection.shrinkAStep())
-            .then((isShrinked) => {
-                return isShrinked ? Promise.resolve(true) : ActionMode.toNormal();
-            })
-        },
-        { keys: 'escape', command: () => ActionSuggestion.hide()
-            .then(() => ActionSelection.shrinkAStep())
-            .then((isShrinked) => {
-                return isShrinked ? Promise.resolve(true) : ActionMode.toNormal();
-            })
-        },
+        { keys: 'ctrl+c', actions: [
+            ActionSuggestion.hide,
+            () => ActionSelection.shrinkAStep()
+                .then(isShrinked => isShrinked ? Promise.resolve(true) : ActionMode.toNormal()),
+        ] },
+        { keys: 'escape', actions: [
+            ActionSuggestion.hide,
+            () => ActionSelection.shrinkAStep()
+                .then(isShrinked => isShrinked ? Promise.resolve(true) : ActionMode.toNormal()),
+        ] },
     ];
 
     constructor() {
         super();
 
         this.maps.forEach(map => {
-            this.mapper.map(map.keys, map.command, map.args);
+            this.mapper.map(map.keys, map.actions, map.args);
         });
     }
 
@@ -52,16 +50,22 @@ export class ModeInsert extends Mode {
         }
 
         if (args.replaceCharCnt && args.replaceCharCnt > 0) {
-            this.pushCommand(() => {
-                return ActionReplace.characters({
+            this.pushCommandMap({
+                keys: key,
+                actions: [ ActionReplace.characters ],
+                args: {
                     character: key,
                     n: -args.replaceCharCnt
-                });
+                }
             });
         }
         else {
-            this.pushCommand(() => {
-                return ActionInsert.characterAtSelections({character: key});
+            this.pushCommandMap({
+                keys: key,
+                actions: [ ActionInsert.characterAtSelections ],
+                args: {
+                    character: key
+                }
             });
         }
         this.execute();
