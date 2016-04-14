@@ -1,4 +1,6 @@
 import {window, commands, Disposable, TextEditorRevealType} from 'vscode';
+import {PrototypeReflect} from '../LanguageExtensions/PrototypeReflect';
+import {SymbolMetadata} from '../Symbols/Metadata';
 import {Configuration} from '../Configuration';
 import {Mode, ModeID} from './Mode';
 import {CommandMap} from '../Mappers/Command';
@@ -171,7 +173,15 @@ export class ModeNormal extends Mode {
     }
 
     protected onWillCommandMapMakesChanges(map: CommandMap): void {
-        this.savedCommandMap = map;
+        const actions = map.actions.filter(action => {
+            return PrototypeReflect.getMetadata(SymbolMetadata.Action.shouldSkipOnRepeat, action) !== true;
+        });
+
+        this.savedCommandMap = {
+            keys: map.keys,
+            actions: actions,
+            args: map.args,
+        };
     }
 
     private repeatSavedCommandMap(): Thenable<boolean> {

@@ -1,20 +1,26 @@
 import {window, commands} from 'vscode';
+import {PrototypeReflect} from '../LanguageExtensions/PrototypeReflect';
+import {SymbolMetadata} from '../Symbols/Metadata';
 import {ModeID} from '../Modes/Mode';
 
 export class ActionMode {
 
+    @PrototypeReflect.metadata(SymbolMetadata.Action.shouldSkipOnRepeat, true)
     static toNormal(): Thenable<boolean> {
         return commands.executeCommand(`amVim.mode.${ModeID.NORMAL}`);
     }
 
+    @PrototypeReflect.metadata(SymbolMetadata.Action.shouldSkipOnRepeat, true)
     static toVisual(): Thenable<boolean> {
         return commands.executeCommand(`amVim.mode.${ModeID.VISUAL}`);
     }
 
+    @PrototypeReflect.metadata(SymbolMetadata.Action.shouldSkipOnRepeat, true)
     static toVisualLine(): Thenable<boolean> {
         return commands.executeCommand(`amVim.mode.${ModeID.VISUAL_LINE}`);
     }
 
+    @PrototypeReflect.metadata(SymbolMetadata.Action.shouldSkipOnRepeat, true)
     static toInsert(): Thenable<boolean> {
         return commands.executeCommand(`amVim.mode.${ModeID.INSERT}`);
     }
