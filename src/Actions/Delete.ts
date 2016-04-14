@@ -1,4 +1,6 @@
 import {window, commands, Range} from 'vscode';
+import {PrototypeReflect} from '../LanguageExtensions/PrototypeReflect';
+import {SymbolMetadata} from '../Symbols/Metadata';
 import {ActionRegister} from './Register';
 import {ActionReveal} from './Reveal';
 import {Motion} from '../Motions/Motion';
@@ -6,6 +8,7 @@ import {UtilRange} from '../Utils/Range';
 
 export class ActionDelete {
 
+    @PrototypeReflect.metadata(SymbolMetadata.Action.isChange, true)
     static byMotions(args: {
         motions: Motion[],
         cwNeedsFixup?: boolean,
@@ -45,6 +48,7 @@ export class ActionDelete {
             .then(() => ActionReveal.primaryCursor());
     }
 
+    @PrototypeReflect.metadata(SymbolMetadata.Action.isChange, true)
     static selectionsOrLeft(args: {
         isMultiLine?: boolean,
         shouldYank?: boolean
@@ -105,6 +109,7 @@ export class ActionDelete {
             .then(() => ActionReveal.primaryCursor());
     }
 
+    @PrototypeReflect.metadata(SymbolMetadata.Action.isChange, true)
     static selectionsOrRight(args: {
         isMultiLine?: boolean,
         shouldYank?: boolean
@@ -165,6 +170,7 @@ export class ActionDelete {
             .then(() => ActionReveal.primaryCursor());
     }
 
+    @PrototypeReflect.metadata(SymbolMetadata.Action.isChange, true)
     static line(args: {
         shouldYank?: boolean
     }): Thenable<boolean> {
