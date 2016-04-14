@@ -99,7 +99,7 @@ export class PrototypeReflect {
 
     static getMetadata(key: string | symbol, target: any): any {
         if (!isPrototypeExists(target)) {
-            throw new TypeError();
+            return undefined;
         }
 
         return (target.prototype[PrototypeReflect.metadataKey] === undefined)
