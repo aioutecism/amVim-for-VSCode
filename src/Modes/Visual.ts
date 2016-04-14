@@ -43,23 +43,23 @@ export class ModeVisual extends Mode {
         { keys: 'd', actions: [ActionDelete.selectionsOrRight], args: {shouldYank: true} },
         { keys: 'D', actions: [ActionDelete.line], args: {shouldYank: true} },
         { keys: 'c', actions: [
-            () => ActionDelete.selectionsOrRight({shouldYank: true}),
+            ActionDelete.selectionsOrRight,
             ActionMode.toInsert,
-        ] },
+        ], args: {shouldYank: true} },
         { keys: 'C', actions: [
-            () => ActionDelete.line({shouldYank: true}),
+            ActionDelete.line,
             ActionInsert.newLineBefore,
             ActionMode.toInsert,
-        ] },
+        ], args: {shouldYank: true} },
         { keys: 's', actions: [
-            () => ActionDelete.selectionsOrRight({shouldYank: true}),
+            ActionDelete.selectionsOrRight,
             ActionMode.toInsert,
-        ] },
+        ], args: {shouldYank: true} },
         { keys: 'S', actions: [
-            () => ActionDelete.line({shouldYank: true}),
+            ActionDelete.line,
             ActionInsert.newLineBefore,
             ActionMode.toInsert,
-        ] },
+        ], args: {shouldYank: true} },
         { keys: 'y', actions: [
             ActionRegister.yankSelections,
             ActionSelection.shrinkToStarts,

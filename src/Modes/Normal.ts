@@ -56,30 +56,41 @@ export class ModeNormal extends Mode {
         ] },
 
         { keys: 's', actions: [
-            () => ActionDelete.selectionsOrRight({shouldYank: true}),
+            ActionDelete.selectionsOrRight,
             ActionMode.toInsert,
-        ] },
+        ], args: {
+            shouldYank: true
+        } },
 
-        { keys: 'X', actions: [() => ActionDelete.selectionsOrLeft({shouldYank: true})] },
-        { keys: 'x', actions: [() => ActionDelete.selectionsOrRight({shouldYank: true})] },
-        { keys: 'delete', actions: [() => ActionDelete.selectionsOrRight({shouldYank: true})] },
-        { keys: 'd d', actions: [() => ActionDelete.line({shouldYank: true})] },
-        { keys: 'D', actions: [() => ActionDelete.byMotions({motions: [MotionLine.end()], shouldYank: true})] },
+        { keys: 'X', actions: [ActionDelete.selectionsOrLeft], args: {shouldYank: true} },
+        { keys: 'x', actions: [ActionDelete.selectionsOrRight], args: {shouldYank: true} },
+        { keys: 'delete', actions: [ActionDelete.selectionsOrRight], args: {shouldYank: true} },
+        { keys: 'd d', actions: [ActionDelete.line], args: {shouldYank: true} },
+        { keys: 'D', actions: [ActionDelete.byMotions], args: {motions: [MotionLine.end()], shouldYank: true} },
         { keys: 'd {motion}', actions: [ActionDelete.byMotions], args: {shouldYank: true} },
         { keys: 'C', actions: [
-            () => ActionDelete.byMotions({motions: [MotionLine.end()], shouldYank: true}),
+            ActionDelete.byMotions,
             ActionMode.toInsert,
-        ] },
+        ], args: {
+            motions: [MotionLine.end()],
+            shouldYank: true
+        } },
         { keys: 'c c', actions: [
             () => ActionMoveCursor.byMotions({motions: [MotionLine.firstNonBlank()]}),
-            () => ActionDelete.byMotions({motions: [MotionLine.end()], shouldYank: true}),
+            ActionDelete.byMotions,
             ActionMode.toInsert,
-        ] },
+        ], args: {
+            motions: [MotionLine.end()],
+            shouldYank: true
+        } },
         { keys: 'S', actions: [
             () => ActionMoveCursor.byMotions({motions: [MotionLine.firstNonBlank()]}),
-            () => ActionDelete.byMotions({motions: [MotionLine.end()], shouldYank: true}),
+            ActionDelete.byMotions,
             ActionMode.toInsert,
-        ] },
+        ], args: {
+            motions: [MotionLine.end()],
+            shouldYank: true
+        } },
         { keys: 'c {motion}', actions: [
             (args: {motions: Motion[]}) => ActionDelete.byMotions({
                 motions: args.motions,

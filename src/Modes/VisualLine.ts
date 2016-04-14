@@ -43,25 +43,25 @@ export class ModeVisualLine extends Mode {
         { keys: 'd', actions: [ActionDelete.line], args: {shouldYank: true} },
         { keys: 'D', actions: [ActionDelete.line], args: {shouldYank: true} },
         { keys: 'c', actions: [
-            () => ActionDelete.line({shouldYank: true}),
+            ActionDelete.line,
             ActionInsert.newLineBefore,
             ActionMode.toInsert,
-        ] },
+        ], args: {shouldYank: true} },
         { keys: 'C', actions: [
-            () => ActionDelete.line({shouldYank: true}),
+            ActionDelete.line,
             ActionInsert.newLineBefore,
             ActionMode.toInsert,
-        ] },
+        ], args: {shouldYank: true} },
         { keys: 's', actions: [
-            () => ActionDelete.line({shouldYank: true}),
+            ActionDelete.line,
             ActionInsert.newLineBefore,
             ActionMode.toInsert,
-        ] },
+        ], args: {shouldYank: true} },
         { keys: 'S', actions: [
-            () => ActionDelete.line({shouldYank: true}),
+            ActionDelete.line,
             ActionInsert.newLineBefore,
             ActionMode.toInsert,
-        ] },
+        ], args: {shouldYank: true} },
         { keys: 'y', actions: [
             ActionRegister.yankLines,
             ActionSelection.shrinkToStarts,
