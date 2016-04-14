@@ -1,19 +1,15 @@
 import {window} from 'vscode';
 import {MatchResultKind} from '../Mappers/Generic';
-import {CommandMapper} from '../Mappers/Command';
+import {CommandMap, CommandMapper} from '../Mappers/Command';
 
 export enum ModeID {NORMAL, VISUAL, VISUAL_LINE, INSERT};
-
-export interface Command {
-    (args?: {}): Thenable<boolean>;
-}
 
 export abstract class Mode {
 
     id: ModeID;
     name: string;
 
-    private pendings: Command[] = [];
+    private pendings: CommandMap[] = [];
     private executing: boolean = false;
     private inputs: string[] = [];
 
@@ -70,9 +66,7 @@ export abstract class Mode {
         else if (kind === MatchResultKind.FOUND) {
             this.updateStatusBar();
             this.clearInputs();
-            this.pushCommand(() => {
-                return map.command(map.args);
-            });
+            this.pushCommandMap(map);
             this.execute();
         }
         else if (kind === MatchResultKind.WAITING) {
@@ -82,8 +76,8 @@ export abstract class Mode {
         return kind;
     }
 
-    protected pushCommand(command: Command): void {
-        this.pendings.push(command);
+    protected pushCommandMap(map: CommandMap): void {
+        this.pendings.push(map);
     }
 
     protected execute(): Thenable<boolean> {
@@ -94,14 +88,20 @@ export abstract class Mode {
         this.executing = true;
 
         const one = () => {
-            const action = this.pendings.shift();
+            const map = this.pendings.shift();
 
-            if (! action) {
+            if (! map) {
                 this.executing = false;
                 return;
             }
 
-            action().then(
+            let promise = Promise.resolve(true);
+
+            map.actions.forEach(action => {
+                promise = promise.then(() => action(map.args));
+            });
+
+            promise.then(
                 one.bind(this),
                 this.clearPendings.bind(this)
             );
