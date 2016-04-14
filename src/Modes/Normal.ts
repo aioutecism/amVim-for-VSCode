@@ -42,9 +42,9 @@ export class ModeNormal extends Mode {
 
         { keys: 's', command: () => ActionDelete.selectionsOrRight({shouldYank: true}).then(() => ActionMode.toInsert()) },
 
-        { keys: 'X', command: () => ActionDelete.selectionsOrLeft({shouldYank: true}).then(() => ActionSuggestion.hide()) },
-        { keys: 'x', command: () => ActionDelete.selectionsOrRight({shouldYank: true}).then(() => ActionSuggestion.hide()) },
-        { keys: 'delete', command: () => ActionDelete.selectionsOrRight({shouldYank: true}).then(() => ActionSuggestion.hide()) },
+        { keys: 'X', command: () => ActionDelete.selectionsOrLeft({shouldYank: true}) },
+        { keys: 'x', command: () => ActionDelete.selectionsOrRight({shouldYank: true}) },
+        { keys: 'delete', command: () => ActionDelete.selectionsOrRight({shouldYank: true}) },
         { keys: 'd d', command: ActionDelete.line, args: {shouldYank: true} },
         { keys: 'D', command: () => ActionDelete.byMotions({motions: [MotionLine.end()], shouldYank: true}) },
         { keys: 'd {motion}', command: ActionDelete.byMotions, args: {shouldYank: true} },
