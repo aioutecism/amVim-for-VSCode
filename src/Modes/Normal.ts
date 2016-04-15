@@ -172,6 +172,10 @@ export class ModeNormal extends Mode {
     }
 
     protected onWillCommandMapMakesChanges(map: CommandMap): void {
+        if (map.isRepeating) {
+            return;
+        }
+
         const actions = map.actions.filter(action => {
             return PrototypeReflect.getMetadata(SymbolMetadata.Action.shouldSkipOnRepeat, action) !== true;
         });
@@ -186,6 +190,23 @@ export class ModeNormal extends Mode {
         ];
     }
 
+    onDidRecordFinish(recordedInserts: CommandMap[]): void {
+        if (! recordedInserts || recordedInserts.length === 0) {
+            return;
+        }
+
+        recordedInserts.forEach(map => map.isRepeating = true);
+
+        // TODO: Reset savedCommandMaps conditionaly
+
+        if (this.savedCommandMaps === undefined) {
+            this.savedCommandMaps = recordedInserts;
+        }
+        else {
+            this.savedCommandMaps = this.savedCommandMaps.concat(recordedInserts);
+        }
+    }
+
     private repeatSavedCommandMap(): Thenable<boolean> {
         if (this.savedCommandMaps === undefined) {
             return Promise.resolve(false);
@@ -193,6 +214,12 @@ export class ModeNormal extends Mode {
 
         // TODO: Replace `this.savedCommandMap.args.n` if provided
         this.savedCommandMaps.forEach(map => this.pushCommandMap(map));
+        this.pushCommandMap({
+            keys: '',
+            actions: [
+                ActionSuggestion.hide,
+            ],
+        });
         this.execute();
 
         return Promise.resolve(true);
