@@ -77,17 +77,16 @@ export class ModeInsert extends Mode {
     private _recordedInserts: CommandMap[];
     get recordedInserts() { return this._recordedInserts; }
 
-    // Call this at ActionMode.ToInsert
     startRecordInserts(): void {
         this.shouldRecordInserts = true;
         this._recordedInserts = [];
     }
 
-    // Call this at ActionMode.To(Normal|Visual|VisualMode)
     stopRecordInserts(): void {
         this.shouldRecordInserts = false;
     }
 
+    // TODO: Deletion and autocomplete is not tracked now.
     protected onWillCommandMapMakesChanges(map: CommandMap): void {
         if (this.shouldRecordInserts) {
             this._recordedInserts.push(map);

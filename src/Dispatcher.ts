@@ -74,6 +74,14 @@ export class Dispatcher {
         this.currentMode.enter();
 
         commands.executeCommand('setContext', 'amVim.mode', this.currentMode.name);
+
+        // For use in repeat command.
+        if (id === ModeID.INSERT) {
+            (this.modes[ModeID.INSERT] as ModeInsert).startRecordInserts();
+        }
+        else {
+            (this.modes[ModeID.INSERT] as ModeInsert).stopRecordInserts();
+        }
     }
 
     dispose(): void {
