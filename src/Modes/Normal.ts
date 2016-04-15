@@ -214,10 +214,8 @@ export class ModeNormal extends Mode {
 
         this.recordedCommandMaps.forEach(map => this.pushCommandMap(map));
         this.pushCommandMap({
-            keys: '',
-            actions: [
-                ActionSuggestion.hide,
-            ],
+            keys: 'escape',
+            actions: [ActionSuggestion.hide],
         });
         this.execute();
 
