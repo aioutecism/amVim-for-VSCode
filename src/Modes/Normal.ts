@@ -135,7 +135,7 @@ export class ModeNormal extends Mode {
         { keys: 'z .', actions: [ActionReveal.primaryCursor], args: {revealType: TextEditorRevealType.InCenter} },
         { keys: 'z z', actions: [ActionReveal.primaryCursor], args: {revealType: TextEditorRevealType.InCenter} },
 
-        { keys: '.', actions: [this.repeatSavedCommandMap.bind(this)] },
+        { keys: '.', actions: [this.repeatRecordedCommandMaps.bind(this)] },
 
         { keys: 'ctrl+c', actions: [
             ActionSuggestion.hide,
@@ -169,7 +169,7 @@ export class ModeNormal extends Mode {
         ActionBlockCursor.off();
     }
 
-    private savedCommandMaps: CommandMap[];
+    private recordedCommandMaps: CommandMap[];
 
     protected onWillCommandMapMakesChanges(map: CommandMap): void {
         if (map.isRepeating) {
@@ -180,7 +180,7 @@ export class ModeNormal extends Mode {
             return PrototypeReflect.getMetadata(SymbolMetadata.Action.shouldSkipOnRepeat, action) !== true;
         });
 
-        this.savedCommandMaps = [
+        this.recordedCommandMaps = [
             {
                 keys: map.keys,
                 actions: actions,
@@ -190,28 +190,29 @@ export class ModeNormal extends Mode {
         ];
     }
 
-    onDidRecordFinish(recordedInserts: CommandMap[]): void {
-        if (! recordedInserts || recordedInserts.length === 0) {
+    onDidRecordFinish(recordedCommandMaps: CommandMap[]): void {
+        if (! recordedCommandMaps || recordedCommandMaps.length === 0) {
             return;
         }
 
-        recordedInserts.forEach(map => map.isRepeating = true);
+        recordedCommandMaps.forEach(map => map.isRepeating = true);
 
-        if (this.savedCommandMaps === undefined) {
-            this.savedCommandMaps = recordedInserts;
+        if (this.recordedCommandMaps === undefined) {
+            this.recordedCommandMaps = recordedCommandMaps;
         }
         else {
-            this.savedCommandMaps = this.savedCommandMaps.concat(recordedInserts);
+            this.recordedCommandMaps = this.recordedCommandMaps.concat(recordedCommandMaps);
         }
     }
 
-    private repeatSavedCommandMap(): Thenable<boolean> {
-        if (this.savedCommandMaps === undefined) {
+    private repeatRecordedCommandMaps(): Thenable<boolean> {
+        if (this.recordedCommandMaps === undefined) {
             return Promise.resolve(false);
         }
 
-        // TODO: Replace `this.savedCommandMap.args.n` if provided
-        this.savedCommandMaps.forEach(map => this.pushCommandMap(map));
+        // TODO: Replace `args.n` if provided
+
+        this.recordedCommandMaps.forEach(map => this.pushCommandMap(map));
         this.pushCommandMap({
             keys: '',
             actions: [

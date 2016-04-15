@@ -77,12 +77,12 @@ export class Dispatcher {
 
         // For use in repeat command.
         if (id === ModeID.INSERT) {
-            (this.modes[ModeID.INSERT] as ModeInsert).startRecordInserts();
+            (this.modes[ModeID.INSERT] as ModeInsert).startRecord();
         }
         else {
             const insertMode = this.modes[ModeID.INSERT] as ModeInsert;
-            insertMode.stopRecordInserts();
-            this.currentMode.onDidRecordFinish(insertMode.recordedInserts);
+            insertMode.stopRecord();
+            this.currentMode.onDidRecordFinish(insertMode.recordedCommandMaps);
         }
     }
 

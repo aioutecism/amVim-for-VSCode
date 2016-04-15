@@ -73,23 +73,23 @@ export class ModeInsert extends Mode {
         return MatchResultKind.FOUND;
     }
 
-    private shouldRecordInserts: boolean = false;
-    private _recordedInserts: CommandMap[];
-    get recordedInserts() { return this._recordedInserts; }
+    private shouldRecord: boolean = false;
+    private _recordedCommandMaps: CommandMap[];
+    get recordedCommandMaps() { return this._recordedCommandMaps; }
 
-    startRecordInserts(): void {
-        this.shouldRecordInserts = true;
-        this._recordedInserts = [];
+    startRecord(): void {
+        this.shouldRecord = true;
+        this._recordedCommandMaps = [];
     }
 
-    stopRecordInserts(): void {
-        this.shouldRecordInserts = false;
+    stopRecord(): void {
+        this.shouldRecord = false;
     }
 
     // TODO: Deletion and autocomplete is not tracked now.
     protected onWillCommandMapMakesChanges(map: CommandMap): void {
-        if (this.shouldRecordInserts) {
-            this._recordedInserts.push(map);
+        if (this.shouldRecord) {
+            this._recordedCommandMaps.push(map);
         }
     }
 
