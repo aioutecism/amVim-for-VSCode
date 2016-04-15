@@ -22,46 +22,80 @@ export class ModeVisualLine extends Mode {
     name = 'VISUAL LINE';
 
     private maps: CommandMap[] = [
-        { keys: '{motion}', command: ActionMoveCursor.byMotions, args: {isVisualLineMode: true} },
+        { keys: '{motion}', actions: [ActionMoveCursor.byMotions], args: {isVisualLineMode: true} },
 
-        { keys: 'ctrl+b', command: ActionPage.up, args: {moveType: PageMoveType.SelectLine} },
-        { keys: 'ctrl+f', command: ActionPage.down, args: {moveType: PageMoveType.SelectLine} },
+        { keys: 'ctrl+b', actions: [ActionPage.up], args: {moveType: PageMoveType.SelectLine} },
+        { keys: 'ctrl+f', actions: [ActionPage.down], args: {moveType: PageMoveType.SelectLine} },
 
-        { keys: 'I', command: () => ActionSelection.shrinkToStarts().then(() => ActionMode.toInsert()) },
-        { keys: 'A', command: () => ActionSelection.shrinkToEnds().then(() => ActionMode.toInsert()) },
+        { keys: 'I', actions: [
+            ActionSelection.shrinkToStarts,
+            ActionMode.toInsert
+        ] },
+        { keys: 'A', actions: [
+            ActionSelection.shrinkToEnds,
+            ActionMode.toInsert
+        ] },
 
-        { keys: 'backspace', command: ActionDelete.line, args: {shouldYank: true} },
-        { keys: 'delete', command: ActionDelete.line, args: {shouldYank: true} },
-        { keys: 'x', command: ActionDelete.line, args: {shouldYank: true} },
-        { keys: 'X', command: ActionDelete.line, args: {shouldYank: true} },
-        { keys: 'd', command: ActionDelete.line, args: {shouldYank: true} },
-        { keys: 'D', command: ActionDelete.line, args: {shouldYank: true} },
-        { keys: 'c', command: () => ActionDelete.line({shouldYank: true}).then(() => ActionInsert.newLineBefore()).then(() => ActionMode.toInsert()) },
-        { keys: 'C', command: () => ActionDelete.line({shouldYank: true}).then(() => ActionInsert.newLineBefore()).then(() => ActionMode.toInsert()) },
-        { keys: 's', command: () => ActionDelete.line({shouldYank: true}).then(() => ActionInsert.newLineBefore()).then(() => ActionMode.toInsert()) },
-        { keys: 'S', command: () => ActionDelete.line({shouldYank: true}).then(() => ActionInsert.newLineBefore()).then(() => ActionMode.toInsert()) },
-        { keys: 'y', command: () => ActionRegister.yankLines().then(() => ActionSelection.shrinkToStarts()) },
-        { keys: 'J', command: () => ActionJoinLines.onSelections().then(() => ActionSelection.shrinkToActives()) },
+        { keys: 'backspace', actions: [ActionDelete.line], args: {shouldYank: true} },
+        { keys: 'delete', actions: [ActionDelete.line], args: {shouldYank: true} },
+        { keys: 'x', actions: [ActionDelete.line], args: {shouldYank: true} },
+        { keys: 'X', actions: [ActionDelete.line], args: {shouldYank: true} },
+        { keys: 'd', actions: [ActionDelete.line], args: {shouldYank: true} },
+        { keys: 'D', actions: [ActionDelete.line], args: {shouldYank: true} },
+        { keys: 'c', actions: [
+            ActionDelete.line,
+            ActionInsert.newLineBefore,
+            ActionMode.toInsert,
+        ], args: {shouldYank: true} },
+        { keys: 'C', actions: [
+            ActionDelete.line,
+            ActionInsert.newLineBefore,
+            ActionMode.toInsert,
+        ], args: {shouldYank: true} },
+        { keys: 's', actions: [
+            ActionDelete.line,
+            ActionInsert.newLineBefore,
+            ActionMode.toInsert,
+        ], args: {shouldYank: true} },
+        { keys: 'S', actions: [
+            ActionDelete.line,
+            ActionInsert.newLineBefore,
+            ActionMode.toInsert,
+        ], args: {shouldYank: true} },
+        { keys: 'y', actions: [
+            ActionRegister.yankLines,
+            ActionSelection.shrinkToStarts,
+        ] },
+        { keys: 'J', actions: [
+            ActionJoinLines.onSelections,
+            ActionSelection.shrinkToActives,
+        ] },
 
-        { keys: 'r {char}', command: ActionReplace.selections },
+        { keys: 'r {char}', actions: [ActionReplace.selections] },
 
-        { keys: '<', command: ActionIndent.decrease },
-        { keys: '>', command: ActionIndent.increase },
+        { keys: '<', actions: [ActionIndent.decrease] },
+        { keys: '>', actions: [ActionIndent.increase] },
 
-        { keys: '/', command: ActionFind.focusFindWidget },
+        { keys: '/', actions: [ActionFind.focusFindWidget] },
 
-        { keys: 'v', command: ActionMode.toVisual },
-        { keys: 'V', command: ActionSelection.shrinkToPrimaryActive },
+        { keys: 'v', actions: [ActionMode.toVisual] },
+        { keys: 'V', actions: [ActionSelection.shrinkToPrimaryActive] },
 
-        { keys: 'ctrl+c', command: () => ActionSuggestion.hide().then(() => ActionSelection.shrinkToPrimaryActive()) },
-        { keys: 'escape', command: () => ActionSuggestion.hide().then(() => ActionSelection.shrinkToPrimaryActive()) },
+        { keys: 'ctrl+c', actions: [
+            ActionSuggestion.hide,
+            ActionSelection.shrinkToPrimaryActive,
+        ] },
+        { keys: 'escape', actions: [
+            ActionSuggestion.hide,
+            ActionSelection.shrinkToPrimaryActive,
+        ] },
     ];
 
     constructor() {
         super();
 
         this.maps.forEach(map => {
-            this.mapper.map(map.keys, map.command, map.args);
+            this.mapper.map(map.keys, map.actions, map.args);
         });
     }
 

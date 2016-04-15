@@ -1,4 +1,6 @@
 import {window, commands, Disposable, TextEditorRevealType} from 'vscode';
+import {PrototypeReflect} from '../LanguageExtensions/PrototypeReflect';
+import {SymbolMetadata} from '../Symbols/Metadata';
 import {Configuration} from '../Configuration';
 import {Mode, ModeID} from './Mode';
 import {CommandMap} from '../Mappers/Command';
@@ -27,77 +29,129 @@ export class ModeNormal extends Mode {
     name = 'NORMAL';
 
     private maps: CommandMap[] = [
-        { keys: '{motion}', command: ActionMoveCursor.byMotions, args: {noEmptyAtLineEnd: true} },
+        { keys: '{motion}', actions: [ActionMoveCursor.byMotions], args: {noEmptyAtLineEnd: true} },
 
-        { keys: 'ctrl+b', command: ActionPage.up },
-        { keys: 'ctrl+f', command: ActionPage.down },
+        { keys: 'ctrl+b', actions: [ActionPage.up] },
+        { keys: 'ctrl+f', actions: [ActionPage.down] },
 
-        { keys: 'i', command: ActionMode.toInsert },
-        { keys: 'I', command: () => ActionMoveCursor.byMotions({motions: [MotionLine.firstNonBlank()]}).then(() => ActionMode.toInsert()) },
-        { keys: 'a', command: () => ActionMoveCursor.byMotions({motions: [MotionCharacter.right()]}).then(() => ActionMode.toInsert()) },
-        { keys: 'A', command: () => ActionMoveCursor.byMotions({motions: [MotionLine.end()]}).then(() => ActionMode.toInsert()) },
+        { keys: 'i', actions: [ActionMode.toInsert] },
+        { keys: 'I', actions: [
+            () => ActionMoveCursor.byMotions({motions: [MotionLine.firstNonBlank()]}),
+            ActionMode.toInsert,
+        ] },
+        { keys: 'a', actions: [
+            () => ActionMoveCursor.byMotions({motions: [MotionCharacter.right()]}),
+            ActionMode.toInsert,
+        ] },
+        { keys: 'A', actions: [
+            () => ActionMoveCursor.byMotions({motions: [MotionLine.end()]}),
+            ActionMode.toInsert,
+        ] },
 
-        { keys: 'o', command: () => ActionInsert.newLineAfter().then(() => ActionMode.toInsert()) },
-        { keys: 'O', command: () => ActionInsert.newLineBefore().then(() => ActionMode.toInsert()) },
+        { keys: 'o', actions: [
+            ActionInsert.newLineAfter,
+            ActionMode.toInsert,
+        ] },
+        { keys: 'O', actions: [
+            ActionInsert.newLineBefore,
+            ActionMode.toInsert,
+        ] },
 
-        { keys: 's', command: () => ActionDelete.selectionsOrRight({shouldYank: true}).then(() => ActionMode.toInsert()) },
-
-        { keys: 'X', command: () => ActionDelete.selectionsOrLeft({shouldYank: true}) },
-        { keys: 'x', command: () => ActionDelete.selectionsOrRight({shouldYank: true}) },
-        { keys: 'delete', command: () => ActionDelete.selectionsOrRight({shouldYank: true}) },
-        { keys: 'd d', command: ActionDelete.line, args: {shouldYank: true} },
-        { keys: 'D', command: () => ActionDelete.byMotions({motions: [MotionLine.end()], shouldYank: true}) },
-        { keys: 'd {motion}', command: ActionDelete.byMotions, args: {shouldYank: true} },
-        { keys: 'C', command: () => ActionDelete.byMotions({motions: [MotionLine.end()], shouldYank: true}).then(() => ActionMode.toInsert()) },
-        { keys: 'c c', command: () => {
-            return ActionMoveCursor.byMotions({motions: [MotionLine.firstNonBlank()]})
-                .then(ActionDelete.byMotions.bind(undefined, {motions: [MotionLine.end()], shouldYank: true}))
-                .then(() => ActionMode.toInsert());
+        { keys: 's', actions: [
+            ActionDelete.selectionsOrRight,
+            ActionMode.toInsert,
+        ], args: {
+            shouldYank: true
         } },
-        { keys: 'S', command: () => {
-            return ActionMoveCursor.byMotions({motions: [MotionLine.firstNonBlank()]})
-                .then(ActionDelete.byMotions.bind(undefined, {motions: [MotionLine.end()], shouldYank: true}))
-                .then(() => ActionMode.toInsert());
+
+        { keys: 'X', actions: [ActionDelete.selectionsOrLeft], args: {shouldYank: true} },
+        { keys: 'x', actions: [ActionDelete.selectionsOrRight], args: {shouldYank: true} },
+        { keys: 'delete', actions: [ActionDelete.selectionsOrRight], args: {shouldYank: true} },
+        { keys: 'd d', actions: [ActionDelete.line], args: {shouldYank: true} },
+        { keys: 'D', actions: [ActionDelete.byMotions], args: {motions: [MotionLine.end()], shouldYank: true} },
+        { keys: 'd {motion}', actions: [ActionDelete.byMotions], args: {shouldYank: true} },
+        { keys: 'C', actions: [
+            ActionDelete.byMotions,
+            ActionMode.toInsert,
+        ], args: {
+            motions: [MotionLine.end()],
+            shouldYank: true
         } },
-        { keys: 'c {motion}', command: (args: {motions: Motion[], shouldYank?: boolean}) => ActionDelete.byMotions(args).then(() => ActionMode.toInsert()), args: {shouldYank: true, cwNeedsFixup: true} },
-        { keys: 'J', command: ActionJoinLines.onSelections },
+        { keys: 'c c', actions: [
+            () => ActionMoveCursor.byMotions({motions: [MotionLine.firstNonBlank()]}),
+            ActionDelete.byMotions,
+            ActionMode.toInsert,
+        ], args: {
+            motions: [MotionLine.end()],
+            shouldYank: true
+        } },
+        { keys: 'S', actions: [
+            () => ActionMoveCursor.byMotions({motions: [MotionLine.firstNonBlank()]}),
+            ActionDelete.byMotions,
+            ActionMode.toInsert,
+        ], args: {
+            motions: [MotionLine.end()],
+            shouldYank: true
+        } },
+        { keys: 'c {motion}', actions: [
+            ActionDelete.byMotions,
+            ActionMode.toInsert,
+        ], args: {
+            shouldYank: true,
+            cwNeedsFixup: true,
+        } },
+        { keys: 'J', actions: [ActionJoinLines.onSelections] },
 
-        { keys: 'r {char}', command: ActionReplace.characters },
+        { keys: 'r {char}', actions: [ActionReplace.characters] },
 
-        { keys: 'y y', command: ActionRegister.yankLines },
-        { keys: 'Y', command: ActionRegister.yankLines },
-        { keys: 'y {motion}', command: ActionRegister.yankByMotions },
-        { keys: 'p', command: ActionRegister.putAfter },
-        { keys: 'P', command: ActionRegister.putBefore },
+        { keys: 'y y', actions: [ActionRegister.yankLines] },
+        { keys: 'Y', actions: [ActionRegister.yankLines] },
+        { keys: 'y {motion}', actions: [ActionRegister.yankByMotions] },
+        { keys: 'p', actions: [ActionRegister.putAfter] },
+        { keys: 'P', actions: [ActionRegister.putBefore] },
 
-        { keys: 'n', command: ActionFind.next },
-        { keys: 'N', command: ActionFind.prev },
-        { keys: '*', command: () => ActionFind.byIndicator().then(() => ActionFind.next()) },
-        { keys: '#', command: () => ActionFind.byIndicator().then(() => ActionFind.prev()) },
+        { keys: 'n', actions: [ActionFind.next] },
+        { keys: 'N', actions: [ActionFind.prev] },
+        { keys: '*', actions: [
+            ActionFind.byIndicator,
+            ActionFind.next,
+        ] },
+        { keys: '#', actions: [
+            ActionFind.byIndicator,
+            ActionFind.prev,
+        ] },
 
-        { keys: 'u', command: ActionHistory.undo },
-        { keys: 'ctrl+r', command: ActionHistory.redo },
+        { keys: 'u', actions: [ActionHistory.undo] },
+        { keys: 'ctrl+r', actions: [ActionHistory.redo] },
 
-        { keys: '< <', command: ActionIndent.decrease },
-        { keys: '> >', command: ActionIndent.increase },
+        { keys: '< <', actions: [ActionIndent.decrease] },
+        { keys: '> >', actions: [ActionIndent.increase] },
 
-        { keys: '/', command: ActionFind.focusFindWidget },
+        { keys: '/', actions: [ActionFind.focusFindWidget] },
 
-        { keys: 'v', command: ActionMode.toVisual },
-        { keys: 'V', command: ActionMode.toVisualLine },
+        { keys: 'v', actions: [ActionMode.toVisual] },
+        { keys: 'V', actions: [ActionMode.toVisualLine] },
 
-        { keys: 'z .', command: ActionReveal.primaryCursor, args: {revealType: TextEditorRevealType.InCenter} },
-        { keys: 'z z', command: ActionReveal.primaryCursor, args: {revealType: TextEditorRevealType.InCenter} },
+        { keys: 'z .', actions: [ActionReveal.primaryCursor], args: {revealType: TextEditorRevealType.InCenter} },
+        { keys: 'z z', actions: [ActionReveal.primaryCursor], args: {revealType: TextEditorRevealType.InCenter} },
 
-        { keys: 'ctrl+c', command: () => ActionSuggestion.hide().then(() => ActionSelection.shrinkToPrimaryActive()) },
-        { keys: 'escape', command: () => ActionSuggestion.hide().then(() => ActionSelection.shrinkToPrimaryActive()) },
+        { keys: '.', actions: [this.repeatRecordedCommandMaps.bind(this)] },
+
+        { keys: 'ctrl+c', actions: [
+            ActionSuggestion.hide,
+            ActionSelection.shrinkToPrimaryActive,
+        ] },
+        { keys: 'escape', actions: [
+            ActionSuggestion.hide,
+            ActionSelection.shrinkToPrimaryActive,
+        ] },
     ];
 
     constructor() {
         super();
 
         this.maps.forEach(map => {
-            this.mapper.map(map.keys, map.command, map.args);
+            this.mapper.map(map.keys, map.actions, map.args);
         });
 
         // TODO: No empty at line end when changing selections by mouse
@@ -113,6 +167,59 @@ export class ModeNormal extends Mode {
         super.exit();
 
         ActionBlockCursor.off();
+    }
+
+    private recordedCommandMaps: CommandMap[];
+
+    protected onWillCommandMapMakesChanges(map: CommandMap): void {
+        if (map.isRepeating) {
+            return;
+        }
+
+        const actions = map.actions.filter(action => {
+            return PrototypeReflect.getMetadata(SymbolMetadata.Action.shouldSkipOnRepeat, action) !== true;
+        });
+
+        this.recordedCommandMaps = [
+            {
+                keys: map.keys,
+                actions: actions,
+                args: map.args,
+                isRepeating: true,
+            }
+        ];
+    }
+
+    onDidRecordFinish(recordedCommandMaps: CommandMap[]): void {
+        if (! recordedCommandMaps || recordedCommandMaps.length === 0) {
+            return;
+        }
+
+        recordedCommandMaps.forEach(map => map.isRepeating = true);
+
+        if (this.recordedCommandMaps === undefined) {
+            this.recordedCommandMaps = recordedCommandMaps;
+        }
+        else {
+            this.recordedCommandMaps = this.recordedCommandMaps.concat(recordedCommandMaps);
+        }
+    }
+
+    private repeatRecordedCommandMaps(): Thenable<boolean> {
+        if (this.recordedCommandMaps === undefined) {
+            return Promise.resolve(false);
+        }
+
+        // TODO: Replace `args.n` if provided
+
+        this.recordedCommandMaps.forEach(map => this.pushCommandMap(map));
+        this.pushCommandMap({
+            keys: 'escape',
+            actions: [ActionSuggestion.hide],
+        });
+        this.execute();
+
+        return Promise.resolve(true);
     }
 
 }
