@@ -11,6 +11,7 @@ export interface CommandMatchResult extends MatchResult {
 
 export interface CommandMap extends GenericMap {
     actions: Action[];
+    isRepeating?: boolean;
 }
 
 export class CommandMapper extends GenericMapper {

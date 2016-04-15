@@ -147,7 +147,7 @@ export class ModeNormal extends Mode {
         ] },
     ];
 
-    private savedCommandMap: CommandMap;
+    private savedCommandMaps: CommandMap[];
 
     constructor() {
         super();
@@ -176,20 +176,23 @@ export class ModeNormal extends Mode {
             return PrototypeReflect.getMetadata(SymbolMetadata.Action.shouldSkipOnRepeat, action) !== true;
         });
 
-        this.savedCommandMap = {
-            keys: map.keys,
-            actions: actions,
-            args: map.args,
-        };
+        this.savedCommandMaps = [
+            {
+                keys: map.keys,
+                actions: actions,
+                args: map.args,
+                isRepeating: true,
+            }
+        ];
     }
 
     private repeatSavedCommandMap(): Thenable<boolean> {
-        if (this.savedCommandMap === undefined) {
+        if (this.savedCommandMaps === undefined) {
             return Promise.resolve(false);
         }
 
         // TODO: Replace `this.savedCommandMap.args.n` if provided
-        this.pushCommandMap(this.savedCommandMap);
+        this.savedCommandMaps.forEach(map => this.pushCommandMap(map));
         this.execute();
 
         return Promise.resolve(true);
