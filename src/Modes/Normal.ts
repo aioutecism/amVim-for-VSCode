@@ -94,13 +94,12 @@ export class ModeNormal extends Mode {
             shouldYank: true
         } },
         { keys: 'c {motion}', actions: [
-            (args: {motions: Motion[]}) => ActionDelete.byMotions({
-                motions: args.motions,
-                shouldYank: true,
-                cwNeedsFixup: true,
-            }),
+            ActionDelete.byMotions,
             ActionMode.toInsert,
-        ] },
+        ], args: {
+            shouldYank: true,
+            cwNeedsFixup: true,
+        } },
         { keys: 'J', actions: [ActionJoinLines.onSelections] },
 
         { keys: 'r {char}', actions: [ActionReplace.characters] },
