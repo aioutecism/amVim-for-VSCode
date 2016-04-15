@@ -147,8 +147,6 @@ export class ModeNormal extends Mode {
         ] },
     ];
 
-    private savedCommandMaps: CommandMap[];
-
     constructor() {
         super();
 
@@ -170,6 +168,8 @@ export class ModeNormal extends Mode {
 
         ActionBlockCursor.off();
     }
+
+    private savedCommandMaps: CommandMap[];
 
     protected onWillCommandMapMakesChanges(map: CommandMap): void {
         if (map.isRepeating) {
