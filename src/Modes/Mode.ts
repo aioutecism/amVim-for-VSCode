@@ -107,7 +107,6 @@ export abstract class Mode {
                 return;
             }
 
-            // TODO: Replace with willChangeStart and willChangeEnd!!!
             const isAnyActionIsChange = map.actions.some(action => {
                 return PrototypeReflect.getMetadata(SymbolMetadata.Action.isChange, action);
             });
