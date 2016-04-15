@@ -197,8 +197,6 @@ export class ModeNormal extends Mode {
 
         recordedInserts.forEach(map => map.isRepeating = true);
 
-        // TODO: Reset savedCommandMaps conditionaly
-
         if (this.savedCommandMaps === undefined) {
             this.savedCommandMaps = recordedInserts;
         }

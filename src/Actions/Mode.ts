@@ -20,6 +20,7 @@ export class ActionMode {
         return commands.executeCommand(`amVim.mode.${ModeID.VISUAL_LINE}`);
     }
 
+    @PrototypeReflect.metadata(SymbolMetadata.Action.isChange, true)
     @PrototypeReflect.metadata(SymbolMetadata.Action.shouldSkipOnRepeat, true)
     static toInsert(): Thenable<boolean> {
         return commands.executeCommand(`amVim.mode.${ModeID.INSERT}`);
