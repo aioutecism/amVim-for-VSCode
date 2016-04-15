@@ -80,7 +80,9 @@ export class Dispatcher {
             (this.modes[ModeID.INSERT] as ModeInsert).startRecordInserts();
         }
         else {
-            (this.modes[ModeID.INSERT] as ModeInsert).stopRecordInserts();
+            const insertMode = this.modes[ModeID.INSERT] as ModeInsert;
+            insertMode.stopRecordInserts();
+            this.currentMode.onDidRecordFinish(insertMode.recordedInserts);
         }
     }
 
