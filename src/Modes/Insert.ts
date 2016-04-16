@@ -41,6 +41,16 @@ export class ModeInsert extends Mode {
         });
     }
 
+    enter() {
+      super.enter();
+      this.startRecord();
+    }
+
+    exit() {
+        super.exit();
+        this.stopRecord();
+    }
+
     input(key: string, args: {replaceCharCnt?: number} = {}): MatchResultKind {
         const matchResultKind = super.input(key);
 
