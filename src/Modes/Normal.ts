@@ -19,10 +19,10 @@ import {ActionMode} from '../Actions/Mode';
 import {Motion} from '../Motions/Motion';
 import {MotionCharacter} from '../Motions/Character';
 import {MotionLine} from '../Motions/Line';
-import {MotionMatchOpening} from '../Motions/MatchOpening';
-import {MotionMatchClosing} from '../Motions/MatchClosing';
-
-
+import {MotionMatchPairs} from '../Motions/MatchPairs';
+import {MotionPairsDirection} from '../Motions/MatchPairs';
+import {LastCharacterMatching} from '../Motions/MatchPairs';
+import {FirstPosPairMatching} from '../Motions/MatchPairs';
 
 export class ModeNormal extends Mode {
 
@@ -56,10 +56,17 @@ export class ModeNormal extends Mode {
         } },
         { keys: 'c i {char}', 
             command: (args: {character: string}) => 
-                ActionMoveCursor.byMotions({motions: [MotionMatchOpening.matchOpening(args, false, true)]})
-                .then(() => ActionDelete.byMotions({motions: [MotionMatchClosing.matchClosing(args, true, false)], shouldYank: true}))
-                .then(() => ActionMode.toInsert()),  
-                args: {shouldYank: true}  
+                ActionMoveCursor.byMotions({motions: [ MotionMatchPairs.matchOpening(args, LastCharacterMatching.Exclude, FirstPosPairMatching.Ignore) ]})  
+                //we should not apply the delete move is the first cursor move is invalid.
+                //for now, this implementation leads to issue like this (cursor : -)
+                // 11111"22222"
+                //  -
+                //when we enter ci"
+                //leads to 
+                // 1"22222"
+                //  - 
+                .then(() => ActionDelete.byMotions({motions: [MotionMatchPairs.matchClosing(args, LastCharacterMatching.Include, FirstPosPairMatching.Notice)], shouldYank: true})) 
+                .then(() => ActionMode.toInsert())
         },
         { keys: 'S', command: () => {
             return ActionMoveCursor.byMotions({motions: [MotionLine.firstNonBlank()]})
