@@ -41,6 +41,16 @@ export class ModeInsert extends Mode {
         });
     }
 
+    enter() : void {
+      super.enter();
+      this.startRecord();
+    }
+
+    exit() : void {
+        super.exit();
+        this.stopRecord();
+    }
+
     input(key: string, args: {replaceCharCnt?: number} = {}): MatchResultKind {
         const matchResultKind = super.input(key);
 
@@ -77,12 +87,12 @@ export class ModeInsert extends Mode {
     private _recordedCommandMaps: CommandMap[];
     get recordedCommandMaps() { return this._recordedCommandMaps; }
 
-    startRecord(): void {
+    private startRecord(): void {
         this.shouldRecord = true;
         this._recordedCommandMaps = [];
     }
 
-    stopRecord(): void {
+    private stopRecord(): void {
         this.shouldRecord = false;
     }
 
