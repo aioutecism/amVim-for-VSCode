@@ -41,13 +41,15 @@ export class ModeInsert extends Mode {
         });
     }
 
-    enter() : void {
+    enter(): void {
       super.enter();
+
       this.startRecord();
     }
 
-    exit() : void {
+    exit(): void {
         super.exit();
+
         this.stopRecord();
     }
 
