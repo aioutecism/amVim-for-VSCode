@@ -23,7 +23,19 @@ export class ActionRegister {
         }
 
         ActionRegister.stash = ranges.map(range => {
-            return activeTextEditor.document.getText(range);
+            const document = activeTextEditor.document;
+            const areLines = range.start.character == 0 && range.end.character == 0;
+            if (!areLines) {
+                return document.getText(range);
+            }
+            /* document.getText is broken, it doesn't return last line.
+             * TODO: remove this workaround for yanking last line. */
+            let lines = [];
+            for (var lineNo = range.start.line; lineNo < range.end.line; ++lineNo){
+                lines.push(document.lineAt(lineNo).text);
+            }
+            let text = lines.join('\n');
+            return text ? text + '\n' : text;
         }).join('');
 
         return Promise.resolve(true);
