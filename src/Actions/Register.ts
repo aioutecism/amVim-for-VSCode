@@ -22,8 +22,10 @@ export class ActionRegister {
             return Promise.resolve(false);
         }
 
+        const document = activeTextEditor.document;
+
         ActionRegister.stash = ranges.map(range => {
-            return activeTextEditor.document.getText(range);
+            return document.getText(UtilRange.fitIntoDocument(document, range));
         }).join('');
 
         return Promise.resolve(true);
