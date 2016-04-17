@@ -22,10 +22,7 @@ import {ActionMode} from '../Actions/Mode';
 import {Motion} from '../Motions/Motion';
 import {MotionCharacter} from '../Motions/Character';
 import {MotionLine} from '../Motions/Line';
-import {MotionMatchPairs} from '../Motions/MatchPairs';
-import {MotionPairsDirection} from '../Motions/MatchPairs';
-import {LastCharacterMatching} from '../Motions/MatchPairs';
-import {FirstPosPairMatching} from '../Motions/MatchPairs';
+import {MotionMatchPairs, MotionPairsDirection, LastCharacterMatching, FirstPosPairMatching} from '../Motions/MatchPairs';
 
 export class ModeNormal extends Mode {
 
