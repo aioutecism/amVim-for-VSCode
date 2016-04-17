@@ -1,9 +1,12 @@
 import {window, Range} from 'vscode';
+import {PrototypeReflect} from '../LanguageExtensions/PrototypeReflect';
+import {SymbolMetadata} from '../Symbols/Metadata';
 import {ActionReveal} from './Reveal';
 import {UtilRange} from '../Utils/Range';
 
 export class ActionJoinLines {
 
+    @PrototypeReflect.metadata(SymbolMetadata.Action.isChange, true)
     static onSelections(): Thenable<boolean> {
         const activeTextEditor = window.activeTextEditor;
 

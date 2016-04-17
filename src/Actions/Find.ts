@@ -6,7 +6,7 @@ export class ActionFind {
         return commands.executeCommand('actions.find');
     }
 
-    // TODO: Implement independent find function to avoid visual flashing.
+    // TODO: Implement independent find function to avoid incorrect cursor position after `next()`
 
     static byIndicator(): Thenable<boolean> {
         const activeTextEditor = window.activeTextEditor;
@@ -29,8 +29,8 @@ export class ActionFind {
 
         return commands.executeCommand('editor.action.nextMatchFindAction')
             .then(() => {
-                activeTextEditor.selection = new Selection(activeTextEditor.selection.start, activeTextEditor.selection.start);
-                window.showTextDocument(activeTextEditor.document);
+                window.showTextDocument(activeTextEditor.document, activeTextEditor.viewColumn);
+                activeTextEditor.selection = new Selection(activeTextEditor.selection.end, activeTextEditor.selection.end);
                 return Promise.resolve(true);
             });
     }
@@ -44,8 +44,8 @@ export class ActionFind {
 
         return commands.executeCommand('editor.action.previousMatchFindAction')
             .then(() => {
+                window.showTextDocument(activeTextEditor.document, activeTextEditor.viewColumn);
                 activeTextEditor.selection = new Selection(activeTextEditor.selection.start, activeTextEditor.selection.start);
-                window.showTextDocument(activeTextEditor.document);
                 return Promise.resolve(true);
             });
     }

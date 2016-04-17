@@ -1,4 +1,6 @@
 import {window, Position, Range, Selection} from 'vscode';
+import {PrototypeReflect} from '../LanguageExtensions/PrototypeReflect';
+import {SymbolMetadata} from '../Symbols/Metadata';
 import {ActionReveal} from './Reveal';
 import {ActionMoveCursor} from './MoveCursor';
 import {ActionSelection} from './Selection';
@@ -20,8 +22,10 @@ export class ActionRegister {
             return Promise.resolve(false);
         }
 
+        const document = activeTextEditor.document;
+
         ActionRegister.stash = ranges.map(range => {
-            return activeTextEditor.document.getText(range);
+            return document.getText(UtilRange.fitIntoDocument(document, range));
         }).join('');
 
         return Promise.resolve(true);
@@ -77,6 +81,7 @@ export class ActionRegister {
         return ActionRegister.yankRanges(ranges);
     }
 
+    @PrototypeReflect.metadata(SymbolMetadata.Action.isChange, true)
     static putAfter(): Thenable<boolean> {
         const activeTextEditor = window.activeTextEditor;
 
@@ -116,6 +121,7 @@ export class ActionRegister {
             });
     }
 
+    @PrototypeReflect.metadata(SymbolMetadata.Action.isChange, true)
     static putBefore(): Thenable<boolean> {
         const activeTextEditor = window.activeTextEditor;
 
