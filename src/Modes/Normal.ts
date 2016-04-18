@@ -19,10 +19,8 @@ import {ActionSelection} from '../Actions/Selection';
 import {ActionHistory} from '../Actions/History';
 import {ActionIndent} from '../Actions/Indent';
 import {ActionMode} from '../Actions/Mode';
-import {Motion} from '../Motions/Motion';
 import {MotionCharacter} from '../Motions/Character';
 import {MotionLine} from '../Motions/Line';
-import {MotionMatchPairs, MotionPairsDirection, LastCharacterMatching, FirstPosPairMatching} from '../Motions/MatchPairs';
 
 export class ModeNormal extends Mode {
 
@@ -101,25 +99,12 @@ export class ModeNormal extends Mode {
             shouldYank: true,
             cwNeedsFixup: true,
         } },
-        { keys: 'c i {char}', actions: [
-            (args: {character: string}) => ActionMoveCursor.byMotions({
-                motions: [ MotionMatchPairs.matchOpening(args, LastCharacterMatching.Exclude, FirstPosPairMatching.Ignore) ]
-            }),
-            //we should not apply the delete move is the first cursor move is invalid.
-            //for now, this implementation leads to issue like this (cursor : -)
-            // 11111"22222"
-            //  -
-            //when we enter ci"
-            //leads to
-            // 1"22222"
-            //  -
-            // TODO: Make this recorded
-            (args: {character: string}) => ActionDelete.byMotions({
-                motions: [ MotionMatchPairs.matchClosing(args, LastCharacterMatching.Include, FirstPosPairMatching.Notice) ],
-                shouldYank: true,
-            }),
-            ActionMode.toInsert,
-        ] },
+        // { keys: 'c {textObject}', actions: [
+        //     ActionDelete.byTextObject,
+        //     ActionMode.toInsert,
+        // ], args: {
+        //     shouldYank: true,
+        // } },
         { keys: 'J', actions: [ActionJoinLines.onSelections] },
 
         { keys: 'r {char}', actions: [ActionReplace.characters] },
