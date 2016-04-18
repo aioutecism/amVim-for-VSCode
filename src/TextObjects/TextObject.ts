@@ -1,20 +1,20 @@
-import {window, Position, Range} from 'vscode';
+import {window, TextDocument, Position, Range} from 'vscode';
 
 export abstract class TextObject {
 
-    private isInclusive: boolean;
+    protected isInclusive: boolean;
 
     /**
      * Override this to return start position of text object or null if not found.
      */
-    protected findStartPosition(anchor: Position): Position {
+    protected findStartPosition(document:TextDocument, anchor: Position): Position {
         throw new Error('findStartPosition is not implemented.');
     }
 
     /**
      * Override this to return end position of text object or null if not found.
      */
-    protected findEndPosition(anchor: Position): Position {
+    protected findEndPosition(document:TextDocument, anchor: Position): Position {
         throw new Error('findEndPosition is not implemented.');
     }
 
@@ -31,12 +31,12 @@ export abstract class TextObject {
 
         const document = activeTextEditor.document;
 
-        const startPosition = this.findStartPosition(anchor);
+        const startPosition = this.findStartPosition(document, anchor);
         if (startPosition === null) {
             return null;
         }
 
-        const endPosition = this.findEndPosition(anchor);
+        const endPosition = this.findEndPosition(document, anchor);
         if (endPosition === null) {
             return null;
         }
