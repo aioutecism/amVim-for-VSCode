@@ -1,4 +1,4 @@
-import {window, Position, Range} from 'vscode';
+import {window, Position} from 'vscode';
 import {TextObject} from './TextObject';
 import {UtilCharacterPairs} from '../Utils/CharacterPairs';
 

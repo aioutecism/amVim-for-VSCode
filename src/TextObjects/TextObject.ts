@@ -4,10 +4,16 @@ export abstract class TextObject {
 
     private isInclusive: boolean;
 
-    // Override these methods to return bound position or null if not found.
+    /**
+     * Override this to return start position of text object or null if not found.
+     */
     protected findStartPosition(anchor: Position): Position {
         throw new Error('findStartPosition is not implemented.');
     }
+
+    /**
+     * Override this to return end position of text object or null if not found.
+     */
     protected findEndPosition(anchor: Position): Position {
         throw new Error('findEndPosition is not implemented.');
     }
