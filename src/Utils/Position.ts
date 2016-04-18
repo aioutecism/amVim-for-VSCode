@@ -2,6 +2,7 @@ import {TextDocument, Position} from 'vscode';
 
 export class UtilPosition {
 
+    // TODO: Replace with TextDocument.validatePosition(Position)
     static fitIntoDocument(document: TextDocument, from: Position): Position {
         const lineCount = document.lineCount;
 
