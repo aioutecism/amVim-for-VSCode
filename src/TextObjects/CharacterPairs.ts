@@ -1,4 +1,4 @@
-import {window, Position} from 'vscode';
+import {window, TextDocument, Position} from 'vscode';
 import {TextObject} from './TextObject';
 import {UtilCharacterPairs} from '../Utils/CharacterPairs';
 
@@ -20,9 +20,37 @@ import {UtilCharacterPairs} from '../Utils/CharacterPairs';
 */
 export class TextObjectCharacterPairs extends TextObject {
 
-    // private character: string;
+    private character: string;
     // private includeLast : boolean;
     // private ignoreFirstPosPair : boolean;
+
+    static inclusive(args: {character: string}): TextObject {
+        const obj = new TextObjectCharacterPairs();
+        obj.isInclusive = true;
+        obj.character = args.character;
+
+        return obj;
+    }
+
+    static exclusive(args: {character: string}): TextObject {
+        const obj = new TextObjectCharacterPairs();
+        obj.isInclusive = false;
+        obj.character = args.character;
+
+        return obj;
+    }
+
+    protected findStartPosition(document:TextDocument, anchor: Position): Position {
+        const line = document.lineAt(anchor);
+
+        return null;
+    }
+
+    protected findEndPosition(document:TextDocument, anchor: Position): Position {
+        const line = document.lineAt(anchor);
+
+        return null;
+    }
 
     /** Go to the first closing char (exclusive) corresponding to 'args.character'  */
     // static matchClosing(args: {character: string}, lastChar : LastCharacterMatching = LastCharacterMatching.Exclude, firstPosPair : FirstPosPairMatching = FirstPosPairMatching.Ignore): TextObjectPairs {
