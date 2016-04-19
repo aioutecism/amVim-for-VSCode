@@ -7,14 +7,14 @@ export abstract class TextObject {
     /**
      * Override this to return start position of text object or null if not found.
      */
-    protected findStartPosition(document:TextDocument, anchor: Position): Position {
+    protected findStartRange(document:TextDocument, anchor: Position): Range {
         throw new Error('findStartPosition is not implemented.');
     }
 
     /**
      * Override this to return end position of text object or null if not found.
      */
-    protected findEndPosition(document:TextDocument, anchor: Position): Position {
+    protected findEndRange(document:TextDocument, anchor: Position): Range {
         throw new Error('findEndPosition is not implemented.');
     }
 
@@ -31,17 +31,19 @@ export abstract class TextObject {
 
         const document = activeTextEditor.document;
 
-        const startPosition = this.findStartPosition(document, anchor);
-        if (startPosition === null) {
+        const startRange = this.findStartRange(document, anchor);
+        if (startRange === null) {
             return null;
         }
 
-        const endPosition = this.findEndPosition(document, anchor);
-        if (endPosition === null) {
+        const endRange = this.findEndRange(document, anchor);
+        if (endRange === null) {
             return null;
         }
 
-        return new Range(startPosition, endPosition);
+        return this.isInclusive
+            ? new Range(startRange.start, endRange.end)
+            : new Range(startRange.end, endRange.start);
     }
 
 }

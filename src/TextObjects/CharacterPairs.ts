@@ -1,4 +1,4 @@
-import {window, TextDocument, Position} from 'vscode';
+import {window, TextDocument, Position, Range} from 'vscode';
 import {TextObject} from './TextObject';
 import {UtilCharacterPairs} from '../Utils/CharacterPairs';
 
@@ -40,13 +40,13 @@ export class TextObjectCharacterPairs extends TextObject {
         return obj;
     }
 
-    protected findStartPosition(document:TextDocument, anchor: Position): Position {
+    protected findStartRange(document:TextDocument, anchor: Position): Range {
         const line = document.lineAt(anchor);
 
         return null;
     }
 
-    protected findEndPosition(document:TextDocument, anchor: Position): Position {
+    protected findEndRange(document:TextDocument, anchor: Position): Range {
         const line = document.lineAt(anchor);
 
         return null;
