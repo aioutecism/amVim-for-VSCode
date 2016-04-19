@@ -5,7 +5,7 @@ export class SpecialKeyN implements SpecialKeyCommon {
 
     indicator = '{N}';
 
-    private conflictRegExp = /^[1-9]|\{motion\}|\{char\}$/;
+    private conflictRegExp = /^[1-9]|\{motion\}|\{textObject\}|\{char\}$/;
 
     unmapConflicts(node: RecursiveMap, keyToMap: string): void {
         if (keyToMap === this.indicator) {
