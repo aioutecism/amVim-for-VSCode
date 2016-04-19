@@ -4,6 +4,7 @@ import {SymbolMetadata} from '../Symbols/Metadata';
 import {ActionRegister} from './Register';
 import {ActionReveal} from './Reveal';
 import {Motion} from '../Motions/Motion';
+import {TextObject} from '../TextObjects/TextObject';
 import {UtilRange} from '../Utils/Range';
 
 export class ActionDelete {
@@ -38,6 +39,39 @@ export class ActionDelete {
         ranges = UtilRange.unionOverlaps(ranges);
 
         // TODO: Move cursor to first non-space if needed
+
+        return (args.shouldYank ? ActionRegister.yankRanges(ranges) : Promise.resolve(true))
+            .then(() => {
+                return activeTextEditor.edit((editBuilder) => {
+                    ranges.forEach((range) => editBuilder.delete(range));
+                });
+            })
+            .then(() => ActionReveal.primaryCursor());
+    }
+
+    @PrototypeReflect.metadata(SymbolMetadata.Action.isChange, true)
+    static byTextObject(args: {
+        textObject: TextObject,
+        shouldYank?: boolean
+    }): Thenable<boolean> {
+        args.shouldYank = args.shouldYank === undefined ? false : args.shouldYank;
+
+        const activeTextEditor = window.activeTextEditor;
+
+        if (! activeTextEditor) {
+            return Promise.resolve(false);
+        }
+
+        let ranges: Range[] = [];
+
+        activeTextEditor.selections.forEach(selection => {
+            const match = args.textObject.apply(selection.active);
+            if (match) {
+                ranges.push(match);
+            }
+        });
+
+        ranges = UtilRange.unionOverlaps(ranges);
 
         return (args.shouldYank ? ActionRegister.yankRanges(ranges) : Promise.resolve(true))
             .then(() => {
