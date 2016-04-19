@@ -69,6 +69,7 @@ export class ModeNormal extends Mode {
         { keys: 'd d', actions: [ActionDelete.line], args: {shouldYank: true} },
         { keys: 'D', actions: [ActionDelete.byMotions], args: {motions: [MotionLine.end()], shouldYank: true} },
         { keys: 'd {motion}', actions: [ActionDelete.byMotions], args: {shouldYank: true} },
+        { keys: 'd {textObject}', actions: [ActionDelete.byTextObject], args: {shouldYank: true} },
         { keys: 'C', actions: [
             ActionDelete.byMotions,
             ActionMode.toInsert,
@@ -99,12 +100,12 @@ export class ModeNormal extends Mode {
             shouldYank: true,
             cwNeedsFixup: true,
         } },
-        // { keys: 'c {textObject}', actions: [
-        //     ActionDelete.byTextObject,
-        //     ActionMode.toInsert,
-        // ], args: {
-        //     shouldYank: true,
-        // } },
+        { keys: 'c {textObject}', actions: [
+            ActionDelete.byTextObject,
+            ActionMode.toInsert,
+        ], args: {
+            shouldYank: true,
+        } },
         { keys: 'J', actions: [ActionJoinLines.onSelections] },
 
         { keys: 'r {char}', actions: [ActionReplace.characters] },
@@ -112,6 +113,7 @@ export class ModeNormal extends Mode {
         { keys: 'y y', actions: [ActionRegister.yankLines] },
         { keys: 'Y', actions: [ActionRegister.yankLines] },
         { keys: 'y {motion}', actions: [ActionRegister.yankByMotions] },
+        { keys: 'y {textObject}', actions: [ActionRegister.yankByTextObject] },
         { keys: 'p', actions: [ActionRegister.putAfter] },
         { keys: 'P', actions: [ActionRegister.putBefore] },
 
