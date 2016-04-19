@@ -3,6 +3,7 @@ import {GenericMapper, GenericMap, MatchResult, MatchResultKind} from './Generic
 import {SpecialKeyN} from './SpecialKeys/N';
 import {SpecialKeyChar} from './SpecialKeys/Char';
 import {SpecialKeyMotion} from './SpecialKeys/Motion';
+import {SpecialKeyTextObject} from './SpecialKeys/TextObject';
 
 export interface CommandMatchResult extends MatchResult {
     kind: MatchResultKind;
@@ -20,6 +21,7 @@ export class CommandMapper extends GenericMapper {
         super([
             new SpecialKeyN(),
             new SpecialKeyMotion(),
+            new SpecialKeyTextObject(),
             new SpecialKeyChar(),
         ]);
     }
