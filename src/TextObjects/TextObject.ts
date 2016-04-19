@@ -1,5 +1,7 @@
 import {window, TextDocument, Position, Range} from 'vscode';
 
+export enum TextObjectSearchingRange {Document, Line};
+
 export abstract class TextObject {
 
     protected isInclusive: boolean;
