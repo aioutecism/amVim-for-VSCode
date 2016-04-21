@@ -1,4 +1,4 @@
-import {window, commands, Range} from 'vscode';
+import {window, commands, Range, Selection} from 'vscode';
 import {PrototypeReflect} from '../LanguageExtensions/PrototypeReflect';
 import {SymbolMetadata} from '../Symbols/Metadata';
 import {ActionRegister} from './Register';
@@ -72,6 +72,14 @@ export class ActionDelete {
         });
 
         ranges = UtilRange.unionOverlaps(ranges);
+
+        if (ranges.length === 0) {
+            return Promise.reject<boolean>(false);
+        }
+        else {
+            // Selections will be adjust to matched ranges' start.
+            activeTextEditor.selections = ranges.map(range => new Selection(range.start, range.start));
+        }
 
         return (args.shouldYank ? ActionRegister.yankRanges(ranges) : Promise.resolve(true))
             .then(() => {
