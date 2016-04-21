@@ -1,7 +1,7 @@
 import {GenericMapper, GenericMap, RecursiveMap, MatchResultKind} from '../Generic';
 import {SpecialKeyCommon, SpecialKeyMatchResult} from './Common';
 import {TextObject, TextObjectSearchingRange} from '../../TextObjects/TextObject';
-import {TextObjectCharacterPairs} from '../../TextObjects/CharacterPairs';
+import {TextObjectBlock} from '../../TextObjects/Block';
 
 interface TextObjectGenerator {
     (args?: {}): TextObject;

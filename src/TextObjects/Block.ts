@@ -1,7 +1,7 @@
 import {window, TextDocument, Position, Range} from 'vscode';
 import {TextObject, TextObjectSearchingRange} from './TextObject';
 
-export class TextObjectCharacterPairs extends TextObject {
+export class TextObjectBlock extends TextObject {
 
     private openingCharacter: string;
     private closingCharacter: string;
@@ -13,7 +13,7 @@ export class TextObjectCharacterPairs extends TextObject {
         searchingRange: TextObjectSearchingRange
     }): TextObject {
 
-        const obj = new TextObjectCharacterPairs();
+        const obj = new TextObjectBlock();
         obj.isInclusive = true;
         obj.openingCharacter = args.openingCharacter;
         obj.closingCharacter = args.closingCharacter;
@@ -28,7 +28,7 @@ export class TextObjectCharacterPairs extends TextObject {
         searchingRange: TextObjectSearchingRange
     }): TextObject {
 
-        const obj = new TextObjectCharacterPairs();
+        const obj = new TextObjectBlock();
         obj.isInclusive = false;
         obj.openingCharacter = args.openingCharacter;
         obj.closingCharacter = args.closingCharacter;
