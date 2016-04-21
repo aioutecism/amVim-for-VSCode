@@ -11,22 +11,73 @@ interface TextObjectMap extends GenericMap {
     textObjectGenerator: TextObjectGenerator;
 }
 
+interface TextObjectMapInfo {
+    fromCharacters: string[];
+    args: {
+        openingCharacter: string,
+        closingCharacter: string,
+        searchingRange: TextObjectSearchingRange,
+    };
+}
+
 export class SpecialKeyTextObject extends GenericMapper implements SpecialKeyCommon {
 
     indicator = '{textObject}';
 
     private conflictRegExp = /^[1-9]|\{N\}|\{char\}$/;
 
-    private maps: TextObjectMap[] = [
-        { keys: 'i {', textObjectGenerator: TextObjectCharacterPairs.exclusive, args: {
+    private mapInfos: TextObjectMapInfo[] = [
+        { fromCharacters: ['b', '(', ')'], args: {
+            openingCharacter: '(',
+            closingCharacter: ')',
+            searchingRange: TextObjectSearchingRange.Document,
+        } },
+        { fromCharacters: ['[', ']'], args: {
+            openingCharacter: '[',
+            closingCharacter: ']',
+            searchingRange: TextObjectSearchingRange.Document,
+        } },
+        { fromCharacters: ['B', '{', '}'], args: {
             openingCharacter: '{',
             closingCharacter: '}',
-            searchingRange: TextObjectSearchingRange.Document
+            searchingRange: TextObjectSearchingRange.Document,
         } },
+        { fromCharacters: ['<', '>'], args: {
+            openingCharacter: '<',
+            closingCharacter: '>',
+            searchingRange: TextObjectSearchingRange.Document,
+        } },
+        { fromCharacters: ['\''], args: {
+            openingCharacter: '\'',
+            closingCharacter: '\'',
+            searchingRange: TextObjectSearchingRange.Line,
+        } },
+        // TODO: Search after cursor for opening character.
+        { fromCharacters: ['"'], args: {
+            openingCharacter: '"',
+            closingCharacter: '"',
+            searchingRange: TextObjectSearchingRange.Line,
+        } },
+        { fromCharacters: ['`'], args: {
+            openingCharacter: '`',
+            closingCharacter: '`',
+            searchingRange: TextObjectSearchingRange.Line,
+        } },
+    ];
+
+    private maps: TextObjectMap[] = [
+        // Reserved for special maps.
     ];
 
     constructor() {
         super();
+
+        this.mapInfos.forEach(mapInfo => {
+            mapInfo.fromCharacters.forEach(character => {
+                this.map(`i ${character}`, TextObjectCharacterPairs.exclusive, mapInfo.args);
+                this.map(`a ${character}`, TextObjectCharacterPairs.inclusive, mapInfo.args);
+            });
+        });
 
         this.maps.forEach(map => {
             this.map(map.keys, map.textObjectGenerator, map.args);
