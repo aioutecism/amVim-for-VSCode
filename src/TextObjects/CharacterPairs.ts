@@ -1,6 +1,5 @@
 import {window, TextDocument, Position, Range} from 'vscode';
 import {TextObject, TextObjectSearchingRange} from './TextObject';
-import {UtilCharacterPairs} from '../Utils/CharacterPairs';
 
 export class TextObjectCharacterPairs extends TextObject {
 
