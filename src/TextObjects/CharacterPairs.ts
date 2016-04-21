@@ -51,7 +51,10 @@ export class TextObjectCharacterPairs extends TextObject {
             while (characterIndex >= 0) {
 
                 if (lineText[characterIndex] === this.closingCharacter) {
-                    matchingCount++;
+                    // Don't count closing character on anchor.
+                    if (! anchor.isEqual(new Position(lineIndex, characterIndex))) {
+                        matchingCount++;
+                    }
                 }
                 else if (lineText[characterIndex] === this.openingCharacter) {
                     if (matchingCount === 0) {
@@ -84,12 +87,15 @@ export class TextObjectCharacterPairs extends TextObject {
 
             const lineText = document.lineAt(lineIndex).text;
 
-            let characterIndex = lineIndex === anchor.line ? anchor.character : lineText.length - 1;
+            let characterIndex = lineIndex === anchor.line ? anchor.character : 0;
 
             while (characterIndex < lineText.length) {
 
                 if (lineText[characterIndex] === this.openingCharacter) {
-                    matchingCount++;
+                    // Don't count opening character on anchor.
+                    if (! anchor.isEqual(new Position(lineIndex, characterIndex))) {
+                        matchingCount++;
+                    }
                 }
                 else if (lineText[characterIndex] === this.closingCharacter) {
                     if (matchingCount === 0) {
