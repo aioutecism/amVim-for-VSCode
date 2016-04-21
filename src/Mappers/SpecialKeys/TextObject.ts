@@ -13,6 +13,8 @@ interface TextObjectMap extends GenericMap {
 
 interface TextObjectMapInfo {
     fromCharacters: string[];
+    inclusiveMethod: (args: {}) => TextObject;
+    exclusiveMethod: (args: {}) => TextObject;
     args: {
         openingCharacter: string,
         closingCharacter: string,
@@ -27,42 +29,77 @@ export class SpecialKeyTextObject extends GenericMapper implements SpecialKeyCom
     private conflictRegExp = /^[1-9]|\{N\}|\{char\}$/;
 
     private mapInfos: TextObjectMapInfo[] = [
-        { fromCharacters: ['b', '(', ')'], args: {
-            openingCharacter: '(',
-            closingCharacter: ')',
-            searchingRange: TextObjectSearchingRange.Document,
-        } },
-        { fromCharacters: ['[', ']'], args: {
-            openingCharacter: '[',
-            closingCharacter: ']',
-            searchingRange: TextObjectSearchingRange.Document,
-        } },
-        { fromCharacters: ['B', '{', '}'], args: {
-            openingCharacter: '{',
-            closingCharacter: '}',
-            searchingRange: TextObjectSearchingRange.Document,
-        } },
-        { fromCharacters: ['<', '>'], args: {
-            openingCharacter: '<',
-            closingCharacter: '>',
-            searchingRange: TextObjectSearchingRange.Document,
-        } },
-        { fromCharacters: ['\''], args: {
-            openingCharacter: '\'',
-            closingCharacter: '\'',
-            searchingRange: TextObjectSearchingRange.Line,
-        } },
+        {
+            fromCharacters: ['b', '(', ')'],
+            inclusiveMethod: TextObjectBlock.inclusive,
+            exclusiveMethod: TextObjectBlock.exclusive,
+            args: {
+                openingCharacter: '(',
+                closingCharacter: ')',
+                searchingRange: TextObjectSearchingRange.Document,
+            }
+        },
+        {
+            fromCharacters: ['[', ']'],
+            inclusiveMethod: TextObjectBlock.inclusive,
+            exclusiveMethod: TextObjectBlock.exclusive,
+            args: {
+                openingCharacter: '[',
+                closingCharacter: ']',
+                searchingRange: TextObjectSearchingRange.Document,
+            }
+        },
+        {
+            fromCharacters: ['B', '{', '}'],
+            inclusiveMethod: TextObjectBlock.inclusive,
+            exclusiveMethod: TextObjectBlock.exclusive,
+            args: {
+                openingCharacter: '{',
+                closingCharacter: '}',
+                searchingRange: TextObjectSearchingRange.Document,
+            }
+        },
+        {
+            fromCharacters: ['<', '>'],
+            inclusiveMethod: TextObjectBlock.inclusive,
+            exclusiveMethod: TextObjectBlock.exclusive,
+            args: {
+                openingCharacter: '<',
+                closingCharacter: '>',
+                searchingRange: TextObjectSearchingRange.Document,
+            }
+        },
         // TODO: Search after cursor for opening character.
-        { fromCharacters: ['"'], args: {
-            openingCharacter: '"',
-            closingCharacter: '"',
-            searchingRange: TextObjectSearchingRange.Line,
-        } },
-        { fromCharacters: ['`'], args: {
-            openingCharacter: '`',
-            closingCharacter: '`',
-            searchingRange: TextObjectSearchingRange.Line,
-        } },
+        {
+            fromCharacters: ['\''],
+            inclusiveMethod: TextObjectBlock.inclusive,
+            exclusiveMethod: TextObjectBlock.exclusive,
+            args: {
+                openingCharacter: '\'',
+                closingCharacter: '\'',
+                searchingRange: TextObjectSearchingRange.Line,
+            }
+        },
+        {
+            fromCharacters: ['"'],
+            inclusiveMethod: TextObjectBlock.inclusive,
+            exclusiveMethod: TextObjectBlock.exclusive,
+            args: {
+                openingCharacter: '"',
+                closingCharacter: '"',
+                searchingRange: TextObjectSearchingRange.Line,
+            }
+        },
+        {
+            fromCharacters: ['`'],
+            inclusiveMethod: TextObjectBlock.inclusive,
+            exclusiveMethod: TextObjectBlock.exclusive,
+            args: {
+                openingCharacter: '`',
+                closingCharacter: '`',
+                searchingRange: TextObjectSearchingRange.Line,
+            }
+        },
     ];
 
     private maps: TextObjectMap[] = [
@@ -74,8 +111,8 @@ export class SpecialKeyTextObject extends GenericMapper implements SpecialKeyCom
 
         this.mapInfos.forEach(mapInfo => {
             mapInfo.fromCharacters.forEach(character => {
-                this.map(`i ${character}`, TextObjectCharacterPairs.exclusive, mapInfo.args);
-                this.map(`a ${character}`, TextObjectCharacterPairs.inclusive, mapInfo.args);
+                this.map(`a ${character}`, mapInfo.inclusiveMethod, mapInfo.args);
+                this.map(`i ${character}`, mapInfo.exclusiveMethod, mapInfo.args);
             });
         });
 
