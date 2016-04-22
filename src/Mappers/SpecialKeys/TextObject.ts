@@ -1,7 +1,8 @@
 import {GenericMapper, GenericMap, RecursiveMap, MatchResultKind} from '../Generic';
 import {SpecialKeyCommon, SpecialKeyMatchResult} from './Common';
-import {TextObject, TextObjectSearchingRange} from '../../TextObjects/TextObject';
+import {TextObject} from '../../TextObjects/TextObject';
 import {TextObjectBlock} from '../../TextObjects/Block';
+import {TextObjectQuotedString} from '../../TextObjects/QuotedString';
 
 interface TextObjectGenerator {
     (args?: {}): TextObject;
@@ -15,11 +16,7 @@ interface TextObjectMapInfo {
     fromCharacters: string[];
     inclusiveMethod: (args: {}) => TextObject;
     exclusiveMethod: (args: {}) => TextObject;
-    args: {
-        openingCharacter: string,
-        closingCharacter: string,
-        searchingRange: TextObjectSearchingRange,
-    };
+    args: {};
 }
 
 export class SpecialKeyTextObject extends GenericMapper implements SpecialKeyCommon {
@@ -36,7 +33,6 @@ export class SpecialKeyTextObject extends GenericMapper implements SpecialKeyCom
             args: {
                 openingCharacter: '(',
                 closingCharacter: ')',
-                searchingRange: TextObjectSearchingRange.Document,
             }
         },
         {
@@ -46,7 +42,6 @@ export class SpecialKeyTextObject extends GenericMapper implements SpecialKeyCom
             args: {
                 openingCharacter: '[',
                 closingCharacter: ']',
-                searchingRange: TextObjectSearchingRange.Document,
             }
         },
         {
@@ -56,7 +51,6 @@ export class SpecialKeyTextObject extends GenericMapper implements SpecialKeyCom
             args: {
                 openingCharacter: '{',
                 closingCharacter: '}',
-                searchingRange: TextObjectSearchingRange.Document,
             }
         },
         {
@@ -66,38 +60,30 @@ export class SpecialKeyTextObject extends GenericMapper implements SpecialKeyCom
             args: {
                 openingCharacter: '<',
                 closingCharacter: '>',
-                searchingRange: TextObjectSearchingRange.Document,
             }
         },
-        // TODO: Search after cursor for opening character.
         {
             fromCharacters: ['\''],
-            inclusiveMethod: TextObjectBlock.inclusive,
-            exclusiveMethod: TextObjectBlock.exclusive,
+            inclusiveMethod: TextObjectQuotedString.inclusive,
+            exclusiveMethod: TextObjectQuotedString.exclusive,
             args: {
-                openingCharacter: '\'',
-                closingCharacter: '\'',
-                searchingRange: TextObjectSearchingRange.Line,
+                quoteCharacter: '\'',
             }
         },
         {
             fromCharacters: ['"'],
-            inclusiveMethod: TextObjectBlock.inclusive,
-            exclusiveMethod: TextObjectBlock.exclusive,
+            inclusiveMethod: TextObjectQuotedString.inclusive,
+            exclusiveMethod: TextObjectQuotedString.exclusive,
             args: {
-                openingCharacter: '"',
-                closingCharacter: '"',
-                searchingRange: TextObjectSearchingRange.Line,
+                quoteCharacter: '"',
             }
         },
         {
             fromCharacters: ['`'],
-            inclusiveMethod: TextObjectBlock.inclusive,
-            exclusiveMethod: TextObjectBlock.exclusive,
+            inclusiveMethod: TextObjectQuotedString.inclusive,
+            exclusiveMethod: TextObjectQuotedString.exclusive,
             args: {
-                openingCharacter: '`',
-                closingCharacter: '`',
-                searchingRange: TextObjectSearchingRange.Line,
+                quoteCharacter: '`',
             }
         },
     ];

@@ -1,23 +1,20 @@
 import {window, TextDocument, Position, Range} from 'vscode';
-import {TextObject, TextObjectSearchingRange} from './TextObject';
+import {TextObject} from './TextObject';
 
 export class TextObjectBlock extends TextObject {
 
     private openingCharacter: string;
     private closingCharacter: string;
-    private searchingRange: TextObjectSearchingRange;
 
     static inclusive(args: {
         openingCharacter: string,
         closingCharacter: string,
-        searchingRange: TextObjectSearchingRange
     }): TextObject {
 
         const obj = new TextObjectBlock();
         obj.isInclusive = true;
         obj.openingCharacter = args.openingCharacter;
         obj.closingCharacter = args.closingCharacter;
-        obj.searchingRange = args.searchingRange;
 
         return obj;
     }
@@ -25,14 +22,12 @@ export class TextObjectBlock extends TextObject {
     static exclusive(args: {
         openingCharacter: string,
         closingCharacter: string,
-        searchingRange: TextObjectSearchingRange
     }): TextObject {
 
         const obj = new TextObjectBlock();
         obj.isInclusive = false;
         obj.openingCharacter = args.openingCharacter;
         obj.closingCharacter = args.closingCharacter;
-        obj.searchingRange = args.searchingRange;
 
         return obj;
     }
@@ -73,7 +68,7 @@ export class TextObjectBlock extends TextObject {
 
             lineIndex--;
 
-        } while (lineIndex >= 0 && this.searchingRange === TextObjectSearchingRange.Document);
+        } while (lineIndex >= 0);
 
         return null;
     }
@@ -114,7 +109,7 @@ export class TextObjectBlock extends TextObject {
 
             lineIndex++;
 
-        } while (lineIndex < document.lineCount && this.searchingRange === TextObjectSearchingRange.Document);
+        } while (lineIndex < document.lineCount);
 
         return null;
     }
