@@ -13,10 +13,8 @@ interface TextObjectMap extends GenericMap {
 }
 
 interface TextObjectMapInfo {
-    fromCharacters: string[];
-    inclusiveMethod: (args: {}) => TextObject;
-    exclusiveMethod: (args: {}) => TextObject;
-    args: {};
+    characters: string[];
+    method: (args: {isInclusive: boolean}) => TextObject;
 }
 
 export class SpecialKeyTextObject extends GenericMapper implements SpecialKeyCommon {
@@ -27,64 +25,32 @@ export class SpecialKeyTextObject extends GenericMapper implements SpecialKeyCom
 
     private mapInfos: TextObjectMapInfo[] = [
         {
-            fromCharacters: ['b', '(', ')'],
-            inclusiveMethod: TextObjectBlock.inclusive,
-            exclusiveMethod: TextObjectBlock.exclusive,
-            args: {
-                openingCharacter: '(',
-                closingCharacter: ')',
-            }
+            characters: ['b', '(', ')'],
+            method: TextObjectBlock.byParentheses,
         },
         {
-            fromCharacters: ['[', ']'],
-            inclusiveMethod: TextObjectBlock.inclusive,
-            exclusiveMethod: TextObjectBlock.exclusive,
-            args: {
-                openingCharacter: '[',
-                closingCharacter: ']',
-            }
+            characters: ['[', ']'],
+            method: TextObjectBlock.byBrackets,
         },
         {
-            fromCharacters: ['B', '{', '}'],
-            inclusiveMethod: TextObjectBlock.inclusive,
-            exclusiveMethod: TextObjectBlock.exclusive,
-            args: {
-                openingCharacter: '{',
-                closingCharacter: '}',
-            }
+            characters: ['B', '{', '}'],
+            method: TextObjectBlock.byBraces,
         },
         {
-            fromCharacters: ['<', '>'],
-            inclusiveMethod: TextObjectBlock.inclusive,
-            exclusiveMethod: TextObjectBlock.exclusive,
-            args: {
-                openingCharacter: '<',
-                closingCharacter: '>',
-            }
+            characters: ['<', '>'],
+            method: TextObjectBlock.byChevrons,
         },
         {
-            fromCharacters: ['\''],
-            inclusiveMethod: TextObjectQuotedString.inclusive,
-            exclusiveMethod: TextObjectQuotedString.exclusive,
-            args: {
-                quoteCharacter: '\'',
-            }
+            characters: ['\''],
+            method: TextObjectQuotedString.bySingle,
         },
         {
-            fromCharacters: ['"'],
-            inclusiveMethod: TextObjectQuotedString.inclusive,
-            exclusiveMethod: TextObjectQuotedString.exclusive,
-            args: {
-                quoteCharacter: '"',
-            }
+            characters: ['"'],
+            method: TextObjectQuotedString.byDouble,
         },
         {
-            fromCharacters: ['`'],
-            inclusiveMethod: TextObjectQuotedString.inclusive,
-            exclusiveMethod: TextObjectQuotedString.exclusive,
-            args: {
-                quoteCharacter: '`',
-            }
+            characters: ['`'],
+            method: TextObjectQuotedString.byBackward,
         },
     ];
 
@@ -96,9 +62,9 @@ export class SpecialKeyTextObject extends GenericMapper implements SpecialKeyCom
         super();
 
         this.mapInfos.forEach(mapInfo => {
-            mapInfo.fromCharacters.forEach(character => {
-                this.map(`a ${character}`, mapInfo.inclusiveMethod, mapInfo.args);
-                this.map(`i ${character}`, mapInfo.exclusiveMethod, mapInfo.args);
+            mapInfo.characters.forEach(character => {
+                this.map(`a ${character}`, mapInfo.method, { isInclusive: true });
+                this.map(`i ${character}`, mapInfo.method, { isInclusive: false });
             });
         });
 

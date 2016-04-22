@@ -6,28 +6,38 @@ export class TextObjectBlock extends TextObject {
     private openingCharacter: string;
     private closingCharacter: string;
 
-    static inclusive(args: {
-        openingCharacter: string,
-        closingCharacter: string,
-    }): TextObject {
-
+    static byParentheses(args: {isInclusive: boolean}): TextObject {
         const obj = new TextObjectBlock();
-        obj.isInclusive = true;
-        obj.openingCharacter = args.openingCharacter;
-        obj.closingCharacter = args.closingCharacter;
+        obj.isInclusive = args.isInclusive;
+        obj.openingCharacter = '(';
+        obj.closingCharacter = ')';
 
         return obj;
     }
 
-    static exclusive(args: {
-        openingCharacter: string,
-        closingCharacter: string,
-    }): TextObject {
-
+    static byBrackets(args: {isInclusive: boolean}): TextObject {
         const obj = new TextObjectBlock();
-        obj.isInclusive = false;
-        obj.openingCharacter = args.openingCharacter;
-        obj.closingCharacter = args.closingCharacter;
+        obj.isInclusive = args.isInclusive;
+        obj.openingCharacter = '[';
+        obj.closingCharacter = ']';
+
+        return obj;
+    }
+
+    static byBraces(args: {isInclusive: boolean}): TextObject {
+        const obj = new TextObjectBlock();
+        obj.isInclusive = args.isInclusive;
+        obj.openingCharacter = '{';
+        obj.closingCharacter = '}';
+
+        return obj;
+    }
+
+    static byChevrons(args: {isInclusive: boolean}): TextObject {
+        const obj = new TextObjectBlock();
+        obj.isInclusive = args.isInclusive;
+        obj.openingCharacter = '<';
+        obj.closingCharacter = '>';
 
         return obj;
     }

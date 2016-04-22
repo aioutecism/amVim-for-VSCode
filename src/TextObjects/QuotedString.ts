@@ -6,18 +6,26 @@ export class TextObjectQuotedString extends TextObject {
     private quoteCharacter: string;
     private adjustedAnchor: Position;
 
-    static inclusive(args: {quoteCharacter: string}): TextObject {
+    static bySingle(args: {isInclusive: boolean}): TextObject {
         const obj = new TextObjectQuotedString();
-        obj.isInclusive = true;
-        obj.quoteCharacter = args.quoteCharacter;
+        obj.isInclusive = args.isInclusive;
+        obj.quoteCharacter = '\'';
 
         return obj;
     }
 
-    static exclusive(args: {quoteCharacter: string}): TextObject {
+    static byDouble(args: {isInclusive: boolean}): TextObject {
         const obj = new TextObjectQuotedString();
-        obj.isInclusive = false;
-        obj.quoteCharacter = args.quoteCharacter;
+        obj.isInclusive = args.isInclusive;
+        obj.quoteCharacter = '"';
+
+        return obj;
+    }
+
+    static byBackward(args: {isInclusive: boolean}): TextObject {
+        const obj = new TextObjectQuotedString();
+        obj.isInclusive = args.isInclusive;
+        obj.quoteCharacter = '`';
 
         return obj;
     }
