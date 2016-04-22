@@ -5,14 +5,14 @@ export abstract class TextObject {
     protected isInclusive: boolean;
 
     /**
-     * Override this to return start position of text object or null if not found.
+     * Override this to return start range of text object or null if not found.
      */
     protected findStartRange(document:TextDocument, anchor: Position): Range {
         throw new Error('findStartPosition is not implemented.');
     }
 
     /**
-     * Override this to return end position of text object or null if not found.
+     * Override this to return end range of text object or null if not found.
      */
     protected findEndRange(document:TextDocument, anchor: Position): Range {
         throw new Error('findEndPosition is not implemented.');
