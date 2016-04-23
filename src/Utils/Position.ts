@@ -2,7 +2,7 @@ import {TextDocument, Position} from 'vscode';
 
 export class UtilPosition {
 
-    // TODO: Replace with TextDocument.validatePosition(Position)
+    // The official TextDocument.validatePosition is buggy (https://github.com/Microsoft/vscode/issues/5704).
     static fitIntoDocument(document: TextDocument, from: Position): Position {
         const lineCount = document.lineCount;
 

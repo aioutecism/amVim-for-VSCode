@@ -1,4 +1,5 @@
 import {window, Position, Range} from 'vscode';
+import {UtilPosition} from '../Utils/Position';
 
 export abstract class Motion {
 
@@ -30,7 +31,7 @@ export abstract class Motion {
         }
         else if (toLine > document.lineCount - 1) {
             toLine = document.lineCount - 1;
-            toCharacter = Infinity;
+            toCharacter = document.lineAt(document.lineCount - 1).text.length;
         }
 
         if (from.line !== toLine) {
@@ -65,7 +66,7 @@ export abstract class Motion {
 
         toCharacter = Math.max(toCharacter, 0);
 
-        return activeTextEditor.document.validatePosition(new Position(toLine, toCharacter));
+        return UtilPosition.fitIntoDocument(activeTextEditor.document, new Position(toLine, toCharacter));
     }
 
 }

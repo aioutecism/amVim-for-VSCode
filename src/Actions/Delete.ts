@@ -24,6 +24,8 @@ export class ActionDelete {
             return Promise.resolve(false);
         }
 
+        const document = activeTextEditor.document;
+
         let ranges = activeTextEditor.selections.map(selection => {
             const start = selection.active;
             const end = args.motions.reduce((position, motion) => {
@@ -33,7 +35,8 @@ export class ActionDelete {
         });
 
         ranges = ranges.map(range => {
-            return range.isSingleLine ? range : UtilRange.toLinewise(range);
+            return UtilRange.fitIntoDocument(document,
+                range.isSingleLine ? range : UtilRange.toLinewise(range));
         });
 
         ranges = UtilRange.unionOverlaps(ranges);
