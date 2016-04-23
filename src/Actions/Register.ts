@@ -26,7 +26,7 @@ export class ActionRegister {
         const document = activeTextEditor.document;
 
         ActionRegister.stash = ranges.map(range => {
-            return document.getText(document.validateRange(range));
+            return document.getText(UtilRange.fitIntoDocument(document, range));
         }).join('');
 
         return Promise.resolve(true);
