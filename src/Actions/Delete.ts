@@ -227,7 +227,7 @@ export class ActionDelete {
         const document = activeTextEditor.document;
 
         let ranges = activeTextEditor.selections.map(selection => {
-            return UtilRange.fitIntoDocument(document, new Range(
+            return document.validateRange(new Range(
                 selection.start.line, 0,
                 selection.end.line + 1, 0
             ));
