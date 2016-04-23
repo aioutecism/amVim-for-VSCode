@@ -1,6 +1,6 @@
 import {window, Position, Range} from 'vscode';
 
-export class Motion {
+export abstract class Motion {
 
     isCharacterUpdated = true;
 
@@ -12,7 +12,7 @@ export class Motion {
         this.characterDelta += characterDelta;
     }
 
-    apply(from: Position, option?): Position {
+    apply(from: Position, option?: any): Position {
         const activeTextEditor = window.activeTextEditor;
 
         if (! activeTextEditor) {

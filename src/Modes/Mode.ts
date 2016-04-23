@@ -122,7 +122,10 @@ export abstract class Mode {
 
             promise.then(
                 one.bind(this),
-                this.clearPendings.bind(this)
+                () => {
+                    this.clearPendings();
+                    this.executing = false;
+                }
             );
         };
 

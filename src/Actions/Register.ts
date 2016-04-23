@@ -7,6 +7,7 @@ import {ActionSelection} from './Selection';
 import {Motion} from '../Motions/Motion';
 import {MotionCharacter} from '../Motions/Character';
 import {MotionLine} from '../Motions/Line';
+import {TextObject} from '../TextObjects/TextObject';
 import {UtilRange} from '../Utils/Range';
 
 enum PutDirection {Before, After};
@@ -25,7 +26,7 @@ export class ActionRegister {
         const document = activeTextEditor.document;
 
         ActionRegister.stash = ranges.map(range => {
-            return document.getText(UtilRange.fitIntoDocument(document, range));
+            return document.getText(document.validateRange(range));
         }).join('');
 
         return Promise.resolve(true);
@@ -48,6 +49,27 @@ export class ActionRegister {
 
         ranges = ranges.map(range => {
             return range.isSingleLine ? range : UtilRange.toLinewise(range);
+        });
+
+        ranges = UtilRange.unionOverlaps(ranges);
+
+        return ActionRegister.yankRanges(ranges);
+    }
+
+    static yankByTextObject(args: {textObject: TextObject}): Thenable<boolean> {
+        const activeTextEditor = window.activeTextEditor;
+
+        if (! activeTextEditor) {
+            return Promise.resolve(false);
+        }
+
+        let ranges: Range[] = [];
+
+        activeTextEditor.selections.forEach(selection => {
+            const match = args.textObject.apply(selection.active);
+            if (match) {
+                ranges.push(match);
+            }
         });
 
         ranges = UtilRange.unionOverlaps(ranges);
