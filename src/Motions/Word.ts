@@ -10,10 +10,10 @@ export class MotionWord extends Motion {
 
     private static wordSeparators = './\\\\()"\'\\-:,.;<>~!@#$%^&*|+=\\[\\]{}`~?';
     private static blankSeparators = '\\s';
-    
+
     separators: string;
 
-    constructor(options: {useBlankSeparatedStyle: boolean} = {useBlankSeparatedStyle: false}) {
+    constructor(options: {useBlankSeparatedStyle?: boolean} = {}) {
         super();
         options = Object.assign({useBlankSeparatedStyle: false}, options);
 
@@ -21,32 +21,32 @@ export class MotionWord extends Motion {
             ? MotionWord.blankSeparators : MotionWord.wordSeparators;
     }
 
-    static nextStartOrBoundaryIfChange(args: {useBlankSeparatedStyle: boolean} = {useBlankSeparatedStyle: false}): Motion {
+    static nextStartOrBoundaryIfChange(args: {useBlankSeparatedStyle?: boolean} = {}): Motion {
         const obj = MotionWord.nextStart(args);
         (obj as MotionWord).useBoundaryIfChange = true;
 
         return obj;
     }
 
-    static nextStart(args: {useBlankSeparatedStyle: boolean} = {useBlankSeparatedStyle: false}): Motion {
+    static nextStart(args: {useBlankSeparatedStyle?: boolean} = {}): Motion {
         const obj = new MotionWord(args);
         obj.wordDelta = MotionWordPosition.NEXT_START;
         return obj;
     }
 
-    static nextEnd(args: {useBlankSeparatedStyle: boolean} = {useBlankSeparatedStyle: false}): Motion {
+    static nextEnd(args: {useBlankSeparatedStyle?: boolean} = {}): Motion {
         const obj = new MotionWord(args);
         obj.wordDelta = MotionWordPosition.NEXT_END;
         return obj;
     }
 
-    static prevStart(args: {useBlankSeparatedStyle: boolean} = {useBlankSeparatedStyle: false}): Motion {
+    static prevStart(args: {useBlankSeparatedStyle?: boolean} = {}): Motion {
         const obj = new MotionWord(args);
         obj.wordDelta = MotionWordPosition.PREV_START;
         return obj;
     }
 
-    static prevEnd(args: {useBlankSeparatedStyle: boolean} = {useBlankSeparatedStyle: false}): Motion {
+    static prevEnd(args: {useBlankSeparatedStyle?: boolean} = {}): Motion {
         const obj = new MotionWord(args);
         obj.wordDelta = MotionWordPosition.PREV_END;
         return obj;
