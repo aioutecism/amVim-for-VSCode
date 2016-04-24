@@ -8,45 +8,57 @@ export class MotionWord extends Motion {
     private wordDelta: MotionWordPosition;
     private useBoundaryIfChange = false;
 
-    static wordSeparators = './\\\\()"\'\\-:,.;<>~!@#$%^&*|+=\\[\\]{}`~?';
+    private static wordSeparators = './\\\\()"\'\\-:,.;<>~!@#$%^&*|+=\\[\\]{}`~?';
+    private static blankSeparators = '\\s';
+    
+    separators: string;
 
-    static nextStartOrBoundaryIfChange(): Motion {
-        const obj = MotionWord.nextStart();
+    constructor(options: {useBlankSeparatedStyle: boolean} = {useBlankSeparatedStyle: false}) {
+        super();
+        options = Object.assign({useBlankSeparatedStyle: false}, options);
+
+        this.separators = options.useBlankSeparatedStyle
+            ? MotionWord.blankSeparators : MotionWord.wordSeparators;
+    }
+
+    static nextStartOrBoundaryIfChange(args: {useBlankSeparatedStyle: boolean} = {useBlankSeparatedStyle: false}): Motion {
+        const obj = MotionWord.nextStart(args);
         (obj as MotionWord).useBoundaryIfChange = true;
+
         return obj;
     }
 
-    static nextStart(): Motion {
-        const obj = new MotionWord();
+    static nextStart(args: {useBlankSeparatedStyle: boolean} = {useBlankSeparatedStyle: false}): Motion {
+        const obj = new MotionWord(args);
         obj.wordDelta = MotionWordPosition.NEXT_START;
         return obj;
     }
 
-    static nextEnd(): Motion {
-        const obj = new MotionWord();
+    static nextEnd(args: {useBlankSeparatedStyle: boolean} = {useBlankSeparatedStyle: false}): Motion {
+        const obj = new MotionWord(args);
         obj.wordDelta = MotionWordPosition.NEXT_END;
         return obj;
     }
 
-    static prevStart(): Motion {
-        const obj = new MotionWord();
+    static prevStart(args: {useBlankSeparatedStyle: boolean} = {useBlankSeparatedStyle: false}): Motion {
+        const obj = new MotionWord(args);
         obj.wordDelta = MotionWordPosition.PREV_START;
         return obj;
     }
 
-    static prevEnd(): Motion {
-        const obj = new MotionWord();
+    static prevEnd(args: {useBlankSeparatedStyle: boolean} = {useBlankSeparatedStyle: false}): Motion {
+        const obj = new MotionWord(args);
         obj.wordDelta = MotionWordPosition.PREV_END;
         return obj;
     }
 
-    static characterDelta(text: string, wordDelta: MotionWordPosition, fromCharacter: number, isInclusive?: boolean) {
+    createCharacterDelta(text: string, wordDelta: MotionWordPosition, fromCharacter: number, isInclusive?: boolean) {
 
         if (wordDelta === MotionWordPosition.NEXT_START) {
             text = text.substr(fromCharacter);
 
             const matches = text.match(new RegExp(
-                `^(\\s+)?((?:[${this.wordSeparators}]+|[^\\s${this.wordSeparators}]+)\\s*)?`
+                `^(\\s+)?((?:[${this.separators}]+|[^\\s${this.separators}]+)\\s*)?`
             ));
 
             if (matches[1]) {
@@ -67,7 +79,7 @@ export class MotionWord extends Motion {
             text = text.substr(fromCharacter + 1);
 
             const matches = text.match(new RegExp(
-                `^(\\s+)?((?:[${this.wordSeparators}]+|[^\\s${this.wordSeparators}]+))?`
+                `^(\\s+)?((?:[${this.separators}]+|[^\\s${this.separators}]+))?`
             ));
 
             return (isInclusive) ?
@@ -80,7 +92,7 @@ export class MotionWord extends Motion {
                 .substr(0, fromCharacter + 1)
                 .split('').reverse().join('');
 
-            return -this.characterDelta(text, MotionWordPosition.NEXT_END, 0);
+            return -this.createCharacterDelta(text, MotionWordPosition.NEXT_END, 0);
         }
 
         else if (wordDelta === MotionWordPosition.PREV_END) {
@@ -88,12 +100,12 @@ export class MotionWord extends Motion {
                 .substr(0, fromCharacter + 1)
                 .split('').reverse().join('');
 
-            return -this.characterDelta(text, MotionWordPosition.NEXT_START, 0);
+            return -this.createCharacterDelta(text, MotionWordPosition.NEXT_START, 0);
         }
 
         else if (wordDelta === MotionWordPosition.NEXT_BOUNDARY) {
-            const endDelta = this.characterDelta(text, MotionWordPosition.NEXT_END, fromCharacter, isInclusive);
-            const startDelta = this.characterDelta(text, MotionWordPosition.NEXT_START, fromCharacter, isInclusive);
+            const endDelta = this.createCharacterDelta(text, MotionWordPosition.NEXT_END, fromCharacter, isInclusive);
+            const startDelta = this.createCharacterDelta(text, MotionWordPosition.NEXT_START, fromCharacter, isInclusive);
             return Math.min(endDelta, startDelta);
         }
 
@@ -124,7 +136,7 @@ export class MotionWord extends Motion {
 
         let targetText = document.lineAt(toLine).text;
 
-        toCharacter += MotionWord.characterDelta(
+        toCharacter += this.createCharacterDelta(
             targetText, this.wordDelta, toCharacter, option.isInclusive
         );
 
