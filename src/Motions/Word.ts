@@ -15,6 +15,7 @@ export class MotionWord extends Motion {
 
     constructor(options: {useBlankSeparatedStyle: boolean} = {useBlankSeparatedStyle: false}) {
         super();
+        options = Object.assign({useBlankSeparatedStyle: false}, options);
 
         this.separators = options.useBlankSeparatedStyle
             ? MotionWord.blankSeparators : MotionWord.wordSeparators;
