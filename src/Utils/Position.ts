@@ -6,16 +6,26 @@ export class UtilPosition {
     static fitIntoDocument(document: TextDocument, from: Position): Position {
         const lineCount = document.lineCount;
 
-        let line = from.line;
-        let character = from.character;
+        let {line, character} = from;
+
+        const maxLine = document.lineCount - 1;
 
         if (line < 0) {
             line = 0;
             character = 0;
         }
-        else if (line >= document.lineCount) {
-            line = document.lineCount - 1;
-            character = document.lineAt(document.lineCount - 1).text.length;
+        else if (line > maxLine) {
+            line = maxLine;
+            character = Infinity;
+        }
+
+        const maxCharacter = document.lineAt(line).text.length;
+
+        if (character < 0) {
+            character = 0;
+        }
+        else if (character > maxCharacter) {
+            character = maxCharacter;
         }
 
         return new Position(line, character);
