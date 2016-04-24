@@ -31,7 +31,11 @@ export abstract class Motion {
         }
         else if (toLine > document.lineCount - 1) {
             toLine = document.lineCount - 1;
-            toCharacter = document.lineAt(document.lineCount - 1).text.length;
+            toCharacter = Infinity;
+        }
+
+        if (toCharacter === Infinity) {
+            toCharacter = document.lineAt(toLine).text.length;
         }
 
         if (from.line !== toLine) {
