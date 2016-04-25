@@ -3,7 +3,7 @@ import {TextObject} from './TextObject';
 
 export class TextObjectQuotedString extends TextObject {
     private static escapeCharacter = '\\';
-    
+
     private quoteCharacter: string;
     private adjustedAnchor: Position;
 
@@ -38,7 +38,7 @@ export class TextObjectQuotedString extends TextObject {
         let characterIndex = anchor.character - 1;
 
         while (characterIndex >= 0) {
-            let characterEscaped = lineText[characterIndex-1] === TextObjectQuotedString.escapeCharacter;
+            const characterEscaped = lineText[characterIndex - 1] === TextObjectQuotedString.escapeCharacter;
             if (lineText[characterIndex] === this.quoteCharacter && !characterEscaped) {
                 this.adjustedAnchor = new Position(lineIndex, anchor.character);
                 return new Range(
@@ -53,7 +53,7 @@ export class TextObjectQuotedString extends TextObject {
         characterIndex = anchor.character;
 
         while (characterIndex < lineText.length) {
-            let characterEscaped = lineText[characterIndex-1] === TextObjectQuotedString.escapeCharacter;
+            const characterEscaped = lineText[characterIndex - 1] === TextObjectQuotedString.escapeCharacter;
             if (lineText[characterIndex] === this.quoteCharacter && !characterEscaped) {
                 this.adjustedAnchor = new Position(lineIndex, characterIndex + 1);
                 return new Range(
@@ -79,7 +79,7 @@ export class TextObjectQuotedString extends TextObject {
         let characterIndex = anchor.character;
 
         while (characterIndex < lineText.length) {
-            let characterEscaped = lineText[characterIndex-1] === TextObjectQuotedString.escapeCharacter;
+            const characterEscaped = lineText[characterIndex - 1] === TextObjectQuotedString.escapeCharacter;
             if (lineText[characterIndex] === this.quoteCharacter && !characterEscaped) {
                 return new Range(
                     lineIndex, characterIndex,
