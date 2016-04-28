@@ -6,6 +6,7 @@ import {Motion} from '../../Motions/Motion';
 import {MotionCharacter} from '../../Motions/Character';
 import {MotionWord} from '../../Motions/Word';
 import {MotionMatch} from '../../Motions/Match';
+import {MotionMatchPair} from '../../Motions/MatchPair';
 import {MotionLine} from '../../Motions/Line';
 import {MotionDocument} from '../../Motions/Document';
 
@@ -52,6 +53,8 @@ export class SpecialKeyMotion extends GenericMapper implements SpecialKeyCommon 
         { keys: 'F {char}', motionGenerators: [MotionMatch.prev] },
         { keys: 't {char}', motionGenerators: [MotionMatch.next], args: {isTill: true} },
         { keys: 'T {char}', motionGenerators: [MotionMatch.prev], args: {isTill: true} },
+        
+        { keys: '%', motionGenerators: [MotionMatchPair.matchPair] },
 
         { keys: '^', motionGenerators: [MotionLine.firstNonBlank] },
         { keys: '0', motionGenerators: [MotionLine.start] },
