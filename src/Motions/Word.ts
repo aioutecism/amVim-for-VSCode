@@ -111,11 +111,11 @@ export class MotionWord extends Motion {
 
     }
 
-    apply(from: Position, option: {isInclusive?: boolean, cwNeedsFixup?: boolean} = {}): Position {
+    apply(from: Position, option: {isInclusive?: boolean, isChangeAction?: boolean} = {}): Position {
         option.isInclusive = option.isInclusive === undefined ? false : option.isInclusive;
-        option.cwNeedsFixup = option.cwNeedsFixup === undefined ? false : option.cwNeedsFixup;
+        option.isChangeAction = option.isChangeAction === undefined ? false : option.isChangeAction;
 
-        if (option.cwNeedsFixup && this.useBoundaryIfChange) {
+        if (option.isChangeAction && this.useBoundaryIfChange) {
             this.wordDelta = MotionWordPosition.NEXT_BOUNDARY;
         }
 
