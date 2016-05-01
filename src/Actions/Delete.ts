@@ -212,7 +212,24 @@ export class ActionDelete {
                     ranges.forEach((range) => editBuilder.delete(range));
                 });
             })
-            .then(() => ActionReveal.primaryCursor());
+            .then(() => {
+                activeTextEditor.selections = activeTextEditor.selections.map((selection, i) => {
+                    // Since the delete just happened, start and end should
+                    // be the same for every selection
+                    let cursorLine = selection.end.line;
+                    let lineEndCharacter = document.lineAt(cursorLine).text.length;
+                    let active = selection.active;
+                    let anchor = selection.anchor;
+                    
+                    if (lineEndCharacter !== 0 && active.character === lineEndCharacter) {
+                        active = active.translate(0, -1);
+                        anchor = active;
+                        return new Selection(anchor, active);
+                    }
+                    return selection;
+                })
+                return ActionReveal.primaryCursor();
+            });
     }
 
     @PrototypeReflect.metadata(SymbolMetadata.Action.isChange, true)
