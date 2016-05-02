@@ -100,14 +100,15 @@ export class MotionWord extends Motion {
         const document = activeTextEditor.document;
 
         let line = from.line;
+        let previousPosition: Position = null;
         let previousCharacterKind: MotionWordCharacterKind = null;
 
         if (this.direction === MotionWordDirection.Next) {
             while (line < document.lineCount) {
-                const text = document.lineAt(line).text;
+                const text = document.lineAt(line).text + '\n';
                 let character = line === from.line ? from.character : 0;
 
-                while (character <= text.length) {
+                while (character < text.length) {
                     const currentCharacterKind = this.getCharacterKind(
                         text.charCodeAt(character), this.useBlankSeparatedStyle);
 
@@ -119,7 +120,7 @@ export class MotionWord extends Motion {
                             startPosition = new Position(line, character);
                         }
                         if (previousCharacterKind !== MotionWordCharacterKind.Blank) {
-                            endPosition = new Position(line, character - 1);
+                            endPosition = previousPosition;
                             if (endPosition.isEqual(from)) {
                                 endPosition = undefined;
                             }
@@ -145,6 +146,7 @@ export class MotionWord extends Motion {
                         }
                     }
 
+                    previousPosition = new Position(line, character);
                     previousCharacterKind = currentCharacterKind;
                     character++;
                 }
@@ -154,8 +156,8 @@ export class MotionWord extends Motion {
         }
         else if (this.direction === MotionWordDirection.Previous) {
             while (line >= 0) {
-                const text = document.lineAt(line).text;
-                let character = line === from.line ? from.character : text.length;
+                const text = document.lineAt(line).text + '\n';
+                let character = line === from.line ? from.character : text.length - 1;
 
                 while (character >= 0) {
                     const currentCharacterKind = this.getCharacterKind(
@@ -166,7 +168,7 @@ export class MotionWord extends Motion {
                         let endPosition: Position;
 
                         if (previousCharacterKind !== MotionWordCharacterKind.Blank) {
-                            startPosition = new Position(line, character + 1);
+                            startPosition = previousPosition;
                             if (startPosition.isEqual(from)) {
                                 startPosition = undefined;
                             }
@@ -195,6 +197,7 @@ export class MotionWord extends Motion {
                         }
                     }
 
+                    previousPosition = new Position(line, character);
                     previousCharacterKind = currentCharacterKind;
                     character--;
                 }
