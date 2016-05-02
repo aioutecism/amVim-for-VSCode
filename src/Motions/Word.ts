@@ -1,146 +1,209 @@
 import {window, Position} from 'vscode';
+import {Configuration} from '../Configuration';
 import {Motion} from './Motion';
 
-export enum MotionWordPosition {NEXT_START, NEXT_END, PREV_START, PREV_END, NEXT_BOUNDARY};
+enum MotionWordDirection {Previous, Next};
+enum MotionWordMatchKind {Start, End, Both};
+
+enum MotionWordCharacterKind {Regular, Separator, Blank}
 
 export class MotionWord extends Motion {
 
-    private wordDelta: MotionWordPosition;
-    private useBoundaryIfChange = false;
+    private static blankSeparators = ' \f\n\r\t\v​\u00a0\u1680​\u180e\u2000​\u2001​\u2002​\u2003​\u2004\u2005​\u2006​\u2007​\u2008\u2009​\u200a​\u2028\u2029\u202f\u205f​\u3000\ufeff';
+    private static characterKindCache: {[key: number]: MotionWordCharacterKind};
 
-    private static wordSeparators = './\\\\()"\'\\-:,.;<>~!@#$%^&*|+=\\[\\]{}`~?';
-    private static blankSeparators = '\\s';
+    static updateCharacterKindCache(wordSeparators: string): void {
+        this.characterKindCache = {};
 
-    separators: string;
+        for (let i = 0; i < this.blankSeparators.length; i++) {
+            this.characterKindCache[this.blankSeparators.charCodeAt(i)] = MotionWordCharacterKind.Blank;
+        }
 
-    constructor(options: {useBlankSeparatedStyle?: boolean} = {}) {
-        super();
-        options = Object.assign({useBlankSeparatedStyle: false}, options);
-
-        this.separators = options.useBlankSeparatedStyle
-            ? MotionWord.blankSeparators : MotionWord.wordSeparators;
+        for (let i = 0, len = wordSeparators.length; i < len; i++) {
+            this.characterKindCache[wordSeparators.charCodeAt(i)] = MotionWordCharacterKind.Separator;
+        }
     }
 
-    static nextStartOrBoundaryIfChange(args: {useBlankSeparatedStyle?: boolean} = {}): Motion {
-        const obj = MotionWord.nextStart(args);
-        (obj as MotionWord).useBoundaryIfChange = true;
+    private useBlankSeparatedStyle: boolean;
+    private direction: MotionWordDirection;
+    private matchKind: MotionWordMatchKind;
 
-        return obj;
+    constructor(args: {useBlankSeparatedStyle?: boolean} = {}) {
+        super();
+        args = Object.assign({useBlankSeparatedStyle: false}, args);
+
+        this.useBlankSeparatedStyle = args.useBlankSeparatedStyle;
     }
 
     static nextStart(args: {useBlankSeparatedStyle?: boolean} = {}): Motion {
         const obj = new MotionWord(args);
-        obj.wordDelta = MotionWordPosition.NEXT_START;
+        obj.direction = MotionWordDirection.Next;
+        obj.matchKind = MotionWordMatchKind.Start;
         return obj;
     }
 
     static nextEnd(args: {useBlankSeparatedStyle?: boolean} = {}): Motion {
         const obj = new MotionWord(args);
-        obj.wordDelta = MotionWordPosition.NEXT_END;
+        obj.direction = MotionWordDirection.Next;
+        obj.matchKind = MotionWordMatchKind.End;
         return obj;
     }
 
     static prevStart(args: {useBlankSeparatedStyle?: boolean} = {}): Motion {
         const obj = new MotionWord(args);
-        obj.wordDelta = MotionWordPosition.PREV_START;
+        obj.direction = MotionWordDirection.Previous;
+        obj.matchKind = MotionWordMatchKind.Start;
         return obj;
     }
 
     static prevEnd(args: {useBlankSeparatedStyle?: boolean} = {}): Motion {
         const obj = new MotionWord(args);
-        obj.wordDelta = MotionWordPosition.PREV_END;
+        obj.direction = MotionWordDirection.Previous;
+        obj.matchKind = MotionWordMatchKind.End;
         return obj;
     }
 
-    createCharacterDelta(text: string, wordDelta: MotionWordPosition, fromCharacter: number, isInclusive?: boolean) {
+    private getCharacterKind(charCode: number, useBlankSeparatedStyle: boolean): MotionWordCharacterKind {
+        let characterKind = MotionWord.characterKindCache[charCode];
 
-        if (wordDelta === MotionWordPosition.NEXT_START) {
-            text = text.substr(fromCharacter);
+        if (characterKind === undefined) {
+            characterKind = MotionWordCharacterKind.Regular;
+        }
 
-            const matches = text.match(new RegExp(
-                `^(\\s+)?((?:[${this.separators}]+|[^\\s${this.separators}]+)\\s*)?`
-            ));
-
-            if (matches[1]) {
-                // Not in a word; found whitespace after cursor.
-                return matches[1].length;
+        if (useBlankSeparatedStyle) {
+            // Treat separator as regular character.
+            if (characterKind === MotionWordCharacterKind.Separator) {
+                characterKind = MotionWordCharacterKind.Regular;
             }
-
-            else if (matches[2]) {
-                // Found some word separators, or some word chars.
-                // NB: Any whitespace after the word is included.
-                return matches[2].length;
-            }
-
-            return 0;
         }
 
-        else if (wordDelta === MotionWordPosition.NEXT_END) {
-            text = text.substr(fromCharacter + 1);
-
-            const matches = text.match(new RegExp(
-                `^(\\s+)?((?:[${this.separators}]+|[^\\s${this.separators}]+))?`
-            ));
-
-            return (isInclusive) ?
-                matches[0].length + 1 :
-                matches[0].length;
-        }
-
-        else if (wordDelta === MotionWordPosition.PREV_START) {
-            text = text
-                .substr(0, fromCharacter + 1)
-                .split('').reverse().join('');
-
-            return -this.createCharacterDelta(text, MotionWordPosition.NEXT_END, 0);
-        }
-
-        else if (wordDelta === MotionWordPosition.PREV_END) {
-            text = text
-                .substr(0, fromCharacter + 1)
-                .split('').reverse().join('');
-
-            return -this.createCharacterDelta(text, MotionWordPosition.NEXT_START, 0);
-        }
-
-        else if (wordDelta === MotionWordPosition.NEXT_BOUNDARY) {
-            const endDelta = this.createCharacterDelta(text, MotionWordPosition.NEXT_END, fromCharacter, isInclusive);
-            const startDelta = this.createCharacterDelta(text, MotionWordPosition.NEXT_START, fromCharacter, isInclusive);
-            return Math.min(endDelta, startDelta);
-        }
-
+        return characterKind;
     }
 
     apply(from: Position, option: {isInclusive?: boolean, isChangeAction?: boolean} = {}): Position {
         option.isInclusive = option.isInclusive === undefined ? false : option.isInclusive;
         option.isChangeAction = option.isChangeAction === undefined ? false : option.isChangeAction;
 
-        if (option.isChangeAction && this.useBoundaryIfChange) {
-            this.wordDelta = MotionWordPosition.NEXT_BOUNDARY;
+        // Match both start and end if used in change action.
+        if (option.isChangeAction && this.matchKind === MotionWordMatchKind.Start) {
+            this.matchKind = MotionWordMatchKind.Both;
         }
 
         from = super.apply(from);
 
         const activeTextEditor = window.activeTextEditor;
 
-        if (! activeTextEditor || this.wordDelta === undefined) {
+        if (! activeTextEditor) {
             return from;
         }
 
         const document = activeTextEditor.document;
 
-        let toLine = from.line;
-        let toCharacter = from.character;
+        let line = from.line;
+        let previousCharacterKind: MotionWordCharacterKind = null;
 
-        // TODO: Move to next line if needed
+        if (this.direction === MotionWordDirection.Next) {
+            while (line < document.lineCount) {
+                const text = document.lineAt(line).text;
+                let character = line === from.line ? from.character : 0;
 
-        let targetText = document.lineAt(toLine).text;
+                while (character <= text.length) {
+                    const currentCharacterKind = this.getCharacterKind(
+                        text.charCodeAt(character), this.useBlankSeparatedStyle);
 
-        toCharacter += this.createCharacterDelta(
-            targetText, this.wordDelta, toCharacter, option.isInclusive
-        );
+                    if (previousCharacterKind !== null && previousCharacterKind !== currentCharacterKind) {
+                        let startPosition: Position;
+                        let endPosition: Position;
 
-        return new Position(toLine, toCharacter);
+                        if (currentCharacterKind !== MotionWordCharacterKind.Blank) {
+                            startPosition = new Position(line, character);
+                        }
+                        if (previousCharacterKind !== MotionWordCharacterKind.Blank) {
+                            endPosition = new Position(line, character - 1);
+                            if (endPosition.isEqual(from)) {
+                                endPosition = undefined;
+                            }
+                        }
+
+                        if (this.matchKind === MotionWordMatchKind.Start) {
+                            if (startPosition !== undefined) {
+                                return startPosition;
+                            }
+                        }
+                        else if (this.matchKind === MotionWordMatchKind.End) {
+                            if (endPosition !== undefined) {
+                                return endPosition;
+                            }
+                        }
+                        else if (this.matchKind === MotionWordMatchKind.Both) {
+                            if (endPosition !== undefined) {
+                                return startPosition;
+                            }
+                            else if (startPosition !== undefined) {
+                                return startPosition;
+                            }
+                        }
+                    }
+
+                    previousCharacterKind = currentCharacterKind;
+                    character++;
+                }
+
+                line++;
+            }
+        }
+        else if (this.direction === MotionWordDirection.Previous) {
+            while (line >= 0) {
+                const text = document.lineAt(line).text;
+                let character = line === from.line ? from.character : text.length;
+
+                while (character >= 0) {
+                    const currentCharacterKind = this.getCharacterKind(
+                        text.charCodeAt(character), this.useBlankSeparatedStyle);
+
+                    if (previousCharacterKind !== null && previousCharacterKind !== currentCharacterKind) {
+                        let startPosition: Position;
+                        let endPosition: Position;
+
+                        if (previousCharacterKind !== MotionWordCharacterKind.Blank) {
+                            startPosition = new Position(line, character + 1);
+                            if (startPosition.isEqual(from)) {
+                                startPosition = undefined;
+                            }
+                        }
+                        if (currentCharacterKind !== MotionWordCharacterKind.Blank) {
+                            endPosition = new Position(line, character);
+                        }
+
+                        if (this.matchKind === MotionWordMatchKind.Start) {
+                            if (startPosition !== undefined) {
+                                return startPosition;
+                            }
+                        }
+                        else if (this.matchKind === MotionWordMatchKind.End) {
+                            if (endPosition !== undefined) {
+                                return endPosition;
+                            }
+                        }
+                        else if (this.matchKind === MotionWordMatchKind.Both) {
+                            if (endPosition !== undefined) {
+                                return startPosition;
+                            }
+                            else if (startPosition !== undefined) {
+                                return startPosition;
+                            }
+                        }
+                    }
+
+                    previousCharacterKind = currentCharacterKind;
+                    character--;
+                }
+
+                line--;
+            }
+        }
+
+        return from;
     }
 
 }
