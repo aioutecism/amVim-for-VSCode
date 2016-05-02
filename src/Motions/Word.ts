@@ -153,6 +153,9 @@ export class MotionWord extends Motion {
 
                 line++;
             }
+
+            // Return end position if matching failed.
+            return document.lineAt(document.lineCount - 1).range.end;
         }
         else if (this.direction === MotionWordDirection.Previous) {
             while (line >= 0) {
@@ -204,9 +207,13 @@ export class MotionWord extends Motion {
 
                 line--;
             }
-        }
 
-        return from;
+            // Return start position if matching failed.
+            return new Position(0, 0);
+        }
+        else {
+            throw new Error(`Direction is invalid: ${this.direction}`);
+        }
     }
 
 }
