@@ -21,7 +21,8 @@ export class ActionSelection {
 
         const validatedSelections = activeTextEditor.selections.map(selection => {
             const position = selection.active;
-            const maxCharacter = document.lineAt(position).range.end.character - 1;
+            const endCharacter = document.lineAt(position).range.end.character;
+            const maxCharacter = endCharacter > 0 ? endCharacter - 1 : endCharacter;
 
             if (position.character > maxCharacter) {
                 isChanged = true;
