@@ -1,4 +1,5 @@
 import {commands, workspace, WorkspaceConfiguration, Disposable} from 'vscode';
+import {MotionWord} from './Motions/Word';
 
 export class Configuration {
 
@@ -14,15 +15,17 @@ export class Configuration {
 
         this.isReady = true;
 
-        this.updateCache();
-        this.updateKeybindingContexts();
+        this.onDidChangeConfiguration();
 
         this.disposables.push(
-            workspace.onDidChangeConfiguration(() => {
-                this.updateCache();
-                this.updateKeybindingContexts();
-            })
+            workspace.onDidChangeConfiguration(() => this.onDidChangeConfiguration())
         );
+    }
+
+    private static onDidChangeConfiguration(): void {
+        this.updateCache();
+        this.updateKeybindingContexts();
+        MotionWord.updateCharacterKindCache(this.getEditorSetting<string>('wordSeparators'));
     }
 
     private static updateCache(): void {

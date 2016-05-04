@@ -98,7 +98,7 @@ export class ModeNormal extends Mode {
             ActionMode.toInsert,
         ], args: {
             shouldYank: true,
-            cwNeedsFixup: true,
+            isChangeAction: true,
         } },
         { keys: 'c {textObject}', actions: [
             ActionDelete.byTextObject,

@@ -12,10 +12,10 @@ export class ActionDelete {
     @PrototypeReflect.metadata(SymbolMetadata.Action.isChange, true)
     static byMotions(args: {
         motions: Motion[],
-        cwNeedsFixup?: boolean,
+        isChangeAction?: boolean,
         shouldYank?: boolean
     }): Thenable<boolean> {
-        args.cwNeedsFixup = args.cwNeedsFixup === undefined ? false : args.cwNeedsFixup;
+        args.isChangeAction = args.isChangeAction === undefined ? false : args.isChangeAction;
         args.shouldYank = args.shouldYank === undefined ? false : args.shouldYank;
 
         const activeTextEditor = window.activeTextEditor;
@@ -29,7 +29,7 @@ export class ActionDelete {
         let ranges = activeTextEditor.selections.map(selection => {
             const start = selection.active;
             const end = args.motions.reduce((position, motion) => {
-                return motion.apply(position, {isInclusive: true, cwNeedsFixup: args.cwNeedsFixup});
+                return motion.apply(position, {isInclusive: true, isChangeAction: args.isChangeAction});
             }, start);
             return new Range(start, end);
         });
