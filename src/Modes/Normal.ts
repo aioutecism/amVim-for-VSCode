@@ -64,12 +64,38 @@ export class ModeNormal extends Mode {
         } },
 
         { keys: 'X', actions: [ActionDelete.selectionsOrLeft], args: {shouldYank: true} },
-        { keys: 'x', actions: [ActionDelete.selectionsOrRight], args: {shouldYank: true} },
-        { keys: 'delete', actions: [ActionDelete.selectionsOrRight], args: {shouldYank: true} },
+        { keys: 'x', actions: [
+            ActionDelete.selectionsOrRight,
+            ActionSelection.validateSelections,
+        ], args: {
+            shouldYank: true
+        } },
+        { keys: 'delete', actions: [
+            ActionDelete.selectionsOrRight,
+            ActionSelection.validateSelections,
+        ], args: {
+            shouldYank: true
+        } },
         { keys: 'd d', actions: [ActionDelete.line], args: {shouldYank: true} },
-        { keys: 'D', actions: [ActionDelete.byMotions], args: {motions: [MotionLine.end()], shouldYank: true} },
-        { keys: 'd {motion}', actions: [ActionDelete.byMotions], args: {shouldYank: true} },
-        { keys: 'd {textObject}', actions: [ActionDelete.byTextObject], args: {shouldYank: true} },
+        { keys: 'D', actions: [
+            ActionDelete.byMotions,
+            ActionSelection.validateSelections,
+        ], args: {
+            motions: [MotionLine.end()],
+            shouldYank: true
+        } },
+        { keys: 'd {motion}', actions: [
+            ActionDelete.byMotions,
+            ActionSelection.validateSelections,
+        ], args: {
+            shouldYank: true
+        } },
+        { keys: 'd {textObject}', actions: [
+            ActionDelete.byTextObject,
+            ActionSelection.validateSelections,
+        ], args: {
+            shouldYank: true
+        } },
         { keys: 'C', actions: [
             ActionDelete.byMotions,
             ActionMode.toInsert,
@@ -128,8 +154,14 @@ export class ModeNormal extends Mode {
             ActionFind.prev,
         ] },
 
-        { keys: 'u', actions: [ActionHistory.undo] },
-        { keys: 'ctrl+r', actions: [ActionHistory.redo] },
+        { keys: 'u', actions: [
+            ActionHistory.undo,
+            ActionSelection.validateSelections,
+        ] },
+        { keys: 'ctrl+r', actions: [
+            ActionHistory.redo,
+            ActionSelection.validateSelections,
+        ] },
 
         { keys: '< <', actions: [ActionIndent.decrease] },
         { keys: '> >', actions: [ActionIndent.increase] },

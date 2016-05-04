@@ -1,6 +1,45 @@
 import {window, Selection} from 'vscode';
+import {currentModeId} from '../extension';
+import {ModeID} from '../Modes/Mode';
 
 export class ActionSelection {
+
+    static validateSelections(): Thenable<boolean> {
+        if (currentModeId() !== ModeID.NORMAL) {
+            return Promise.resolve(true);
+        }
+
+        const activeTextEditor = window.activeTextEditor;
+
+        if (! activeTextEditor) {
+            return Promise.resolve(false);
+        }
+
+        const document = activeTextEditor.document;
+
+        let isChanged = false;
+
+        const validatedSelections = activeTextEditor.selections.map(selection => {
+            const position = selection.active;
+            const maxCharacter = document.lineAt(position).range.end.character - 1;
+
+            if (position.character > maxCharacter) {
+                isChanged = true;
+                return new Selection(
+                    position.line, maxCharacter,
+                    position.line, maxCharacter);
+            }
+            else {
+                return selection;
+            }
+        });
+
+        if (isChanged) {
+            activeTextEditor.selections = validatedSelections;
+        }
+
+        return Promise.resolve(true);
+    }
 
     static shrinkAStep(): Thenable<boolean> {
         const activeTextEditor = window.activeTextEditor;
