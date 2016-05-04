@@ -139,7 +139,7 @@ export class MotionWord extends Motion {
                         }
                         else if (this.matchKind === MotionWordMatchKind.Both) {
                             if (endPosition !== undefined) {
-                                return startPosition;
+                                return endPosition;
                             }
                             else if (startPosition !== undefined) {
                                 return startPosition;
@@ -193,7 +193,7 @@ export class MotionWord extends Motion {
                         }
                         else if (this.matchKind === MotionWordMatchKind.Both) {
                             if (endPosition !== undefined) {
-                                return startPosition;
+                                return endPosition;
                             }
                             else if (startPosition !== undefined) {
                                 return startPosition;
