@@ -24,12 +24,14 @@ export class ModeInsert extends Mode {
         { keys: 'ctrl+c', actions: [
             ActionSuggestion.hide,
             () => ActionSelection.shrinkAStep()
-                .then(isShrinked => isShrinked ? Promise.resolve(true) : ActionMode.toNormal()),
+                .then(isShrinked => isShrinked ? Promise.resolve(true) : ActionMode.toNormal())
+                .then(() => ActionSelection.validateSelections()),
         ] },
         { keys: 'escape', actions: [
             ActionSuggestion.hide,
             () => ActionSelection.shrinkAStep()
-                .then(isShrinked => isShrinked ? Promise.resolve(true) : ActionMode.toNormal()),
+                .then(isShrinked => isShrinked ? Promise.resolve(true) : ActionMode.toNormal())
+                .then(() => ActionSelection.validateSelections()),
         ] },
     ];
 
