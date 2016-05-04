@@ -6,17 +6,23 @@ import {ModeVisual} from './Modes/Visual';
 import {ModeVisualLine} from './Modes/VisualLine';
 import {ModeInsert} from './Modes/Insert';
 import {ActionMode} from './Actions/Mode';
+import {ActionSelection} from './Actions/Selection';
 import {ActionMoveCursor} from './Actions/MoveCursor';
 
 export class Dispatcher {
 
     private currentMode: Mode;
+    get currentModeId(): ModeID {
+        return this.currentMode ? this.currentMode.id : null;
+    }
+
     private modes: {[k: number]: Mode} = {
         [ModeID.NORMAL]: new ModeNormal(),
         [ModeID.VISUAL]: new ModeVisual(),
         [ModeID.VISUAL_LINE]: new ModeVisualLine(),
         [ModeID.INSERT]: new ModeInsert(),
     };
+
     private disposables: Disposable[] = [];
 
     constructor(context: ExtensionContext) {
@@ -47,10 +53,14 @@ export class Dispatcher {
             window.onDidChangeTextEditorSelection(() => {
                 ActionMode.switchByActiveSelections(this.currentMode.id);
                 ActionMoveCursor.updatePreferedCharacter();
+                // Delay validate execution until other actions complete.
+                setTimeout(() => ActionSelection.validateSelections());
             }),
             window.onDidChangeActiveTextEditor(() => {
                 ActionMode.switchByActiveSelections(this.currentMode.id);
                 ActionMoveCursor.updatePreferedCharacter();
+                // Delay validate execution until other actions complete.
+                setTimeout(() => ActionSelection.validateSelections());
             })
         );
     }
