@@ -265,12 +265,10 @@ export function run() {
             //                        ^*
             assert.equal(apply(22), 23);
 
-            /* FAILING
             //  0123456789112345678921234
             // '  foo bar baz    fum-nom'
             //                         ^*
-            assert.equal(nextEnd(23), 24);
-            */
+            assert.equal(apply(23), 24);
 
             done();
 
@@ -285,22 +283,20 @@ export function run() {
                 return motion.apply(new Position(0, fromCharacter)).character;
             };
 
-            /* FAILING
             //  0123456789112345678921234
             // '  foo bar baz    fum-nom'
             // *^
-            assert.equal(prevStart(0), 0);
+            assert.equal(apply(0), 0);
 
             //  0123456789112345678921234
             // '  foo bar baz    fum-nom'
             // * ^
-            assert.equal(prevStart(1), 0);
+            assert.equal(apply(1), 0);
 
             //  0123456789112345678921234
             // '  foo bar baz    fum-nom'
             // *  ^
-            assert.equal(prevStart(2), 0);
-            */
+            assert.equal(apply(2), 0);
 
             //  0123456789112345678921234
             // '  foo bar baz    fum-nom'
