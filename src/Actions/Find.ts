@@ -30,7 +30,7 @@ export class ActionFind {
         return commands.executeCommand('editor.action.nextMatchFindAction')
             .then(() => {
                 window.showTextDocument(activeTextEditor.document, activeTextEditor.viewColumn);
-                const position = activeTextEditor.selection.end.translate(-1);
+                const position = activeTextEditor.selection.end.translate(null, -1);
                 activeTextEditor.selection = new Selection(position, position);
                 return Promise.resolve(true);
             });
