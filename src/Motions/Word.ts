@@ -81,7 +81,6 @@ export class MotionWord extends Motion {
     }
 
     apply(from: Position, option: {isInclusive?: boolean, isChangeAction?: boolean} = {}): Position {
-        // TODO: deal with inclusive
         option.isInclusive = option.isInclusive === undefined ? false : option.isInclusive;
         option.isChangeAction = option.isChangeAction === undefined ? false : option.isChangeAction;
 
@@ -121,7 +120,7 @@ export class MotionWord extends Motion {
                             startPosition = new Position(line, character);
                         }
                         if (previousCharacterKind !== MotionWordCharacterKind.Blank) {
-                            endPosition = previousPosition;
+                            endPosition = option.isInclusive ? previousPosition.translate(0, +1) : previousPosition;
                             if (endPosition.isEqual(from)) {
                                 endPosition = undefined;
                             }
