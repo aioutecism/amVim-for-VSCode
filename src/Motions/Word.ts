@@ -120,9 +120,14 @@ export class MotionWord extends Motion {
                             startPosition = new Position(line, character);
                         }
                         if (previousCharacterKind !== MotionWordCharacterKind.Blank) {
-                            endPosition = option.isInclusive ? previousPosition.translate(0, +1) : previousPosition;
+                            endPosition = previousPosition;
                             if (endPosition.isEqual(from)) {
                                 endPosition = undefined;
+                            }
+                            else {
+                                if (option.isInclusive) {
+                                    endPosition = endPosition.translate(0, +1);
+                                }
                             }
                         }
 
