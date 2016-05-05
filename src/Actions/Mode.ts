@@ -2,12 +2,14 @@ import {window, commands} from 'vscode';
 import {PrototypeReflect} from '../LanguageExtensions/PrototypeReflect';
 import {SymbolMetadata} from '../Symbols/Metadata';
 import {ModeID} from '../Modes/Mode';
+import {ActionSelection} from '../Actions/Selection';
 
 export class ActionMode {
 
     @PrototypeReflect.metadata(SymbolMetadata.Action.shouldSkipOnRepeat, true)
     static toNormal(): Thenable<boolean> {
-        return commands.executeCommand(`amVim.mode.${ModeID.NORMAL}`);
+        return commands.executeCommand(`amVim.mode.${ModeID.NORMAL}`)
+            .then(() => ActionSelection.validateSelections());
     }
 
     @PrototypeReflect.metadata(SymbolMetadata.Action.shouldSkipOnRepeat, true)
