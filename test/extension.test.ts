@@ -4,8 +4,10 @@
 //
 
 import * as MotionWordTests from './MotionWord.test';
+import * as MotionIntegrationTest from './MotionIntegration.test';
 
 // Defines a Mocha test suite to group tests of similar kind together
 suite("Extension Tests", () => {
-    MotionWordTests.run();
+    //MotionWordTests.run();
+    MotionIntegrationTest.run();
 });
