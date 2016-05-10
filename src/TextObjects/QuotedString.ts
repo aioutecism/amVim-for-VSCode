@@ -31,7 +31,7 @@ export class TextObjectQuotedString extends TextObject {
         return obj;
     }
 
-    public findStartRange(document:TextDocument, anchor: Position): Range {
+    public findStartRange(document: TextDocument, anchor: Position): Range {
         const lineIndex = anchor.line;
         const lineText = document.lineAt(lineIndex).text;
 

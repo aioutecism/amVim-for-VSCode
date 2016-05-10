@@ -1,35 +1,38 @@
-import {window, Position, Range} from 'vscode';
+import {window, Position} from 'vscode';
 import {Motion} from './Motion';
-import {MotionMatch} from '../Motions/Match';
 import {TextObjectBlock} from '../TextObjects/Block';
+import {TextObject} from '../TextObjects/TextObject';
 
-enum MotionMatchDirection {NEXT, PREV};
+interface MotionMatchPairMap {
+    [key: string]: (args) => TextObject;
+}
 
 export class MotionMatchPair extends Motion {
-    
+
     // TODO: C-style comments (/* */) and C preprocessor conditionals are not supported for now
-    
-    private static openingCharacterMap = {
+
+    private static openingCharacterMap: MotionMatchPairMap = {
         '(': TextObjectBlock.byParentheses,
         '{': TextObjectBlock.byBraces,
         '[': TextObjectBlock.byBrackets,
-    }
-    private static openingCharacters = Object.keys(MotionMatchPair.openingCharacterMap);
-    
-    private static closingCharacterMap = {
+    };
+
+    private static openingCharacters: string[] = Object.keys(MotionMatchPair.openingCharacterMap);
+
+    private static closingCharacterMap: MotionMatchPairMap = {
         ')': TextObjectBlock.byParentheses,
         '}': TextObjectBlock.byBraces,
         ']': TextObjectBlock.byBrackets,
-    }
-    
-    private static characterMap = Object.assign(
-        {}, MotionMatchPair.openingCharacterMap, MotionMatchPair.closingCharacterMap
+    };
+
+    private static characterMap: MotionMatchPair = Object.assign(
+        <MotionMatchPair>{}, MotionMatchPair.openingCharacterMap, MotionMatchPair.closingCharacterMap
     );
-    private static matchCharacters = Object.keys(MotionMatchPair.characterMap);
+
+    private static matchCharacters: string[] = Object.keys(MotionMatchPair.characterMap);
 
     static matchPair(): Motion {
-        const obj = new MotionMatchPair();
-        return obj;
+        return new MotionMatchPair();
     }
 
     apply(from: Position, option?: any): Position {
@@ -43,28 +46,29 @@ export class MotionMatchPair extends Motion {
 
         const document = activeTextEditor.document;
         const targetText = document.lineAt(from.line).text;
-        
-        for(let i = from.character; i < targetText.length; i += 1) {
-            const currentCharacter = targetText[i];
-            
-            if(MotionMatchPair.matchCharacters.indexOf(currentCharacter) < 0) {
+
+        for (let character = from.character; character < targetText.length; character++) {
+            const currentCharacterString = targetText[character];
+
+            if (MotionMatchPair.matchCharacters.indexOf(currentCharacterString) < 0) {
                 continue;
             }
-            
-            const textObject = MotionMatchPair.characterMap[currentCharacter]({isInclusive: true});
-            
-            if(MotionMatchPair.openingCharacters.indexOf(currentCharacter) < 0) {
-                const startRange = textObject.findStartRange(document, new Position(from.line, i));
-                if(startRange !== null) {
+
+            const textObject: TextObject = MotionMatchPair.characterMap[currentCharacterString]();
+
+            if (MotionMatchPair.openingCharacters.indexOf(currentCharacterString) < 0) {
+                const startRange = textObject.findStartRange(document, new Position(from.line, character));
+                if (startRange !== null) {
                     return startRange.start;
                 }
-            } else {
-                const endRange = textObject.findEndRange(document, new Position(from.line, i));
-                if(endRange !== null) {
+            }
+            else {
+                const endRange = textObject.findEndRange(document, new Position(from.line, character));
+                if (endRange !== null) {
                     return endRange.start;
                 }
             }
-            
+
             return from;
         }
     }
