@@ -25,8 +25,8 @@ export class MotionMatchPair extends Motion {
         ']': TextObjectBlock.byBrackets,
     };
 
-    private static characterMap: MotionMatchPair = Object.assign(
-        <MotionMatchPair>{}, MotionMatchPair.openingCharacterMap, MotionMatchPair.closingCharacterMap
+    private static characterMap: MotionMatchPairMap = Object.assign(
+        <MotionMatchPairMap>{}, MotionMatchPair.openingCharacterMap, MotionMatchPair.closingCharacterMap
     );
 
     private static matchCharacters: string[] = Object.keys(MotionMatchPair.characterMap);
@@ -54,7 +54,7 @@ export class MotionMatchPair extends Motion {
                 continue;
             }
 
-            const textObject: TextObject = MotionMatchPair.characterMap[currentCharacterString]();
+            const textObject: TextObject = MotionMatchPair.characterMap[currentCharacterString]({});
 
             if (MotionMatchPair.openingCharacters.indexOf(currentCharacterString) < 0) {
                 const startRange = textObject.findStartRange(document, new Position(from.line, character));
