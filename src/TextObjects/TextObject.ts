@@ -41,9 +41,12 @@ export abstract class TextObject {
             return null;
         }
 
+        return this.createRangeDueToIsInclusive(startRange, endRange);
+    }
+
+    protected createRangeDueToIsInclusive(startRange: Range, endRange: Range) {
         return this.isInclusive
             ? new Range(startRange.start, endRange.end)
             : new Range(startRange.end, endRange.start);
     }
-
 }
