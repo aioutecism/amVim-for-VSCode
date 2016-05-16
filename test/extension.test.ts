@@ -4,14 +4,18 @@
 //
 
 import leftRightMotionTests from './testSets/leftRightMotions.test';
-import * as MotionWordTests from './MotionWord.test';
-import * as Runner from './Runner.test';
+import {Runner} from './Runner';
+import * as TestUtil from './util';
 
 // Defines a Mocha test suite to group tests of similar kind together
 suite('Extension Tests', () => {
-    // MotionWordTests.run();
+    setup((done) => {
+        TestUtil.createTempDocument().then(e => {
+            done();
+        });
+    });
 
-    Runner.run([
-        leftRightMotionTests
-    ]);
+    let runner = new Runner();
+
+    runner.run(leftRightMotionTests);
 });
