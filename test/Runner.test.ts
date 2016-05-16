@@ -1,13 +1,11 @@
 
 import * as assert from 'assert';
-import leftRightMotion from './testSets/LeftRightMotions';
 import * as TestUtil from './Util';
 import {TextEditor, Selection, Position, window, commands} from 'vscode';
-import {VimTest} from './testSets/VimTest';
+import {VimTest, TestSet} from './testSets/VimTest';
+import * as Keys from '../src/Keys';
 
-export function run() {
-
-    let testSets = [leftRightMotion];
+export function run(testSets: TestSet[]) {
 
     let editor;
 
@@ -18,26 +16,19 @@ export function run() {
         });
     });
 
-    // NOTE: All actions operate on activeEditor therefore tests must be run in series
-    asyncSeries(testSets, (set, testSetDone) => {
-        asyncSeries(set.tests, (vimTest, vimTestDone) => {
-
-            // Hack to run multiple tests inside async code...
-            suite('', () => {
-                test(vimTest.name, (done) => {
-                    runTest(editor, vimTest)
-                        .then(() => done(), done)
-                        .then(() => vimTestDone(), () => vimTestDone());
-                });
+    testSets.forEach(testSet => {
+        testSet.tests.forEach(vimTest => {
+            test(vimTest.name, done => {
+                runTest(editor, vimTest).then(done, done);
             });
-
-        }).then(() => testSetDone(), () => testSetDone());
+        });
     });
 }
 
-function runTest(editor: TextEditor, vimTest: VimTest) {
+function runTest(editor: TextEditor, vimTest: VimTest): Thenable<void> {
 
     return initializeEditor(editor, vimTest.inText)
+        .then(() => commands.executeCommand('amVim.escape'))
         .then(() => applySelections(editor, vimTest.inSelections))
         .then(() => executeCommand(editor, vimTest.command))
         .then(() => {
@@ -46,7 +37,7 @@ function runTest(editor: TextEditor, vimTest: VimTest) {
         });
 }
 
-function applySelections(editor: TextEditor, selections: Selection[]) {
+function applySelections(editor: TextEditor, selections: Selection[]): Promise<void> {
     editor.selections = selections;
 
     return new Promise<void>((resolve, reject) => {
@@ -58,7 +49,7 @@ function applySelections(editor: TextEditor, selections: Selection[]) {
     });
 }
 
-export function isSelectionsEqual(s1: Selection[], s2: Selection[]) {
+function isSelectionsEqual(s1: Selection[], s2: Selection[]): boolean {
     if (s1.length !== s2.length) {
         return false;
     }
@@ -72,7 +63,7 @@ export function isSelectionsEqual(s1: Selection[], s2: Selection[]) {
     return true;
 }
 
-function initializeEditor(editor: TextEditor, text: string) {
+function initializeEditor(editor: TextEditor, text: string): Thenable<boolean> {
     let lastLine = editor.document.lineAt(editor.document.lineCount - 1);
 
     let editorRange = lastLine.rangeIncludingLineBreak.with(new Position(0, 0));
@@ -83,33 +74,43 @@ function initializeEditor(editor: TextEditor, text: string) {
     });
 }
 
-// NOTE: It's currently not possible to hook into the dispatcher
-// Therefore it cannot be gauranteed that the test will be finished before the next test starts!
-function executeCommand(editor: TextEditor, command: string) {
-    return asyncSeries(command.split(''), (letter, done) => {
-        commands.executeCommand('type', { text: letter }).then(() => done(), done);
+function executeCommand(editor: TextEditor, commandSeq: string): Thenable<{}> {
+
+    let promise = Promise.resolve<{}>({});
+
+    splitCommandSeq(commandSeq).forEach(command => {
+        if (command.indexOf('amVim') !== -1) {
+            promise = promise.then(() => commands.executeCommand(command));
+        } else {
+            promise = promise.then(() => commands.executeCommand('type', { text: command }));
+        }
     });
+
+    return promise;
 }
 
-function asyncSeries<T>(arr: T[], iterator: (item: T, done) => void): Promise<void> {
-    let queue = arr.slice(0);
+function splitCommandSeq(commandSeq: string): string[] {
 
-    return new Promise<void>((resolve, reject) => {
-        function done(err?: any) {
+    let keys = Keys.raws.reduce((acc, key) => {
+        if (acc === '') {
+            return `amVim.${key}`;
+        } else {
+            return `${acc}|amVim.${key}`;
+        }
+    }, '');
 
-            if (err) {
-                reject(err);
-                return;
-            }
+    // Use raw keys as delimeter and keep delimeter
+    let keyRegex = new RegExp(`(.*?${keys})`, 'g');
 
-            if (queue.length === 0) {
-                resolve();
-                return;
-            }
+    let commandSeqArr = commandSeq.split(keyRegex);
 
-            iterator(queue.shift(), done);
+    return commandSeqArr.reduce((acc, c) => {
+        if (c === '') {
+            return acc;
+        } else if (c.indexOf('amVim') !== -1) {
+            return acc.concat(c);
         }
 
-        done();
-    });
+        return acc.concat(c.split(''));
+    }, []);
 }

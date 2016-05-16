@@ -1,5 +1,6 @@
 import {window, commands, Disposable, ExtensionContext} from 'vscode';
 import * as Keys from './Keys';
+import {MatchResultKind} from './Mappers/Generic';
 import {Mode, ModeID} from './Modes/Mode';
 import {ModeNormal} from './Modes/Normal';
 import {ModeVisual} from './Modes/Visual';
@@ -16,7 +17,7 @@ export class Dispatcher {
         return this.currentMode ? this.currentMode.id : null;
     }
 
-    private modes: {[k: number]: Mode} = {
+    private modes: { [k: number]: Mode } = {
         [ModeID.NORMAL]: new ModeNormal(),
         [ModeID.VISUAL]: new ModeVisual(),
         [ModeID.VISUAL_LINE]: new ModeVisualLine(),
@@ -26,6 +27,7 @@ export class Dispatcher {
     private disposables: Disposable[] = [];
 
     constructor(context: ExtensionContext) {
+        let a: Mode = new ModeNormal();
         Object.keys(this.modes).forEach(key => {
             let mode = this.modes[key] as Mode;
             context.subscriptions.push(commands.registerCommand(`amVim.mode.${mode.id}`, () => {
@@ -34,11 +36,11 @@ export class Dispatcher {
         });
 
         context.subscriptions.push(commands.registerCommand('type', args => {
-            this.inputHandler(args.text)();
+            return this.inputHandler(args.text)();
         }));
 
         context.subscriptions.push(commands.registerCommand('replacePreviousChar', args => {
-            this.inputHandler(args.text, { replaceCharCnt: args.replaceCharCnt })();
+            return this.inputHandler(args.text, { replaceCharCnt: args.replaceCharCnt })();
         }));
 
         Keys.raws.forEach(key => {
@@ -65,9 +67,9 @@ export class Dispatcher {
         );
     }
 
-    private inputHandler(key: string, args: {} = {}): () => void {
+    private inputHandler(key: string, args: {} = {}): () => Promise<MatchResultKind> {
         return () => {
-            this.currentMode.input(key, args);
+            return this.currentMode.input(key, args);
         };
     }
 

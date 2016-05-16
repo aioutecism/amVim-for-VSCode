@@ -4,7 +4,7 @@ import {SymbolMetadata} from '../Symbols/Metadata';
 import {MatchResultKind} from '../Mappers/Generic';
 import {CommandMap, CommandMapper} from '../Mappers/Command';
 
-export enum ModeID {NORMAL, VISUAL, VISUAL_LINE, INSERT};
+export enum ModeID { NORMAL, VISUAL, VISUAL_LINE, INSERT };
 
 export abstract class Mode {
 
@@ -48,7 +48,7 @@ export abstract class Mode {
         this.pendings = [];
     }
 
-    input(key: string, args: {} = {}): MatchResultKind {
+    input(key: string, args: {} = {}): Promise<MatchResultKind> {
         let inputs: string[];
 
         if (key === 'escape') {
@@ -61,21 +61,22 @@ export abstract class Mode {
 
         const {kind, map} = this.mapper.match(inputs);
 
-        if (kind === MatchResultKind.FAILED) {
-            this.updateStatusBar();
-            this.clearInputs();
-        }
-        else if (kind === MatchResultKind.FOUND) {
+        if (kind === MatchResultKind.FOUND) {
             this.updateStatusBar();
             this.clearInputs();
             this.pushCommandMap(map);
-            this.execute();
+            return this.execute().then(() => kind);
+        }
+
+        if (kind === MatchResultKind.FAILED) {
+            this.updateStatusBar();
+            this.clearInputs();
         }
         else if (kind === MatchResultKind.WAITING) {
             this.updateStatusBar(`${this.inputs.join(' ')} and...`);
         }
 
-        return kind;
+        return Promise.resolve(kind);
     }
 
     protected pushCommandMap(map: CommandMap): void {
@@ -85,14 +86,14 @@ export abstract class Mode {
     /**
      * Override this to do something before command map makes changes.
      */
-    protected onWillCommandMapMakesChanges(map: CommandMap): void {}
+    protected onWillCommandMapMakesChanges(map: CommandMap): void { }
 
     /**
      * Override this to do something after recording ends.
      */
-    onDidRecordFinish(recordedCommandMaps: CommandMap[]): void {}
+    onDidRecordFinish(recordedCommandMaps: CommandMap[]): void { }
 
-    protected execute(): void {
+    protected execute(): Promise<void> {
         if (this.executing) {
             return;
         }
@@ -102,9 +103,9 @@ export abstract class Mode {
         const one = () => {
             const map = this.pendings.shift();
 
-            if (! map) {
+            if (!map) {
                 this.executing = false;
-                return;
+                return Promise.resolve();
             }
 
             const isAnyActionIsChange = map.actions.some(action => {
@@ -120,7 +121,7 @@ export abstract class Mode {
                 promise = promise.then(() => action(map.args));
             });
 
-            promise.then(
+            return promise.then(
                 one.bind(this),
                 () => {
                     this.clearPendings();
@@ -129,7 +130,7 @@ export abstract class Mode {
             );
         };
 
-        one();
+        return one();
     }
 
 }
