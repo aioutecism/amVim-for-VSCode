@@ -6,19 +6,15 @@ let testSet: TestSet = {
     tests: [
         {
             name: 'l at beginning of line',
-            inSelections: [new Selection(0, 0, 0, 0)],
             inText: 'abc',
             command: 'l',
-            outSelections: [new Selection(0, 1, 0, 1)],
-            outText: 'abc'
+            outSelections: [new Selection(0, 1, 0, 1)]
         },
         {
             name: 'l at end of line',
             inSelections: [new Selection(0, 2, 0, 2)],
             inText: 'abc',
-            command: 'l',
-            outSelections: [new Selection(0, 2, 0, 2)],
-            outText: 'abc'
+            command: 'l'
         }
     ]
 };

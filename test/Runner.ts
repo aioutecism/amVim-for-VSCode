@@ -9,8 +9,8 @@ export class Runner {
     run(testSet: TestSet) {
         suite(testSet.name, () => {
             testSet.tests.forEach(vimTest => {
-                test(vimTest.name, done => {
-                    this.runTest(window.activeTextEditor, vimTest).then(done, done);
+                test(vimTest.name, () => {
+                    return this.runTest(window.activeTextEditor, vimTest);
                 });
             });
         });
@@ -18,13 +18,25 @@ export class Runner {
 
     private runTest(editor: TextEditor, vimTest: VimTest): Thenable<void> {
 
-        return this.initializeEditor(editor, vimTest.inText)
+        let inText = vimTest.inText || '';
+        let inSelections = vimTest.inSelections || [new Selection(0, 0, 0, 0)];
+
+        return this.initializeEditor(editor, inText)
             .then(() => commands.executeCommand('amVim.escape'))
-            .then(() => this.applySelections(editor, vimTest.inSelections))
+            .then(() => this.applySelections(editor, inSelections))
             .then(() => this.executeCommand(editor, vimTest.command))
             .then(() => {
-                assert(this.isSelectionsEqual(vimTest.outSelections, editor.selections));
-                assert.equal(vimTest.outText, editor.document.getText());
+                if (vimTest.outSelections) {
+                    assert(this.isSelectionsEqual(vimTest.outSelections, editor.selections), 'Selections should match');
+                } else {
+                    assert(this.isSelectionsEqual(inSelections, editor.selections), 'Selections should match');
+                }
+
+                if (vimTest.outText) {
+                    assert.equal(vimTest.outText, editor.document.getText(), 'Text should match');
+                } else {
+                    assert.equal(inText, editor.document.getText(), 'Text should match');
+                }
             });
     }
 

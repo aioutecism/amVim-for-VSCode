@@ -3,7 +3,8 @@
 // Please refer to their documentation on https://mochajs.org/ for help.
 //
 
-import leftRightMotionTests from './testSets/leftRightMotions.test';
+import leftRightMotionTests from './testSets/LeftRightMotions.test';
+import textObjectMotionTests from './testSets/TextObjectMotions.test';
 import {Runner} from './Runner';
 import * as TestUtil from './util';
 
@@ -18,4 +19,5 @@ suite('Extension Tests', () => {
     let runner = new Runner();
 
     runner.run(leftRightMotionTests);
+    runner.run(textObjectMotionTests);
 });
