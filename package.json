@@ -36,10 +36,10 @@
         "configuration": {
             "title": "amVim configuration",
             "properties": {
-                "amVim.bindCtrlC": {
+                "amVim.bindCtrlCommands": {
                     "type": "boolean",
-                    "default": false,
-                    "description": "Bind `ctrl+c` as the same behaviour in Vim."
+                    "default": true,
+                    "description": "Set to `false` to disable `Ctrl+<key>` keybindings."
                 }
             }
         },
@@ -52,12 +52,12 @@
             { "command": "amVim.down",      "key": "down",      "when": "editorTextFocus && amVim.mode != 'INSERT'" },
             { "command": "amVim.escape",    "key": "escape",    "when": "editorTextFocus" },
 
-            { "command": "amVim.ctrl+c", "key": "ctrl+c", "when": "editorTextFocus && amVim.configuration.shouldBindCtrlC" },
-            { "command": "amVim.ctrl+r", "key": "ctrl+r", "when": "editorTextFocus && amVim.mode == 'NORMAL'" },
-            { "command": "amVim.ctrl+u", "key": "ctrl+u", "when": "editorTextFocus && amVim.mode == 'INSERT'" },
-            { "command": "amVim.ctrl+w", "key": "ctrl+w", "when": "editorTextFocus && amVim.mode == 'INSERT'" },
-            { "command": "amVim.ctrl+f", "key": "ctrl+f", "when": "editorTextFocus && amVim.mode != 'INSERT'" },
-            { "command": "amVim.ctrl+b", "key": "ctrl+b", "when": "editorTextFocus && amVim.mode != 'INSERT'" }
+            { "command": "amVim.ctrl+c", "key": "ctrl+c", "when": "editorTextFocus && amVim.configuration.shouldBindCtrlCommands" },
+            { "command": "amVim.ctrl+r", "key": "ctrl+r", "when": "editorTextFocus && amVim.configuration.shouldBindCtrlCommands && amVim.mode == 'NORMAL'" },
+            { "command": "amVim.ctrl+u", "key": "ctrl+u", "when": "editorTextFocus && amVim.configuration.shouldBindCtrlCommands && amVim.mode == 'INSERT'" },
+            { "command": "amVim.ctrl+w", "key": "ctrl+w", "when": "editorTextFocus && amVim.configuration.shouldBindCtrlCommands && amVim.mode == 'INSERT'" },
+            { "command": "amVim.ctrl+f", "key": "ctrl+f", "when": "editorTextFocus && amVim.configuration.shouldBindCtrlCommands && amVim.mode != 'INSERT'" },
+            { "command": "amVim.ctrl+b", "key": "ctrl+b", "when": "editorTextFocus && amVim.configuration.shouldBindCtrlCommands && amVim.mode != 'INSERT'" }
         ]
     },
     "activationEvents": [

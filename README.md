@@ -39,11 +39,11 @@ Check the list [here](https://github.com/aioutecism/amVim-for-VSCode/issues/1).
 You can overwrite default configurations in
 [User and Workspace Settings](https://code.visualstudio.com/docs/customization/userandworkspace).
 
-#### `amVim.bindCtrlC`
+#### `amVim.bindCtrlCommands`
 
-`Boolean`, Default: `false`
+`Boolean`, Default: `true`
 
-Set to `true` to bind `Ctrl+C` as the same behaviour in Vim.
+Set to `false` to disable `Ctrl+<key>` keybindings.
 
 
 ## Contribution

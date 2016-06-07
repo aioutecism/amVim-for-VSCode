@@ -35,7 +35,7 @@ export class Configuration {
 
     private static updateKeybindingContexts(): void {
         commands.executeCommand('setContext',
-            'amVim.configuration.shouldBindCtrlC', this.getExtensionSetting<boolean>('bindCtrlC'));
+            'amVim.configuration.shouldBindCtrlCommands', this.getExtensionSetting<boolean>('bindCtrlCommands'));
     }
 
     static getExtensionSetting<T>(section: string, defaultValue?: T): T {
