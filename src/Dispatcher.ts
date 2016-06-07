@@ -53,14 +53,10 @@ export class Dispatcher {
             window.onDidChangeTextEditorSelection(() => {
                 ActionMode.switchByActiveSelections(this.currentMode.id);
                 ActionMoveCursor.updatePreferedCharacter();
-                // Delay validate execution until other actions complete.
-                this.validateSelections();
             }),
             window.onDidChangeActiveTextEditor(() => {
                 ActionMode.switchByActiveSelections(this.currentMode.id);
                 ActionMoveCursor.updatePreferedCharacter();
-                // Delay validate execution until other actions complete.
-                this.validateSelections();
             })
         );
     }
@@ -92,18 +88,6 @@ export class Dispatcher {
             const recordedCommandMaps = (previousMode as ModeInsert).recordedCommandMaps;
             this.currentMode.onDidRecordFinish(recordedCommandMaps);
         }
-    }
-
-    private validateSelectionsTimer: number;
-    private validateSelections(): void {
-        if (this.validateSelectionsTimer !== undefined) {
-            clearTimeout(this.validateSelectionsTimer);
-        }
-
-        this.validateSelectionsTimer = setTimeout(() => {
-            ActionSelection.validateSelections();
-            this.validateSelectionsTimer = undefined;
-        }, 10);
     }
 
     dispose(): void {
