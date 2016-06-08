@@ -83,6 +83,10 @@ export class ModeVisual extends Mode {
             ActionSuggestion.hide,
             ActionSelection.shrinkToPrimaryActive,
         ] },
+        { keys: 'ctrl+[', actions: [
+            ActionSuggestion.hide,
+            ActionSelection.shrinkToPrimaryActive,
+        ] },
         { keys: 'escape', actions: [
             ActionSuggestion.hide,
             ActionSelection.shrinkToPrimaryActive,

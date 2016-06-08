@@ -26,6 +26,11 @@ export class ModeInsert extends Mode {
             () => ActionSelection.shrinkAStep()
                 .then(isShrinked => isShrinked ? Promise.resolve(true) : ActionMode.toNormal()),
         ] },
+        { keys: 'ctrl+[', actions: [
+            ActionSuggestion.hide,
+            () => ActionSelection.shrinkAStep()
+                .then(isShrinked => isShrinked ? Promise.resolve(true) : ActionMode.toNormal()),
+        ] },
         { keys: 'escape', actions: [
             ActionSuggestion.hide,
             () => ActionSelection.shrinkAStep()
