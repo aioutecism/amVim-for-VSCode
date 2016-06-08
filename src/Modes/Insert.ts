@@ -18,19 +18,23 @@ export class ModeInsert extends Mode {
     name = 'INSERT';
 
     private maps: CommandMap[] = [
-        { keys: 'ctrl+w', actions: [() => ActionDelete.byMotions({motions: [MotionWord.prevStart()]})] },
-        { keys: 'ctrl+u', actions: [() => ActionDelete.byMotions({motions: [MotionLine.firstNonBlank()]})] },
+        { keys: 'ctrl+w', actions: [() => ActionDelete.byMotions({ motions: [MotionWord.prevStart()] })] },
+        { keys: 'ctrl+u', actions: [() => ActionDelete.byMotions({ motions: [MotionLine.firstNonBlank()] })] },
 
-        { keys: 'ctrl+c', actions: [
-            ActionSuggestion.hide,
-            () => ActionSelection.shrinkAStep()
-                .then(isShrinked => isShrinked ? Promise.resolve(true) : ActionMode.toNormal()),
-        ] },
-        { keys: 'escape', actions: [
-            ActionSuggestion.hide,
-            () => ActionSelection.shrinkAStep()
-                .then(isShrinked => isShrinked ? Promise.resolve(true) : ActionMode.toNormal()),
-        ] },
+        {
+            keys: 'ctrl+c', actions: [
+                ActionSuggestion.hide,
+                () => ActionSelection.shrinkAStep()
+                    .then(isShrinked => isShrinked ? Promise.resolve(true) : ActionMode.toNormal()),
+            ]
+        },
+        {
+            keys: 'escape', actions: [
+                ActionSuggestion.hide,
+                () => ActionSelection.shrinkAStep()
+                    .then(isShrinked => isShrinked ? Promise.resolve(true) : ActionMode.toNormal()),
+            ]
+        },
     ];
 
     constructor() {
@@ -42,9 +46,9 @@ export class ModeInsert extends Mode {
     }
 
     enter(): void {
-      super.enter();
+        super.enter();
 
-      this.startRecord();
+        this.startRecord();
     }
 
     exit(): void {
@@ -53,36 +57,38 @@ export class ModeInsert extends Mode {
         this.stopRecord();
     }
 
-    input(key: string, args: {replaceCharCnt?: number} = {}): MatchResultKind {
-        const matchResultKind = super.input(key);
+    input(key: string, args: { replaceCharCnt?: number } = {}): Promise<MatchResultKind> {
+        const promise = super.input(key);
 
-        // Pass key to built-in command if match failed.
-        if (matchResultKind !== MatchResultKind.FAILED) {
-            return matchResultKind;
-        }
+        return promise.then(matchResultKind => {
 
-        if (args.replaceCharCnt && args.replaceCharCnt > 0) {
-            this.pushCommandMap({
-                keys: key,
-                actions: [ ActionReplace.characters ],
-                args: {
-                    character: key,
-                    n: -args.replaceCharCnt
-                }
-            });
-        }
-        else {
-            this.pushCommandMap({
-                keys: key,
-                actions: [ ActionInsert.characterAtSelections ],
-                args: {
-                    character: key
-                }
-            });
-        }
-        this.execute();
+            // Pass key to built-in command if match failed.
+            if (matchResultKind !== MatchResultKind.FAILED) {
+                return matchResultKind;
+            }
 
-        return MatchResultKind.FOUND;
+            if (args.replaceCharCnt && args.replaceCharCnt > 0) {
+                this.pushCommandMap({
+                    keys: key,
+                    actions: [ActionReplace.characters],
+                    args: {
+                        character: key,
+                        n: -args.replaceCharCnt
+                    }
+                });
+            }
+            else {
+                this.pushCommandMap({
+                    keys: key,
+                    actions: [ActionInsert.characterAtSelections],
+                    args: {
+                        character: key
+                    }
+                });
+            }
+
+            return this.execute().then(() => MatchResultKind.FOUND);
+        });
     }
 
     private shouldRecord: boolean = false;

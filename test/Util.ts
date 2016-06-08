@@ -1,4 +1,4 @@
-import {workspace, window, Uri, Position} from 'vscode';
+import {TextEditor, Selection, workspace, window, Uri, Position} from 'vscode';
 
 export function createTempDocument(content?: string) {
 
@@ -10,10 +10,11 @@ export function createTempDocument(content?: string) {
         })
         .then(() => {
             if (content) {
-                return window.activeTextEditor.edit(editBuilder => {
+                window.activeTextEditor.edit(editBuilder => {
                     editBuilder.insert(new Position(0, 0), content);
                 });
             }
-        });
 
+            return window.activeTextEditor;
+        });
 }
