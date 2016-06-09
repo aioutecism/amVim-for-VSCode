@@ -52,6 +52,7 @@
             { "command": "amVim.down",      "key": "down",      "when": "editorTextFocus && amVim.mode != 'INSERT'" },
             { "command": "amVim.escape",    "key": "escape",    "when": "editorTextFocus" },
 
+            { "command": "amVim.ctrl+[", "key": "ctrl+[", "when": "editorTextFocus && amVim.configuration.shouldBindCtrlCommands" },
             { "command": "amVim.ctrl+c", "key": "ctrl+c", "when": "editorTextFocus && amVim.configuration.shouldBindCtrlCommands" },
             { "command": "amVim.ctrl+r", "key": "ctrl+r", "when": "editorTextFocus && amVim.configuration.shouldBindCtrlCommands && amVim.mode == 'NORMAL'" },
             { "command": "amVim.ctrl+u", "key": "ctrl+u", "when": "editorTextFocus && amVim.configuration.shouldBindCtrlCommands && amVim.mode == 'INSERT'" },
