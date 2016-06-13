@@ -28,6 +28,11 @@ export class ActionMode {
         return commands.executeCommand(`amVim.mode.${ModeID.INSERT}`);
     }
 
+    @PrototypeReflect.metadata(SymbolMetadata.Action.shouldSkipOnRepeat, true)
+    static toCommandLine(): Thenable<boolean> {
+        return commands.executeCommand('workbench.action.showCommands');
+    }
+
     static switchByActiveSelections(currentMode: ModeID): Thenable<boolean> {
         const activeTextEditor = window.activeTextEditor;
 

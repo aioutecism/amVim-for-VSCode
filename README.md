@@ -21,10 +21,12 @@ The [Vim](http://www.vim.org/) mode for [Visual Studio Code](https://code.visual
 - Multi-cursor support
 - Works with VSCode's default behaviors
 
+## Partial support
+
+- `:` Opens `Command Palette`: Just `:w` and `:q` are supported.
 
 ## Not supported
 
-- `:` started commands: Please use `Command Palette` (`Shift+Cmd+P` on OSX, `Shift+Ctrl+P` on Windows) instead.
 - Visual Block mode: Please use multi-cursor instead for now.
 - Custom keybindings: On the roadmap.
 

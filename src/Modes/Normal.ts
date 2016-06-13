@@ -170,6 +170,7 @@ export class ModeNormal extends Mode {
 
         { keys: 'v', actions: [ActionMode.toVisual] },
         { keys: 'V', actions: [ActionMode.toVisualLine] },
+        { keys: ':', actions: [ActionMode.toCommandLine] },
 
         { keys: 'z .', actions: [ActionReveal.primaryCursor], args: {revealType: TextEditorRevealType.InCenter} },
         { keys: 'z z', actions: [ActionReveal.primaryCursor], args: {revealType: TextEditorRevealType.InCenter} },
