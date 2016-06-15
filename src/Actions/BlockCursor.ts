@@ -2,10 +2,12 @@ import {window, TextEditor, TextEditorCursorStyle} from 'vscode';
 
 export class ActionBlockCursor {
 
-    private static isOn = false;
-
     static on(): Thenable<boolean> {
-        ActionBlockCursor.isOn = true;
+        const activeTextEditor = window.activeTextEditor;
+
+        if (! activeTextEditor) {
+            return Promise.resolve(false);
+        }
 
         let opt = window.activeTextEditor.options;
         opt.cursorStyle = TextEditorCursorStyle.Block;
@@ -15,7 +17,11 @@ export class ActionBlockCursor {
     }
 
     static off(): Thenable<boolean> {
-        ActionBlockCursor.isOn = false;
+        const activeTextEditor = window.activeTextEditor;
+
+        if (! activeTextEditor) {
+            return Promise.resolve(false);
+        }
 
         let opt = window.activeTextEditor.options;
         opt.cursorStyle = TextEditorCursorStyle.Line;
