@@ -66,25 +66,14 @@ export class ModeInsert extends Mode {
             return matchResultKind;
         }
 
-        if (args.replaceCharCnt && args.replaceCharCnt > 0) {
-            this.pushCommandMap({
-                keys: key,
-                actions: [ ActionReplace.characters ],
-                args: {
-                    character: key,
-                    n: -args.replaceCharCnt
-                }
-            });
-        }
-        else {
-            this.pushCommandMap({
-                keys: key,
-                actions: [ ActionInsert.characterAtSelections ],
-                args: {
-                    character: key
-                }
-            });
-        }
+        this.pushCommandMap({
+            keys: key,
+            actions: [ ActionInsert.characterAtSelections ],
+            args: {
+                character: key,
+                replaceCharCnt: args.replaceCharCnt,
+            }
+        });
         this.execute();
 
         return MatchResultKind.FOUND;
