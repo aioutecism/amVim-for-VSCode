@@ -61,6 +61,7 @@
             { "command": "amVim.ctrl+b", "key": "ctrl+b", "when": "editorTextFocus && amVim.configuration.shouldBindCtrlCommands && amVim.mode != 'INSERT'" },
 
             // Default escape commands has higher priority.
+            // TODO: https://github.com/Microsoft/vscode/issues/10004
             { "key": "escape", "command": "closeReferenceSearchEditor",     "when": "inReferenceSearchEditor && !config.editor.stablePeek" },
             { "key": "escape", "command": "closeFindWidget",                "when": "editorFocus && findWidgetVisible" },
             { "key": "escape", "command": "closeBreakpointWidget",          "when": "breakpointWidgetVisible && editorFocus" },
