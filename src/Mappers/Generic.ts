@@ -110,15 +110,15 @@ export abstract class GenericMapper {
             return {kind: MatchResultKind.FAILED};
         }
         else if (GenericMapper.isMapLeaf(node)) {
-            // make a copy of the node object
+            // Make a copy of node and args object
             const map = Object.assign({}, node) as GenericMap;
-            // always reinitialize args object
-            map.args = {};
+            const args = Object.assign({}, map.args);
 
             Object.getOwnPropertyNames(additionalArgs).forEach(name => {
-                map.args = map.args || {};
-                map.args[name] = additionalArgs[name];
+                args[name] = additionalArgs[name];
             });
+
+            map.args = args;
 
             return {kind: MatchResultKind.FOUND, map};
         }

@@ -59,8 +59,6 @@ export abstract class Mode {
             inputs = this.inputs;
         }
 
-        // FIXME: without the bugfix (copy of args.motion) all map objects will be the same object...
-        // that means that existing map objects in `this.mapper` will "transform" into the newest map object
         const {kind, map} = this.mapper.match(inputs);
 
         if (kind === MatchResultKind.FAILED) {

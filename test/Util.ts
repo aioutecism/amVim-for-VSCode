@@ -18,26 +18,12 @@ export function createTempDocument(content?: string) {
 
 }
 
-export function setText(text: string) {
-    let editor = window.activeTextEditor;
-
-    return editor.edit(builder => {
-        const document = editor.document;
-        const lastLine = document.lineAt(document.lineCount - 1);
-
-        const start = new Position(0, 0);
-        const end = new Position(document.lineCount - 1, lastLine.text.length);
-
-        builder.replace(new Range(start, end), text);
-    });
-}
-
-export function setCursorScreenPosition(position: Position) {
+export function setCursorPosition(position: Position) {
     const editor = window.activeTextEditor;
     editor.selection = new Selection(position, position);
 }
 
-export function getCursorScreenPosition(): Position {
+export function getCursorPosition(): Position {
     const editor = window.activeTextEditor;
     return editor.selection.active;
 }
