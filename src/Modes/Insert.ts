@@ -6,7 +6,6 @@ import {CommandMap} from '../Mappers/Command';
 import {ActionInsert} from '../Actions/Insert';
 import {ActionReplace} from '../Actions/Replace';
 import {ActionDelete} from '../Actions/Delete';
-import {ActionSuggestion} from '../Actions/Suggestion';
 import {ActionSelection} from '../Actions/Selection';
 import {ActionMode} from '../Actions/Mode';
 import {MotionWord} from '../Motions/Word';
@@ -21,21 +20,12 @@ export class ModeInsert extends Mode {
         { keys: 'ctrl+w', actions: [() => ActionDelete.byMotions({motions: [MotionWord.prevStart()]})] },
         { keys: 'ctrl+u', actions: [() => ActionDelete.byMotions({motions: [MotionLine.firstNonBlank()]})] },
 
-        { keys: 'ctrl+c', actions: [
-            ActionSuggestion.hide,
-            () => ActionSelection.shrinkAStep()
-                .then(isShrinked => isShrinked ? Promise.resolve(true) : ActionMode.toNormal()),
-        ] },
-        { keys: 'ctrl+[', actions: [
-            ActionSuggestion.hide,
-            () => ActionSelection.shrinkAStep()
-                .then(isShrinked => isShrinked ? Promise.resolve(true) : ActionMode.toNormal()),
-        ] },
-        { keys: 'escape', actions: [
-            ActionSuggestion.hide,
-            () => ActionSelection.shrinkAStep()
-                .then(isShrinked => isShrinked ? Promise.resolve(true) : ActionMode.toNormal()),
-        ] },
+        { keys: 'ctrl+c', actions: [() => ActionSelection.shrinkAStep()
+            .then(isShrinked => isShrinked ? Promise.resolve(true) : ActionMode.toNormal())] },
+        { keys: 'ctrl+[', actions: [() => ActionSelection.shrinkAStep()
+            .then(isShrinked => isShrinked ? Promise.resolve(true) : ActionMode.toNormal())] },
+        { keys: 'escape', actions: [() => ActionSelection.shrinkAStep()
+            .then(isShrinked => isShrinked ? Promise.resolve(true) : ActionMode.toNormal())] },
     ];
 
     constructor() {
@@ -66,25 +56,14 @@ export class ModeInsert extends Mode {
             return matchResultKind;
         }
 
-        if (args.replaceCharCnt && args.replaceCharCnt > 0) {
-            this.pushCommandMap({
-                keys: key,
-                actions: [ ActionReplace.characters ],
-                args: {
-                    character: key,
-                    n: -args.replaceCharCnt
-                }
-            });
-        }
-        else {
-            this.pushCommandMap({
-                keys: key,
-                actions: [ ActionInsert.characterAtSelections ],
-                args: {
-                    character: key
-                }
-            });
-        }
+        this.pushCommandMap({
+            keys: key,
+            actions: [ ActionInsert.characterAtSelections ],
+            args: {
+                character: key,
+                replaceCharCnt: args.replaceCharCnt,
+            }
+        });
         this.execute();
 
         return MatchResultKind.FOUND;

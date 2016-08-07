@@ -176,18 +176,9 @@ export class ModeNormal extends Mode {
 
         { keys: '.', actions: [this.repeatRecordedCommandMaps.bind(this)] },
 
-        { keys: 'ctrl+c', actions: [
-            ActionSuggestion.hide,
-            ActionSelection.shrinkToPrimaryActive,
-        ] },
-        { keys: 'ctrl+[', actions: [
-            ActionSuggestion.hide,
-            ActionSelection.shrinkToPrimaryActive,
-        ] },
-        { keys: 'escape', actions: [
-            ActionSuggestion.hide,
-            ActionSelection.shrinkToPrimaryActive,
-        ] },
+        { keys: 'ctrl+c', actions: [ActionSelection.shrinkToPrimaryActive] },
+        { keys: 'ctrl+[', actions: [ActionSelection.shrinkToPrimaryActive] },
+        { keys: 'escape', actions: [ActionSelection.shrinkToPrimaryActive] },
     ];
 
     constructor() {

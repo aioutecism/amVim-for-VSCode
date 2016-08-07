@@ -42,7 +42,7 @@ export abstract class Motion {
             const fromLineTabCount = document.getText(new Range(
                 from.line, 0,
                 from.line, from.character
-            )).split("\t").length - 1;
+            )).split('\t').length - 1;
 
             const tabSize = activeTextEditor.options.tabSize as number;
             const toVisibleColumn = toCharacter + fromLineTabCount * (tabSize - 1);
@@ -54,7 +54,7 @@ export abstract class Motion {
 
             for (i = 0; i < toLineText.length && thisVisibleColumn <= toVisibleColumn; i++) {
                 lastVisibleColumn = thisVisibleColumn;
-                thisVisibleColumn += (toLineText.charAt(i) === "\t") ? tabSize : 1;
+                thisVisibleColumn += (toLineText.charAt(i) === '\t') ? tabSize : 1;
             }
 
             // Choose the closest

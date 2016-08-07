@@ -110,12 +110,15 @@ export abstract class GenericMapper {
             return {kind: MatchResultKind.FAILED};
         }
         else if (GenericMapper.isMapLeaf(node)) {
-            const map = node as GenericMap;
+            // Make a copy of node and args object
+            const map = Object.assign({}, node) as GenericMap;
+            const args = Object.assign({}, map.args);
 
             Object.getOwnPropertyNames(additionalArgs).forEach(name => {
-                map.args = map.args || {};
-                map.args[name] = additionalArgs[name];
+                args[name] = additionalArgs[name];
             });
+
+            map.args = args;
 
             return {kind: MatchResultKind.FOUND, map};
         }

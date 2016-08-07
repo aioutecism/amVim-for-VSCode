@@ -9,7 +9,13 @@ import {MotionLine} from '../Motions/Line';
 export class ActionInsert {
 
     @PrototypeReflect.metadata(SymbolMetadata.Action.isChange, true)
-    static characterAtSelections(args: {character: string}): Thenable<boolean> {
+    static characterAtSelections(args: { character: string, replaceCharCnt?: number }): Thenable<boolean> {
+        if (args.replaceCharCnt != null) {
+            return commands.executeCommand('default:replacePreviousChar', {
+                text: args.character,
+                replaceCharCnt: args.replaceCharCnt,
+            });
+        }
         return commands.executeCommand('default:type', { text: args.character });
     }
 

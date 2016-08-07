@@ -1,6 +1,6 @@
 {
     "name": "amvim",
-    "version": "1.8.2-pre",
+    "version": "1.8.6-pre",
     "publisher": "auiworks",
     "icon": "images/icon.png",
     "displayName": "amVim",
@@ -29,7 +29,7 @@
     "author": "aioutecism",
     "license": "ISC",
     "engines": {
-        "vscode": "^1.0.0"
+        "vscode": "^1.4.0"
     },
     "main": "./out/src/extension",
     "contributes": {
@@ -58,7 +58,20 @@
             { "command": "amVim.ctrl+u", "key": "ctrl+u", "when": "editorTextFocus && amVim.configuration.shouldBindCtrlCommands && amVim.mode == 'INSERT'" },
             { "command": "amVim.ctrl+w", "key": "ctrl+w", "when": "editorTextFocus && amVim.configuration.shouldBindCtrlCommands && amVim.mode == 'INSERT'" },
             { "command": "amVim.ctrl+f", "key": "ctrl+f", "when": "editorTextFocus && amVim.configuration.shouldBindCtrlCommands && amVim.mode != 'INSERT'" },
-            { "command": "amVim.ctrl+b", "key": "ctrl+b", "when": "editorTextFocus && amVim.configuration.shouldBindCtrlCommands && amVim.mode != 'INSERT'" }
+            { "command": "amVim.ctrl+b", "key": "ctrl+b", "when": "editorTextFocus && amVim.configuration.shouldBindCtrlCommands && amVim.mode != 'INSERT'" },
+
+            { "key": "escape", "command": "closeReferenceSearchEditor",     "when": "inReferenceSearchEditor && !config.editor.stablePeek" },
+            { "key": "escape", "command": "closeFindWidget",                "when": "editorFocus && findWidgetVisible" },
+            { "key": "escape", "command": "closeBreakpointWidget",          "when": "breakpointWidgetVisible && editorFocus" },
+            { "key": "escape", "command": "leaveSnippet",                   "when": "editorTextFocus && inSnippetMode" },
+            { "key": "escape", "command": "closeMarkersNavigation",         "when": "editorFocus && markersNavigationVisible" },
+            { "key": "escape", "command": "closeReferenceSearch",           "when": "referenceSearchVisible && !config.editor.stablePeek" },
+            { "key": "escape", "command": "closeParameterHints",            "when": "editorTextFocus && parameterHintsVisible" },
+            { "key": "escape", "command": "closeQuickFixWidget",            "when": "editorFocus && quickFixWidgetVisible" },
+            { "key": "escape", "command": "hideSuggestWidget",              "when": "editorTextFocus && suggestWidgetVisible" },
+            { "key": "escape", "command": "cancelRenameInput",              "when": "editorFocus && renameInputVisible" },
+            { "key": "escape", "command": "closeAccessibilityHelp",         "when": "accessibilityHelpWidgetVisible && editorFocus" },
+            { "key": "escape", "command": "workbench.action.closeMessages", "when": "globalMessageVisible" }
         ]
     },
     "activationEvents": [
@@ -70,7 +83,7 @@
         "postinstall": "node ./node_modules/vscode/bin/install"
     },
     "devDependencies": {
-        "typescript": "^1.8.9",
-        "vscode": "^0.11.10"
+        "typescript": "^1.8.10",
+        "vscode": "^0.11.14"
     }
 }
