@@ -1,12 +1,3 @@
-# Evolution
-
-Starting from "amVim 1.0.0", we are using some new APIs that are only avaliable from "VSCode 0.10.12".
-
-These APIs enable amVim to get rid of all anonying problems related to **intellisense, keyboard layout, etc.**.
-
-Make sure you are using the newest VSCode for best experience!
-
-
 # amVim for VSCode
 
 ![icon](images/icon.png)
@@ -44,6 +35,11 @@ You can overwrite default configurations in
 `Boolean`, Default: `true`
 
 Set to `false` to disable `Ctrl+<key>` keybindings.
+
+
+## Change Log
+
+Check [here](https://github.com/aioutecism/amVim-for-VSCode/releases).
 
 
 ## Contribution

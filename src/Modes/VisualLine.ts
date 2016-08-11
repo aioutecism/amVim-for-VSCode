@@ -5,7 +5,6 @@ import {CommandMap} from '../Mappers/Command';
 import {ActionMoveCursor} from '../Actions/MoveCursor';
 import {ActionPage, PageMoveType} from '../Actions/Page';
 import {ActionSelection} from '../Actions/Selection';
-import {ActionSuggestion} from '../Actions/Suggestion';
 import {ActionRegister} from '../Actions/Register';
 import {ActionDelete} from '../Actions/Delete';
 import {ActionInsert} from '../Actions/Insert';
@@ -81,18 +80,9 @@ export class ModeVisualLine extends Mode {
         { keys: 'v', actions: [ActionMode.toVisual] },
         { keys: 'V', actions: [ActionSelection.shrinkToPrimaryActive] },
 
-        { keys: 'ctrl+c', actions: [
-            ActionSuggestion.hide,
-            ActionSelection.shrinkToPrimaryActive,
-        ] },
-        { keys: 'ctrl+[', actions: [
-            ActionSuggestion.hide,
-            ActionSelection.shrinkToPrimaryActive,
-        ] },
-        { keys: 'escape', actions: [
-            ActionSuggestion.hide,
-            ActionSelection.shrinkToPrimaryActive,
-        ] },
+        { keys: 'ctrl+c', actions: [ActionSelection.shrinkToPrimaryActive] },
+        { keys: 'ctrl+[', actions: [ActionSelection.shrinkToPrimaryActive] },
+        { keys: 'escape', actions: [ActionSelection.shrinkToPrimaryActive] },
     ];
 
     constructor() {

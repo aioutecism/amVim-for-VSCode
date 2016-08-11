@@ -55,7 +55,8 @@ export class Dispatcher {
                 ActionMoveCursor.updatePreferedCharacter();
             }),
             window.onDidChangeActiveTextEditor(() => {
-                ActionMode.switchByActiveSelections(this.currentMode.id);
+                // Passing `null` to `currentMode` to force mode switch.
+                ActionMode.switchByActiveSelections(null);
                 ActionMoveCursor.updatePreferedCharacter();
             })
         );
@@ -68,10 +69,6 @@ export class Dispatcher {
     }
 
     private switchMode(id: ModeID): void {
-        if (this.currentMode === this.modes[id]) {
-            return;
-        }
-
         const previousMode = this.currentMode;
 
         if (previousMode) {

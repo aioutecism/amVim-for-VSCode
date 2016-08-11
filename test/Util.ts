@@ -1,4 +1,4 @@
-import {workspace, window, Uri, Position} from 'vscode';
+import {workspace, window, Uri, Position, Range, Selection} from 'vscode';
 
 export function createTempDocument(content?: string) {
 
@@ -16,4 +16,14 @@ export function createTempDocument(content?: string) {
             }
         });
 
+}
+
+export function setCursorPosition(position: Position) {
+    const editor = window.activeTextEditor;
+    editor.selection = new Selection(position, position);
+}
+
+export function getCursorPosition(): Position {
+    const editor = window.activeTextEditor;
+    return editor.selection.active;
 }
