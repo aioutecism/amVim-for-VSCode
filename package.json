@@ -1,6 +1,6 @@
 {
     "name": "amvim",
-    "version": "1.8.6-pre",
+    "version": "1.8.7-pre",
     "publisher": "auiworks",
     "icon": "images/icon.png",
     "displayName": "amVim",
@@ -61,7 +61,6 @@
             { "command": "amVim.ctrl+b", "key": "ctrl+b", "when": "editorTextFocus && amVim.configuration.shouldBindCtrlCommands && amVim.mode != 'INSERT'" },
 
             { "key": "escape", "command": "closeReferenceSearchEditor",     "when": "inReferenceSearchEditor && !config.editor.stablePeek" },
-            { "key": "escape", "command": "closeFindWidget",                "when": "editorFocus && findWidgetVisible" },
             { "key": "escape", "command": "closeBreakpointWidget",          "when": "breakpointWidgetVisible && editorFocus" },
             { "key": "escape", "command": "leaveSnippet",                   "when": "editorTextFocus && inSnippetMode" },
             { "key": "escape", "command": "closeMarkersNavigation",         "when": "editorFocus && markersNavigationVisible" },
