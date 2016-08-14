@@ -108,7 +108,7 @@ export class TextObjectWord extends TextObject {
         );
     }
 
-    protected createRangeDueToIsInclusive(startRange: Range, endRange: Range) {
+    protected createRangeDueToIsInclusive(startRange: Range, endRange: Range): Range {
         if (this.isInclusive) {
             // From Vim documentation:
             // "Any trailing white space is included, unless there is none, then leading white space is included."

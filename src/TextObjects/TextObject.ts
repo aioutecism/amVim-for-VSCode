@@ -44,7 +44,7 @@ export abstract class TextObject {
         return this.createRangeDueToIsInclusive(startRange, endRange);
     }
 
-    protected createRangeDueToIsInclusive(startRange: Range, endRange: Range) {
+    protected createRangeDueToIsInclusive(startRange: Range, endRange: Range): Range {
         return this.isInclusive
             ? new Range(startRange.start, endRange.end)
             : new Range(startRange.end, endRange.start);
