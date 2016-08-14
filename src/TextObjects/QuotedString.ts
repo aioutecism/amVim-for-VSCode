@@ -2,6 +2,7 @@ import {window, TextDocument, Position, Range} from 'vscode';
 import {TextObject} from './TextObject';
 
 export class TextObjectQuotedString extends TextObject {
+
     private static escapeCharacter = '\\';
 
     private quoteCharacter: string;
@@ -68,7 +69,7 @@ export class TextObjectQuotedString extends TextObject {
         return null;
     }
 
-    public findEndRange(document:TextDocument, anchor: Position): Range {
+    public findEndRange(document: TextDocument, anchor: Position): Range {
         if (this.adjustedAnchor !== undefined) {
             anchor = this.adjustedAnchor;
         }
