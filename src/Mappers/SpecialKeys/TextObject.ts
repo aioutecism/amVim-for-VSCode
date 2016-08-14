@@ -16,6 +16,7 @@ interface TextObjectMap extends GenericMap {
 interface TextObjectMapInfo {
     characters: string[];
     method: (args: {isInclusive: boolean}) => TextObject;
+    args?: {};
 }
 
 export class SpecialKeyTextObject extends GenericMapper implements SpecialKeyCommon {
@@ -56,10 +57,12 @@ export class SpecialKeyTextObject extends GenericMapper implements SpecialKeyCom
         {
             characters: ['w'],
             method: TextObjectWord.byWord,
+            args: { useBlankSeparatedStyle: false },
         },
         {
             characters: ['W'],
-            method: TextObjectWord.byWholeWord,
+            method: TextObjectWord.byWord,
+            args: { useBlankSeparatedStyle: true },
         },
     ];
 
@@ -72,8 +75,8 @@ export class SpecialKeyTextObject extends GenericMapper implements SpecialKeyCom
 
         this.mapInfos.forEach(mapInfo => {
             mapInfo.characters.forEach(character => {
-                this.map(`a ${character}`, mapInfo.method, { isInclusive: true });
-                this.map(`i ${character}`, mapInfo.method, { isInclusive: false });
+                this.map(`a ${character}`, mapInfo.method, Object.assign({}, mapInfo.args, { isInclusive: true }));
+                this.map(`i ${character}`, mapInfo.method, Object.assign({}, mapInfo.args, { isInclusive: false }));
             });
         });
 

@@ -3,20 +3,18 @@ import {TextObject} from './TextObject';
 import {UtilWord, WordCharacterKind} from '../Utils/Word';
 
 export class TextObjectWord extends TextObject {
-    public static byWord(args: {isInclusive: boolean}) {
+
+    private useBlankSeparatedStyle: boolean;
+
+    static byWord(args: {
+        useBlankSeparatedStyle: boolean,
+        isInclusive: boolean,
+    }) {
         let obj = new TextObjectWord();
         obj.isInclusive = args.isInclusive;
-        return obj;
-    }
+        obj.useBlankSeparatedStyle = args.useBlankSeparatedStyle;
 
-    public static byWholeWord(args: {isInclusive: boolean}) {
-        let obj = new TextObjectWord(true);
-        obj.isInclusive = args.isInclusive;
         return obj;
-    }
-
-    constructor(private useBlankSeparatedStyle: boolean = false) {
-        super();
     }
 
     public findStartRange(document: TextDocument, anchor: Position): Range {
