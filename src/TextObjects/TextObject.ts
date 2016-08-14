@@ -7,14 +7,14 @@ export abstract class TextObject {
     /**
      * Override this to return start range of text object or null if not found.
      */
-    public findStartRange(document:TextDocument, anchor: Position): Range {
+    public findStartRange(document: TextDocument, anchor: Position): Range {
         throw new Error('findStartPosition is not implemented.');
     }
 
     /**
      * Override this to return end range of text object or null if not found.
      */
-    public findEndRange(document:TextDocument, anchor: Position): Range {
+    public findEndRange(document: TextDocument, anchor: Position): Range {
         throw new Error('findEndPosition is not implemented.');
     }
 
@@ -41,9 +41,12 @@ export abstract class TextObject {
             return null;
         }
 
+        return this.createRangeDueToIsInclusive(startRange, endRange);
+    }
+
+    protected createRangeDueToIsInclusive(startRange: Range, endRange: Range): Range {
         return this.isInclusive
             ? new Range(startRange.start, endRange.end)
             : new Range(startRange.end, endRange.start);
     }
-
 }

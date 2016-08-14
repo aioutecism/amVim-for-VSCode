@@ -1,5 +1,5 @@
 import {commands, workspace, WorkspaceConfiguration, Disposable} from 'vscode';
-import {MotionWord} from './Motions/Word';
+import {UtilWord} from './Utils/Word';
 
 export class Configuration {
 
@@ -25,7 +25,7 @@ export class Configuration {
     private static onDidChangeConfiguration(): void {
         this.updateCache();
         this.updateKeybindingContexts();
-        MotionWord.updateCharacterKindCache(this.getEditorSetting<string>('wordSeparators'));
+        UtilWord.updateCharacterKindCache(this.getEditorSetting<string>('wordSeparators'));
     }
 
     private static updateCache(): void {
