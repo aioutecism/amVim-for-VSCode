@@ -142,8 +142,7 @@ export class ActionSelection {
         return Promise.resolve(true);
     }
 
-    @PrototypeReflect.metadata(SymbolMetadata.Action.isChange, true)
-    static byTextObject(args: {
+    static expandByTextObject(args: {
         textObject: TextObject
     }): Thenable<boolean> {
 
@@ -156,17 +155,16 @@ export class ActionSelection {
         let ranges: Range[] = [];
 
         activeTextEditor.selections.forEach(selection => {
-            const match = args.textObject.apply(selection.active);
-            if (match) {
-                ranges.push(match);
-            }
+            const match = args.textObject.apply(selection.start);
+            ranges.push(match ? selection.union(match) : selection);
         });
 
         ranges = UtilRange.unionOverlaps(ranges);
 
         if (ranges.length === 0) {
             return Promise.reject<boolean>(false);
-        } else {
+        }
+        else {
             activeTextEditor.selections = ranges.map(range => new Selection(range.start, range.end));
         }
 
