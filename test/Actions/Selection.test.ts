@@ -1,6 +1,6 @@
 import * as assert from 'assert';
 import * as TestUtil from '../Util';
-import {Position, window} from 'vscode';
+import {window, Selection} from 'vscode';
 
 import {Configuration} from '../../src/Configuration';
 import {ActionSelection} from '../../src/Actions/Selection';
@@ -12,21 +12,78 @@ export function run() {
     Configuration.init();
 
     test('ActionSelection.expandByTextObject', (done) => {
-        TestUtil.createTempDocument('  foo bar baz    fum-nom').then(() => {
+        TestUtil.createTempDocument('Foo  bar!@#  end').then(() => {
+            const testCases = [
+                // 0123456789012345
+                // Foo  bar!@#  end
+                // |
+                {
+                    from: new Selection(0, 0, 0, 1),
+                    to: new Selection(0, 0, 0, 3)
+                },
+                // 0123456789012345
+                // Foo  bar!@#  end
+                //  |
+                {
+                    from: new Selection(0, 1, 0, 2),
+                    to: new Selection(0, 0, 0, 3)
+                },
+                // 0123456789012345
+                // Foo  bar!@#  end
+                //       ___|
+                {
+                    from: new Selection(0, 6, 0, 10),
+                    to: new Selection(0, 6, 0, 11)
+                },
+                // 0123456789012345
+                // Foo  bar!@#  end
+                //       |___
+                {
+                    from: new Selection(0, 10, 0, 6),
+                    to: new Selection(0, 10, 0, 5)
+                },
+                // 0123456789012345
+                // Foo  bar!@#  end
+                //      |____
+                {
+                    from: new Selection(0, 10, 0, 5),
+                    to: new Selection(0, 10, 0, 3)
+                },
+                // 0123456789012345
+                // Foo  bar!@#  end
+                //  |
+                {
+                    from: new Selection(0, 2, 0, 1),
+                    to: new Selection(0, 3, 0, 0)
+                },
+                // 0123456789012345
+                // Foo  bar!@#  end
+                // |
+                {
+                    from: new Selection(0, 1, 0, 0),
+                    to: new Selection(0, 3, 0, 0)
+                },
+            ];
 
-            //  0123456789112345678921234
-            // '  foo bar baz    fum-nom'
-            //  __
-            TestUtil.setCursorPosition(new Position(0, 0));
+            let promise = Promise.resolve();
 
-            ActionSelection.expandByTextObject({
-                textObject: TextObjectWord.byWord({ useBlankSeparatedStyle: false, isInclusive: false })
-            }).then(() => {
-                const editor = window.activeTextEditor;
-                assert.equal(editor.selections.length, 1);
-                assert.equal(editor.selections[0].start.character, 0);
-                assert.equal(editor.selections[0].end.character, 2);
+            while (testCases.length > 0) {
+                const testCase = testCases.shift();
+                promise = promise.then(() => {
+                    TestUtil.setSelection(testCase.from);
+
+                    return ActionSelection.expandByTextObject({
+                        textObject: TextObjectWord.byWord({ useBlankSeparatedStyle: false, isInclusive: false })
+                    }).then(() => {
+                        assert.deepEqual(TestUtil.getSelection(), testCase.to);
+                    });
+                });
+            }
+
+            promise.then(() => {
                 done();
+            }, (error) => {
+                done(error);
             });
         });
     });
