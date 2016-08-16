@@ -152,7 +152,9 @@ export class ActionSelection {
         let selections: Selection[] = [];
 
         activeTextEditor.selections.forEach(selection => {
-            const positionToApply = selection.isReversed ? selection.active.translate(0, -1) : selection.active;
+            const positionToApply = selection.isReversed && selection.active.character > 0
+                ? selection.active.translate(0, -1)
+                : selection.active;
             const match = args.textObject.apply(positionToApply);
             if (match) {
                 const range = selection.union(match);
