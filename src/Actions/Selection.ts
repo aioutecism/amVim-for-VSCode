@@ -1,8 +1,6 @@
 import {window, Range, Selection} from 'vscode';
 import {currentModeId} from '../extension';
 import {ModeID} from '../Modes/Mode';
-import {PrototypeReflect} from '../LanguageExtensions/PrototypeReflect';
-import {SymbolMetadata} from '../Symbols/Metadata';
 import {TextObject} from '../TextObjects/TextObject';
 import {UtilRange} from '../Utils/Range';
 
@@ -145,7 +143,6 @@ export class ActionSelection {
     static expandByTextObject(args: {
         textObject: TextObject
     }): Thenable<boolean> {
-
         const activeTextEditor = window.activeTextEditor;
 
         if (! activeTextEditor) {
@@ -164,9 +161,8 @@ export class ActionSelection {
         if (ranges.length === 0) {
             return Promise.reject<boolean>(false);
         }
-        else {
-            activeTextEditor.selections = ranges.map(range => new Selection(range.start, range.end));
-        }
+
+        activeTextEditor.selections = ranges.map(range => new Selection(range.start, range.end));
 
         return Promise.resolve(true);
     }
