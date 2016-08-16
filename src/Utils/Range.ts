@@ -9,7 +9,7 @@ export class UtilRange {
         while (from.length !== 0) {
             let a = from.shift();
             for (let i = 0; i < from.length; i++) {
-                let b = from[i];
+                const b = from[i];
                 if (a.intersection(b) !== undefined) {
                     a = a.union(b);
                     from.splice(i, 1);

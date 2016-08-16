@@ -1,9 +1,9 @@
 import * as assert from 'assert';
-import * as TestUtil from './Util';
+import * as TestUtil from '../Util';
 import {Position} from 'vscode';
 
-import {Configuration} from '../src/Configuration';
-import {ModeNormal} from '../src/Modes/Normal';
+import {Configuration} from '../../src/Configuration';
+import {ModeNormal} from '../../src/Modes/Normal';
 
 export function run() {
 
@@ -11,7 +11,7 @@ export function run() {
 
     test('Fast motion test', (done) => {
         TestUtil.createTempDocument('hello world').then(() => {
-            TestUtil.setCursorPosition(new Position(0, 3));
+            TestUtil.setPosition(new Position(0, 3));
             // hello world
             //    ^
             let normalMode = new ModeNormal();
@@ -22,7 +22,7 @@ export function run() {
             // hello world
             //  ^
             setTimeout(() => {
-                assert.deepEqual(new Position(0, 1), TestUtil.getCursorPosition());
+                assert.deepEqual(new Position(0, 1), TestUtil.getPosition());
                 done();
             }, 100);
         });

@@ -79,10 +79,9 @@ export class ActionDelete {
         if (ranges.length === 0) {
             return Promise.reject<boolean>(false);
         }
-        else {
-            // Selections will be adjust to matched ranges' start.
-            activeTextEditor.selections = ranges.map(range => new Selection(range.start, range.start));
-        }
+
+        // Selections will be adjust to matched ranges' start.
+        activeTextEditor.selections = ranges.map(range => new Selection(range.start, range.start));
 
         return (args.shouldYank ? ActionRegister.yankRanges(ranges) : Promise.resolve(true))
             .then(() => {

@@ -1,10 +1,8 @@
-import {window, Range, Selection} from 'vscode';
+import {window, Selection} from 'vscode';
 import {currentModeId} from '../extension';
 import {ModeID} from '../Modes/Mode';
-import {PrototypeReflect} from '../LanguageExtensions/PrototypeReflect';
-import {SymbolMetadata} from '../Symbols/Metadata';
 import {TextObject} from '../TextObjects/TextObject';
-import {UtilRange} from '../Utils/Range';
+import {UtilSelection} from '../Utils/Selection';
 
 export class ActionSelection {
 
@@ -145,28 +143,34 @@ export class ActionSelection {
     static expandByTextObject(args: {
         textObject: TextObject
     }): Thenable<boolean> {
-
         const activeTextEditor = window.activeTextEditor;
 
         if (! activeTextEditor) {
             return Promise.resolve(false);
         }
 
-        let ranges: Range[] = [];
+        let selections: Selection[] = [];
 
         activeTextEditor.selections.forEach(selection => {
-            const match = args.textObject.apply(selection.start);
-            ranges.push(match ? selection.union(match) : selection);
+            const positionToApply = selection.isReversed && selection.active.character > 0
+                ? selection.active.translate(0, -1)
+                : selection.active;
+            const match = args.textObject.apply(positionToApply);
+            if (match) {
+                const range = selection.union(match);
+                selection = selection.isReversed
+                    ? new Selection(range.end, range.start)
+                    : new Selection(range.start, range.end);
+            }
+            selections.push(selection);
         });
 
-        ranges = UtilRange.unionOverlaps(ranges);
-
-        if (ranges.length === 0) {
+        if (selections.length === 0) {
             return Promise.reject<boolean>(false);
         }
-        else {
-            activeTextEditor.selections = ranges.map(range => new Selection(range.start, range.end));
-        }
+
+        selections = UtilSelection.unionOverlaps(selections);
+        activeTextEditor.selections = selections;
 
         return Promise.resolve(true);
     }
