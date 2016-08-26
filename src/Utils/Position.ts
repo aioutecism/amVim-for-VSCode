@@ -11,7 +11,7 @@ export class UtilPosition {
 
         let column = 0;
 
-        for (let character = 0; character <= position.character; character++) {
+        for (let character = 0; character < position.character; character++) {
             column += text.charAt(character) === '\t' ? tabSize : 1;
         }
 

@@ -38,34 +38,26 @@ export abstract class Motion {
             toCharacter = document.lineAt(toLine).text.length;
         }
 
-        if (from.line !== toLine) {
-            const fromLineTabCount = document.getText(new Range(
-                from.line, 0,
-                from.line, from.character
-            )).split('\t').length - 1;
+        const preferedColumn = !this.isCharacterUpdated && option
+            ? option.preferedColumn as number : null;
 
+        if (preferedColumn) {
             const tabSize = activeTextEditor.options.tabSize as number;
-            const toVisibleColumn = toCharacter + fromLineTabCount * (tabSize - 1);
             const toLineText = document.lineAt(toLine).text;
 
-            let lastVisibleColumn = -1;
-            let thisVisibleColumn = 0;
+            let lastColumn = -1;
+            let thisColumn = 0;
             let i: number;
 
-            for (i = 0; i < toLineText.length && thisVisibleColumn <= toVisibleColumn; i++) {
-                lastVisibleColumn = thisVisibleColumn;
-                thisVisibleColumn += (toLineText.charAt(i) === '\t') ? tabSize : 1;
+            for (i = 0; i < toLineText.length && thisColumn <= preferedColumn; i++) {
+                lastColumn = thisColumn;
+                thisColumn += toLineText.charAt(i) === '\t' ? tabSize : 1;
             }
 
             // Choose the closest
-            thisVisibleColumn = Math.abs(toVisibleColumn - thisVisibleColumn);
-            lastVisibleColumn = Math.abs(toVisibleColumn - lastVisibleColumn);
-
-            if (thisVisibleColumn < lastVisibleColumn) {
-                toCharacter = i;
-            } else {
-                toCharacter = i - 1;
-            }
+            const thisColumnDiff = Math.abs(preferedColumn - thisColumn);
+            const lastColumnDiff = Math.abs(preferedColumn - lastColumn);
+            toCharacter = thisColumnDiff < lastColumnDiff ? i : i - 1;
         }
 
         toCharacter = Math.max(toCharacter, 0);
