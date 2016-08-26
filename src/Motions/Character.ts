@@ -43,9 +43,9 @@ export class MotionCharacter extends Motion {
         return obj;
     }
 
-    apply(from: Position, option: {preferedCharacter?: number} = {}): Position {
-        if (! this.isCharacterUpdated && option.preferedCharacter !== undefined) {
-            from = from.with(undefined, option.preferedCharacter);
+    apply(from: Position, option: {preferedColumn?: number} = {}): Position {
+        if (! this.isCharacterUpdated && option.preferedColumn !== undefined) {
+            from = from.with(undefined, option.preferedColumn);
         }
 
         return super.apply(from);

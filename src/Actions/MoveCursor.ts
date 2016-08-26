@@ -2,28 +2,29 @@ import {window, Position, Selection} from 'vscode';
 import {ActionReveal} from './Reveal';
 import {Motion} from '../Motions/Motion';
 import {MotionCharacter} from '../Motions/Character';
+import {UtilPosition} from '../Utils/Position';
 
 export class ActionMoveCursor {
 
-    private static preferedCharacterBySelectionIndex: {[i: number]: number} = [];
-    private static isUpdatePreferedCharacterBlocked = false;
-    private static preferedCharacterBlockTimer: number;
+    private static preferedColumnBySelectionIndex: {[i: number]: number} = [];
+    private static isUpdatePreferedColumnBlocked = false;
+    private static preferedColumnBlockTimer: number;
 
-    private static blockUpdatePreferedCharacter(): void {
-        if (ActionMoveCursor.preferedCharacterBlockTimer) {
-            clearTimeout(ActionMoveCursor.preferedCharacterBlockTimer);
+    private static blockUpdatePreferedColumn(): void {
+        if (ActionMoveCursor.preferedColumnBlockTimer) {
+            clearTimeout(ActionMoveCursor.preferedColumnBlockTimer);
         }
 
-        ActionMoveCursor.isUpdatePreferedCharacterBlocked = true;
+        ActionMoveCursor.isUpdatePreferedColumnBlocked = true;
 
-        ActionMoveCursor.preferedCharacterBlockTimer = setTimeout(function() {
-            ActionMoveCursor.isUpdatePreferedCharacterBlocked = false;
-            ActionMoveCursor.preferedCharacterBlockTimer = null;
+        ActionMoveCursor.preferedColumnBlockTimer = setTimeout(function() {
+            ActionMoveCursor.isUpdatePreferedColumnBlocked = false;
+            ActionMoveCursor.preferedColumnBlockTimer = null;
         }, 100);
     }
 
-    static updatePreferedCharacter(): Thenable<boolean> {
-        if (ActionMoveCursor.isUpdatePreferedCharacterBlocked) {
+    static updatePreferedColumn(): Thenable<boolean> {
+        if (ActionMoveCursor.isUpdatePreferedColumnBlocked) {
             return Promise.resolve(false);
         }
 
@@ -33,8 +34,9 @@ export class ActionMoveCursor {
             return Promise.resolve(false);
         }
 
-        ActionMoveCursor.preferedCharacterBySelectionIndex =
-            activeTextEditor.selections.map(selection => selection.active.character);
+        ActionMoveCursor.preferedColumnBySelectionIndex =
+            activeTextEditor.selections.map(selection =>
+                UtilPosition.getColumn(activeTextEditor, selection.active));
 
         return Promise.resolve(true);
     }
@@ -57,7 +59,7 @@ export class ActionMoveCursor {
 
         // Prevent prefered character update if no motion updates character.
         if (args.motions.every(motion => ! motion.isCharacterUpdated)) {
-            ActionMoveCursor.blockUpdatePreferedCharacter();
+            ActionMoveCursor.blockUpdatePreferedColumn();
         }
 
         const document = activeTextEditor.document;
@@ -68,7 +70,7 @@ export class ActionMoveCursor {
             let active = args.motions.reduce((position, motion) => {
                 return motion.apply(position, {
                     isInclusive: args.isVisualMode,
-                    preferedCharacter: ActionMoveCursor.preferedCharacterBySelectionIndex[i]
+                    preferedColumn: ActionMoveCursor.preferedColumnBySelectionIndex[i]
                 });
             }, selection.active);
 

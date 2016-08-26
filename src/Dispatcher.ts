@@ -45,19 +45,19 @@ export class Dispatcher {
             context.subscriptions.push(commands.registerCommand(`amVim.${key}`, this.inputHandler(key)));
         });
 
-        ActionMoveCursor.updatePreferedCharacter();
+        ActionMoveCursor.updatePreferedColumn();
 
         this.switchMode(ModeID.NORMAL);
 
         this.disposables.push(
             window.onDidChangeTextEditorSelection(() => {
                 ActionMode.switchByActiveSelections(this.currentMode.id);
-                ActionMoveCursor.updatePreferedCharacter();
+                ActionMoveCursor.updatePreferedColumn();
             }),
             window.onDidChangeActiveTextEditor(() => {
                 // Passing `null` to `currentMode` to force mode switch.
                 ActionMode.switchByActiveSelections(null);
-                ActionMoveCursor.updatePreferedCharacter();
+                ActionMoveCursor.updatePreferedColumn();
             })
         );
     }
