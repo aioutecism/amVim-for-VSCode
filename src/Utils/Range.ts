@@ -29,11 +29,4 @@ export class UtilRange {
         );
     }
 
-    static fitIntoDocument(document: TextDocument, from: Range): Range {
-        return new Range(
-            UtilPosition.fitIntoDocument(document, from.start),
-            UtilPosition.fitIntoDocument(document, from.end)
-        );
-    }
-
 }

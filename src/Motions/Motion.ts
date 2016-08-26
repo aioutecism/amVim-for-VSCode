@@ -70,7 +70,7 @@ export abstract class Motion {
 
         toCharacter = Math.max(toCharacter, 0);
 
-        return UtilPosition.fitIntoDocument(activeTextEditor.document, new Position(toLine, toCharacter));
+        return activeTextEditor.document.validatePosition(new Position(toLine, toCharacter));
     }
 
 }
