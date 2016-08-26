@@ -26,7 +26,7 @@ export class ActionRegister {
         const document = activeTextEditor.document;
 
         ActionRegister.stash = ranges.map(range => {
-            return document.getText(UtilRange.fitIntoDocument(document, range));
+            return document.getText(document.validateRange(range));
         }).join('');
 
         return Promise.resolve(true);
@@ -49,10 +49,9 @@ export class ActionRegister {
             return new Range(start, end);
         });
 
-        ranges = ranges.map(range => {
-            return UtilRange.fitIntoDocument(document,
-                range.isSingleLine ? range : UtilRange.toLinewise(range));
-        });
+        ranges = ranges.map(range => document.validateRange(
+            range.isSingleLine ? range : UtilRange.toLinewise(range)
+        ));
 
         ranges = UtilRange.unionOverlaps(ranges);
 
