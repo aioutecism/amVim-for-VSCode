@@ -33,6 +33,10 @@
     },
     "main": "./out/src/extension",
     "contributes": {
+        "commands": [
+            { "title": "w", "command": "workbench.action.files.save" },
+            { "title": "q", "command": "workbench.action.closeActiveEditor" }
+        ],
         "configuration": {
             "title": "amVim configuration",
             "properties": {
