@@ -13,8 +13,8 @@ class Format {
             return Promise.resolve(false);
         }
 
-        if ((activeTextEditor.selections.length === 0)
-        || (activeTextEditor.selections.length === 1 && activeTextEditor.selection.isEmpty)
+        if (activeTextEditor.selections.length === 0
+        || activeTextEditor.selections.every((selection) => selection.isEmpty)
         ) {
             return Promise.resolve(false);
         }
