@@ -18,6 +18,7 @@ import {ActionFind} from '../Actions/Find';
 import {ActionSelection} from '../Actions/Selection';
 import {ActionHistory} from '../Actions/History';
 import {ActionIndent} from '../Actions/Indent';
+import {ActionFilter} from '../Actions/Filter';
 import {ActionMode} from '../Actions/Mode';
 import {MotionCharacter} from '../Motions/Character';
 import {MotionLine} from '../Motions/Line';
@@ -153,6 +154,8 @@ export class ModeNormal extends Mode {
             ActionFind.byIndicator,
             ActionFind.prev,
         ] },
+
+        { keys: '= {motion}', actions: [ActionFilter.Format.byMotions] },
 
         { keys: 'u', actions: [
             ActionHistory.undo,

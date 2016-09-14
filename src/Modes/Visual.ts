@@ -11,6 +11,7 @@ import {ActionInsert} from '../Actions/Insert';
 import {ActionReplace} from '../Actions/Replace';
 import {ActionIndent} from '../Actions/Indent';
 import {ActionJoinLines} from '../Actions/JoinLines';
+import {ActionFilter} from '../Actions/Filter';
 import {ActionFind} from '../Actions/Find';
 import {ActionMode} from '../Actions/Mode';
 import {MotionLine} from '../Motions/Line';
@@ -70,6 +71,8 @@ export class ModeVisual extends Mode {
         ] },
 
         { keys: 'r {char}', actions: [ActionReplace.selections] },
+
+        { keys: '=', actions: [ActionFilter.Format.bySelections] },
 
         { keys: '<', actions: [ActionIndent.decrease] },
         { keys: '>', actions: [ActionIndent.increase] },
