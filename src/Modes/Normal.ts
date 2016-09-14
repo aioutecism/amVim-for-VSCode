@@ -156,6 +156,7 @@ export class ModeNormal extends Mode {
         ] },
 
         { keys: '= {motion}', actions: [ActionFilter.Format.byMotions] },
+        { keys: '= =', actions: [ActionFilter.Format.byCursors] },
 
         { keys: 'u', actions: [
             ActionHistory.undo,

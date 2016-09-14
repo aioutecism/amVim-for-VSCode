@@ -1,6 +1,7 @@
 import {commands, window} from 'vscode';
 import {Motion} from '../Motions/Motion';
 import {ActionMoveCursor} from './MoveCursor';
+import {ActionSelection} from './Selection';
 import {ActionReveal} from './Reveal';
 
 class Format {
@@ -21,6 +22,26 @@ class Format {
         return commands.executeCommand('editor.action.format');
     }
 
+    static byCursors(): Thenable<boolean> {
+        const activeTextEditor = window.activeTextEditor;
+
+        if (! activeTextEditor) {
+            return Promise.resolve(false);
+        }
+
+        const originalSelections = activeTextEditor.selections;
+
+        return ActionSelection.expandToLine()
+        .then(() => {
+            return commands.executeCommand('editor.action.format');
+        })
+        .then(() => {
+            activeTextEditor.selections = originalSelections;
+            return Promise.resolve(true);
+        })
+        .then(() => ActionReveal.primaryCursor());
+    }
+
     static byMotions(args: {
         motions: Motion[]
     }): Thenable<boolean> {
@@ -34,7 +55,7 @@ class Format {
 
         return ActionMoveCursor.byMotions({
             motions: args.motions,
-            isVisualMode: true
+            isVisualLineMode: true,
         })
         .then(() => {
             return commands.executeCommand('editor.action.format');
