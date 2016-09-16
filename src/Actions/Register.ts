@@ -49,9 +49,9 @@ export class ActionRegister {
             return new Range(start, end);
         });
 
-        ranges = ranges.map(range => document.validateRange(
-            range.isSingleLine ? range : UtilRange.toLinewise(range)
-        ));
+        if (args.motions.some(motion => motion.isLinewise)) {
+            ranges = ranges.map(range => document.validateRange(UtilRange.toLinewise(range)));
+        }
 
         ranges = UtilRange.unionOverlaps(ranges);
 
