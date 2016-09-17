@@ -1,4 +1,4 @@
-import {workspace, window, Uri, Position, Selection} from 'vscode';
+import {workspace, window, Uri, TextDocument, Position, Selection} from 'vscode';
 
 export function createTempDocument(content?: string): Thenable<boolean> {
     const uri = Uri.parse(`untitled:${__dirname}.${Math.random()}.tmp`);
@@ -14,6 +14,10 @@ export function createTempDocument(content?: string): Thenable<boolean> {
                 });
             }
         });
+}
+
+export function getDocument(): TextDocument {
+    return window.activeTextEditor.document;
 }
 
 export function setPosition(position: Position): void {
