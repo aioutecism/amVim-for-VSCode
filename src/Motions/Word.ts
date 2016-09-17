@@ -47,9 +47,17 @@ export class MotionWord extends Motion {
         return obj;
     }
 
-    apply(from: Position, option: {isInclusive?: boolean, isChangeAction?: boolean} = {}): Position {
+    apply(
+        from: Position,
+        option: {
+            isInclusive?: boolean,
+            isChangeAction?: boolean,
+            shouldCrossLines?: boolean,
+        } = {}
+    ): Position {
         option.isInclusive = option.isInclusive === undefined ? false : option.isInclusive;
         option.isChangeAction = option.isChangeAction === undefined ? false : option.isChangeAction;
+        option.shouldCrossLines = option.shouldCrossLines === undefined ? true : option.shouldCrossLines;
 
         // Match both start and end if used in change action.
         if (option.isChangeAction && this.matchKind === MotionWordMatchKind.Start) {
@@ -123,6 +131,10 @@ export class MotionWord extends Motion {
                     character++;
                 }
 
+                if (! option.shouldCrossLines) {
+                    return document.lineAt(line).range.end;
+                }
+
                 line++;
             }
 
@@ -175,6 +187,10 @@ export class MotionWord extends Motion {
                     previousPosition = new Position(line, character);
                     previousCharacterKind = currentCharacterKind;
                     character--;
+                }
+
+                if (! option.shouldCrossLines) {
+                    return document.lineAt(line).range.start;
                 }
 
                 line--;

@@ -9,7 +9,7 @@ export function run() {
 
     Configuration.init();
 
-    test('MotionWordPosition.NEXT_START', (done) => {
+    test('MotionWord: Next start', (done) => {
         TestUtil.createTempDocument('  foo bar baz    fum-nom').then(() => {
 
             let apply = (fromCharacter) => {
@@ -142,7 +142,7 @@ export function run() {
         });
     });
 
-    test('MotionWordPosition.NEXT_END', (done) => {
+    test('MotionWord: Next end', (done) => {
         TestUtil.createTempDocument('  foo bar baz    fum-nom').then(() => {
 
             let apply = (fromCharacter) => {
@@ -275,7 +275,7 @@ export function run() {
         });
     });
 
-    test('MotionWordPosition.PREV_START', (done) => {
+    test('MotionWord: Prev start', (done) => {
         TestUtil.createTempDocument('  foo bar baz    fum-nom').then(() => {
 
             let apply = (fromCharacter) => {
@@ -408,7 +408,7 @@ export function run() {
         });
     });
 
-    test('MotionWordPosition.PREV_END', (done) => {
+    test('MotionWord: Prev end', (done) => {
         TestUtil.createTempDocument('  foo bar baz    fum-nom').then(() => {
 
             let apply = (fromCharacter) => {
@@ -541,7 +541,7 @@ export function run() {
         });
     });
 
-    test('MotionWordPosition.NEXT_START with blankSeparators', (done) => {
+    test('MotionWord: Next start with blank separated style', (done) => {
         TestUtil.createTempDocument(' <foo-bar> (baz$foo)  bar').then(() => {
 
             let apply = (fromCharacter) => {
@@ -674,7 +674,7 @@ export function run() {
         });
     });
 
-    test('MotionWordPosition.NEXT_END with blankSeparators', (done) => {
+    test('MotionWord: Next end with blank separated style', (done) => {
         TestUtil.createTempDocument(' <foo-bar> (baz$foo)  bar').then(() => {
 
             let apply = (fromCharacter) => {
@@ -807,7 +807,7 @@ export function run() {
         });
     });
 
-    test('MotionWordPosition.PREV_START with blankSeparators', (done) => {
+    test('MotionWord: Prev start with blank separated style', (done) => {
         TestUtil.createTempDocument(' <foo-bar> (baz$foo)  bar').then(() => {
 
             let apply = (fromCharacter) => {
@@ -945,7 +945,7 @@ export function run() {
         });
     });
 
-    test('MotionWordPosition.PREV_END with blankSeparators', (done) => {
+    test('MotionWord: Prev end with blank separated style', (done) => {
         TestUtil.createTempDocument(' <foo-bar> (baz$foo)  bar').then(() => {
 
             let apply = (fromCharacter) => {

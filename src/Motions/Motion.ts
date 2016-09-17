@@ -3,6 +3,8 @@ import {UtilPosition} from '../Utils/Position';
 
 export abstract class Motion {
 
+    // TODO: Mark as readonly after TypeScript 2
+    isLinewise = false;
     isCharacterUpdated = true;
 
     private lineDelta = 0;

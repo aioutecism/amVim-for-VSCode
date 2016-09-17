@@ -27,6 +27,7 @@ export class MotionCharacter extends Motion {
         const obj = new MotionCharacter();
         obj.translate(-args.n, 0);
 
+        obj.isLinewise = true;
         obj.isCharacterUpdated = false;
 
         return obj;
@@ -38,6 +39,7 @@ export class MotionCharacter extends Motion {
         const obj = new MotionCharacter();
         obj.translate(+args.n, 0);
 
+        obj.isLinewise = true;
         obj.isCharacterUpdated = false;
 
         return obj;
