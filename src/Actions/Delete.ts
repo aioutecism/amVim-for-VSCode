@@ -29,7 +29,11 @@ export class ActionDelete {
         let ranges = activeTextEditor.selections.map(selection => {
             const start = selection.active;
             const end = args.motions.reduce((position, motion) => {
-                return motion.apply(position, {isInclusive: true, isChangeAction: args.isChangeAction});
+                return motion.apply(position, {
+                    isInclusive: true,
+                    shouldCrossLines: false,
+                    isChangeAction: args.isChangeAction,
+                });
             }, start);
             return new Range(start, end);
         });
