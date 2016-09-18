@@ -39,7 +39,31 @@ Set to `false` to disable `Ctrl+<key>` keybindings.
 
 ## Change Log
 
-Check [here](https://github.com/aioutecism/amVim-for-VSCode/releases).
+### [1.11.2](https://github.com/aioutecism/amVim-for-VSCode/releases/tag/1.11.2)
+
+- Fix where undo/redo will revert selections that blocks further undo/redo.
+
+
+### [1.11.1](https://github.com/aioutecism/amVim-for-VSCode/releases/tag/1.11.1)
+
+- Fix wrong behavior when deleting word at end of line. 
+
+
+### [1.11.0](https://github.com/aioutecism/amVim-for-VSCode/releases/tag/1.11.0)
+
+- Added support for `= {motion}`, `= =` in Normal mode, `=` in Visual and VisualLine modes.
+
+
+### [1.10.2](https://github.com/aioutecism/amVim-for-VSCode/releases/tag/1.10.2)
+
+- Workaround where `.` may blocks further inputs.
+
+
+### [1.10.1](https://github.com/aioutecism/amVim-for-VSCode/releases/tag/1.10.1)
+
+- Fix unstable movement between tab indented lines.
+
+Full list [here](https://github.com/aioutecism/amVim-for-VSCode/releases).
 
 
 ## Contribution
