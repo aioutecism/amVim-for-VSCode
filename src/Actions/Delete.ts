@@ -34,10 +34,9 @@ export class ActionDelete {
             return new Range(start, end);
         });
 
-        ranges = ranges.map(range => {
-            return UtilRange.fitIntoDocument(document,
-                range.isSingleLine ? range : UtilRange.toLinewise(range));
-        });
+        ranges = ranges.map(range => document.validateRange(
+            range.isSingleLine ? range : UtilRange.toLinewise(range)
+        ));
 
         ranges = UtilRange.unionOverlaps(ranges);
 
@@ -79,10 +78,9 @@ export class ActionDelete {
         if (ranges.length === 0) {
             return Promise.reject<boolean>(false);
         }
-        else {
-            // Selections will be adjust to matched ranges' start.
-            activeTextEditor.selections = ranges.map(range => new Selection(range.start, range.start));
-        }
+
+        // Selections will be adjust to matched ranges' start.
+        activeTextEditor.selections = ranges.map(range => new Selection(range.start, range.start));
 
         return (args.shouldYank ? ActionRegister.yankRanges(ranges) : Promise.resolve(true))
             .then(() => {
@@ -229,12 +227,12 @@ export class ActionDelete {
 
         const document = activeTextEditor.document;
 
-        let ranges = activeTextEditor.selections.map(selection => {
-            return UtilRange.fitIntoDocument(document, new Range(
+        let ranges = activeTextEditor.selections.map(selection => document.validateRange(
+            new Range(
                 selection.start.line, 0,
                 selection.end.line + 1, 0
-            ));
-        });
+            )
+        ));
 
         ranges = UtilRange.unionOverlaps(ranges);
 

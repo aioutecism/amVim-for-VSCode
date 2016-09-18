@@ -3,6 +3,7 @@ import {SpecialKeyCommon, SpecialKeyMatchResult} from './Common';
 import {TextObject} from '../../TextObjects/TextObject';
 import {TextObjectBlock} from '../../TextObjects/Block';
 import {TextObjectQuotedString} from '../../TextObjects/QuotedString';
+import {TextObjectWord} from '../../TextObjects/Word';
 
 interface TextObjectGenerator {
     (args?: {}): TextObject;
@@ -15,6 +16,7 @@ interface TextObjectMap extends GenericMap {
 interface TextObjectMapInfo {
     characters: string[];
     method: (args: {isInclusive: boolean}) => TextObject;
+    args?: {};
 }
 
 export class SpecialKeyTextObject extends GenericMapper implements SpecialKeyCommon {
@@ -52,6 +54,16 @@ export class SpecialKeyTextObject extends GenericMapper implements SpecialKeyCom
             characters: ['`'],
             method: TextObjectQuotedString.byBackward,
         },
+        {
+            characters: ['w'],
+            method: TextObjectWord.byWord,
+            args: { useBlankSeparatedStyle: false },
+        },
+        {
+            characters: ['W'],
+            method: TextObjectWord.byWord,
+            args: { useBlankSeparatedStyle: true },
+        },
     ];
 
     private maps: TextObjectMap[] = [
@@ -63,8 +75,8 @@ export class SpecialKeyTextObject extends GenericMapper implements SpecialKeyCom
 
         this.mapInfos.forEach(mapInfo => {
             mapInfo.characters.forEach(character => {
-                this.map(`a ${character}`, mapInfo.method, { isInclusive: true });
-                this.map(`i ${character}`, mapInfo.method, { isInclusive: false });
+                this.map(`a ${character}`, mapInfo.method, Object.assign({}, mapInfo.args, { isInclusive: true }));
+                this.map(`i ${character}`, mapInfo.method, Object.assign({}, mapInfo.args, { isInclusive: false }));
             });
         });
 

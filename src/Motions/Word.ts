@@ -1,28 +1,12 @@
 import {window, Position} from 'vscode';
 import {Configuration} from '../Configuration';
 import {Motion} from './Motion';
+import {WordCharacterKind, UtilWord} from '../Utils/Word';
 
 enum MotionWordDirection {Previous, Next};
 enum MotionWordMatchKind {Start, End, Both};
 
-enum MotionWordCharacterKind {Regular, Separator, Blank}
-
 export class MotionWord extends Motion {
-
-    private static blankSeparators = ' \f\n\r\t\v​\u00a0\u1680​\u180e\u2000​\u2001​\u2002​\u2003​\u2004\u2005​\u2006​\u2007​\u2008\u2009​\u200a​\u2028\u2029\u202f\u205f​\u3000\ufeff';
-    private static characterKindCache: {[key: number]: MotionWordCharacterKind};
-
-    static updateCharacterKindCache(wordSeparators: string): void {
-        this.characterKindCache = {};
-
-        for (let i = 0; i < this.blankSeparators.length; i++) {
-            this.characterKindCache[this.blankSeparators.charCodeAt(i)] = MotionWordCharacterKind.Blank;
-        }
-
-        for (let i = 0, len = wordSeparators.length; i < len; i++) {
-            this.characterKindCache[wordSeparators.charCodeAt(i)] = MotionWordCharacterKind.Separator;
-        }
-    }
 
     private useBlankSeparatedStyle: boolean;
     private direction: MotionWordDirection;
@@ -63,23 +47,6 @@ export class MotionWord extends Motion {
         return obj;
     }
 
-    private getCharacterKind(charCode: number, useBlankSeparatedStyle: boolean): MotionWordCharacterKind {
-        let characterKind = MotionWord.characterKindCache[charCode];
-
-        if (characterKind === undefined) {
-            characterKind = MotionWordCharacterKind.Regular;
-        }
-
-        if (useBlankSeparatedStyle) {
-            // Treat separator as regular character.
-            if (characterKind === MotionWordCharacterKind.Separator) {
-                characterKind = MotionWordCharacterKind.Regular;
-            }
-        }
-
-        return characterKind;
-    }
-
     apply(from: Position, option: {isInclusive?: boolean, isChangeAction?: boolean} = {}): Position {
         option.isInclusive = option.isInclusive === undefined ? false : option.isInclusive;
         option.isChangeAction = option.isChangeAction === undefined ? false : option.isChangeAction;
@@ -101,7 +68,7 @@ export class MotionWord extends Motion {
 
         let line = from.line;
         let previousPosition: Position = null;
-        let previousCharacterKind: MotionWordCharacterKind = null;
+        let previousCharacterKind: WordCharacterKind = null;
 
         if (this.direction === MotionWordDirection.Next) {
             while (line < document.lineCount) {
@@ -109,17 +76,17 @@ export class MotionWord extends Motion {
                 let character = line === from.line ? from.character : 0;
 
                 while (character < text.length) {
-                    const currentCharacterKind = this.getCharacterKind(
+                    const currentCharacterKind = UtilWord.getCharacterKind(
                         text.charCodeAt(character), this.useBlankSeparatedStyle);
 
                     if (previousCharacterKind !== null && previousCharacterKind !== currentCharacterKind) {
                         let startPosition: Position;
                         let endPosition: Position;
 
-                        if (currentCharacterKind !== MotionWordCharacterKind.Blank) {
+                        if (currentCharacterKind !== WordCharacterKind.Blank) {
                             startPosition = new Position(line, character);
                         }
-                        if (previousCharacterKind !== MotionWordCharacterKind.Blank) {
+                        if (previousCharacterKind !== WordCharacterKind.Blank) {
                             endPosition = previousPosition;
                             if (endPosition.isEqual(from)) {
                                 endPosition = undefined;
@@ -168,20 +135,20 @@ export class MotionWord extends Motion {
                 let character = line === from.line ? from.character : text.length - 1;
 
                 while (character >= 0) {
-                    const currentCharacterKind = this.getCharacterKind(
+                    const currentCharacterKind = UtilWord.getCharacterKind(
                         text.charCodeAt(character), this.useBlankSeparatedStyle);
 
                     if (previousCharacterKind !== null && previousCharacterKind !== currentCharacterKind) {
                         let startPosition: Position;
                         let endPosition: Position;
 
-                        if (previousCharacterKind !== MotionWordCharacterKind.Blank) {
+                        if (previousCharacterKind !== WordCharacterKind.Blank) {
                             startPosition = previousPosition;
                             if (startPosition.isEqual(from)) {
                                 startPosition = undefined;
                             }
                         }
-                        if (currentCharacterKind !== MotionWordCharacterKind.Blank) {
+                        if (currentCharacterKind !== WordCharacterKind.Blank) {
                             endPosition = new Position(line, character);
                         }
 

@@ -9,7 +9,7 @@ export class UtilRange {
         while (from.length !== 0) {
             let a = from.shift();
             for (let i = 0; i < from.length; i++) {
-                let b = from[i];
+                const b = from[i];
                 if (a.intersection(b) !== undefined) {
                     a = a.union(b);
                     from.splice(i, 1);
@@ -26,13 +26,6 @@ export class UtilRange {
         return new Range(
             from.start.line, 0,
             from.end.line + 1, 0
-        );
-    }
-
-    static fitIntoDocument(document: TextDocument, from: Range): Range {
-        return new Range(
-            UtilPosition.fitIntoDocument(document, from.start),
-            UtilPosition.fitIntoDocument(document, from.end)
         );
     }
 

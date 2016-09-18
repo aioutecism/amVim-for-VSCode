@@ -1,9 +1,9 @@
 import * as assert from 'assert';
-import * as TestUtil from './Util';
+import * as TestUtil from '../Util';
 import {Position} from 'vscode';
 
-import {Configuration} from '../src/Configuration';
-import {MotionWord} from '../src/Motions/Word';
+import {Configuration} from '../../src/Configuration';
+import {MotionWord} from '../../src/Motions/Word';
 
 export function run() {
 

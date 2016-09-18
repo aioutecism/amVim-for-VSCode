@@ -1,6 +1,8 @@
 import {window, Selection} from 'vscode';
 import {currentModeId} from '../extension';
 import {ModeID} from '../Modes/Mode';
+import {TextObject} from '../TextObjects/TextObject';
+import {UtilSelection} from '../Utils/Selection';
 
 export class ActionSelection {
 
@@ -134,6 +136,41 @@ export class ActionSelection {
                 ? new Selection(selection.anchor, selection.anchor.translate(0, +1))
                 : selection;
         });
+
+        return Promise.resolve(true);
+    }
+
+    static expandByTextObject(args: {
+        textObject: TextObject
+    }): Thenable<boolean> {
+        const activeTextEditor = window.activeTextEditor;
+
+        if (! activeTextEditor) {
+            return Promise.resolve(false);
+        }
+
+        let selections: Selection[] = [];
+
+        activeTextEditor.selections.forEach(selection => {
+            const positionToApply = selection.isReversed && selection.active.character > 0
+                ? selection.active.translate(0, -1)
+                : selection.active;
+            const match = args.textObject.apply(positionToApply);
+            if (match) {
+                const range = selection.union(match);
+                selection = selection.isReversed
+                    ? new Selection(range.end, range.start)
+                    : new Selection(range.start, range.end);
+            }
+            selections.push(selection);
+        });
+
+        if (selections.length === 0) {
+            return Promise.reject<boolean>(false);
+        }
+
+        selections = UtilSelection.unionOverlaps(selections);
+        activeTextEditor.selections = selections;
 
         return Promise.resolve(true);
     }
