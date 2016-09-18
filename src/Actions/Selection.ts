@@ -7,6 +7,10 @@ import {UtilSelection} from '../Utils/Selection';
 export class ActionSelection {
 
     static validateSelections(): Thenable<boolean> {
+        if (currentModeId() === ModeID.INSERT) {
+            return Promise.resolve(true);
+        }
+
         const activeTextEditor = window.activeTextEditor;
 
         if (! activeTextEditor) {
