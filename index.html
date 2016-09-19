@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>amVim for VSCode by aioutecism</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+  </head>
+  <body>
+    <section class="page-header">
+      <h1 class="project-name">amVim for VSCode</h1>
+      <h2 class="project-tagline">The Vim mode for Visual Studio Code(vscode) that works as expected.</h2>
+      <a href="https://github.com/aioutecism/amVim-for-VSCode" class="btn">View on GitHub</a>
+      <a href="https://github.com/aioutecism/amVim-for-VSCode/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/aioutecism/amVim-for-VSCode/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
+
+    <section class="main-content">
+      <h1>
+<a id="amvim-for-vscode" class="anchor" href="#amvim-for-vscode" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>amVim for VSCode</h1>
+
+<p><img src="https://github.com/aioutecism/amVim-for-VSCode/raw/master/images/icon.png" alt="icon"></p>
+
+<p>The <a href="http://www.vim.org/">Vim</a> mode for <a href="https://code.visualstudio.com/">Visual Studio Code</a> that works as expected.</p>
+
+<h2>
+<a id="key-features" class="anchor" href="#key-features" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Key features</h2>
+
+<ul>
+<li>Vim style keybindings &amp; looks</li>
+<li>Normal, Visual and Visual Line modes support</li>
+<li>Multi-cursor support</li>
+<li>Works with VSCode's default behaviors</li>
+</ul>
+
+<h2>
+<a id="not-supported" class="anchor" href="#not-supported" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Not supported</h2>
+
+<ul>
+<li>
+<code>:</code> started commands: Please use <code>Command Palette</code> (<code>Shift+Cmd+P</code> on OSX, <code>Shift+Ctrl+P</code> on Windows) instead.</li>
+<li>Visual Block mode: Please use multi-cursor instead for now.</li>
+<li>Custom keybindings: On the roadmap.</li>
+</ul>
+
+<h2>
+<a id="commands" class="anchor" href="#commands" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Commands</h2>
+
+<p>Check the list <a href="https://github.com/aioutecism/amVim-for-VSCode/issues/1">here</a>.</p>
+
+<h2>
+<a id="configuration" class="anchor" href="#configuration" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Configuration</h2>
+
+<p>You can overwrite default configurations in
+<a href="https://code.visualstudio.com/docs/customization/userandworkspace">User and Workspace Settings</a>.</p>
+
+<h4>
+<a id="amvimbindctrlcommands" class="anchor" href="#amvimbindctrlcommands" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a><code>amVim.bindCtrlCommands</code>
+</h4>
+
+<p><code>Boolean</code>, Default: <code>true</code></p>
+
+<p>Set to <code>false</code> to disable <code>Ctrl+&lt;key&gt;</code> keybindings.</p>
+
+<h2>
+<a id="change-log" class="anchor" href="#change-log" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Change Log</h2>
+
+<h3>
+<a id="1115" class="anchor" href="#1115" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a><a href="https://github.com/aioutecism/amVim-for-VSCode/releases/tag/1.11.5">1.11.5</a>
+</h3>
+
+<ul>
+<li>Fix wrong cursor position when doing <code>o</code> in Insert mode.</li>
+</ul>
+
+<h3>
+<a id="1114" class="anchor" href="#1114" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a><a href="https://github.com/aioutecism/amVim-for-VSCode/releases/tag/1.11.4">1.11.4</a>
+</h3>
+
+<ul>
+<li>Fix when selection will miss one character when doing <code>k</code> or <code>j</code> in Visual mode.</li>
+</ul>
+
+<h3>
+<a id="1113" class="anchor" href="#1113" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a><a href="https://github.com/aioutecism/amVim-for-VSCode/releases/tag/1.11.3">1.11.3</a>
+</h3>
+
+<ul>
+<li>Fix when cursor may occur at end of line in Normal mode.</li>
+</ul>
+
+<h3>
+<a id="1112" class="anchor" href="#1112" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a><a href="https://github.com/aioutecism/amVim-for-VSCode/releases/tag/1.11.2">1.11.2</a>
+</h3>
+
+<ul>
+<li>Fix where undo/redo will revert selections that blocks further undo/redo.</li>
+</ul>
+
+<h3>
+<a id="1111" class="anchor" href="#1111" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a><a href="https://github.com/aioutecism/amVim-for-VSCode/releases/tag/1.11.1">1.11.1</a>
+</h3>
+
+<ul>
+<li>Fix wrong behavior when deleting word at end of line.</li>
+</ul>
+
+<p>Full list <a href="https://github.com/aioutecism/amVim-for-VSCode/releases">here</a>.</p>
+
+<h2>
+<a id="contribution" class="anchor" href="#contribution" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Contribution</h2>
+
+<p>Feel free to open <a href="https://github.com/aioutecism/amVim-for-VSCode/issues">issues</a> to report bugs or require features.</p>
+
+<p><a href="https://github.com/aioutecism/amVim-for-VSCode/pulls">Pull requests</a> are welcomed too!</p>
+
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/aioutecism/amVim-for-VSCode">amVim for VSCode</a> is maintained by <a href="https://github.com/aioutecism">aioutecism</a>.</span>
+
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+      </footer>
+
+    </section>
+
+  
+  </body>
+</html>
