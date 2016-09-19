@@ -11,6 +11,7 @@ import {ActionInsert} from '../Actions/Insert';
 import {ActionReplace} from '../Actions/Replace';
 import {ActionIndent} from '../Actions/Indent';
 import {ActionJoinLines} from '../Actions/JoinLines';
+import {ActionFilter} from '../Actions/Filter';
 import {ActionFind} from '../Actions/Find';
 import {ActionMode} from '../Actions/Mode';
 import {MotionLine} from '../Motions/Line';
@@ -22,7 +23,7 @@ export class ModeVisual extends Mode {
 
     private maps: CommandMap[] = [
         { keys: '{motion}', actions: [ActionMoveCursor.byMotions], args: {isVisualMode: true} },
-        { keys: '{textObject}', actions: [ActionSelection.expandByTextObject]}, 
+        { keys: '{textObject}', actions: [ActionSelection.expandByTextObject]},
 
         { keys: 'ctrl+b', actions: [ActionPage.up], args: {moveType: PageMoveType.Select} },
         { keys: 'ctrl+f', actions: [ActionPage.down], args: {moveType: PageMoveType.Select} },
@@ -70,6 +71,8 @@ export class ModeVisual extends Mode {
         ] },
 
         { keys: 'r {char}', actions: [ActionReplace.selections] },
+
+        { keys: '=', actions: [ActionFilter.Format.bySelections] },
 
         { keys: '<', actions: [ActionIndent.decrease] },
         { keys: '>', actions: [ActionIndent.increase] },

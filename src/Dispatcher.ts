@@ -51,8 +51,11 @@ export class Dispatcher {
 
         this.disposables.push(
             window.onDidChangeTextEditorSelection(() => {
-                ActionMode.switchByActiveSelections(this.currentMode.id);
-                ActionMoveCursor.updatePreferedColumn();
+                // Ensure this is executed after all pending commands.
+                setTimeout(() => {
+                    ActionMode.switchByActiveSelections(this.currentMode.id);
+                    ActionMoveCursor.updatePreferedColumn();
+                });
             }),
             window.onDidChangeActiveTextEditor(() => {
                 // Passing `null` to `currentMode` to force mode switch.

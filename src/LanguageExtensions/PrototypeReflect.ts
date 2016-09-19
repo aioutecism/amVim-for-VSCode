@@ -102,9 +102,16 @@ export class PrototypeReflect {
             return undefined;
         }
 
-        return (target.prototype[PrototypeReflect.metadataKey] === undefined)
-            ? undefined
-            : target.prototype[PrototypeReflect.metadataKey][key];
+        try {
+            // TODO: Currently using try-catch to workaround wired bug where target.prototype becomes undefined after previous check.
+            // Using https://github.com/rbuckton/ReflectDecorators may solve the problem since they don't save things inside prototype'
+            return (target.prototype[PrototypeReflect.metadataKey] === undefined)
+                ? undefined
+                : target.prototype[PrototypeReflect.metadataKey][key];
+        }
+        catch (error) {
+            return undefined;
+        }
     }
 
 }

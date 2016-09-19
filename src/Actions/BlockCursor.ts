@@ -9,9 +9,9 @@ export class ActionBlockCursor {
             return Promise.resolve(false);
         }
 
-        let opt = window.activeTextEditor.options;
+        let opt = activeTextEditor.options;
         opt.cursorStyle = TextEditorCursorStyle.Block;
-        window.activeTextEditor.options = opt;
+        activeTextEditor.options = opt;
 
         return Promise.resolve(true);
     }
@@ -23,10 +23,11 @@ export class ActionBlockCursor {
             return Promise.resolve(false);
         }
 
-        let opt = window.activeTextEditor.options;
+        let opt = activeTextEditor.options;
         opt.cursorStyle = TextEditorCursorStyle.Line;
-        window.activeTextEditor.options = opt;
+        activeTextEditor.options = opt;
 
         return Promise.resolve(true);
     }
+
 }

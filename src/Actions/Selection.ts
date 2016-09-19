@@ -7,7 +7,7 @@ import {UtilSelection} from '../Utils/Selection';
 export class ActionSelection {
 
     static validateSelections(): Thenable<boolean> {
-        if (currentModeId() !== ModeID.NORMAL) {
+        if (currentModeId() === ModeID.INSERT) {
             return Promise.resolve(true);
         }
 
@@ -22,6 +22,10 @@ export class ActionSelection {
         let isChanged = false;
 
         const validatedSelections = activeTextEditor.selections.map(selection => {
+            if (! selection.isEmpty) {
+                return selection;
+            }
+
             const position = selection.active;
             const endCharacter = document.lineAt(position).range.end.character;
             const maxCharacter = endCharacter > 0 ? endCharacter - 1 : endCharacter;

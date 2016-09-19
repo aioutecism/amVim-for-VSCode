@@ -91,6 +91,12 @@ export class ActionMoveCursor {
                         active = active.translate(0, +1);
                     }
                 }
+                else if (active.isAfter(anchor) && selection.active.isBefore(selection.anchor)) {
+                    anchor = anchor.translate(0, -1);
+                }
+                else if (active.isBefore(anchor) && selection.active.isAfter(selection.anchor)) {
+                    anchor = anchor.translate(0, +1);
+                }
             }
             else if (args.isVisualLineMode) {
                 anchor = selection.anchor;

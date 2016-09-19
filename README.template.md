@@ -39,29 +39,13 @@ Set to `false` to disable `Ctrl+<key>` keybindings.
 
 ## Change Log
 
-### [1.11.5](https://github.com/aioutecism/amVim-for-VSCode/releases/tag/1.11.5)
+```releases
+### [${name}](${html_url})
 
-- Fix wrong cursor position when doing `o` in Insert mode.
-
-
-### [1.11.4](https://github.com/aioutecism/amVim-for-VSCode/releases/tag/1.11.4)
-
-- Fix when selection will miss one character when doing `k` or `j` in Visual mode.
+${body}
 
 
-### [1.11.3](https://github.com/aioutecism/amVim-for-VSCode/releases/tag/1.11.3)
-
-- Fix when cursor may occur at end of line in Normal mode.
-
-
-### [1.11.2](https://github.com/aioutecism/amVim-for-VSCode/releases/tag/1.11.2)
-
-- Fix where undo/redo will revert selections that blocks further undo/redo.
-
-
-### [1.11.1](https://github.com/aioutecism/amVim-for-VSCode/releases/tag/1.11.1)
-
-- Fix wrong behavior when deleting word at end of line.
+```
 
 Full list [here](https://github.com/aioutecism/amVim-for-VSCode/releases).
 
