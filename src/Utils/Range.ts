@@ -22,11 +22,23 @@ export class UtilRange {
         return to;
     }
 
-    static toLinewise(from: Range): Range {
-        return new Range(
-            from.start.line, 0,
+    static toLinewise(from: Range, document: TextDocument): Range {
+        let startLine: number;
+        let startCharacter: number;
+
+        if (from.start.line !== 0 && from.end.line === document.lineCount - 1) {
+            startLine = from.start.line - 1;
+            startCharacter = Infinity;
+        }
+        else {
+            startLine = from.start.line;
+            startCharacter = 0;
+        }
+
+        return document.validateRange(new Range(
+            startLine, startCharacter,
             from.end.line + 1, 0
-        );
+        ));
     }
 
 }
