@@ -218,7 +218,7 @@ export class ActionDelete {
     }
 
     @PrototypeReflect.metadata(SymbolMetadata.Action.isChange, true)
-    static line(args: {
+    static byLines(args: {
         shouldYank?: boolean
     }): Thenable<boolean> {
         args.shouldYank = args.shouldYank === undefined ? false : args.shouldYank;

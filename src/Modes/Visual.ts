@@ -40,15 +40,15 @@ export class ModeVisual extends Mode {
         { keys: 'backspace', actions: [ActionDelete.selectionsOrRight], args: {shouldYank: true} },
         { keys: 'delete', actions: [ActionDelete.selectionsOrRight], args: {shouldYank: true} },
         { keys: 'x', actions: [ActionDelete.selectionsOrRight], args: {shouldYank: true} },
-        { keys: 'X', actions: [ActionDelete.line], args: {shouldYank: true} },
+        { keys: 'X', actions: [ActionDelete.byLines], args: {shouldYank: true} },
         { keys: 'd', actions: [ActionDelete.selectionsOrRight], args: {shouldYank: true} },
-        { keys: 'D', actions: [ActionDelete.line], args: {shouldYank: true} },
+        { keys: 'D', actions: [ActionDelete.byLines], args: {shouldYank: true} },
         { keys: 'c', actions: [
             ActionDelete.selectionsOrRight,
             ActionMode.toInsert,
         ], args: {shouldYank: true} },
         { keys: 'C', actions: [
-            ActionDelete.line,
+            ActionDelete.byLines,
             ActionInsert.newLineBefore,
             ActionMode.toInsert,
         ], args: {shouldYank: true} },
@@ -57,7 +57,7 @@ export class ModeVisual extends Mode {
             ActionMode.toInsert,
         ], args: {shouldYank: true} },
         { keys: 'S', actions: [
-            ActionDelete.line,
+            ActionDelete.byLines,
             ActionInsert.newLineBefore,
             ActionMode.toInsert,
         ], args: {shouldYank: true} },
