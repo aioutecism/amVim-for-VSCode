@@ -53,7 +53,7 @@ export class ActionRegister {
         });
 
         if (args.motions.some(motion => motion.isLinewise)) {
-            ranges = ranges.map(range => document.validateRange(UtilRange.toLinewise(range)));
+            ranges = ranges.map(range => UtilRange.toLinewise(range, document));
         }
 
         ranges = UtilRange.unionOverlaps(ranges);
@@ -99,9 +99,9 @@ export class ActionRegister {
             return Promise.resolve(false);
         }
 
-        let ranges = activeTextEditor.selections.map(selection => {
-            return UtilRange.toLinewise(selection);
-        });
+        const document = activeTextEditor.document;
+
+        let ranges = activeTextEditor.selections.map(selection => UtilRange.toLinewise(selection, document));
 
         ranges = UtilRange.unionOverlaps(ranges);
 

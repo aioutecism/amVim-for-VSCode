@@ -39,7 +39,7 @@ export class ActionDelete {
         });
 
         if (args.motions.some(motion => motion.isLinewise)) {
-            ranges = ranges.map(range => document.validateRange(UtilRange.toLinewise(range)));
+            ranges = ranges.map(range => UtilRange.toLinewise(range, document));
         }
 
         ranges = UtilRange.unionOverlaps(ranges);
@@ -231,12 +231,7 @@ export class ActionDelete {
 
         const document = activeTextEditor.document;
 
-        let ranges = activeTextEditor.selections.map(selection => document.validateRange(
-            new Range(
-                selection.start.line, 0,
-                selection.end.line + 1, 0
-            )
-        ));
+        let ranges = activeTextEditor.selections.map(selection => UtilRange.toLinewise(selection, document));
 
         ranges = UtilRange.unionOverlaps(ranges);
 
