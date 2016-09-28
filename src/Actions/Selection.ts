@@ -48,26 +48,6 @@ export class ActionSelection {
         return Promise.resolve(true);
     }
 
-    static shrinkAStep(): Thenable<boolean> {
-        const activeTextEditor = window.activeTextEditor;
-
-        if (! activeTextEditor) {
-            return Promise.resolve(false);
-        }
-
-        if (activeTextEditor.selections.length > 1) {
-            activeTextEditor.selections = [activeTextEditor.selection];
-        }
-        else if (! activeTextEditor.selection.isEmpty) {
-            return ActionSelection.shrinkToPrimaryActive();
-        }
-        else {
-            return Promise.resolve(false);
-        }
-
-        return Promise.resolve(true);
-    }
-
     static shrinkToPrimaryActive(): Thenable<boolean> {
         const activeTextEditor = window.activeTextEditor;
 
@@ -75,13 +55,7 @@ export class ActionSelection {
             return Promise.resolve(false);
         }
 
-        let position = activeTextEditor.selection.active;
-
-        if (! activeTextEditor.selection.isReversed && position.character > 0) {
-            position = position.translate(0, -1);
-        }
-
-        activeTextEditor.selection = new Selection(position, position);
+        activeTextEditor.selection = UtilSelection.shrinkToActive(activeTextEditor.selection);
 
         return Promise.resolve(true);
     }
@@ -93,9 +67,11 @@ export class ActionSelection {
             return Promise.resolve(false);
         }
 
-        activeTextEditor.selections = activeTextEditor.selections.map(selection => {
-            return new Selection(selection.active, selection.active);
-        });
+        if (activeTextEditor.selections.every(selection => selection.isEmpty)) {
+            return Promise.resolve(false);
+        }
+
+        activeTextEditor.selections = UtilSelection.shrinkToActives(activeTextEditor.selections);
 
         return Promise.resolve(true);
     }
