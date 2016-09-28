@@ -39,6 +39,11 @@ Set to `false` to disable `Ctrl+<key>` keybindings.
 
 ## Change Log
 
+### [1.11.7](https://github.com/aioutecism/amVim-for-VSCode/releases/tag/1.11.7)
+
+- Preserve multiple cursors when changing to normal mode from insert mode. #132 
+
+
 ### [1.11.6](https://github.com/aioutecism/amVim-for-VSCode/releases/tag/1.11.6)
 
 - Fix wrong behavior when modifying last line of document. #71 
@@ -57,11 +62,6 @@ Set to `false` to disable `Ctrl+<key>` keybindings.
 ### [1.11.3](https://github.com/aioutecism/amVim-for-VSCode/releases/tag/1.11.3)
 
 - Fix when cursor may occur at end of line in Normal mode.
-
-
-### [1.11.2](https://github.com/aioutecism/amVim-for-VSCode/releases/tag/1.11.2)
-
-- Fix where undo/redo will revert selections that blocks further undo/redo.
 
 Full list [here](https://github.com/aioutecism/amVim-for-VSCode/releases).
 
