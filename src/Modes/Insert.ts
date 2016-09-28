@@ -20,11 +20,11 @@ export class ModeInsert extends Mode {
         { keys: 'ctrl+w', actions: [() => ActionDelete.byMotions({motions: [MotionWord.prevStart()]})] },
         { keys: 'ctrl+u', actions: [() => ActionDelete.byMotions({motions: [MotionLine.firstNonBlank()]})] },
 
-        { keys: 'ctrl+c', actions: [() => ActionSelection.shrinkAStep()
+        { keys: 'ctrl+c', actions: [() => ActionSelection.shrinkToActives()
             .then(isShrinked => isShrinked ? Promise.resolve(true) : ActionMode.toNormal())] },
-        { keys: 'ctrl+[', actions: [() => ActionSelection.shrinkAStep()
+        { keys: 'ctrl+[', actions: [() => ActionSelection.shrinkToActives()
             .then(isShrinked => isShrinked ? Promise.resolve(true) : ActionMode.toNormal())] },
-        { keys: 'escape', actions: [() => ActionSelection.shrinkAStep()
+        { keys: 'escape', actions: [() => ActionSelection.shrinkToActives()
             .then(isShrinked => isShrinked ? Promise.resolve(true) : ActionMode.toNormal())] },
     ];
 

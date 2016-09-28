@@ -80,11 +80,11 @@ export class ModeVisual extends Mode {
         { keys: '/', actions: [ActionFind.focusFindWidget] },
 
         { keys: 'V', actions: [ActionMode.toVisualLine] },
-        { keys: 'v', actions: [ActionSelection.shrinkToPrimaryActive] },
+        { keys: 'v', actions: [ActionSelection.shrinkToActives] },
 
-        { keys: 'ctrl+c', actions: [ActionSelection.shrinkToPrimaryActive] },
-        { keys: 'ctrl+[', actions: [ActionSelection.shrinkToPrimaryActive] },
-        { keys: 'escape', actions: [ActionSelection.shrinkToPrimaryActive] },
+        { keys: 'ctrl+c', actions: [ActionSelection.shrinkToActives] },
+        { keys: 'ctrl+[', actions: [ActionSelection.shrinkToActives] },
+        { keys: 'escape', actions: [ActionSelection.shrinkToActives] },
     ];
 
     constructor() {
