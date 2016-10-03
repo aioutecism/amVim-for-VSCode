@@ -64,6 +64,11 @@ export class SpecialKeyMotion extends GenericMapper implements SpecialKeyCommon 
         { keys: '{N} -', motionGenerators: [MotionCharacter.up, MotionLine.firstNonBlank] },
         { keys: '+',     motionGenerators: [MotionCharacter.down, MotionLine.firstNonBlank] },
         { keys: '{N} +', motionGenerators: [MotionCharacter.down, MotionLine.firstNonBlank] },
+        { keys: '_',     motionGenerators: [MotionLine.firstNonBlank] },
+        { keys: '{N} _', motionGenerators: [
+            (args: {n: number}) => MotionCharacter.down({ n: args.n - 1 }),
+            MotionLine.firstNonBlank
+        ] },
 
         { keys: 'g g',     motionGenerators: [MotionDocument.toLine, MotionLine.firstNonBlank], args: {n: 1} },
         { keys: '{N} g g', motionGenerators: [MotionDocument.toLine, MotionLine.firstNonBlank] },
