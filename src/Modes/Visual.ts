@@ -8,6 +8,7 @@ import {ActionSelection} from '../Actions/Selection';
 import {ActionRegister} from '../Actions/Register';
 import {ActionDelete} from '../Actions/Delete';
 import {ActionInsert} from '../Actions/Insert';
+import {ActionCase} from '../Actions/Case';
 import {ActionReplace} from '../Actions/Replace';
 import {ActionIndent} from '../Actions/Indent';
 import {ActionJoinLines} from '../Actions/JoinLines';
@@ -71,6 +72,7 @@ export class ModeVisual extends Mode {
         ] },
 
         { keys: 'r {char}', actions: [ActionReplace.selections] },
+        { keys: '~', actions: [ActionCase.switchSelections] },
 
         { keys: '=', actions: [ActionFilter.Format.bySelections] },
 
