@@ -9,6 +9,7 @@ import {ActionRegister} from '../Actions/Register';
 import {ActionDelete} from '../Actions/Delete';
 import {ActionInsert} from '../Actions/Insert';
 import {ActionReplace} from '../Actions/Replace';
+import {ActionCase} from '../Actions/Case';
 import {ActionJoinLines} from '../Actions/JoinLines';
 import {ActionFilter} from '../Actions/Filter';
 import {ActionFind} from '../Actions/Find';
@@ -72,6 +73,7 @@ export class ModeVisualLine extends Mode {
         ] },
 
         { keys: 'r {char}', actions: [ActionReplace.selections] },
+        { keys: '~', actions: [ActionCase.switchSelections] },
 
         { keys: '=', actions: [ActionFilter.Format.bySelections] },
 

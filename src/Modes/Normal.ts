@@ -10,6 +10,7 @@ import {ActionPage} from '../Actions/Page';
 import {ActionInsert} from '../Actions/Insert';
 import {ActionDelete} from '../Actions/Delete';
 import {ActionReplace} from '../Actions/Replace';
+import {ActionCase} from '../Actions/Case';
 import {ActionRegister} from '../Actions/Register';
 import {ActionReveal} from '../Actions/Reveal';
 import {ActionSuggestion} from '../Actions/Suggestion';
@@ -136,6 +137,10 @@ export class ModeNormal extends Mode {
         { keys: 'J', actions: [ActionJoinLines.onSelections] },
 
         { keys: 'r {char}', actions: [ActionReplace.characters] },
+        { keys: '~', actions: [
+            ActionCase.switchActives,
+            () => ActionMoveCursor.byMotions({motions: [MotionCharacter.right()]}),
+        ] },
 
         { keys: 'y y', actions: [ActionRegister.yankLines] },
         { keys: 'Y', actions: [ActionRegister.yankLines] },
