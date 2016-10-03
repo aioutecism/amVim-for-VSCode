@@ -39,6 +39,12 @@ Set to `false` to disable `Ctrl+<key>` keybindings.
 
 ## Change Log
 
+### [1.12.0](https://github.com/aioutecism/amVim-for-VSCode/releases/tag/1.12.0)
+
+- Added support for `{N} _`.
+- Added support for `~` and `{visual} ~`.
+
+
 ### [1.11.7](https://github.com/aioutecism/amVim-for-VSCode/releases/tag/1.11.7)
 
 - Preserve multiple cursors when changing to normal mode from insert mode. #132 
@@ -57,11 +63,6 @@ Set to `false` to disable `Ctrl+<key>` keybindings.
 ### [1.11.4](https://github.com/aioutecism/amVim-for-VSCode/releases/tag/1.11.4)
 
 - Fix when selection will miss one character when doing `k` or `j` in Visual mode.
-
-
-### [1.11.3](https://github.com/aioutecism/amVim-for-VSCode/releases/tag/1.11.3)
-
-- Fix when cursor may occur at end of line in Normal mode.
 
 Full list [here](https://github.com/aioutecism/amVim-for-VSCode/releases).
 
