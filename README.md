@@ -39,6 +39,11 @@ Set to `false` to disable `Ctrl+<key>` keybindings.
 
 ## Change Log
 
+### [1.13.0](https://github.com/aioutecism/amVim-for-VSCode/releases/tag/1.13.0)
+
+- Added support for `N space` and `N backspace` motions.
+
+
 ### [1.12.0](https://github.com/aioutecism/amVim-for-VSCode/releases/tag/1.12.0)
 
 - Added support for `{N} _`.
@@ -58,11 +63,6 @@ Set to `false` to disable `Ctrl+<key>` keybindings.
 ### [1.11.5](https://github.com/aioutecism/amVim-for-VSCode/releases/tag/1.11.5)
 
 - Fix wrong cursor position when doing `o` in Insert mode.
-
-
-### [1.11.4](https://github.com/aioutecism/amVim-for-VSCode/releases/tag/1.11.4)
-
-- Fix when selection will miss one character when doing `k` or `j` in Visual mode.
 
 Full list [here](https://github.com/aioutecism/amVim-for-VSCode/releases).
 
