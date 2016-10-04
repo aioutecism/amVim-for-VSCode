@@ -1,5 +1,5 @@
 export const raws = [].concat(
-    'backspace delete escape left right up down'
+    'backspace delete space escape left right up down'
         .split(' '),
 
     'cruwfb['

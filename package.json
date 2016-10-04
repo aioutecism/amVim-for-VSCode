@@ -46,6 +46,7 @@
         "keybindings": [
             { "command": "amVim.backspace", "key": "backspace", "when": "editorTextFocus && amVim.mode != 'INSERT'" },
             { "command": "amVim.delete",    "key": "delete",    "when": "editorTextFocus && amVim.mode != 'INSERT'" },
+            { "command": "amVim.space",     "key": "space",     "when": "editorTextFocus && amVim.mode != 'INSERT'" },
             { "command": "amVim.left",      "key": "left",      "when": "editorTextFocus && amVim.mode != 'INSERT'" },
             { "command": "amVim.right",     "key": "right",     "when": "editorTextFocus && amVim.mode != 'INSERT'" },
             { "command": "amVim.up",        "key": "up",        "when": "editorTextFocus && amVim.mode != 'INSERT'" },
