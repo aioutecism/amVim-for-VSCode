@@ -2,12 +2,19 @@ import {window, Position} from 'vscode';
 
 export abstract class Motion {
 
-    // TODO: Mark as readonly after TypeScript 2
-    isLinewise = false;
-    isCharacterUpdated = true;
+    readonly isLinewise: boolean;
+    readonly isCharacterUpdated: boolean;
 
     private lineDelta = 0;
     private characterDelta = 0;
+
+    constructor(args: {
+        isLinewise?: boolean,
+        isCharacterUpdated?: boolean,
+    } = {}) {
+        this.isLinewise = args.isLinewise === undefined ? false : args.isLinewise;
+        this.isCharacterUpdated = args.isCharacterUpdated === undefined ? true : args.isCharacterUpdated;
+    }
 
     protected translate(lineDelta: number, characterDelta: number): void {
         this.lineDelta += lineDelta;
