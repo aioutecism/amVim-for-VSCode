@@ -6,7 +6,7 @@ export class ActionInsert {
 
     @PrototypeReflect.metadata(SymbolMetadata.Action.isChange, true)
     static characterAtSelections(args: { character: string, replaceCharCnt?: number }): Thenable<boolean> {
-        if (args.replaceCharCnt != null) {
+        if (args.replaceCharCnt !== undefined) {
             return commands.executeCommand('default:replacePreviousChar', {
                 text: args.character,
                 replaceCharCnt: args.replaceCharCnt,

@@ -11,7 +11,7 @@ import {ActionMoveCursor} from './Actions/MoveCursor';
 export class Dispatcher {
 
     private currentMode: Mode;
-    get currentModeId(): ModeID {
+    get currentModeId(): ModeID | null {
         return this.currentMode ? this.currentMode.id : null;
     }
 

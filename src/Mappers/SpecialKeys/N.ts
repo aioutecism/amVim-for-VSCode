@@ -19,7 +19,7 @@ export class SpecialKeyN implements SpecialKeyCommon {
         }
     }
 
-    matchSpecial(inputs: string[]): SpecialKeyMatchResult {
+    matchSpecial(inputs: string[]): SpecialKeyMatchResult | null {
         if (! /[1-9]/.test(inputs[0])) {
             return null;
         }

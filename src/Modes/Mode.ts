@@ -68,7 +68,7 @@ export abstract class Mode {
         else if (kind === MatchResultKind.FOUND) {
             this.updateStatusBar();
             this.clearInputs();
-            this.pushCommandMap(map);
+            this.pushCommandMap(map!);
             this.execute();
         }
         else if (kind === MatchResultKind.WAITING) {

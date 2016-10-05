@@ -7,7 +7,7 @@ export class ActionMoveCursor {
 
     private static preferedColumnBySelectionIndex: {[i: number]: number} = [];
     private static isUpdatePreferedColumnBlocked = false;
-    private static preferedColumnBlockTimer: NodeJS.Timer;
+    private static preferedColumnBlockTimer: NodeJS.Timer | undefined;
 
     private static blockUpdatePreferedColumn(): void {
         if (ActionMoveCursor.preferedColumnBlockTimer) {
@@ -18,7 +18,7 @@ export class ActionMoveCursor {
 
         ActionMoveCursor.preferedColumnBlockTimer = setTimeout(function() {
             ActionMoveCursor.isUpdatePreferedColumnBlocked = false;
-            ActionMoveCursor.preferedColumnBlockTimer = null;
+            ActionMoveCursor.preferedColumnBlockTimer = undefined;
         }, 100);
     }
 

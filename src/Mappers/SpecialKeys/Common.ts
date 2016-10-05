@@ -11,5 +11,5 @@ export interface SpecialKeyCommon {
     indicator: string;
 
     unmapConflicts(node: RecursiveMap, keyToMap: string): void;
-    matchSpecial(inputs: string[]): SpecialKeyMatchResult;
+    matchSpecial(inputs: string[]): SpecialKeyMatchResult | null;
 }

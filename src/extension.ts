@@ -15,6 +15,6 @@ export function activate(context: ExtensionContext) {
     );
 }
 
-export function currentModeId(): ModeID {
+export function currentModeId(): ModeID | null {
     return dispatcher ? dispatcher.currentModeId : null;
 }

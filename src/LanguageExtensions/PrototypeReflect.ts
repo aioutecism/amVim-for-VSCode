@@ -72,7 +72,7 @@ export class PrototypeReflect {
                 if (!isObject(targetObject)) {
                     throw new TypeError();
                 }
-                PrototypeReflect.defineMetadata(key, value, targetObject[targetKey]);
+                PrototypeReflect.defineMetadata(key, value, targetObject[targetKey!]);
             }
             else {
                 if (!isConstructor(targetObject)) {

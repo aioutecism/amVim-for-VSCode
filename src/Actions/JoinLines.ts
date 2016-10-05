@@ -15,9 +15,9 @@ export class ActionJoinLines {
         }
 
         return activeTextEditor.edit((editBuilder) => {
-            const rangeByLine = (line: number): Range => {
+            const rangeByLine = (line: number): Range | null => {
                 if (line >= activeTextEditor.document.lineCount - 1) {
-                    return;
+                    return null;
                 }
 
                 const thisLine = activeTextEditor.document.lineAt(line).text;

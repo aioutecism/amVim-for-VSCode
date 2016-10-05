@@ -28,7 +28,7 @@ export class ActionMode {
         return commands.executeCommand(`amVim.mode.${ModeID.INSERT}`);
     }
 
-    static switchByActiveSelections(currentMode: ModeID): Thenable<boolean> {
+    static switchByActiveSelections(currentMode: ModeID | null): Thenable<boolean> {
         const activeTextEditor = window.activeTextEditor;
 
         if (! activeTextEditor) {

@@ -66,8 +66,7 @@ export function run() {
 
             let promise = Promise.resolve();
 
-            while (testCases.length > 0) {
-                const testCase = testCases.shift();
+            testCases.forEach(testCase => {
                 promise = promise.then(() => {
                     TestUtil.setSelection(testCase.from);
 
@@ -77,7 +76,7 @@ export function run() {
                         assert.deepEqual(TestUtil.getSelection(), testCase.to);
                     });
                 });
-            }
+            });
 
             promise.then(() => {
                 done();
