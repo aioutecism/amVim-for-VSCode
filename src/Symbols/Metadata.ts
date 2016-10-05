@@ -1,6 +1,6 @@
 export const SymbolMetadata = {
     Action: {
-        isChange: Symbol('isChange'),
-        shouldSkipOnRepeat: Symbol('shouldSkipOnRepeat'),
+        isChange: 'isChange',
+        shouldSkipOnRepeat: 'shouldSkipOnRepeat',
     }
 };

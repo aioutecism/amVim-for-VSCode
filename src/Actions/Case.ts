@@ -1,5 +1,5 @@
 import {window, Range} from 'vscode';
-import {PrototypeReflect} from '../LanguageExtensions/PrototypeReflect';
+import {StaticReflect} from '../LanguageExtensions/StaticReflect';
 import {SymbolMetadata} from '../Symbols/Metadata';
 import {ActionReveal} from './Reveal';
 import {UtilRange} from '../Utils/Range';
@@ -7,7 +7,7 @@ import {UtilCharacter} from '../Utils/Character';
 
 export class ActionCase {
 
-    @PrototypeReflect.metadata(SymbolMetadata.Action.isChange, true)
+    @StaticReflect.metadata(SymbolMetadata.Action.isChange, true)
     static switchSelections(): Thenable<boolean> {
         const activeTextEditor = window.activeTextEditor;
 
@@ -24,7 +24,7 @@ export class ActionCase {
             .then(() => ActionReveal.primaryCursor());
     }
 
-    @PrototypeReflect.metadata(SymbolMetadata.Action.isChange, true)
+    @StaticReflect.metadata(SymbolMetadata.Action.isChange, true)
     static switchActives(args: {n?: number}): Thenable<boolean> {
         args.n = args.n === undefined ? 1 : args.n;
 

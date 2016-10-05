@@ -1,5 +1,5 @@
 import {window} from 'vscode';
-import {PrototypeReflect} from '../LanguageExtensions/PrototypeReflect';
+import {StaticReflect} from '../LanguageExtensions/StaticReflect';
 import {SymbolMetadata} from '../Symbols/Metadata';
 import {MatchResultKind} from '../Mappers/Generic';
 import {CommandMap, CommandMapper} from '../Mappers/Command';
@@ -108,7 +108,7 @@ export abstract class Mode {
             }
 
             const isAnyActionIsChange = map.actions.some(action => {
-                return PrototypeReflect.getMetadata(SymbolMetadata.Action.isChange, action);
+                return StaticReflect.getMetadata(SymbolMetadata.Action.isChange, action);
             });
             if (isAnyActionIsChange) {
                 this.onWillCommandMapMakesChanges(map);

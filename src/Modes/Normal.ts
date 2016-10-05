@@ -1,5 +1,5 @@
 import {TextEditorRevealType} from 'vscode';
-import {PrototypeReflect} from '../LanguageExtensions/PrototypeReflect';
+import {StaticReflect} from '../LanguageExtensions/StaticReflect';
 import {SymbolMetadata} from '../Symbols/Metadata';
 import {Mode, ModeID} from './Mode';
 import {CommandMap} from '../Mappers/Command';
@@ -217,7 +217,7 @@ export class ModeNormal extends Mode {
         }
 
         const actions = map.actions.filter(action => {
-            return PrototypeReflect.getMetadata(SymbolMetadata.Action.shouldSkipOnRepeat, action) !== true;
+            return StaticReflect.getMetadata(SymbolMetadata.Action.shouldSkipOnRepeat, action) !== true;
         });
 
         this.recordedCommandMaps = [

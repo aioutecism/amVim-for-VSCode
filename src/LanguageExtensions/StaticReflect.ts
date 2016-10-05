@@ -10,20 +10,45 @@ function isConstructor(x: any): boolean {
     return typeof x === 'function';
 }
 
-function isPrototypeExists(x: any): boolean {
-    return x !== null
-        && x !== undefined
-        && x.prototype !== null
-        && x.prototype !== undefined;
+interface Metadata {
+    [key: string]: any;
+}
+
+interface MetadataMap {
+    target: any;
+    metadata: Metadata;
 }
 
 /**
- * Prototype version of https://github.com/rbuckton/ReflectDecorators/ (Partial)
- * Save metadata in prototype so we can get it without context.
+ * Static version of https://github.com/rbuckton/ReflectDecorators/ (Partial)
+ * Save metadata as static so we can get it without context.
  */
-export class PrototypeReflect {
+export class StaticReflect {
 
-    private static metadataKey = Symbol('ReflectMetadata');
+    private static metadataMaps: MetadataMap[] = [];
+
+    private static obtainMetadata(target: any, shouldCreateWhenNotExist: boolean = false): Metadata | undefined {
+        for (let i = 0; i < this.metadataMaps.length; i++) {
+            const map = this.metadataMaps[i];
+            if (map.target === target) {
+                return map.metadata;
+            }
+        }
+
+        if (shouldCreateWhenNotExist) {
+            const map = {
+                target,
+                metadata: {}
+            };
+
+            this.metadataMaps.push(map);
+
+            return map.metadata;
+        }
+        else {
+            return undefined;
+        }
+    }
 
     /**
       * A default metadata decorator factory that can be used on a class, class member, or parameter.
@@ -36,31 +61,31 @@ export class PrototypeReflect {
       * @example
       *
       *     // constructor
-      *     @PrototypeReflect.metadata(key, value)
+      *     @StaticReflect.metadata(key, value)
       *     class C {
       *     }
       *
       *     // property (on constructor)
       *     class C {
-      *         @PrototypeReflect.metadata(key, value)
+      *         @StaticReflect.metadata(key, value)
       *         static staticProperty;
       *     }
       *
       *     // property (on prototype)
       *     class C {
-      *         @PrototypeReflect.metadata(key, value)
+      *         @StaticReflect.metadata(key, value)
       *         property;
       *     }
       *
       *     // method (on constructor)
       *     class C {
-      *         @PrototypeReflect.metadata(key, value)
+      *         @StaticReflect.metadata(key, value)
       *         static staticMethod() { }
       *     }
       *
       *     // method (on prototype)
       *     class C {
-      *         @PrototypeReflect.metadata(key, value)
+      *         @StaticReflect.metadata(key, value)
       *         method() { }
       *     }
       */
@@ -72,13 +97,13 @@ export class PrototypeReflect {
                 if (!isObject(targetObject)) {
                     throw new TypeError();
                 }
-                PrototypeReflect.defineMetadata(key, value, targetObject[targetKey!]);
+                StaticReflect.defineMetadata(key, value, targetObject[targetKey!]);
             }
             else {
                 if (!isConstructor(targetObject)) {
                     throw new TypeError();
                 }
-                PrototypeReflect.defineMetadata(key, value, targetObject);
+                StaticReflect.defineMetadata(key, value, targetObject);
             }
         };
 
@@ -86,30 +111,17 @@ export class PrototypeReflect {
     }
 
     static defineMetadata(key: string | symbol, value: any, target: any): void {
-        if (!isPrototypeExists(target)) {
-            throw new TypeError();
-        }
-
-        if (target.prototype[PrototypeReflect.metadataKey] === undefined) {
-            target.prototype[PrototypeReflect.metadataKey] = {};
-        }
-
-        target.prototype[PrototypeReflect.metadataKey][key] = value;
+        const metadata = this.obtainMetadata(target, true);
+        metadata![key] = value;
     }
 
     static getMetadata(key: string | symbol, target: any): any {
-        if (!isPrototypeExists(target)) {
-            return undefined;
-        }
+        const metadata = this.obtainMetadata(target);
 
-        try {
-            // TODO: Currently using try-catch to workaround wired bug where target.prototype becomes undefined after previous check.
-            // Using https://github.com/rbuckton/ReflectDecorators may solve the problem since they don't save things inside prototype'
-            return (target.prototype[PrototypeReflect.metadataKey] === undefined)
-                ? undefined
-                : target.prototype[PrototypeReflect.metadataKey][key];
+        if (metadata !== undefined) {
+            return metadata[key];
         }
-        catch (error) {
+        else {
             return undefined;
         }
     }

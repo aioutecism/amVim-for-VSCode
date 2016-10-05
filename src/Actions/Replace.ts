@@ -1,12 +1,12 @@
 import {window, Range} from 'vscode';
-import {PrototypeReflect} from '../LanguageExtensions/PrototypeReflect';
+import {StaticReflect} from '../LanguageExtensions/StaticReflect';
 import {SymbolMetadata} from '../Symbols/Metadata';
 import {ActionReveal} from './Reveal';
 import {UtilRange} from '../Utils/Range';
 
 export class ActionReplace {
 
-    @PrototypeReflect.metadata(SymbolMetadata.Action.isChange, true)
+    @StaticReflect.metadata(SymbolMetadata.Action.isChange, true)
     static selections(args: {character: string}): Thenable<boolean> {
         const activeTextEditor = window.activeTextEditor;
 
@@ -23,7 +23,7 @@ export class ActionReplace {
             .then(() => ActionReveal.primaryCursor());
     }
 
-    @PrototypeReflect.metadata(SymbolMetadata.Action.isChange, true)
+    @StaticReflect.metadata(SymbolMetadata.Action.isChange, true)
     static characters(args: {character: string, n?: number}): Thenable<boolean> {
         args.n = args.n === undefined ? 1 : args.n;
 

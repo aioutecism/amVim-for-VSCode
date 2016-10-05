@@ -1,5 +1,5 @@
 import {window, Position, Range} from 'vscode';
-import {PrototypeReflect} from '../LanguageExtensions/PrototypeReflect';
+import {StaticReflect} from '../LanguageExtensions/StaticReflect';
 import {SymbolMetadata} from '../Symbols/Metadata';
 import {ActionMoveCursor} from './MoveCursor';
 import {ActionSelection} from './Selection';
@@ -105,7 +105,7 @@ export class ActionRegister {
         return ActionRegister.yankRanges(ranges);
     }
 
-    @PrototypeReflect.metadata(SymbolMetadata.Action.isChange, true)
+    @StaticReflect.metadata(SymbolMetadata.Action.isChange, true)
     static putAfter(): Thenable<boolean> {
         const activeTextEditor = window.activeTextEditor;
 
@@ -145,7 +145,7 @@ export class ActionRegister {
             });
     }
 
-    @PrototypeReflect.metadata(SymbolMetadata.Action.isChange, true)
+    @StaticReflect.metadata(SymbolMetadata.Action.isChange, true)
     static putBefore(): Thenable<boolean> {
         const activeTextEditor = window.activeTextEditor;
 
