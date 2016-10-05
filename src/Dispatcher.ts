@@ -15,7 +15,7 @@ export class Dispatcher {
         return this.currentMode ? this.currentMode.id : null;
     }
 
-    private modes: {[k: number]: Mode} = {
+    private modes: {[k: string]: Mode} = {
         [ModeID.NORMAL]: new ModeNormal(),
         [ModeID.VISUAL]: new ModeVisual(),
         [ModeID.VISUAL_LINE]: new ModeVisualLine(),
@@ -26,7 +26,7 @@ export class Dispatcher {
 
     constructor(context: ExtensionContext) {
         Object.keys(this.modes).forEach(key => {
-            let mode = this.modes[key] as Mode;
+            let mode = this.modes[key];
             context.subscriptions.push(commands.registerCommand(`amVim.mode.${mode.id}`, () => {
                 this.switchMode(mode.id);
             }));
@@ -93,7 +93,7 @@ export class Dispatcher {
         Disposable.from(...this.disposables).dispose();
 
         Object.keys(this.modes).forEach(id => {
-            (this.modes[id] as Mode).dispose();
+            (this.modes[id]).dispose();
         });
     }
 
