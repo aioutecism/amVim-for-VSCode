@@ -78,14 +78,17 @@
         "*"
     ],
     "scripts": {
-        "vscode:prepublish": "node ./node_modules/vscode/bin/compile",
-        "compile": "node ./node_modules/vscode/bin/compile -watch -p ./",
+        "vscode:prepublish": "tsc -p ./",
+        "compile": "tsc -watch -p ./",
         "postinstall": "node ./node_modules/vscode/bin/install",
         "update-readme": "node ./node_modules/github-releases-renderer/index.js run aioutecism amVim-for-VSCode README.template.md README.md -c 5"
     },
     "devDependencies": {
-        "typescript": "^1.8.10",
-        "vscode": "^0.11.17",
+        "typescript": "^2.0.3",
+        "vscode": "^1.0.0",
+        "mocha": "^2.3.3",
+        "@types/node": "^6.0.40",
+        "@types/mocha": "^2.2.32",
         "github-releases-renderer": "aioutecism/github-releases-renderer"
     }
 }

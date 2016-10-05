@@ -1,14 +1,17 @@
 {
     "compilerOptions": {
         "module": "commonjs",
-        "target": "es5",
-        "experimentalDecorators": true,
+        "target": "es6",
         "outDir": "out",
-        "noLib": true,
+        "lib": [
+            "es6"
+        ],
+        "experimentalDecorators": true,
         "sourceMap": true,
         "rootDir": "."
     },
     "exclude": [
-        "node_modules"
+        "node_modules",
+        ".vscode-test"
     ]
 }
