@@ -1,4 +1,4 @@
-import {window, TextDocument, Position, Range} from 'vscode';
+import {TextDocument, Position, Range} from 'vscode';
 import {TextObject} from './TextObject';
 
 export class TextObjectQuotedString extends TextObject {

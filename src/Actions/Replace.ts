@@ -1,8 +1,7 @@
-import {window, commands, Range} from 'vscode';
+import {window, Range} from 'vscode';
 import {PrototypeReflect} from '../LanguageExtensions/PrototypeReflect';
 import {SymbolMetadata} from '../Symbols/Metadata';
 import {ActionReveal} from './Reveal';
-import {Motion} from '../Motions/Motion';
 import {UtilRange} from '../Utils/Range';
 
 export class ActionReplace {

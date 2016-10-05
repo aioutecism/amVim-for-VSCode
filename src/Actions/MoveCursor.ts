@@ -1,7 +1,6 @@
 import {window, Position, Selection} from 'vscode';
 import {ActionReveal} from './Reveal';
 import {Motion} from '../Motions/Motion';
-import {MotionCharacter} from '../Motions/Character';
 import {UtilPosition} from '../Utils/Position';
 
 export class ActionMoveCursor {

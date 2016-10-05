@@ -1,4 +1,4 @@
-import {window, TextEditor, TextEditorCursorStyle} from 'vscode';
+import {window, TextEditorCursorStyle} from 'vscode';
 
 export class ActionBlockCursor {
 

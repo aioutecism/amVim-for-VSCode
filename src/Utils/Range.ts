@@ -1,5 +1,4 @@
 import {TextDocument, Range} from 'vscode';
-import {UtilPosition} from './Position';
 
 export class UtilRange {
 

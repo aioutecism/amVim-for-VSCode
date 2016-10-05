@@ -1,4 +1,3 @@
-import {Position} from 'vscode';
 import {Motion} from './Motion';
 
 export class MotionCharacter extends Motion {

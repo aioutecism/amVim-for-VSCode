@@ -1,7 +1,6 @@
-import {window, commands, Disposable, TextEditorRevealType} from 'vscode';
+import {TextEditorRevealType} from 'vscode';
 import {PrototypeReflect} from '../LanguageExtensions/PrototypeReflect';
 import {SymbolMetadata} from '../Symbols/Metadata';
-import {Configuration} from '../Configuration';
 import {Mode, ModeID} from './Mode';
 import {CommandMap} from '../Mappers/Command';
 import {ActionBlockCursor} from '../Actions/BlockCursor';

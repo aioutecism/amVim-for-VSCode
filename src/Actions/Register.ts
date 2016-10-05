@@ -1,7 +1,6 @@
-import {window, Position, Range, Selection} from 'vscode';
+import {window, Position, Range} from 'vscode';
 import {PrototypeReflect} from '../LanguageExtensions/PrototypeReflect';
 import {SymbolMetadata} from '../Symbols/Metadata';
-import {ActionReveal} from './Reveal';
 import {ActionMoveCursor} from './MoveCursor';
 import {ActionSelection} from './Selection';
 import {Motion} from '../Motions/Motion';
@@ -9,8 +8,6 @@ import {MotionCharacter} from '../Motions/Character';
 import {MotionLine} from '../Motions/Line';
 import {TextObject} from '../TextObjects/TextObject';
 import {UtilRange} from '../Utils/Range';
-
-enum PutDirection {Before, After};
 
 export class ActionRegister {
 
@@ -156,7 +153,6 @@ export class ActionRegister {
             return Promise.resolve(false);
         }
 
-        const characters = ActionRegister.stash.length;
         const lines = ActionRegister.stash.split(/\n/).length;
 
         const putPositions = activeTextEditor.selections.map(selection => {

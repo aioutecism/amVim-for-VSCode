@@ -1,11 +1,10 @@
 import * as assert from 'assert';
 import * as TestUtil from '../Util';
-import {window, Selection} from 'vscode';
+import {Selection} from 'vscode';
 
 import {Configuration} from '../../src/Configuration';
 import {ActionSelection} from '../../src/Actions/Selection';
 import {TextObjectWord} from '../../src/TextObjects/Word';
-import {ModeVisual} from '../../src/Modes/Visual';
 
 export function run() {
 

@@ -1,5 +1,4 @@
 import {window, Position} from 'vscode';
-import {Configuration} from '../Configuration';
 import {Motion} from './Motion';
 import {WordCharacterKind, UtilWord} from '../Utils/Word';
 

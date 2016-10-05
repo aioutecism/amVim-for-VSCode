@@ -1,6 +1,6 @@
 import * as assert from 'assert';
 import * as TestUtil from '../Util';
-import {window, Selection} from 'vscode';
+import {Selection} from 'vscode';
 
 import {Configuration} from '../../src/Configuration';
 import {ActionDelete} from '../../src/Actions/Delete';

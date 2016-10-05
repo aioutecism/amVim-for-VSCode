@@ -6,7 +6,6 @@ import {ModeVisual} from './Modes/Visual';
 import {ModeVisualLine} from './Modes/VisualLine';
 import {ModeInsert} from './Modes/Insert';
 import {ActionMode} from './Actions/Mode';
-import {ActionSelection} from './Actions/Selection';
 import {ActionMoveCursor} from './Actions/MoveCursor';
 
 export class Dispatcher {

@@ -1,10 +1,6 @@
-import {window, commands, Position, Selection, TextDocument} from 'vscode';
+import {commands} from 'vscode';
 import {PrototypeReflect} from '../LanguageExtensions/PrototypeReflect';
 import {SymbolMetadata} from '../Symbols/Metadata';
-import {ActionReveal} from './Reveal';
-import {ActionMoveCursor} from './MoveCursor';
-import {MotionCharacter} from '../Motions/Character';
-import {MotionLine} from '../Motions/Line';
 
 export class ActionInsert {
 

@@ -1,5 +1,4 @@
-import {window, Position, Range} from 'vscode';
-import {UtilPosition} from '../Utils/Position';
+import {window, Position} from 'vscode';
 
 export abstract class Motion {
 

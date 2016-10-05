@@ -1,10 +1,7 @@
-import {Configuration} from '../Configuration';
 import {Mode, ModeID} from './Mode';
-import * as Keys from '../Keys';
 import {MatchResultKind} from '../Mappers/Generic';
 import {CommandMap} from '../Mappers/Command';
 import {ActionInsert} from '../Actions/Insert';
-import {ActionReplace} from '../Actions/Replace';
 import {ActionDelete} from '../Actions/Delete';
 import {ActionSelection} from '../Actions/Selection';
 import {ActionMode} from '../Actions/Mode';

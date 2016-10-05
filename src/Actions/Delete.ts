@@ -1,4 +1,4 @@
-import {window, commands, Range, Selection} from 'vscode';
+import {window, Range, Selection} from 'vscode';
 import {PrototypeReflect} from '../LanguageExtensions/PrototypeReflect';
 import {SymbolMetadata} from '../Symbols/Metadata';
 import {ActionRegister} from './Register';
