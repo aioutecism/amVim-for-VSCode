@@ -2,6 +2,13 @@ import {Motion} from './Motion';
 
 export class MotionCharacter extends Motion {
 
+    constructor(args: {
+        isLinewise?: boolean
+        isCharacterUpdated?: boolean
+    } = {}) {
+        super(args);
+    }
+
     static left(args: {n?: number} = {}): Motion {
         args.n = args.n === undefined ? 1 : args.n;
 
