@@ -29,7 +29,7 @@
     "author": "aioutecism",
     "license": "ISC",
     "engines": {
-        "vscode": "^1.4.0"
+        "vscode": "^1.6.0"
     },
     "main": "./out/src/extension",
     "contributes": {
