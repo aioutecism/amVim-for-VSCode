@@ -1,5 +1,4 @@
 import {commands} from 'vscode';
-import {ActionSelection} from './Selection';
 
 export class ActionFold {
 
