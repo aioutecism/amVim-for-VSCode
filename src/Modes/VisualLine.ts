@@ -15,6 +15,7 @@ import {ActionFilter} from '../Actions/Filter';
 import {ActionFind} from '../Actions/Find';
 import {ActionMode} from '../Actions/Mode';
 import {ActionIndent} from '../Actions/Indent';
+import {ActionFold} from '../Actions/Fold';
 import {MotionLine} from '../Motions/Line';
 
 export class ModeVisualLine extends Mode {
@@ -84,6 +85,11 @@ export class ModeVisualLine extends Mode {
 
         { keys: 'v', actions: [ActionMode.toVisual] },
         { keys: 'V', actions: [ActionSelection.shrinkToActives] },
+
+        { keys: 'z c', actions: [ActionFold.fold]},
+        { keys: 'z o', actions: [ActionFold.unfold]},
+        { keys: 'z M', actions: [ActionFold.foldAll]},
+        { keys: 'z R', actions: [ActionFold.unfoldAll]},
 
         { keys: 'ctrl+c', actions: [ActionSelection.shrinkToActives] },
         { keys: 'ctrl+[', actions: [ActionSelection.shrinkToActives] },
