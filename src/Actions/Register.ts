@@ -13,6 +13,21 @@ export class ActionRegister {
 
     private static stash: string = '';
 
+    static GetStash(): string {
+        return ActionRegister.stash;
+    }
+
+    static SetStash(one: string): void;
+    static SetStash(list: string[]): void;
+    static SetStash(input: string | string[]): void {
+        if (typeof input === 'string') {
+            ActionRegister.stash = input;
+        }
+        else {
+            ActionRegister.stash = input.join('');
+        }
+    }
+
     static yankRanges(ranges: Range[]): Thenable<boolean> {
         const activeTextEditor = window.activeTextEditor;
 
