@@ -7,7 +7,7 @@ import {UtilRange} from '../Utils/Range';
 export class ActionReplace {
 
     @StaticReflect.metadata(SymbolMetadata.Action.isChange, true)
-    static selections(args: {character: string}): Thenable<boolean> {
+    static selectionsWithCharacter(args: {character: string}): Thenable<boolean> {
         const activeTextEditor = window.activeTextEditor;
 
         if (! activeTextEditor) {
@@ -24,7 +24,7 @@ export class ActionReplace {
     }
 
     @StaticReflect.metadata(SymbolMetadata.Action.isChange, true)
-    static characters(args: {character: string, n?: number}): Thenable<boolean> {
+    static charactersWithCharacter(args: {character: string, n?: number}): Thenable<boolean> {
         args.n = args.n === undefined ? 1 : args.n;
 
         const activeTextEditor = window.activeTextEditor;

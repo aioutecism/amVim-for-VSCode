@@ -135,7 +135,7 @@ export class ModeNormal extends Mode {
         } },
         { keys: 'J', actions: [ActionJoinLines.onSelections] },
 
-        { keys: 'r {char}', actions: [ActionReplace.characters] },
+        { keys: 'r {char}', actions: [ActionReplace.charactersWithCharacter] },
         { keys: '~', actions: [
             ActionCase.switchActives,
             () => ActionMoveCursor.byMotions({motions: [MotionCharacter.right()]}),

@@ -68,7 +68,7 @@ export class ModeVisual extends Mode {
             ActionSelection.shrinkToActives,
         ] },
 
-        { keys: 'r {char}', actions: [ActionReplace.selections] },
+        { keys: 'r {char}', actions: [ActionReplace.selectionsWithCharacter] },
         { keys: '~', actions: [ActionCase.switchSelections] },
 
         { keys: '=', actions: [ActionFilter.Format.bySelections] },
