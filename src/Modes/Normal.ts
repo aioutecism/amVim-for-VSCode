@@ -21,6 +21,7 @@ import {ActionHistory} from '../Actions/History';
 import {ActionIndent} from '../Actions/Indent';
 import {ActionFilter} from '../Actions/Filter';
 import {ActionMode} from '../Actions/Mode';
+import {ActionFold} from '../Actions/Fold';
 import {MotionCharacter} from '../Motions/Character';
 import {MotionLine} from '../Motions/Line';
 
@@ -182,6 +183,10 @@ export class ModeNormal extends Mode {
 
         { keys: 'z .', actions: [ActionReveal.primaryCursor], args: {revealType: TextEditorRevealType.InCenter} },
         { keys: 'z z', actions: [ActionReveal.primaryCursor], args: {revealType: TextEditorRevealType.InCenter} },
+        { keys: 'z c', actions: [ActionFold.fold]},
+        { keys: 'z o', actions: [ActionFold.unfold]},
+        { keys: 'z M', actions: [ActionFold.foldAll]},
+        { keys: 'z R', actions: [ActionFold.unfoldAll]},
 
         { keys: '.', actions: [this.repeatRecordedCommandMaps.bind(this)] },
 
