@@ -39,6 +39,11 @@ Set to `false` to disable `Ctrl+<key>` keybindings.
 
 ## Change Log
 
+### [1.16.0](https://github.com/aioutecism/amVim-for-VSCode/releases/tag/1.16.0)
+
+- Added support for Japanese words. #143
+
+
 ### [1.15.0](https://github.com/aioutecism/amVim-for-VSCode/releases/tag/1.15.0)
 
 - Update to TypeScript 2.0.3. #138 
@@ -59,11 +64,6 @@ Set to `false` to disable `Ctrl+<key>` keybindings.
 
 - Added support for `{N} _`.
 - Added support for `~` and `{visual} ~`.
-
-
-### [1.11.7](https://github.com/aioutecism/amVim-for-VSCode/releases/tag/1.11.7)
-
-- Preserve multiple cursors when changing to normal mode from insert mode. #132
 
 Full list [here](https://github.com/aioutecism/amVim-for-VSCode/releases).
 
