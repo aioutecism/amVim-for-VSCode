@@ -5,7 +5,9 @@ export class UtilSelection {
     static unionOverlaps(from: Selection[]): Selection[] {
         const to: Selection[] = [];
 
-        from.forEach(a => {
+        while (from.length > 0) {
+            let a = from.shift()!;
+
             for (let i = 0; i < from.length; i++) {
                 const b = from[i];
                 if (a.intersection(b) !== undefined) {
@@ -17,8 +19,9 @@ export class UtilSelection {
                     i--;
                 }
             }
+
             to.push(a);
-        });
+        }
 
         return to;
     }

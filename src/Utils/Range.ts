@@ -5,7 +5,9 @@ export class UtilRange {
     static unionOverlaps(from: Range[]): Range[] {
         const to: Range[] = [];
 
-        from.forEach(a => {
+        while (from.length > 0) {
+            let a = from.shift()!;
+
             for (let i = 0; i < from.length; i++) {
                 const b = from[i];
                 if (a.intersection(b) !== undefined) {
@@ -14,8 +16,9 @@ export class UtilRange {
                     i--;
                 }
             }
+
             to.push(a);
-        });
+        }
 
         return to;
     }
