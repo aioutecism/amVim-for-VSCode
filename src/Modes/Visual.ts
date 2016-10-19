@@ -69,7 +69,10 @@ export class ModeVisual extends Mode {
             ActionSelection.shrinkToActives,
         ] },
 
-        { keys: 'r {char}', actions: [ActionReplace.selections] },
+        { keys: 'p', actions: [ActionReplace.selectionsWithRegister], args: {shouldYank: true} },
+        { keys: 'P', actions: [ActionReplace.selectionsWithRegister], args: {shouldYank: true} },
+
+        { keys: 'r {char}', actions: [ActionReplace.selectionsWithCharacter] },
         { keys: '~', actions: [ActionCase.switchSelections] },
 
         { keys: '=', actions: [ActionFilter.Format.bySelections] },
