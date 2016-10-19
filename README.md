@@ -39,6 +39,12 @@ Set to `false` to disable `Ctrl+<key>` keybindings.
 
 ## Change Log
 
+### [1.15.0](https://github.com/aioutecism/amVim-for-VSCode/releases/tag/1.15.0)
+
+- Update to TypeScript 2.0.3. #138 
+- Added `p` support in Visual and VisualLine modes. #142 
+
+
 ### [1.14.0](https://github.com/aioutecism/amVim-for-VSCode/releases/tag/1.14.0)
 
 - Add folding support. Thanks @rebornix #141.
@@ -57,12 +63,7 @@ Set to `false` to disable `Ctrl+<key>` keybindings.
 
 ### [1.11.7](https://github.com/aioutecism/amVim-for-VSCode/releases/tag/1.11.7)
 
-- Preserve multiple cursors when changing to normal mode from insert mode. #132 
-
-
-### [1.11.6](https://github.com/aioutecism/amVim-for-VSCode/releases/tag/1.11.6)
-
-- Fix wrong behavior when modifying last line of document. #71
+- Preserve multiple cursors when changing to normal mode from insert mode. #132
 
 Full list [here](https://github.com/aioutecism/amVim-for-VSCode/releases).
 
