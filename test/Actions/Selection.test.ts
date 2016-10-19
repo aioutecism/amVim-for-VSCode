@@ -1,11 +1,10 @@
 import * as assert from 'assert';
 import * as TestUtil from '../Util';
-import {window, Selection} from 'vscode';
+import {Selection} from 'vscode';
 
 import {Configuration} from '../../src/Configuration';
 import {ActionSelection} from '../../src/Actions/Selection';
 import {TextObjectWord} from '../../src/TextObjects/Word';
-import {ModeVisual} from '../../src/Modes/Visual';
 
 export function run() {
 
@@ -67,8 +66,7 @@ export function run() {
 
             let promise = Promise.resolve();
 
-            while (testCases.length > 0) {
-                const testCase = testCases.shift();
+            testCases.forEach(testCase => {
                 promise = promise.then(() => {
                     TestUtil.setSelection(testCase.from);
 
@@ -78,7 +76,7 @@ export function run() {
                         assert.deepEqual(TestUtil.getSelection(), testCase.to);
                     });
                 });
-            }
+            });
 
             promise.then(() => {
                 done();

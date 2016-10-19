@@ -71,5 +71,7 @@ export class MotionMatchPair extends Motion {
 
             return from;
         }
+
+        return from;
     }
 }

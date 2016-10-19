@@ -1,6 +1,6 @@
 import * as assert from 'assert';
 import * as TestUtil from '../Util';
-import {window, Selection} from 'vscode';
+import {Selection} from 'vscode';
 
 import {Configuration} from '../../src/Configuration';
 import {ActionDelete} from '../../src/Actions/Delete';
@@ -46,8 +46,7 @@ export function run() {
 
         let promise = Promise.resolve();
 
-        while (testCases.length > 0) {
-            const testCase = testCases.shift();
+        testCases.forEach(testCase => {
             promise = promise.then(() => {
 
                 return TestUtil.createTempDocument(testCase.in).then(() => {
@@ -61,7 +60,7 @@ export function run() {
                 });
 
             });
-        }
+        });
 
         promise.then(() => {
             done();
@@ -90,8 +89,7 @@ export function run() {
 
         let promise = Promise.resolve();
 
-        while (testCases.length > 0) {
-            const testCase = testCases.shift();
+        testCases.forEach(testCase => {
             promise = promise.then(() => {
 
                 return TestUtil.createTempDocument(testCase.in).then(() => {
@@ -103,7 +101,7 @@ export function run() {
                 });
 
             });
-        }
+        });
 
         promise.then(() => {
             done();

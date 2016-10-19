@@ -6,10 +6,8 @@ export class MotionDocument extends Motion {
     private line: number;
 
     static toLine(args: {n: number}): Motion {
-        const obj = new MotionDocument();
+        const obj = new MotionDocument({isLinewise: true});
         obj.line = args.n - 1;
-
-        obj.isLinewise = true;
 
         return obj;
     }

@@ -1,4 +1,4 @@
-import {window, TextDocument, Position, Range} from 'vscode';
+import {TextDocument, Position, Range} from 'vscode';
 import {TextObject} from './TextObject';
 
 export class TextObjectBlock extends TextObject {
@@ -42,7 +42,7 @@ export class TextObjectBlock extends TextObject {
         return obj;
     }
 
-    public findStartRange(document: TextDocument, anchor: Position): Range {
+    public findStartRange(document: TextDocument, anchor: Position): Range | null {
         let matchingCount = 0;
         let lineIndex = anchor.line;
 
@@ -83,7 +83,7 @@ export class TextObjectBlock extends TextObject {
         return null;
     }
 
-    public findEndRange(document: TextDocument, anchor: Position): Range {
+    public findEndRange(document: TextDocument, anchor: Position): Range | null {
         let matchingCount = 0;
         let lineIndex = anchor.line;
 

@@ -1,5 +1,3 @@
-import {commands} from 'vscode';
-import {Configuration} from '../Configuration';
 import {Mode, ModeID} from './Mode';
 import {CommandMap} from '../Mappers/Command';
 import {ActionMoveCursor} from '../Actions/MoveCursor';
@@ -16,7 +14,6 @@ import {ActionFind} from '../Actions/Find';
 import {ActionMode} from '../Actions/Mode';
 import {ActionIndent} from '../Actions/Indent';
 import {ActionFold} from '../Actions/Fold';
-import {MotionLine} from '../Motions/Line';
 
 export class ModeVisualLine extends Mode {
 

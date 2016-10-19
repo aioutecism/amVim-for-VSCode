@@ -1,5 +1,4 @@
 import {commands} from 'vscode';
-import {Configuration} from '../Configuration';
 
 export class ActionSuggestion {
 

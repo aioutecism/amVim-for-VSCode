@@ -1,5 +1,4 @@
 import {window, Position} from 'vscode';
-import {Configuration} from '../Configuration';
 import {Motion} from './Motion';
 import {WordCharacterKind, UtilWord} from '../Utils/Word';
 
@@ -16,7 +15,7 @@ export class MotionWord extends Motion {
         super();
         args = Object.assign({useBlankSeparatedStyle: false}, args);
 
-        this.useBlankSeparatedStyle = args.useBlankSeparatedStyle;
+        this.useBlankSeparatedStyle = args.useBlankSeparatedStyle === undefined ? false : args.useBlankSeparatedStyle;
     }
 
     static nextStart(args: {useBlankSeparatedStyle?: boolean} = {}): Motion {
@@ -75,8 +74,8 @@ export class MotionWord extends Motion {
         const document = activeTextEditor.document;
 
         let line = from.line;
-        let previousPosition: Position = null;
-        let previousCharacterKind: WordCharacterKind = null;
+        let previousPosition: Position | undefined;
+        let previousCharacterKind: WordCharacterKind | undefined;
 
         if (this.direction === MotionWordDirection.Next) {
             while (line < document.lineCount) {
@@ -87,9 +86,9 @@ export class MotionWord extends Motion {
                     const currentCharacterKind = UtilWord.getCharacterKind(
                         text.charCodeAt(character), this.useBlankSeparatedStyle);
 
-                    if (previousCharacterKind !== null && previousCharacterKind !== currentCharacterKind) {
-                        let startPosition: Position;
-                        let endPosition: Position;
+                    if (previousPosition !== undefined && previousCharacterKind !== currentCharacterKind) {
+                        let startPosition: Position | undefined;
+                        let endPosition: Position | undefined;
 
                         if (currentCharacterKind !== WordCharacterKind.Blank) {
                             startPosition = new Position(line, character);
@@ -150,9 +149,9 @@ export class MotionWord extends Motion {
                     const currentCharacterKind = UtilWord.getCharacterKind(
                         text.charCodeAt(character), this.useBlankSeparatedStyle);
 
-                    if (previousCharacterKind !== null && previousCharacterKind !== currentCharacterKind) {
-                        let startPosition: Position;
-                        let endPosition: Position;
+                    if (previousPosition !== undefined && previousCharacterKind !== currentCharacterKind) {
+                        let startPosition: Position | undefined;
+                        let endPosition: Position | undefined;
 
                         if (previousCharacterKind !== WordCharacterKind.Blank) {
                             startPosition = previousPosition;

@@ -7,18 +7,18 @@ export abstract class TextObject {
     /**
      * Override this to return start range of text object or null if not found.
      */
-    public findStartRange(document: TextDocument, anchor: Position): Range {
+    public findStartRange(document: TextDocument, anchor: Position): Range | null {
         throw new Error('findStartPosition is not implemented.');
     }
 
     /**
      * Override this to return end range of text object or null if not found.
      */
-    public findEndRange(document: TextDocument, anchor: Position): Range {
+    public findEndRange(document: TextDocument, anchor: Position): Range | null {
         throw new Error('findEndPosition is not implemented.');
     }
 
-    apply(anchor: Position): Range {
+    apply(anchor: Position): Range | null {
         if (this.isInclusive === undefined) {
             throw new Error('isInclusive is not set.');
         }
