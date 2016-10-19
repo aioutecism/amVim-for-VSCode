@@ -39,6 +39,11 @@ Set to `false` to disable `Ctrl+<key>` keybindings.
 
 ## Change Log
 
+### [1.14.0](https://github.com/aioutecism/amVim-for-VSCode/releases/tag/1.14.0)
+
+- Add folding support. Thanks @rebornix #141.
+
+
 ### [1.13.0](https://github.com/aioutecism/amVim-for-VSCode/releases/tag/1.13.0)
 
 - Added support for `N space` and `N backspace` motions.
@@ -57,12 +62,7 @@ Set to `false` to disable `Ctrl+<key>` keybindings.
 
 ### [1.11.6](https://github.com/aioutecism/amVim-for-VSCode/releases/tag/1.11.6)
 
-- Fix wrong behavior when modifying last line of document. #71 
-
-
-### [1.11.5](https://github.com/aioutecism/amVim-for-VSCode/releases/tag/1.11.5)
-
-- Fix wrong cursor position when doing `o` in Insert mode.
+- Fix wrong behavior when modifying last line of document. #71
 
 Full list [here](https://github.com/aioutecism/amVim-for-VSCode/releases).
 

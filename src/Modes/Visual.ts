@@ -13,6 +13,7 @@ import {ActionJoinLines} from '../Actions/JoinLines';
 import {ActionFilter} from '../Actions/Filter';
 import {ActionFind} from '../Actions/Find';
 import {ActionMode} from '../Actions/Mode';
+import {ActionFold} from '../Actions/Fold';
 
 export class ModeVisual extends Mode {
 
@@ -80,6 +81,11 @@ export class ModeVisual extends Mode {
 
         { keys: 'V', actions: [ActionMode.toVisualLine] },
         { keys: 'v', actions: [ActionSelection.shrinkToActives] },
+
+        { keys: 'z c', actions: [ActionFold.fold]},
+        { keys: 'z o', actions: [ActionFold.unfold]},
+        { keys: 'z M', actions: [ActionFold.foldAll]},
+        { keys: 'z R', actions: [ActionFold.unfoldAll]},
 
         { keys: 'ctrl+c', actions: [ActionSelection.shrinkToActives] },
         { keys: 'ctrl+[', actions: [ActionSelection.shrinkToActives] },
