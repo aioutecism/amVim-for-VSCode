@@ -39,6 +39,11 @@ Set to `false` to disable `Ctrl+<key>` keybindings.
 
 ## Change Log
 
+### [1.16.1](https://github.com/aioutecism/amVim-for-VSCode/releases/tag/1.16.1)
+
+- Fix bug where multi-cursor may function weird.
+
+
 ### [1.16.0](https://github.com/aioutecism/amVim-for-VSCode/releases/tag/1.16.0)
 
 - Added support for Japanese words. #143
@@ -58,12 +63,6 @@ Set to `false` to disable `Ctrl+<key>` keybindings.
 ### [1.13.0](https://github.com/aioutecism/amVim-for-VSCode/releases/tag/1.13.0)
 
 - Added support for `N space` and `N backspace` motions.
-
-
-### [1.12.0](https://github.com/aioutecism/amVim-for-VSCode/releases/tag/1.12.0)
-
-- Added support for `{N} _`.
-- Added support for `~` and `{visual} ~`.
 
 Full list [here](https://github.com/aioutecism/amVim-for-VSCode/releases).
 
