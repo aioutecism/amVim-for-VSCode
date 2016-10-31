@@ -1,7 +1,6 @@
-import {window, commands, Disposable, TextEditorRevealType} from 'vscode';
-import {PrototypeReflect} from '../LanguageExtensions/PrototypeReflect';
+import {TextEditorRevealType} from 'vscode';
+import {StaticReflect} from '../LanguageExtensions/StaticReflect';
 import {SymbolMetadata} from '../Symbols/Metadata';
-import {Configuration} from '../Configuration';
 import {Mode, ModeID} from './Mode';
 import {CommandMap} from '../Mappers/Command';
 import {ActionBlockCursor} from '../Actions/BlockCursor';
@@ -10,6 +9,7 @@ import {ActionPage} from '../Actions/Page';
 import {ActionInsert} from '../Actions/Insert';
 import {ActionDelete} from '../Actions/Delete';
 import {ActionReplace} from '../Actions/Replace';
+import {ActionCase} from '../Actions/Case';
 import {ActionRegister} from '../Actions/Register';
 import {ActionReveal} from '../Actions/Reveal';
 import {ActionSuggestion} from '../Actions/Suggestion';
@@ -20,6 +20,7 @@ import {ActionHistory} from '../Actions/History';
 import {ActionIndent} from '../Actions/Indent';
 import {ActionFilter} from '../Actions/Filter';
 import {ActionMode} from '../Actions/Mode';
+import {ActionFold} from '../Actions/Fold';
 import {MotionCharacter} from '../Motions/Character';
 import {MotionLine} from '../Motions/Line';
 
@@ -77,7 +78,7 @@ export class ModeNormal extends Mode {
         ], args: {
             shouldYank: true
         } },
-        { keys: 'd d', actions: [ActionDelete.line], args: {shouldYank: true} },
+        { keys: 'd d', actions: [ActionDelete.byLines], args: {shouldYank: true} },
         { keys: 'D', actions: [
             ActionDelete.byMotions,
             ActionSelection.validateSelections,
@@ -135,7 +136,11 @@ export class ModeNormal extends Mode {
         } },
         { keys: 'J', actions: [ActionJoinLines.onSelections] },
 
-        { keys: 'r {char}', actions: [ActionReplace.characters] },
+        { keys: 'r {char}', actions: [ActionReplace.charactersWithCharacter] },
+        { keys: '~', actions: [
+            ActionCase.switchActives,
+            () => ActionMoveCursor.byMotions({motions: [MotionCharacter.right()]}),
+        ] },
 
         { keys: 'y y', actions: [ActionRegister.yankLines] },
         { keys: 'Y', actions: [ActionRegister.yankLines] },
@@ -177,6 +182,10 @@ export class ModeNormal extends Mode {
 
         { keys: 'z .', actions: [ActionReveal.primaryCursor], args: {revealType: TextEditorRevealType.InCenter} },
         { keys: 'z z', actions: [ActionReveal.primaryCursor], args: {revealType: TextEditorRevealType.InCenter} },
+        { keys: 'z c', actions: [ActionFold.fold]},
+        { keys: 'z o', actions: [ActionFold.unfold]},
+        { keys: 'z M', actions: [ActionFold.foldAll]},
+        { keys: 'z R', actions: [ActionFold.unfoldAll]},
 
         { keys: '.', actions: [this.repeatRecordedCommandMaps.bind(this)] },
 
@@ -213,7 +222,7 @@ export class ModeNormal extends Mode {
         }
 
         const actions = map.actions.filter(action => {
-            return PrototypeReflect.getMetadata(SymbolMetadata.Action.shouldSkipOnRepeat, action) !== true;
+            return StaticReflect.getMetadata(SymbolMetadata.Action.shouldSkipOnRepeat, action) !== true;
         });
 
         this.recordedCommandMaps = [

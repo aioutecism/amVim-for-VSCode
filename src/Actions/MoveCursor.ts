@@ -1,14 +1,13 @@
 import {window, Position, Selection} from 'vscode';
 import {ActionReveal} from './Reveal';
 import {Motion} from '../Motions/Motion';
-import {MotionCharacter} from '../Motions/Character';
 import {UtilPosition} from '../Utils/Position';
 
 export class ActionMoveCursor {
 
     private static preferedColumnBySelectionIndex: {[i: number]: number} = [];
     private static isUpdatePreferedColumnBlocked = false;
-    private static preferedColumnBlockTimer: number;
+    private static preferedColumnBlockTimer: NodeJS.Timer | undefined;
 
     private static blockUpdatePreferedColumn(): void {
         if (ActionMoveCursor.preferedColumnBlockTimer) {
@@ -19,7 +18,7 @@ export class ActionMoveCursor {
 
         ActionMoveCursor.preferedColumnBlockTimer = setTimeout(function() {
             ActionMoveCursor.isUpdatePreferedColumnBlocked = false;
-            ActionMoveCursor.preferedColumnBlockTimer = null;
+            ActionMoveCursor.preferedColumnBlockTimer = undefined;
         }, 100);
     }
 

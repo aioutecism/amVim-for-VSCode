@@ -4,6 +4,7 @@ import {SpecialKeyN} from './N';
 import {SpecialKeyChar} from './Char';
 import {Motion} from '../../Motions/Motion';
 import {MotionCharacter} from '../../Motions/Character';
+import {MotionDirection} from '../../Motions/Direction';
 import {MotionWord} from '../../Motions/Word';
 import {MotionMatch} from '../../Motions/Match';
 import {MotionMatchPair} from '../../Motions/MatchPair';
@@ -64,11 +65,21 @@ export class SpecialKeyMotion extends GenericMapper implements SpecialKeyCommon 
         { keys: '{N} -', motionGenerators: [MotionCharacter.up, MotionLine.firstNonBlank] },
         { keys: '+',     motionGenerators: [MotionCharacter.down, MotionLine.firstNonBlank] },
         { keys: '{N} +', motionGenerators: [MotionCharacter.down, MotionLine.firstNonBlank] },
+        { keys: '_',     motionGenerators: [MotionLine.firstNonBlank] },
+        { keys: '{N} _', motionGenerators: [
+            (args: {n: number}) => MotionCharacter.down({ n: args.n - 1 }),
+            MotionLine.firstNonBlank
+        ] },
 
         { keys: 'g g',     motionGenerators: [MotionDocument.toLine, MotionLine.firstNonBlank], args: {n: 1} },
         { keys: '{N} g g', motionGenerators: [MotionDocument.toLine, MotionLine.firstNonBlank] },
         { keys: 'G',       motionGenerators: [MotionDocument.toLine, MotionLine.firstNonBlank], args: {n: +Infinity} },
         { keys: '{N} G',   motionGenerators: [MotionDocument.toLine, MotionLine.firstNonBlank] },
+
+        { keys: 'space', motionGenerators: [MotionDirection.next] },
+        { keys: '{N} space', motionGenerators: [MotionDirection.next] },
+        { keys: 'backspace', motionGenerators: [MotionDirection.previous] },
+        { keys: '{N} backspace', motionGenerators: [MotionDirection.previous] },
     ];
 
     constructor() {
@@ -101,7 +112,7 @@ export class SpecialKeyMotion extends GenericMapper implements SpecialKeyCommon 
         // This class has lower priority than other keys.
     }
 
-    matchSpecial(inputs: string[]): SpecialKeyMatchResult {
+    matchSpecial(inputs: string[]): SpecialKeyMatchResult | null {
         const {kind, map} = this.match(inputs);
 
         if (kind === MatchResultKind.FAILED) {

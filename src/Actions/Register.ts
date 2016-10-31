@@ -1,7 +1,6 @@
-import {window, Position, Range, Selection} from 'vscode';
-import {PrototypeReflect} from '../LanguageExtensions/PrototypeReflect';
+import {window, Position, Range} from 'vscode';
+import {StaticReflect} from '../LanguageExtensions/StaticReflect';
 import {SymbolMetadata} from '../Symbols/Metadata';
-import {ActionReveal} from './Reveal';
 import {ActionMoveCursor} from './MoveCursor';
 import {ActionSelection} from './Selection';
 import {Motion} from '../Motions/Motion';
@@ -10,11 +9,24 @@ import {MotionLine} from '../Motions/Line';
 import {TextObject} from '../TextObjects/TextObject';
 import {UtilRange} from '../Utils/Range';
 
-enum PutDirection {Before, After};
-
 export class ActionRegister {
 
     private static stash: string = '';
+
+    static GetStash(): string {
+        return ActionRegister.stash;
+    }
+
+    static SetStash(one: string): void;
+    static SetStash(list: string[]): void;
+    static SetStash(input: string | string[]): void {
+        if (typeof input === 'string') {
+            ActionRegister.stash = input;
+        }
+        else {
+            ActionRegister.stash = input.join('');
+        }
+    }
 
     static yankRanges(ranges: Range[]): Thenable<boolean> {
         const activeTextEditor = window.activeTextEditor;
@@ -53,7 +65,7 @@ export class ActionRegister {
         });
 
         if (args.motions.some(motion => motion.isLinewise)) {
-            ranges = ranges.map(range => document.validateRange(UtilRange.toLinewise(range)));
+            ranges = ranges.map(range => UtilRange.toLinewise(range, document));
         }
 
         ranges = UtilRange.unionOverlaps(ranges);
@@ -99,16 +111,16 @@ export class ActionRegister {
             return Promise.resolve(false);
         }
 
-        let ranges = activeTextEditor.selections.map(selection => {
-            return UtilRange.toLinewise(selection);
-        });
+        const document = activeTextEditor.document;
+
+        let ranges = activeTextEditor.selections.map(selection => UtilRange.toLinewise(selection, document));
 
         ranges = UtilRange.unionOverlaps(ranges);
 
         return ActionRegister.yankRanges(ranges);
     }
 
-    @PrototypeReflect.metadata(SymbolMetadata.Action.isChange, true)
+    @StaticReflect.metadata(SymbolMetadata.Action.isChange, true)
     static putAfter(): Thenable<boolean> {
         const activeTextEditor = window.activeTextEditor;
 
@@ -148,7 +160,7 @@ export class ActionRegister {
             });
     }
 
-    @PrototypeReflect.metadata(SymbolMetadata.Action.isChange, true)
+    @StaticReflect.metadata(SymbolMetadata.Action.isChange, true)
     static putBefore(): Thenable<boolean> {
         const activeTextEditor = window.activeTextEditor;
 
@@ -156,7 +168,6 @@ export class ActionRegister {
             return Promise.resolve(false);
         }
 
-        const characters = ActionRegister.stash.length;
         const lines = ActionRegister.stash.split(/\n/).length;
 
         const putPositions = activeTextEditor.selections.map(selection => {

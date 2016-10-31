@@ -6,17 +6,16 @@ import {ModeVisual} from './Modes/Visual';
 import {ModeVisualLine} from './Modes/VisualLine';
 import {ModeInsert} from './Modes/Insert';
 import {ActionMode} from './Actions/Mode';
-import {ActionSelection} from './Actions/Selection';
 import {ActionMoveCursor} from './Actions/MoveCursor';
 
 export class Dispatcher {
 
     private currentMode: Mode;
-    get currentModeId(): ModeID {
+    get currentModeId(): ModeID | null {
         return this.currentMode ? this.currentMode.id : null;
     }
 
-    private modes: {[k: number]: Mode} = {
+    private modes: {[k: string]: Mode} = {
         [ModeID.NORMAL]: new ModeNormal(),
         [ModeID.VISUAL]: new ModeVisual(),
         [ModeID.VISUAL_LINE]: new ModeVisualLine(),
@@ -27,7 +26,7 @@ export class Dispatcher {
 
     constructor(context: ExtensionContext) {
         Object.keys(this.modes).forEach(key => {
-            let mode = this.modes[key] as Mode;
+            let mode = this.modes[key];
             context.subscriptions.push(commands.registerCommand(`amVim.mode.${mode.id}`, () => {
                 this.switchMode(mode.id);
             }));
@@ -55,7 +54,7 @@ export class Dispatcher {
                 setTimeout(() => {
                     ActionMode.switchByActiveSelections(this.currentMode.id);
                     ActionMoveCursor.updatePreferedColumn();
-                });
+                }, 0);
             }),
             window.onDidChangeActiveTextEditor(() => {
                 // Passing `null` to `currentMode` to force mode switch.
@@ -94,7 +93,7 @@ export class Dispatcher {
         Disposable.from(...this.disposables).dispose();
 
         Object.keys(this.modes).forEach(id => {
-            (this.modes[id] as Mode).dispose();
+            (this.modes[id]).dispose();
         });
     }
 

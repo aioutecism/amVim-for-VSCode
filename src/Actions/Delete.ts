@@ -1,5 +1,5 @@
-import {window, commands, Range, Selection} from 'vscode';
-import {PrototypeReflect} from '../LanguageExtensions/PrototypeReflect';
+import {window, Range, Selection} from 'vscode';
+import {StaticReflect} from '../LanguageExtensions/StaticReflect';
 import {SymbolMetadata} from '../Symbols/Metadata';
 import {ActionRegister} from './Register';
 import {ActionReveal} from './Reveal';
@@ -9,7 +9,7 @@ import {UtilRange} from '../Utils/Range';
 
 export class ActionDelete {
 
-    @PrototypeReflect.metadata(SymbolMetadata.Action.isChange, true)
+    @StaticReflect.metadata(SymbolMetadata.Action.isChange, true)
     static byMotions(args: {
         motions: Motion[],
         isChangeAction?: boolean,
@@ -39,7 +39,7 @@ export class ActionDelete {
         });
 
         if (args.motions.some(motion => motion.isLinewise)) {
-            ranges = ranges.map(range => document.validateRange(UtilRange.toLinewise(range)));
+            ranges = ranges.map(range => UtilRange.toLinewise(range, document));
         }
 
         ranges = UtilRange.unionOverlaps(ranges);
@@ -55,7 +55,7 @@ export class ActionDelete {
             .then(() => ActionReveal.primaryCursor());
     }
 
-    @PrototypeReflect.metadata(SymbolMetadata.Action.isChange, true)
+    @StaticReflect.metadata(SymbolMetadata.Action.isChange, true)
     static byTextObject(args: {
         textObject: TextObject,
         shouldYank?: boolean
@@ -95,7 +95,7 @@ export class ActionDelete {
             .then(() => ActionReveal.primaryCursor());
     }
 
-    @PrototypeReflect.metadata(SymbolMetadata.Action.isChange, true)
+    @StaticReflect.metadata(SymbolMetadata.Action.isChange, true)
     static selectionsOrLeft(args: {
         isMultiLine?: boolean,
         shouldYank?: boolean
@@ -156,7 +156,7 @@ export class ActionDelete {
             .then(() => ActionReveal.primaryCursor());
     }
 
-    @PrototypeReflect.metadata(SymbolMetadata.Action.isChange, true)
+    @StaticReflect.metadata(SymbolMetadata.Action.isChange, true)
     static selectionsOrRight(args: {
         isMultiLine?: boolean,
         shouldYank?: boolean
@@ -217,8 +217,8 @@ export class ActionDelete {
             .then(() => ActionReveal.primaryCursor());
     }
 
-    @PrototypeReflect.metadata(SymbolMetadata.Action.isChange, true)
-    static line(args: {
+    @StaticReflect.metadata(SymbolMetadata.Action.isChange, true)
+    static byLines(args: {
         shouldYank?: boolean
     }): Thenable<boolean> {
         args.shouldYank = args.shouldYank === undefined ? false : args.shouldYank;
@@ -231,12 +231,7 @@ export class ActionDelete {
 
         const document = activeTextEditor.document;
 
-        let ranges = activeTextEditor.selections.map(selection => document.validateRange(
-            new Range(
-                selection.start.line, 0,
-                selection.end.line + 1, 0
-            )
-        ));
+        let ranges = activeTextEditor.selections.map(selection => UtilRange.toLinewise(selection, document));
 
         ranges = UtilRange.unionOverlaps(ranges);
 

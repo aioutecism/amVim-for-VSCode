@@ -1,34 +1,34 @@
 import {window, commands} from 'vscode';
-import {PrototypeReflect} from '../LanguageExtensions/PrototypeReflect';
+import {StaticReflect} from '../LanguageExtensions/StaticReflect';
 import {SymbolMetadata} from '../Symbols/Metadata';
 import {ModeID} from '../Modes/Mode';
 import {ActionSelection} from '../Actions/Selection';
 
 export class ActionMode {
 
-    @PrototypeReflect.metadata(SymbolMetadata.Action.shouldSkipOnRepeat, true)
+    @StaticReflect.metadata(SymbolMetadata.Action.shouldSkipOnRepeat, true)
     static toNormal(): Thenable<boolean> {
         return commands.executeCommand(`amVim.mode.${ModeID.NORMAL}`)
             .then(() => ActionSelection.validateSelections());
     }
 
-    @PrototypeReflect.metadata(SymbolMetadata.Action.shouldSkipOnRepeat, true)
+    @StaticReflect.metadata(SymbolMetadata.Action.shouldSkipOnRepeat, true)
     static toVisual(): Thenable<boolean> {
         return commands.executeCommand(`amVim.mode.${ModeID.VISUAL}`);
     }
 
-    @PrototypeReflect.metadata(SymbolMetadata.Action.shouldSkipOnRepeat, true)
+    @StaticReflect.metadata(SymbolMetadata.Action.shouldSkipOnRepeat, true)
     static toVisualLine(): Thenable<boolean> {
         return commands.executeCommand(`amVim.mode.${ModeID.VISUAL_LINE}`);
     }
 
-    @PrototypeReflect.metadata(SymbolMetadata.Action.isChange, true)
-    @PrototypeReflect.metadata(SymbolMetadata.Action.shouldSkipOnRepeat, true)
+    @StaticReflect.metadata(SymbolMetadata.Action.isChange, true)
+    @StaticReflect.metadata(SymbolMetadata.Action.shouldSkipOnRepeat, true)
     static toInsert(): Thenable<boolean> {
         return commands.executeCommand(`amVim.mode.${ModeID.INSERT}`);
     }
 
-    static switchByActiveSelections(currentMode: ModeID): Thenable<boolean> {
+    static switchByActiveSelections(currentMode: ModeID | null): Thenable<boolean> {
         const activeTextEditor = window.activeTextEditor;
 
         if (! activeTextEditor) {

@@ -1,10 +1,7 @@
-import {Configuration} from '../Configuration';
 import {Mode, ModeID} from './Mode';
-import * as Keys from '../Keys';
 import {MatchResultKind} from '../Mappers/Generic';
 import {CommandMap} from '../Mappers/Command';
 import {ActionInsert} from '../Actions/Insert';
-import {ActionReplace} from '../Actions/Replace';
 import {ActionDelete} from '../Actions/Delete';
 import {ActionSelection} from '../Actions/Selection';
 import {ActionMode} from '../Actions/Mode';
@@ -20,11 +17,11 @@ export class ModeInsert extends Mode {
         { keys: 'ctrl+w', actions: [() => ActionDelete.byMotions({motions: [MotionWord.prevStart()]})] },
         { keys: 'ctrl+u', actions: [() => ActionDelete.byMotions({motions: [MotionLine.firstNonBlank()]})] },
 
-        { keys: 'ctrl+c', actions: [() => ActionSelection.shrinkAStep()
+        { keys: 'ctrl+c', actions: [() => ActionSelection.shrinkToActives()
             .then(isShrinked => isShrinked ? Promise.resolve(true) : ActionMode.toNormal())] },
-        { keys: 'ctrl+[', actions: [() => ActionSelection.shrinkAStep()
+        { keys: 'ctrl+[', actions: [() => ActionSelection.shrinkToActives()
             .then(isShrinked => isShrinked ? Promise.resolve(true) : ActionMode.toNormal())] },
-        { keys: 'escape', actions: [() => ActionSelection.shrinkAStep()
+        { keys: 'escape', actions: [() => ActionSelection.shrinkToActives()
             .then(isShrinked => isShrinked ? Promise.resolve(true) : ActionMode.toNormal())] },
     ];
 

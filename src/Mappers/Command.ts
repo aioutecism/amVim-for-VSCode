@@ -7,7 +7,7 @@ import {SpecialKeyTextObject} from './SpecialKeys/TextObject';
 
 export interface CommandMatchResult extends MatchResult {
     kind: MatchResultKind;
-    map: CommandMap;
+    map?: CommandMap;
 }
 
 export interface CommandMap extends GenericMap {
@@ -36,7 +36,7 @@ export class CommandMapper extends GenericMapper {
 
         return {
             kind,
-            map: map ? map as CommandMap : null
+            map: map ? map as CommandMap : undefined
         };
     }
 

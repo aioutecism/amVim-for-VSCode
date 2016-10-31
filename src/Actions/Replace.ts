@@ -1,14 +1,43 @@
-import {window, commands, Range} from 'vscode';
-import {PrototypeReflect} from '../LanguageExtensions/PrototypeReflect';
+import {window, Range} from 'vscode';
+import {StaticReflect} from '../LanguageExtensions/StaticReflect';
 import {SymbolMetadata} from '../Symbols/Metadata';
+import {ActionRegister} from './Register';
+import {ActionSelection} from './Selection';
 import {ActionReveal} from './Reveal';
-import {Motion} from '../Motions/Motion';
 import {UtilRange} from '../Utils/Range';
 
 export class ActionReplace {
 
-    @PrototypeReflect.metadata(SymbolMetadata.Action.isChange, true)
-    static selections(args: {character: string}): Thenable<boolean> {
+    @StaticReflect.metadata(SymbolMetadata.Action.isChange, true)
+    static selectionsWithRegister(args: {
+        shouldYank?: boolean
+    }): Thenable<boolean> {
+        args.shouldYank = args.shouldYank === undefined ? false : args.shouldYank;
+
+        const activeTextEditor = window.activeTextEditor;
+
+        if (! activeTextEditor) {
+            return Promise.resolve(false);
+        }
+
+        const document = activeTextEditor.document;
+        const originalTexts: string[] = [];
+
+        return activeTextEditor.edit((editBuilder) => {
+            activeTextEditor.selections.forEach(selection => {
+                originalTexts.push(document.getText(selection));
+                editBuilder.replace(selection, ActionRegister.GetStash());
+            });
+        })
+            .then(() => {
+                ActionRegister.SetStash(originalTexts);
+            })
+            .then(() => ActionSelection.shrinkToActives())
+            .then(() => ActionReveal.primaryCursor());
+    }
+
+    @StaticReflect.metadata(SymbolMetadata.Action.isChange, true)
+    static selectionsWithCharacter(args: {character: string}): Thenable<boolean> {
         const activeTextEditor = window.activeTextEditor;
 
         if (! activeTextEditor) {
@@ -24,8 +53,8 @@ export class ActionReplace {
             .then(() => ActionReveal.primaryCursor());
     }
 
-    @PrototypeReflect.metadata(SymbolMetadata.Action.isChange, true)
-    static characters(args: {character: string, n?: number}): Thenable<boolean> {
+    @StaticReflect.metadata(SymbolMetadata.Action.isChange, true)
+    static charactersWithCharacter(args: {character: string, n?: number}): Thenable<boolean> {
         args.n = args.n === undefined ? 1 : args.n;
 
         const activeTextEditor = window.activeTextEditor;

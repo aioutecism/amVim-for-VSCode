@@ -75,7 +75,8 @@ export abstract class GenericMapper {
                 continue;
             }
 
-            let match: SpecialKeyMatchResult;
+            let match: SpecialKeyMatchResult | null | undefined;
+
             this.specialKeys.some(specialKey => {
                 if (! node[specialKey.indicator]) {
                     return false;
@@ -91,7 +92,7 @@ export abstract class GenericMapper {
                     node = node[match.specialKey.indicator];
 
                     Object.getOwnPropertyNames(match.additionalArgs).forEach(key => {
-                        additionalArgs[key] = match.additionalArgs[key];
+                        additionalArgs[key] = match!.additionalArgs[key];
                     });
 
                     index += match.matchedCount - 1;

@@ -1,4 +1,4 @@
-import {window, TextDocument, Position, Range} from 'vscode';
+import {TextDocument, Position, Range} from 'vscode';
 import {TextObject} from './TextObject';
 
 export class TextObjectQuotedString extends TextObject {
@@ -32,7 +32,7 @@ export class TextObjectQuotedString extends TextObject {
         return obj;
     }
 
-    public findStartRange(document: TextDocument, anchor: Position): Range {
+    public findStartRange(document: TextDocument, anchor: Position): Range | null {
         const lineIndex = anchor.line;
         const lineText = document.lineAt(lineIndex).text;
 
@@ -69,7 +69,7 @@ export class TextObjectQuotedString extends TextObject {
         return null;
     }
 
-    public findEndRange(document: TextDocument, anchor: Position): Range {
+    public findEndRange(document: TextDocument, anchor: Position): Range | null {
         if (this.adjustedAnchor !== undefined) {
             anchor = this.adjustedAnchor;
         }

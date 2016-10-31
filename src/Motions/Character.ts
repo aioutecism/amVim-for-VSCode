@@ -1,7 +1,13 @@
-import {Position} from 'vscode';
 import {Motion} from './Motion';
 
 export class MotionCharacter extends Motion {
+
+    constructor(args: {
+        isLinewise?: boolean
+        isCharacterUpdated?: boolean
+    } = {}) {
+        super(args);
+    }
 
     static left(args: {n?: number} = {}): Motion {
         args.n = args.n === undefined ? 1 : args.n;
@@ -24,11 +30,11 @@ export class MotionCharacter extends Motion {
     static up(args: {n?: number} = {}): Motion {
         args.n = args.n === undefined ? 1 : args.n;
 
-        const obj = new MotionCharacter();
+        const obj = new MotionCharacter({
+            isLinewise: true,
+            isCharacterUpdated: false,
+        });
         obj.translate(-args.n, 0);
-
-        obj.isLinewise = true;
-        obj.isCharacterUpdated = false;
 
         return obj;
     }
@@ -36,11 +42,11 @@ export class MotionCharacter extends Motion {
     static down(args: {n?: number} = {}): Motion {
         args.n = args.n === undefined ? 1 : args.n;
 
-        const obj = new MotionCharacter();
+        const obj = new MotionCharacter({
+            isLinewise: true,
+            isCharacterUpdated: false,
+        });
         obj.translate(+args.n, 0);
-
-        obj.isLinewise = true;
-        obj.isCharacterUpdated = false;
 
         return obj;
     }

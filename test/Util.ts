@@ -13,6 +13,8 @@ export function createTempDocument(content?: string): Thenable<boolean> {
                     editBuilder.insert(new Position(0, 0), content);
                 });
             }
+
+            return Promise.resolve(true);
         });
 }
 
