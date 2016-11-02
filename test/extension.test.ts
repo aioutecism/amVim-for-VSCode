@@ -5,6 +5,7 @@
 
 import * as MotionWordBasicTest from './Motions/Word/Basic.test';
 import * as MotionWordUseBlankSeparatedStyleTest from './Motions/Word/UseBlankSeparatedStyle.test';
+import * as MotionWordWithNTest from './Motions/Word/WithN.test';
 import * as MotionWordJapaneseTest from './Motions/Word/Japanese.test';
 import * as MotionIntegrationTest from './Motions/Integration.test';
 import * as TextObjectWordTest from './TextObjects/Word.test';
@@ -15,6 +16,7 @@ import * as ActionDeleteTest from './Actions/Delete.test';
 suite('Extension Tests', () => {
     MotionWordBasicTest.run();
     MotionWordUseBlankSeparatedStyleTest.run();
+    MotionWordWithNTest.run();
     MotionWordJapaneseTest.run();
     MotionIntegrationTest.run();
 
