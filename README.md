@@ -39,6 +39,11 @@ Set to `false` to disable `Ctrl+<key>` keybindings.
 
 ## Change Log
 
+### [1.17.0](https://github.com/aioutecism/amVim-for-VSCode/releases/tag/1.17.0)
+
+- Added N support for word motions. #146 
+
+
 ### [1.16.1](https://github.com/aioutecism/amVim-for-VSCode/releases/tag/1.16.1)
 
 - Fix bug where multi-cursor may function weird.
@@ -58,11 +63,6 @@ Set to `false` to disable `Ctrl+<key>` keybindings.
 ### [1.14.0](https://github.com/aioutecism/amVim-for-VSCode/releases/tag/1.14.0)
 
 - Add folding support. Thanks @rebornix #141.
-
-
-### [1.13.0](https://github.com/aioutecism/amVim-for-VSCode/releases/tag/1.13.0)
-
-- Added support for `N space` and `N backspace` motions.
 
 Full list [here](https://github.com/aioutecism/amVim-for-VSCode/releases).
 
