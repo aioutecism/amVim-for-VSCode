@@ -44,11 +44,17 @@ export class SpecialKeyMotion extends GenericMapper implements SpecialKeyCommon 
         { keys: '{N} down',  motionGenerators: [MotionCharacter.down] },
 
         { keys: 'w', motionGenerators: [MotionWord.nextStart] },
+        { keys: '{N} w', motionGenerators: [MotionWord.nextStart] },
         { keys: 'W', motionGenerators: [MotionWord.nextStart], args: {useBlankSeparatedStyle: true} },
+        { keys: '{N} W', motionGenerators: [MotionWord.nextStart], args: {useBlankSeparatedStyle: true} },
         { keys: 'e', motionGenerators: [MotionWord.nextEnd] },
+        { keys: '{N} e', motionGenerators: [MotionWord.nextEnd] },
         { keys: 'E', motionGenerators: [MotionWord.nextEnd], args: {useBlankSeparatedStyle: true} },
+        { keys: '{N} E', motionGenerators: [MotionWord.nextEnd], args: {useBlankSeparatedStyle: true} },
         { keys: 'b', motionGenerators: [MotionWord.prevStart] },
+        { keys: '{N} b', motionGenerators: [MotionWord.prevStart] },
         { keys: 'B', motionGenerators: [MotionWord.prevStart], args: {useBlankSeparatedStyle: true} },
+        { keys: '{N} B', motionGenerators: [MotionWord.prevStart], args: {useBlankSeparatedStyle: true} },
 
         { keys: 'f {char}', motionGenerators: [MotionMatch.next] },
         { keys: 'F {char}', motionGenerators: [MotionMatch.prev] },

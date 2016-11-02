@@ -1,4 +1,4 @@
-import {window, Position} from 'vscode';
+import {window, TextDocument, Position} from 'vscode';
 import {Motion} from './Motion';
 import {WordCharacterKind, UtilWord} from '../Utils/Word';
 
@@ -7,39 +7,55 @@ enum MotionWordMatchKind {Start, End, Both};
 
 export class MotionWord extends Motion {
 
+    private n: number;
     private useBlankSeparatedStyle: boolean;
     private direction: MotionWordDirection;
     private matchKind: MotionWordMatchKind;
 
-    constructor(args: {useBlankSeparatedStyle?: boolean} = {}) {
+    constructor(args: {
+        n?: number,
+        useBlankSeparatedStyle?: boolean,
+    } = {}) {
         super();
-        args = Object.assign({useBlankSeparatedStyle: false}, args);
 
+        this.n = args.n === undefined ? 1 : args.n;
         this.useBlankSeparatedStyle = args.useBlankSeparatedStyle === undefined ? false : args.useBlankSeparatedStyle;
     }
 
-    static nextStart(args: {useBlankSeparatedStyle?: boolean} = {}): Motion {
+    static nextStart(args: {
+        n?: number,
+        useBlankSeparatedStyle?: boolean,
+    } = {}): Motion {
         const obj = new MotionWord(args);
         obj.direction = MotionWordDirection.Next;
         obj.matchKind = MotionWordMatchKind.Start;
         return obj;
     }
 
-    static nextEnd(args: {useBlankSeparatedStyle?: boolean} = {}): Motion {
+    static nextEnd(args: {
+        n?: number,
+        useBlankSeparatedStyle?: boolean,
+    } = {}): Motion {
         const obj = new MotionWord(args);
         obj.direction = MotionWordDirection.Next;
         obj.matchKind = MotionWordMatchKind.End;
         return obj;
     }
 
-    static prevStart(args: {useBlankSeparatedStyle?: boolean} = {}): Motion {
+    static prevStart(args: {
+        n?: number,
+        useBlankSeparatedStyle?: boolean,
+    } = {}): Motion {
         const obj = new MotionWord(args);
         obj.direction = MotionWordDirection.Previous;
         obj.matchKind = MotionWordMatchKind.Start;
         return obj;
     }
 
-    static prevEnd(args: {useBlankSeparatedStyle?: boolean} = {}): Motion {
+    static prevEnd(args: {
+        n?: number,
+        useBlankSeparatedStyle?: boolean,
+    } = {}): Motion {
         const obj = new MotionWord(args);
         obj.direction = MotionWordDirection.Previous;
         obj.matchKind = MotionWordMatchKind.End;
@@ -58,11 +74,6 @@ export class MotionWord extends Motion {
         option.isChangeAction = option.isChangeAction === undefined ? false : option.isChangeAction;
         option.shouldCrossLines = option.shouldCrossLines === undefined ? true : option.shouldCrossLines;
 
-        // Match both start and end if used in change action.
-        if (option.isChangeAction && this.matchKind === MotionWordMatchKind.Start) {
-            this.matchKind = MotionWordMatchKind.Both;
-        }
-
         from = super.apply(from);
 
         const activeTextEditor = window.activeTextEditor;
@@ -73,6 +84,46 @@ export class MotionWord extends Motion {
 
         const document = activeTextEditor.document;
 
+        let matchKind = this.matchKind;
+
+        for (let i = 0; i < this.n; i++) {
+            // Match both start and end on last round if used in change action.
+            if (i === this.n - 1 && option.isChangeAction && matchKind === MotionWordMatchKind.Start) {
+                matchKind = MotionWordMatchKind.Both;
+            }
+
+            const result = this.applyOnce(
+                document,
+                from,
+                matchKind,
+                {
+                    isInclusive: option.isInclusive,
+                    shouldCrossLines: option.shouldCrossLines,
+                },
+            );
+
+            from = result.to;
+
+            if (result.shouldStop) {
+                break;
+            }
+        }
+
+        return from;
+    }
+
+    applyOnce(
+        document: TextDocument,
+        from: Position,
+        matchKind: MotionWordMatchKind,
+        option: {
+            isInclusive: boolean,
+            shouldCrossLines: boolean,
+        },
+    ): {
+        to: Position,
+        shouldStop: boolean,
+    } {
         let line = from.line;
         let previousPosition: Position | undefined;
         let previousCharacterKind: WordCharacterKind | undefined;
@@ -105,22 +156,34 @@ export class MotionWord extends Motion {
                             }
                         }
 
-                        if (this.matchKind === MotionWordMatchKind.Start) {
+                        if (matchKind === MotionWordMatchKind.Start) {
                             if (startPosition !== undefined) {
-                                return startPosition;
+                                return {
+                                    to: startPosition,
+                                    shouldStop: false,
+                                };
                             }
                         }
-                        else if (this.matchKind === MotionWordMatchKind.End) {
+                        else if (matchKind === MotionWordMatchKind.End) {
                             if (endPosition !== undefined) {
-                                return endPosition;
+                                return {
+                                    to: endPosition,
+                                    shouldStop: false,
+                                };
                             }
                         }
-                        else if (this.matchKind === MotionWordMatchKind.Both) {
+                        else if (matchKind === MotionWordMatchKind.Both) {
                             if (endPosition !== undefined) {
-                                return endPosition;
+                                return {
+                                    to: endPosition,
+                                    shouldStop: false,
+                                };
                             }
                             else if (startPosition !== undefined) {
-                                return startPosition;
+                                return {
+                                    to: startPosition,
+                                    shouldStop: false,
+                                };
                             }
                         }
                     }
@@ -131,14 +194,20 @@ export class MotionWord extends Motion {
                 }
 
                 if (! option.shouldCrossLines) {
-                    return document.lineAt(line).range.end;
+                    return {
+                        to: document.lineAt(line).range.end,
+                        shouldStop: true,
+                    };
                 }
 
                 line++;
             }
 
             // Return end position if matching failed.
-            return document.lineAt(document.lineCount - 1).range.end;
+            return {
+                to: document.lineAt(document.lineCount - 1).range.end,
+                shouldStop: true,
+            };
         }
         else if (this.direction === MotionWordDirection.Previous) {
             while (line >= 0) {
@@ -163,22 +232,34 @@ export class MotionWord extends Motion {
                             endPosition = new Position(line, character);
                         }
 
-                        if (this.matchKind === MotionWordMatchKind.Start) {
+                        if (matchKind === MotionWordMatchKind.Start) {
                             if (startPosition !== undefined) {
-                                return startPosition;
+                                return {
+                                    to: startPosition,
+                                    shouldStop: false,
+                                };
                             }
                         }
-                        else if (this.matchKind === MotionWordMatchKind.End) {
+                        else if (matchKind === MotionWordMatchKind.End) {
                             if (endPosition !== undefined) {
-                                return endPosition;
+                                return {
+                                    to: endPosition,
+                                    shouldStop: false,
+                                };
                             }
                         }
-                        else if (this.matchKind === MotionWordMatchKind.Both) {
+                        else if (matchKind === MotionWordMatchKind.Both) {
                             if (endPosition !== undefined) {
-                                return endPosition;
+                                return {
+                                    to: endPosition,
+                                    shouldStop: false,
+                                };
                             }
                             else if (startPosition !== undefined) {
-                                return startPosition;
+                                return {
+                                    to: startPosition,
+                                    shouldStop: false,
+                                };
                             }
                         }
                     }
@@ -189,14 +270,20 @@ export class MotionWord extends Motion {
                 }
 
                 if (! option.shouldCrossLines) {
-                    return document.lineAt(line).range.start;
+                    return {
+                        to: document.lineAt(line).range.start,
+                        shouldStop: true,
+                    };
                 }
 
                 line--;
             }
 
             // Return start position if matching failed.
-            return new Position(0, 0);
+            return {
+                to: new Position(0, 0),
+                shouldStop: true,
+            };
         }
         else {
             throw new Error(`Direction is invalid: ${this.direction}`);
