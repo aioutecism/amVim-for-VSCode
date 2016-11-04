@@ -37,36 +37,6 @@ You can overwrite default configurations in
 Set to `false` to disable `Ctrl+<key>` keybindings.
 
 
-## Change Log
-
-### [1.17.0](https://github.com/aioutecism/amVim-for-VSCode/releases/tag/1.17.0)
-
-- Added N support for word motions. #146 
-
-
-### [1.16.1](https://github.com/aioutecism/amVim-for-VSCode/releases/tag/1.16.1)
-
-- Fix bug where multi-cursor may function weird.
-
-
-### [1.16.0](https://github.com/aioutecism/amVim-for-VSCode/releases/tag/1.16.0)
-
-- Added support for Japanese words. #143
-
-
-### [1.15.0](https://github.com/aioutecism/amVim-for-VSCode/releases/tag/1.15.0)
-
-- Update to TypeScript 2.0.3. #138 
-- Added `p` support in Visual and VisualLine modes. #142 
-
-
-### [1.14.0](https://github.com/aioutecism/amVim-for-VSCode/releases/tag/1.14.0)
-
-- Add folding support. Thanks @rebornix #141.
-
-Full list [here](https://github.com/aioutecism/amVim-for-VSCode/releases).
-
-
 ## Contribution
 
 Feel free to open [issues](https://github.com/aioutecism/amVim-for-VSCode/issues) to report bugs or require features.
