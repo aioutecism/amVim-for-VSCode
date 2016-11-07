@@ -19,7 +19,7 @@ class Format {
             return Promise.resolve(false);
         }
 
-        return commands.executeCommand('editor.action.format');
+        return commands.executeCommand('editor.action.formatSelection');
     }
 
     static byCursors(): Thenable<boolean> {
@@ -33,7 +33,7 @@ class Format {
 
         return ActionSelection.expandToLine()
         .then(() => {
-            return commands.executeCommand('editor.action.format');
+            return commands.executeCommand('editor.action.formatSelection');
         })
         .then(() => {
             activeTextEditor.selections = originalSelections;
@@ -58,7 +58,7 @@ class Format {
             isVisualLineMode: true,
         })
         .then(() => {
-            return commands.executeCommand('editor.action.format');
+            return commands.executeCommand('editor.action.formatSelection');
         })
         .then(() => {
             activeTextEditor.selections = originalSelections;
