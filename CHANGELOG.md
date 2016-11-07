@@ -1,3 +1,8 @@
+# [1.17.1](https://github.com/aioutecism/amVim-for-VSCode/releases/tag/1.17.1)
+
+- Update internal command for formatting.
+
+
 # [1.17.0](https://github.com/aioutecism/amVim-for-VSCode/releases/tag/1.17.0)
 
 - Added N support for word motions. #146 
