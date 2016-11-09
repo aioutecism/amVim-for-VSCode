@@ -11,12 +11,14 @@
     },
     "keywords": [
         "vim",
+        "vi",
         "vintage",
-        "keybinding",
+        "keybindings",
         "mode"
     ],
     "categories": [
-        "Other"
+        "Other",
+        "Keymaps"
     ],
     "repository": {
         "type": "git",
