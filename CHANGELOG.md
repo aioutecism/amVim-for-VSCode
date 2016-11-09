@@ -1,3 +1,8 @@
+# [1.17.2](https://github.com/aioutecism/amVim-for-VSCode/releases/tag/1.17.2)
+
+- Fix selection bugs after deletion on VSCode Insider.
+
+
 # [1.17.1](https://github.com/aioutecism/amVim-for-VSCode/releases/tag/1.17.1)
 
 - Update internal command for formatting.
