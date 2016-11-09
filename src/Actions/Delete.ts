@@ -1,6 +1,7 @@
 import {window, Range, Selection} from 'vscode';
 import {StaticReflect} from '../LanguageExtensions/StaticReflect';
 import {SymbolMetadata} from '../Symbols/Metadata';
+import {ActionSelection} from './Selection';
 import {ActionRegister} from './Register';
 import {ActionReveal} from './Reveal';
 import {Motion} from '../Motions/Motion';
@@ -52,6 +53,7 @@ export class ActionDelete {
                     ranges.forEach((range) => editBuilder.delete(range));
                 });
             })
+            .then(() => ActionSelection.shrinkToStarts())
             .then(() => ActionReveal.primaryCursor());
     }
 
@@ -92,6 +94,7 @@ export class ActionDelete {
                     ranges.forEach((range) => editBuilder.delete(range));
                 });
             })
+            .then(() => ActionSelection.shrinkToStarts())
             .then(() => ActionReveal.primaryCursor());
     }
 
@@ -153,6 +156,7 @@ export class ActionDelete {
                     ranges.forEach((range) => editBuilder.delete(range));
                 });
             })
+            .then(() => ActionSelection.shrinkToStarts())
             .then(() => ActionReveal.primaryCursor());
     }
 
@@ -214,6 +218,7 @@ export class ActionDelete {
                     ranges.forEach((range) => editBuilder.delete(range));
                 });
             })
+            .then(() => ActionSelection.shrinkToStarts())
             .then(() => ActionReveal.primaryCursor());
     }
 
@@ -241,6 +246,7 @@ export class ActionDelete {
                     ranges.forEach((range) => editBuilder.delete(range));
                 });
             })
+            .then(() => ActionSelection.shrinkToStarts())
             .then(() => ActionReveal.primaryCursor());
     }
 
