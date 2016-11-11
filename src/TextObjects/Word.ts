@@ -17,7 +17,7 @@ export class TextObjectWord extends TextObject {
         return obj;
     }
 
-    public findStartRange(document: TextDocument, anchor: Position): Range {
+    findStartRange(document: TextDocument, anchor: Position): Range {
         const lineIndex = anchor.line;
         const lineText = document.lineAt(lineIndex).text;
 
@@ -58,7 +58,7 @@ export class TextObjectWord extends TextObject {
         );
     }
 
-    public findEndRange(document: TextDocument, anchor: Position): Range {
+    findEndRange(document: TextDocument, anchor: Position): Range {
         const lineIndex = anchor.line;
         const lineText = document.lineAt(lineIndex).text;
 

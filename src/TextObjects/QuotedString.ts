@@ -32,7 +32,7 @@ export class TextObjectQuotedString extends TextObject {
         return obj;
     }
 
-    public findStartRange(document: TextDocument, anchor: Position): Range | null {
+    findStartRange(document: TextDocument, anchor: Position): Range | null {
         const lineIndex = anchor.line;
         const lineText = document.lineAt(lineIndex).text;
 
@@ -69,7 +69,7 @@ export class TextObjectQuotedString extends TextObject {
         return null;
     }
 
-    public findEndRange(document: TextDocument, anchor: Position): Range | null {
+    findEndRange(document: TextDocument, anchor: Position): Range | null {
         if (this.adjustedAnchor !== undefined) {
             anchor = this.adjustedAnchor;
         }

@@ -42,7 +42,7 @@ export class TextObjectBlock extends TextObject {
         return obj;
     }
 
-    public findStartRange(document: TextDocument, anchor: Position): Range | null {
+    findStartRange(document: TextDocument, anchor: Position): Range | null {
         let matchingCount = 0;
         let lineIndex = anchor.line;
 
@@ -83,7 +83,7 @@ export class TextObjectBlock extends TextObject {
         return null;
     }
 
-    public findEndRange(document: TextDocument, anchor: Position): Range | null {
+    findEndRange(document: TextDocument, anchor: Position): Range | null {
         let matchingCount = 0;
         let lineIndex = anchor.line;
 
