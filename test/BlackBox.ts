@@ -56,14 +56,19 @@ export const run = (testCase: TestCase) => {
 
             await waitForMillisecond(100);
 
-            inputs.forEach(key => {
-                getCurrentMode()!.input(key);
-            });
+            for (let i = 0; i < inputs.length; i++) {
+                getCurrentMode()!.input(inputs[i]);
+                await waitForMillisecond(20);
+            }
 
-            await waitForMillisecond(inputs.length * 20);
-
-            assert.equal(TestUtil.getDocument().getText(), toInfo.cleanString);
-            assert.deepEqual(TestUtil.getSelections(), toInfo.selections);
+            try {
+                assert.equal(TestUtil.getDocument().getText(), toInfo.cleanString);
+                assert.deepEqual(TestUtil.getSelections(), toInfo.selections);
+            }
+            catch (error) {
+                done(error);
+                return;
+            }
 
             done();
         });
