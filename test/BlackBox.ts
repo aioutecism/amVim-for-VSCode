@@ -68,8 +68,6 @@ const extractInfo = (originalText: string) => {
                 }
 
                 if (isReversed) {
-                    // Plus `~` mark.
-                    startCharacter += 1;
                     // Minus `~` mark.
                     endCharacter -= 1;
                 }
