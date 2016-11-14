@@ -1,113 +1,49 @@
-import * as assert from 'assert';
-import * as TestUtil from '../Util';
-import {Selection} from 'vscode';
+import * as BlackBox from '../BlackBox';
 
-import {Configuration} from '../../src/Configuration';
-import {ActionDelete} from '../../src/Actions/Delete';
-import {MotionWord} from '../../src/Motions/Word';
-import {MotionCharacter} from '../../src/Motions/Character';
+suite('ActionDelete.byMotions', () => {
+    const testCases: BlackBox.TestCase[] = [
+        {
+            from: 'Foo en[]d\nBar end',
+            inputs: 'd w',
+            to: 'Foo e[]n\nBar end',
+        },
+        {
+            from: 'Foo end\n[]Bar end',
+            inputs: 'd b',
+            to: 'Foo end\n[]Bar end',
+        },
+        {
+            from: 'Fo[]o end\nBar end',
+            inputs: 'd k',
+            to: '[]Bar end',
+        },
+        {
+            from: 'Foo end\n[]Bar end',
+            inputs: 'd j',
+            to: 'Foo en[]d',
+        },
+    ];
 
-export function run() {
+    for (let i = 0; i < testCases.length; i++) {
+        BlackBox.run(testCases[i]);
+    }
+});
 
-    Configuration.init();
+suite('ActionDelete.byLines', () => {
+    const testCases: BlackBox.TestCase[] = [
+        {
+            from: 'Fo[]o end\nBar end',
+            inputs: 'd d',
+            to: '[]Bar end',
+        },
+        {
+            from: 'Foo end\n[]Bar end',
+            inputs: 'd d',
+            to: 'Foo en[]d',
+        },
+    ];
 
-    test('ActionDelete.byMotions', (done) => {
-
-        const testCases = [
-            {
-                message: 'MotionWord.nextStart at line end',
-                motions: [MotionWord.nextStart()],
-                in: 'Foo end\nBar end',
-                selection: new Selection(0, 6, 0, 6),
-                out: 'Foo en\nBar end',
-            },
-            {
-                message: 'MotionWord.prevStart at line start',
-                motions: [MotionWord.prevStart()],
-                in: 'Foo end\nBar end',
-                selection: new Selection(1, 0, 1, 0),
-                out: 'Foo end\nBar end',
-            },
-            {
-                message: 'MotionCharacter.up at first line',
-                motions: [MotionCharacter.up()],
-                in: 'Foo end\nBar end',
-                selection: new Selection(0, 2, 0, 2),
-                out: 'Bar end',
-            },
-            {
-                message: 'MotionCharacter.down at last line',
-                motions: [MotionCharacter.down()],
-                in: 'Foo end\nBar end',
-                selection: new Selection(1, 0, 1, 0),
-                out: 'Foo end',
-            },
-        ];
-
-        let promise = Promise.resolve();
-
-        testCases.forEach(testCase => {
-            promise = promise.then(() => {
-
-                return TestUtil.createTempDocument(testCase.in).then(() => {
-                    TestUtil.setSelection(testCase.selection);
-
-                    return ActionDelete.byMotions({
-                        motions: testCase.motions
-                    }).then(() => {
-                        assert.equal(TestUtil.getDocument().getText(), testCase.out, testCase.message);
-                    });
-                });
-
-            });
-        });
-
-        promise.then(() => {
-            done();
-        }, (error) => {
-            done(error);
-        });
-
-    });
-
-    test('ActionDelete.byLines', (done) => {
-
-        const testCases = [
-            {
-                message: 'Selection at first line',
-                in: 'Foo end\nBar end',
-                selection: new Selection(0, 2, 0, 2),
-                out: 'Bar end',
-            },
-            {
-                message: 'Selection at last line',
-                in: 'Foo end\nBar end',
-                selection: new Selection(1, 0, 1, 0),
-                out: 'Foo end',
-            },
-        ];
-
-        let promise = Promise.resolve();
-
-        testCases.forEach(testCase => {
-            promise = promise.then(() => {
-
-                return TestUtil.createTempDocument(testCase.in).then(() => {
-                    TestUtil.setSelection(testCase.selection);
-
-                    return ActionDelete.byLines({}).then(() => {
-                        assert.equal(TestUtil.getDocument().getText(), testCase.out, testCase.message);
-                    });
-                });
-
-            });
-        });
-
-        promise.then(() => {
-            done();
-        }, (error) => {
-            done(error);
-        });
-
-    });
-};
+    for (let i = 0; i < testCases.length; i++) {
+        BlackBox.run(testCases[i]);
+    }
+});
