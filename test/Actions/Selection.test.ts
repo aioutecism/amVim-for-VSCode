@@ -1,88 +1,45 @@
-import * as assert from 'assert';
-import * as TestUtil from '../Util';
-import {Selection} from 'vscode';
+import * as BlackBox from '../BlackBox';
 
-import {Configuration} from '../../src/Configuration';
-import {ActionSelection} from '../../src/Actions/Selection';
-import {TextObjectWord} from '../../src/TextObjects/Word';
+suite('ActionSelection.expandByTextObject', () => {
+    const testCases: BlackBox.TestCase[] = [
+        {
+            from: '[F]oo  bar!@#  end',
+            inputs: 'i w',
+            to: '[Foo]  bar!@#  end',
+        },
+        {
+            from: 'F[o]o  bar!@#  end',
+            inputs: 'i w',
+            to: '[Foo]  bar!@#  end',
+        },
+        {
+            from: 'Foo  b[ar!@]#  end',
+            inputs: 'i w',
+            to: 'Foo  b[ar!@#]  end',
+        },
+        {
+            from: 'Foo  b~[ar!@]#  end',
+            inputs: 'i w',
+            to: 'Foo  ~[bar!@]#  end',
+        },
+        {
+            from: 'Foo  ~[bar!@]#  end',
+            inputs: 'i w',
+            to: 'Foo~[  bar!@]#  end',
+        },
+        {
+            from: 'F~[o]o  bar!@#  end',
+            inputs: 'i w',
+            to: '~[Foo]  bar!@#  end',
+        },
+        {
+            from: '~[F]oo  bar!@#  end',
+            inputs: 'i w',
+            to: '~[Foo]  bar!@#  end',
+        },
+    ];
 
-export function run() {
-
-    Configuration.init();
-
-    test('ActionSelection.expandByTextObject', (done) => {
-        TestUtil.createTempDocument('Foo  bar!@#  end').then(() => {
-            const testCases = [
-                // 0123456789012345
-                // Foo  bar!@#  end
-                // |
-                {
-                    from: new Selection(0, 0, 0, 1),
-                    to: new Selection(0, 0, 0, 3)
-                },
-                // 0123456789012345
-                // Foo  bar!@#  end
-                //  |
-                {
-                    from: new Selection(0, 1, 0, 2),
-                    to: new Selection(0, 0, 0, 3)
-                },
-                // 0123456789012345
-                // Foo  bar!@#  end
-                //       ___|
-                {
-                    from: new Selection(0, 6, 0, 10),
-                    to: new Selection(0, 6, 0, 11)
-                },
-                // 0123456789012345
-                // Foo  bar!@#  end
-                //       |___
-                {
-                    from: new Selection(0, 10, 0, 6),
-                    to: new Selection(0, 10, 0, 5)
-                },
-                // 0123456789012345
-                // Foo  bar!@#  end
-                //      |____
-                {
-                    from: new Selection(0, 10, 0, 5),
-                    to: new Selection(0, 10, 0, 3)
-                },
-                // 0123456789012345
-                // Foo  bar!@#  end
-                //  |
-                {
-                    from: new Selection(0, 2, 0, 1),
-                    to: new Selection(0, 3, 0, 0)
-                },
-                // 0123456789012345
-                // Foo  bar!@#  end
-                // |
-                {
-                    from: new Selection(0, 1, 0, 0),
-                    to: new Selection(0, 3, 0, 0)
-                },
-            ];
-
-            let promise = Promise.resolve();
-
-            testCases.forEach(testCase => {
-                promise = promise.then(() => {
-                    TestUtil.setSelection(testCase.from);
-
-                    return ActionSelection.expandByTextObject({
-                        textObject: TextObjectWord.byWord({ useBlankSeparatedStyle: false, isInclusive: false })
-                    }).then(() => {
-                        assert.deepEqual(TestUtil.getSelection(), testCase.to);
-                    });
-                });
-            });
-
-            promise.then(() => {
-                done();
-            }, (error) => {
-                done(error);
-            });
-        });
-    });
-};
+    for (let i = 0; i < testCases.length; i++) {
+        BlackBox.run(testCases[i]);
+    }
+});
