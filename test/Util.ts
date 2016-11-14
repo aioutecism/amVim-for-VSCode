@@ -1,21 +1,30 @@
-import {workspace, window, Uri, TextDocument, Position, Selection} from 'vscode';
+import {workspace, window, Uri, TextDocument, TextEditor, Position, Range, Selection} from 'vscode';
 
-export function createTempDocument(content?: string): Thenable<boolean> {
-    const uri = Uri.parse(`untitled:${__dirname}.${Math.random()}.tmp`);
+export function createTempDocument(content?: string, reusableDocument?: TextDocument): Thenable<TextDocument> {
+    let getTextEditor: Thenable<TextEditor>;
 
-    return workspace.openTextDocument(uri)
-        .then(document => {
-            return window.showTextDocument(document);
-        })
-        .then(() => {
-            if (content) {
-                return window.activeTextEditor.edit(editBuilder => {
-                    editBuilder.insert(new Position(0, 0), content);
-                });
-            }
+    if (reusableDocument && window.activeTextEditor.document === reusableDocument) {
+        getTextEditor = Promise.resolve(window.activeTextEditor);
+    }
+    else {
+        const uri = Uri.parse(`untitled:${__dirname}.${Math.random()}.tmp`);
+        getTextEditor = workspace.openTextDocument(uri)
+            .then(document => window.showTextDocument(document));
+    }
 
-            return Promise.resolve(true);
-        });
+    return getTextEditor.then(textEditor => {
+        if (content) {
+            return textEditor.edit(editBuilder => {
+                editBuilder.replace(new Range(
+                    0, 0,
+                    textEditor.document.lineCount, 0
+                ), content);
+            })
+            .then(() => textEditor.document);
+        }
+
+        return textEditor.document;
+    });
 }
 
 export function getDocument(): TextDocument {

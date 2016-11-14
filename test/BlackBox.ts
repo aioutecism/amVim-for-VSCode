@@ -1,6 +1,6 @@
 import * as assert from 'assert';
 import * as TestUtil from './Util';
-import {Selection} from 'vscode';
+import {TextDocument, Selection} from 'vscode';
 import {getCurrentMode} from '../src/extension';
 
 export interface TestCase {
@@ -91,6 +91,8 @@ const extractInfo = (originalText: string) => {
     };
 };
 
+let reusableDocument: TextDocument;
+
 export const run = (testCase: TestCase) => {
     const expectation = `${testCase.from} => ${testCase.to} (inputs: ${testCase.inputs})`;
 
@@ -99,8 +101,10 @@ export const run = (testCase: TestCase) => {
         const toInfo = extractInfo(testCase.to);
         const inputs = testCase.inputs.split(' ');
 
-        TestUtil.createTempDocument(fromInfo.cleanText)
-        .then(async () => {
+        TestUtil.createTempDocument(fromInfo.cleanText, reusableDocument)
+        .then(async document => {
+            reusableDocument = document;
+
             TestUtil.setSelections(fromInfo.selections);
 
             await waitForMillisecond(100);
