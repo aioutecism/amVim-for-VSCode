@@ -1,77 +1,59 @@
-import * as assert from 'assert';
-import * as TestUtil from '../../Util';
-import {Position} from 'vscode';
+import * as BlackBox from '../../BlackBox';
 
-import {Configuration} from '../../../src/Configuration';
-import {MotionWord} from '../../../src/Motions/Word';
+suite('MotionWord: Next start with N.', () => {
+    const testCases: BlackBox.TestCase[] = [
+        {
+            from: '[]  foo bar baz    fum-num',
+            inputs: '1 w',
+            to: '  []foo bar baz    fum-num',
+        },
+        {
+            from: '[]  foo bar baz    fum-num',
+            inputs: '2 w',
+            to: '  foo []bar baz    fum-num',
+        },
+        {
+            from: '[]  foo bar baz    fum-num',
+            inputs: '7 w',
+            to: '  foo bar baz    fum-nu[]m',
+        },
+        {
+            from: '[]  foo bar baz    fum-num',
+            inputs: '10000 w',
+            to: '  foo bar baz    fum-nu[]m',
+        },
+    ];
 
-export function run() {
+    for (let i = 0; i < testCases.length; i++) {
+        BlackBox.run(testCases[i]);
+    }
+});
 
-    Configuration.init();
+suite('MotionWord: Prev start with N.', () => {
+    const testCases: BlackBox.TestCase[] = [
+        {
+            from: '  foo bar baz    fum-nu[]m',
+            inputs: '1 b',
+            to: '  foo bar baz    fum-[]num',
+        },
+        {
+            from: '  foo bar baz    fum-nu[]m',
+            inputs: '2 b',
+            to: '  foo bar baz    fum[]-num',
+        },
+        {
+            from: '  foo bar baz    fum-nu[]m',
+            inputs: '7 b',
+            to: '[]  foo bar baz    fum-num',
+        },
+        {
+            from: '  foo bar baz    fum-nu[]m',
+            inputs: '10000 b',
+            to: '[]  foo bar baz    fum-num',
+        },
+    ];
 
-    test('MotionWord: Next start with N.', (done) => {
-        TestUtil.createTempDocument('  foo bar baz    fum-nom').then(() => {
-
-            let apply = (fromCharacter, n) => {
-                let motion = MotionWord.nextStart({n: n});
-                return motion.apply(new Position(0, fromCharacter)).character;
-            };
-
-            //  0123456789112345678921234
-            // '  foo bar baz    fum-nom'
-            //  ^ *
-            assert.equal(apply(0, 1), 2);
-
-            //  0123456789112345678921234
-            // '  foo bar baz    fum-nom'
-            //  ^     *
-            assert.equal(apply(0, 2), 6);
-
-            //  0123456789112345678921234
-            // '  foo bar baz    fum-nom'
-            //  ^                       *
-            assert.equal(apply(0, 7), 24);
-
-            //  0123456789112345678921234
-            // '  foo bar baz    fum-nom'
-            //  ^                       *
-            assert.equal(apply(0, 10000), 24);
-
-            done();
-
-        });
-    });
-
-    test('MotionWord: Prev start with N.', (done) => {
-        TestUtil.createTempDocument('  foo bar baz    fum-nom').then(() => {
-
-            let apply = (fromCharacter, n) => {
-                let motion = MotionWord.prevStart({n: n});
-                return motion.apply(new Position(0, fromCharacter)).character;
-            };
-
-            //  0123456789112345678921234
-            // '  foo bar baz    fum-nom'
-            //                       * ^
-            assert.equal(apply(23, 1), 21);
-
-            //  0123456789112345678921234
-            // '  foo bar baz    fum-nom'
-            //                      *  ^
-            assert.equal(apply(23, 2), 20);
-
-            //  0123456789112345678921234
-            // '  foo bar baz    fum-nom'
-            //  *                      ^
-            assert.equal(apply(23, 7), 0);
-
-            //  0123456789112345678921234
-            // '  foo bar baz    fum-nom'
-            //  *                      ^
-            assert.equal(apply(23, 10000), 0);
-
-            done();
-
-        });
-    });
-}
+    for (let i = 0; i < testCases.length; i++) {
+        BlackBox.run(testCases[i]);
+    }
+});
