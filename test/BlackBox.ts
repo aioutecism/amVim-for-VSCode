@@ -15,35 +15,79 @@ const waitForMillisecond = (millisecond: number) => {
     });
 };
 
-const extractInfo = (originalString: string) => {
+const getLine = (text: string, offset: number) => {
+    let count = 0;
+    let position = -1;
+
+    while (true) {
+        position = text.indexOf('\n', position + 1);
+        if (position < 0 || position >= offset) { break; }
+        count++;
+    }
+
+    return count;
+};
+
+const getCharacter = (text: string, offset: number) => {
+    const textToTheLeft = text.substring(0, offset);
+    const lastLineBreakIndex = textToTheLeft.lastIndexOf('\n');
+
+    if (lastLineBreakIndex < 0) {
+        return offset;
+    }
+    else {
+        return offset - (lastLineBreakIndex + 1);
+    }
+};
+
+const extractInfo = (originalText: string) => {
     const selections: Selection[] = [];
 
-    let removedCharacterCount = 0;
+    let cleanText = originalText;
 
-    const cleanString = originalString.replace(
-        /~?\[(.*?)\]/mg,
-        (match: string, content: string, offset: number) => {
-            const isReversed = match[0] === '~';
+    while (true) {
+        let hasMatch = false;
 
-            offset -= removedCharacterCount;
-            removedCharacterCount += match.length - content.length;
+        cleanText = cleanText.replace(
+            /~?\[([\s\S]*?)\]/m,
+            (match: string, content: string, startOffset: number) => {
+                hasMatch = true;
 
-            const startOffset = offset + (isReversed ? 1 : 0);
-            const endOffset = offset + content.length;
+                const endOffset = startOffset + match.length - 1;
+                const isReversed = match[0] === '~';
 
-            const selection = isReversed
-                ? new Selection(0, endOffset, 0, startOffset)
-                : new Selection(0, startOffset, 0, endOffset);
+                const startLine = getLine(cleanText, startOffset);
+                const endLine = getLine(cleanText, endOffset);
 
-            selections.push(selection);
+                let startCharacter = getCharacter(cleanText, startOffset);
+                let endCharacter = getCharacter(cleanText, endOffset);
 
-            return content;
-        }
-    );
+                if (startLine === endLine) {
+                    // Minus `[` mark.
+                    endCharacter -= 1;
+                }
+
+                if (isReversed) {
+                    // Plus `~` mark.
+                    startCharacter += 1;
+                    // Minus `~` mark.
+                    endCharacter -= 1;
+                }
+
+                selections.push(isReversed
+                    ? new Selection(endLine, endCharacter, startLine, startCharacter)
+                    : new Selection(startLine, startCharacter, endLine, endCharacter));
+
+                return content;
+            }
+        );
+
+        if (!hasMatch) { break; }
+    }
 
     return {
         selections,
-        cleanString,
+        cleanText,
     };
 };
 
@@ -55,7 +99,7 @@ export const run = (testCase: TestCase) => {
         const toInfo = extractInfo(testCase.to);
         const inputs = testCase.inputs.split(' ');
 
-        TestUtil.createTempDocument(fromInfo.cleanString)
+        TestUtil.createTempDocument(fromInfo.cleanText)
         .then(async () => {
             TestUtil.setSelections(fromInfo.selections);
 
@@ -67,7 +111,7 @@ export const run = (testCase: TestCase) => {
             }
 
             try {
-                assert.equal(TestUtil.getDocument().getText(), toInfo.cleanString);
+                assert.equal(TestUtil.getDocument().getText(), toInfo.cleanText);
                 assert.deepEqual(TestUtil.getSelections(), toInfo.selections);
             }
             catch (error) {
