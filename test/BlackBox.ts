@@ -107,7 +107,7 @@ export const run = (testCase: TestCase) => {
 
             TestUtil.setSelections(fromInfo.selections);
 
-            await waitForMillisecond(100);
+            await waitForMillisecond(50);
 
             for (let i = 0; i < inputs.length; i++) {
                 getCurrentMode()!.input(inputs[i]);
