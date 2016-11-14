@@ -10,10 +10,8 @@ import {ActionMoveCursor} from './Actions/MoveCursor';
 
 export class Dispatcher {
 
-    private currentMode: Mode;
-    get currentModeId(): ModeID | null {
-        return this.currentMode ? this.currentMode.id : null;
-    }
+    private _currentMode: Mode;
+    get currentMode(): Mode { return this._currentMode; }
 
     private modes: {[k: string]: Mode} = {
         [ModeID.NORMAL]: new ModeNormal(),
@@ -52,7 +50,7 @@ export class Dispatcher {
             window.onDidChangeTextEditorSelection(() => {
                 // Ensure this is executed after all pending commands.
                 setTimeout(() => {
-                    ActionMode.switchByActiveSelections(this.currentMode.id);
+                    ActionMode.switchByActiveSelections(this._currentMode.id);
                     ActionMoveCursor.updatePreferedColumn();
                 }, 0);
             }),
@@ -66,26 +64,26 @@ export class Dispatcher {
 
     private inputHandler(key: string, args: {} = {}): () => void {
         return () => {
-            this.currentMode.input(key, args);
+            this._currentMode.input(key, args);
         };
     }
 
     private switchMode(id: ModeID): void {
-        const previousMode = this.currentMode;
+        const previousMode = this._currentMode;
 
         if (previousMode) {
             previousMode.exit();
         }
 
-        this.currentMode = this.modes[id];
-        this.currentMode.enter();
+        this._currentMode = this.modes[id];
+        this._currentMode.enter();
 
-        commands.executeCommand('setContext', 'amVim.mode', this.currentMode.name);
+        commands.executeCommand('setContext', 'amVim.mode', this._currentMode.name);
 
         // For use in repeat command
         if (previousMode && previousMode.id === ModeID.INSERT) {
             const recordedCommandMaps = (previousMode as ModeInsert).recordedCommandMaps;
-            this.currentMode.onDidRecordFinish(recordedCommandMaps);
+            this._currentMode.onDidRecordFinish(recordedCommandMaps);
         }
     }
 
