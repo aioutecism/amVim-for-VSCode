@@ -18,10 +18,15 @@ const waitForMillisecond = (millisecond: number) => {
 const extractInfo = (originalString: string) => {
     const selections: Selection[] = [];
 
+    let removedCharacterCount = 0;
+
     const cleanString = originalString.replace(
         /~?\[(.*?)\]/mg,
         (match: string, content: string, offset: number) => {
             const isReversed = match[0] === '~';
+
+            offset -= removedCharacterCount;
+            removedCharacterCount += match.length - content.length;
 
             const startOffset = offset + (isReversed ? 1 : 0);
             const endOffset = offset + content.length;
