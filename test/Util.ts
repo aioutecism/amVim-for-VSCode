@@ -7,7 +7,9 @@ export function createTempDocument(content?: string, reusableDocument?: TextDocu
         getTextEditor = Promise.resolve(window.activeTextEditor);
     }
     else {
-        const uri = Uri.parse(`untitled:${__dirname}.${Math.random()}.tmp`);
+        const uri = reusableDocument
+            ? reusableDocument.uri
+            : Uri.parse(`untitled:${__dirname}.${Math.random()}.tmp`);
         getTextEditor = workspace.openTextDocument(uri)
             .then(document => window.showTextDocument(document));
     }

@@ -65,11 +65,11 @@ const extractInfo = (originalText: string) => {
                 if (startLine === endLine) {
                     // Minus `[` mark.
                     endCharacter -= 1;
-                }
 
-                if (isReversed) {
-                    // Minus `~` mark.
-                    endCharacter -= 1;
+                    if (isReversed) {
+                        // Minus `~` mark.
+                        endCharacter -= 1;
+                    }
                 }
 
                 selections.push(isReversed
