@@ -1,6 +1,6 @@
-import * as BlackBox from '../../BlackBox';
+import * as BlackBox from '../Framework/BlackBox';
 
-suite('MotionWord: Japanese', () => {
+suite('Normal: w (Japanese)', () => {
     const testCases: BlackBox.TestCase[] = [
         {
             from: '[]、。〈〉《》「」『』【】〜〝〞',

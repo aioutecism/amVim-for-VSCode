@@ -1,7 +1,7 @@
 import * as assert from 'assert';
 import * as TestUtil from './Util';
 import {TextDocument, Selection} from 'vscode';
-import {getCurrentMode} from '../src/extension';
+import {getCurrentMode} from '../../src/extension';
 
 export interface TestCase {
     from: string;

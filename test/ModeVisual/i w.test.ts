@@ -1,6 +1,6 @@
-import * as BlackBox from '../BlackBox';
+import * as BlackBox from '../Framework/BlackBox';
 
-suite('ActionSelection.expandByTextObject', () => {
+suite('Visual: i w', () => {
     const testCases: BlackBox.TestCase[] = [
         {
             from: '[F]oo  bar!@#  end',

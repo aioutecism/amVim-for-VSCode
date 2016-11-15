@@ -1,6 +1,6 @@
-import * as BlackBox from '../BlackBox';
+import * as BlackBox from '../Framework/BlackBox';
 
-suite('TextObjectWord: Regular word style', () => {
+suite('Normal: d i w', () => {
     const testCases: BlackBox.TestCase[] = [
         {
             from: '[]Foo  bar!@#  end',
@@ -8,130 +8,59 @@ suite('TextObjectWord: Regular word style', () => {
             to: '[]  bar!@#  end',
         },
         {
-            from: '[]Foo  bar!@#  end',
-            inputs: 'd a w',
-            to: '[]bar!@#  end',
-        },
-
-        {
             from: 'Fo[]o  bar!@#  end',
             inputs: 'd i w',
             to: '[]  bar!@#  end',
         },
         {
-            from: 'Fo[]o  bar!@#  end',
-            inputs: 'd a w',
-            to: '[]bar!@#  end',
-        },
-
-        {
             from: 'Foo[]  bar!@#  end',
             inputs: 'd i w',
             to: 'Foo[]bar!@#  end',
         },
-        {
-            from: 'Foo[]  bar!@#  end',
-            inputs: 'd a w',
-            to: 'Foo[]!@#  end',
-        },
-
         {
             from: 'Foo [] bar!@#  end',
             inputs: 'd i w',
             to: 'Foo[]bar!@#  end',
         },
         {
-            from: 'Foo [] bar!@#  end',
-            inputs: 'd a w',
-            to: 'Foo[]!@#  end',
-        },
-
-        {
             from: 'Foo  []bar!@#  end',
             inputs: 'd i w',
             to: 'Foo  []!@#  end',
         },
-        {
-            from: 'Foo  []bar!@#  end',
-            inputs: 'd a w',
-            to: 'Foo[]!@#  end',
-        },
-
         {
             from: 'Foo  ba[]r!@#  end',
             inputs: 'd i w',
             to: 'Foo  []!@#  end',
         },
         {
-            from: 'Foo  ba[]r!@#  end',
-            inputs: 'd a w',
-            to: 'Foo[]!@#  end',
-        },
-
-        {
             from: 'Foo  bar[]!@#  end',
             inputs: 'd i w',
             to: 'Foo  bar[]  end',
         },
-        {
-            from: 'Foo  bar[]!@#  end',
-            inputs: 'd a w',
-            to: 'Foo  bar[]end',
-        },
-
         {
             from: 'Foo  bar!@[]#  end',
             inputs: 'd i w',
             to: 'Foo  bar[]  end',
         },
         {
-            from: 'Foo  bar!@[]#  end',
-            inputs: 'd a w',
-            to: 'Foo  bar[]end',
-        },
-
-        {
             from: 'Foo  bar!@#[]  end',
             inputs: 'd i w',
             to: 'Foo  bar!@#[]end',
         },
-        {
-            from: 'Foo  bar!@#[]  end',
-            inputs: 'd a w',
-            to: 'Foo  bar!@[]#',
-        },
-
         {
             from: 'Foo  bar!@# [] end',
             inputs: 'd i w',
             to: 'Foo  bar!@#[]end',
         },
         {
-            from: 'Foo  bar!@# [] end',
-            inputs: 'd a w',
-            to: 'Foo  bar!@[]#',
-        },
-
-        {
             from: 'Foo  bar!@#  []end',
             inputs: 'd i w',
             to: 'Foo  bar!@# [] ',
         },
         {
-            from: 'Foo  bar!@#  []end',
-            inputs: 'd a w',
-            to: 'Foo  bar!@[]#',
-        },
-
-        {
             from: 'Foo  bar!@#  en[]d',
             inputs: 'd i w',
             to: 'Foo  bar!@# [] ',
-        },
-        {
-            from: 'Foo  bar!@#  en[]d',
-            inputs: 'd a w',
-            to: 'Foo  bar!@[]#',
         },
     ];
 
@@ -140,7 +69,7 @@ suite('TextObjectWord: Regular word style', () => {
     }
 });
 
-suite('TextObjectWord: Blank separated word style', () => {
+suite('Normal: d i W', () => {
     const testCases: BlackBox.TestCase[] = [
         {
             from: '[]Foo  bar!@#  end',
@@ -148,130 +77,59 @@ suite('TextObjectWord: Blank separated word style', () => {
             to: '[]  bar!@#  end',
         },
         {
-            from: '[]Foo  bar!@#  end',
-            inputs: 'd a W',
-            to: '[]bar!@#  end',
-        },
-
-        {
             from: 'Fo[]o  bar!@#  end',
             inputs: 'd i W',
             to: '[]  bar!@#  end',
         },
         {
-            from: 'Fo[]o  bar!@#  end',
-            inputs: 'd a W',
-            to: '[]bar!@#  end',
-        },
-
-        {
             from: 'Foo[]  bar!@#  end',
             inputs: 'd i W',
             to: 'Foo[]bar!@#  end',
         },
-        {
-            from: 'Foo[]  bar!@#  end',
-            inputs: 'd a W',
-            to: 'Foo[]  end',
-        },
-
         {
             from: 'Foo [] bar!@#  end',
             inputs: 'd i W',
             to: 'Foo[]bar!@#  end',
         },
         {
-            from: 'Foo [] bar!@#  end',
-            inputs: 'd a W',
-            to: 'Foo[]  end',
-        },
-
-        {
             from: 'Foo  []bar!@#  end',
             inputs: 'd i W',
             to: 'Foo  []  end',
         },
-        {
-            from: 'Foo  []bar!@#  end',
-            inputs: 'd a W',
-            to: 'Foo  []end',
-        },
-
         {
             from: 'Foo  ba[]r!@#  end',
             inputs: 'd i W',
             to: 'Foo  []  end',
         },
         {
-            from: 'Foo  ba[]r!@#  end',
-            inputs: 'd a W',
-            to: 'Foo  []end',
-        },
-
-        {
             from: 'Foo  bar[]!@#  end',
             inputs: 'd i W',
             to: 'Foo  []  end',
         },
-        {
-            from: 'Foo  bar[]!@#  end',
-            inputs: 'd a W',
-            to: 'Foo  []end',
-        },
-
         {
             from: 'Foo  bar!@[]#  end',
             inputs: 'd i W',
             to: 'Foo  []  end',
         },
         {
-            from: 'Foo  bar!@[]#  end',
-            inputs: 'd a W',
-            to: 'Foo  []end',
-        },
-
-        {
             from: 'Foo  bar!@#[]  end',
             inputs: 'd i W',
             to: 'Foo  bar!@#[]end',
         },
-        {
-            from: 'Foo  bar!@#[]  end',
-            inputs: 'd a W',
-            to: 'Foo  bar!@[]#',
-        },
-
         {
             from: 'Foo  bar!@# [] end',
             inputs: 'd i W',
             to: 'Foo  bar!@#[]end',
         },
         {
-            from: 'Foo  bar!@# [] end',
-            inputs: 'd a W',
-            to: 'Foo  bar!@[]#',
-        },
-
-        {
             from: 'Foo  bar!@#  []end',
             inputs: 'd i W',
             to: 'Foo  bar!@# [] ',
         },
         {
-            from: 'Foo  bar!@#  []end',
-            inputs: 'd a W',
-            to: 'Foo  bar!@[]#',
-        },
-
-        {
             from: 'Foo  bar!@#  en[]d',
             inputs: 'd i W',
             to: 'Foo  bar!@# [] ',
-        },
-        {
-            from: 'Foo  bar!@#  en[]d',
-            inputs: 'd a W',
-            to: 'Foo  bar!@[]#',
         },
     ];
 
