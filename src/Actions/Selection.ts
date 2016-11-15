@@ -1,5 +1,5 @@
 import {window, Selection} from 'vscode';
-import {currentModeId} from '../extension';
+import {getCurrentMode} from '../extension';
 import {ModeID} from '../Modes/Mode';
 import {TextObject} from '../TextObjects/TextObject';
 import {UtilSelection} from '../Utils/Selection';
@@ -7,7 +7,8 @@ import {UtilSelection} from '../Utils/Selection';
 export class ActionSelection {
 
     static validateSelections(): Thenable<boolean> {
-        if (currentModeId() === ModeID.INSERT) {
+        const currentMode = getCurrentMode();
+        if (currentMode !== null && currentMode.id === ModeID.INSERT) {
             return Promise.resolve(true);
         }
 

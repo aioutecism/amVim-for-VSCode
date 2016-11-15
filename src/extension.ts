@@ -1,7 +1,7 @@
 import {ExtensionContext} from 'vscode';
 import {Configuration} from './Configuration';
 import {Dispatcher} from './Dispatcher';
-import {ModeID} from './Modes/Mode';
+import {Mode} from './Modes/Mode';
 
 let dispatcher: Dispatcher;
 
@@ -15,6 +15,6 @@ export function activate(context: ExtensionContext) {
     );
 }
 
-export function currentModeId(): ModeID | null {
-    return dispatcher ? dispatcher.currentModeId : null;
+export function getCurrentMode(): Mode | null {
+    return dispatcher ? dispatcher.currentMode : null;
 }
