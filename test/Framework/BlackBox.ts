@@ -92,7 +92,9 @@ const extractInfo = (originalText: string) => {
 let reusableDocument: TextDocument;
 
 export const run = (testCase: TestCase) => {
-    const expectation = `${testCase.from} => ${testCase.to} (inputs: ${testCase.inputs})`;
+    const plainFrom = testCase.from.replace('\n', '\\n');
+    const plainTo = testCase.to.replace('\n', '\\n');
+    const expectation = `Inputs: ${testCase.inputs}\n> ${plainFrom}\n< ${plainTo}`;
 
     test(expectation, (done) => {
         const fromInfo = extractInfo(testCase.from);
