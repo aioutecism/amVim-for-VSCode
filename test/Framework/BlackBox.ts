@@ -96,7 +96,11 @@ export const run = (testCase: TestCase) => {
     const plainTo = testCase.to.replace('\n', '\\n');
     const expectation = `Inputs: ${testCase.inputs}\n> ${plainFrom}\n< ${plainTo}`;
 
+    let tries = 0;
+
     test(expectation, (done) => {
+        tries++;
+
         const fromInfo = extractInfo(testCase.from);
         const toInfo = extractInfo(testCase.to);
         const inputs = testCase.inputs.split(' ');
@@ -107,11 +111,11 @@ export const run = (testCase: TestCase) => {
 
             TestUtil.setSelections(fromInfo.selections);
 
-            await waitForMillisecond(50);
+            await waitForMillisecond(50 * tries);
 
             for (let i = 0; i < inputs.length; i++) {
                 getCurrentMode()!.input(inputs[i]);
-                await waitForMillisecond(20);
+                await waitForMillisecond(20 * tries);
             }
 
             try {
