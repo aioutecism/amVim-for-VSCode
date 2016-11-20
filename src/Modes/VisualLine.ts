@@ -70,8 +70,14 @@ export class ModeVisualLine extends Mode {
             ActionSelection.shrinkToActives,
         ] },
 
-        { keys: 'p', actions: [ActionReplace.selectionsWithRegister], args: {shouldYank: true} },
-        { keys: 'P', actions: [ActionReplace.selectionsWithRegister], args: {shouldYank: true} },
+        { keys: 'p', actions: [ActionReplace.selectionsWithRegister], args: {
+            shouldYank: true,
+            isLinewise: true,
+        } },
+        { keys: 'P', actions: [ActionReplace.selectionsWithRegister], args: {
+            shouldYank: true,
+            isLinewise: true,
+        } },
 
         { keys: 'r {char}', actions: [ActionReplace.selectionsWithCharacter] },
         { keys: '~', actions: [ActionCase.switchSelections] },
