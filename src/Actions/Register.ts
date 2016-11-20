@@ -54,7 +54,12 @@ export class ActionRegister {
         return Promise.resolve(true);
     }
 
-    static yankByMotions(args: {motions: Motion[]}): Thenable<boolean> {
+    static yankByMotions(args: {
+        motions: Motion[],
+        isChangeAction?: boolean,
+    }): Thenable<boolean> {
+        args.isChangeAction = args.isChangeAction === undefined ? false : args.isChangeAction;
+
         const activeTextEditor = window.activeTextEditor;
 
         if (! activeTextEditor) {
@@ -70,6 +75,7 @@ export class ActionRegister {
                 return motion.apply(position, {
                     isInclusive: true,
                     shouldCrossLines: false,
+                    isChangeAction: args.isChangeAction,
                 });
             }, start);
             return new Range(start, end);
