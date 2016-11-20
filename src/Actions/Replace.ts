@@ -1,7 +1,7 @@
 import {window, Range} from 'vscode';
 import {StaticReflect} from '../LanguageExtensions/StaticReflect';
 import {SymbolMetadata} from '../Symbols/Metadata';
-import {ActionRegister} from './Register';
+import {ActionRegister, Register} from './Register';
 import {ActionSelection} from './Selection';
 import {ActionReveal} from './Reveal';
 import {UtilRange} from '../Utils/Range';
@@ -11,8 +11,16 @@ export class ActionReplace {
     @StaticReflect.metadata(SymbolMetadata.Action.isChange, true)
     static selectionsWithRegister(args: {
         shouldYank?: boolean
+        isLinewise?: boolean
     }): Thenable<boolean> {
         args.shouldYank = args.shouldYank === undefined ? false : args.shouldYank;
+        args.isLinewise = args.isLinewise === undefined ? false : args.isLinewise;
+
+        const stash = ActionRegister.GetStash();
+
+        if (! stash) {
+            return Promise.resolve(false);
+        }
 
         const activeTextEditor = window.activeTextEditor;
 
@@ -26,11 +34,17 @@ export class ActionReplace {
         return activeTextEditor.edit((editBuilder) => {
             activeTextEditor.selections.forEach(selection => {
                 originalTexts.push(document.getText(selection));
-                editBuilder.replace(selection, ActionRegister.GetStash());
+                editBuilder.replace(selection, stash.content);
             });
         })
             .then(() => {
-                ActionRegister.SetStash(originalTexts);
+                if (args.shouldYank) {
+                    const register = new Register({
+                        content: originalTexts.join('\n'),
+                        isLinewise: args.isLinewise
+                    });
+                    ActionRegister.SetStash(register);
+                }
             })
             .then(() => ActionSelection.shrinkToActives())
             .then(() => ActionReveal.primaryCursor());
