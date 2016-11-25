@@ -31,8 +31,14 @@ export class ActionReplace {
         const document = activeTextEditor.document;
         const originalTexts: string[] = [];
 
+        let ranges = activeTextEditor.selections as Range[];
+
+        if (args.isLinewise) {
+            ranges = ranges.map(range => UtilRange.toLinewise(range, document))
+        }
+
         return activeTextEditor.edit((editBuilder) => {
-            activeTextEditor.selections.forEach(selection => {
+            ranges.forEach(selection => {
                 originalTexts.push(document.getText(selection));
                 editBuilder.replace(selection, stash.text);
             });
