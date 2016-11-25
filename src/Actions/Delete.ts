@@ -155,7 +155,10 @@ export class ActionDelete {
 
         ranges = UtilRange.unionOverlaps(ranges);
 
-        return (args.shouldYank ? ActionRegister.yankRanges(ranges) : Promise.resolve(true))
+        return (args.shouldYank ? ActionRegister.yankRanges({
+                ranges: ranges,
+                isLinewise: false,
+            }) : Promise.resolve(true))
             .then(() => {
                 return activeTextEditor.edit((editBuilder) => {
                     ranges.forEach((range) => editBuilder.delete(range));
@@ -217,7 +220,10 @@ export class ActionDelete {
 
         ranges = UtilRange.unionOverlaps(ranges);
 
-        return (args.shouldYank ? ActionRegister.yankRanges(ranges) : Promise.resolve(true))
+        return (args.shouldYank ? ActionRegister.yankRanges({
+                ranges: ranges,
+                isLinewise: false,
+            }) : Promise.resolve(true))
             .then(() => {
                 return activeTextEditor.edit((editBuilder) => {
                     ranges.forEach((range) => editBuilder.delete(range));

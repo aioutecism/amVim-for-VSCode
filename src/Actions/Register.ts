@@ -30,11 +30,10 @@ export class ActionRegister {
         return ActionRegister.stash;
     }
 
-    static SetStash(input: Register) {
-        ActionRegister.stash = input;
-    }
-
-    static yankRanges(ranges: Range[]): Thenable<boolean> {
+    static yankRanges(args: {
+        ranges: Range[],
+        isLinewise: boolean,
+    }): Thenable<boolean> {
         const activeTextEditor = window.activeTextEditor;
 
         if (! activeTextEditor) {
@@ -43,7 +42,7 @@ export class ActionRegister {
 
         const document = activeTextEditor.document;
 
-        const text = ranges.map(range => {
+        const text = args.ranges.map(range => {
             return document.getText(document.validateRange(range));
         }).join('');
 
@@ -117,7 +116,10 @@ export class ActionRegister {
 
         ranges = UtilRange.unionOverlaps(ranges);
 
-        return ActionRegister.yankRanges(ranges);
+        return ActionRegister.yankRanges({
+            ranges: ranges,
+            isLinewise: false,
+        });
     }
 
     static yankSelections(): Thenable<boolean> {
@@ -127,7 +129,10 @@ export class ActionRegister {
             return Promise.resolve(false);
         }
 
-        return ActionRegister.yankRanges(activeTextEditor.selections);
+        return ActionRegister.yankRanges({
+            ranges: activeTextEditor.selections,
+            isLinewise: false,
+        });
     }
 
     static yankLines(): Thenable<boolean> {

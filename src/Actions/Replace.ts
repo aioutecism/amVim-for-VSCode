@@ -1,7 +1,7 @@
 import {window, Range} from 'vscode';
 import {StaticReflect} from '../LanguageExtensions/StaticReflect';
 import {SymbolMetadata} from '../Symbols/Metadata';
-import {ActionRegister, Register} from './Register';
+import {ActionRegister} from './Register';
 import {ActionSelection} from './Selection';
 import {ActionReveal} from './Reveal';
 import {UtilRange} from '../Utils/Range';
@@ -29,29 +29,22 @@ export class ActionReplace {
         }
 
         const document = activeTextEditor.document;
-        const originalTexts: string[] = [];
 
         let ranges = activeTextEditor.selections as Range[];
 
         if (args.isLinewise) {
-            ranges = ranges.map(range => UtilRange.toLinewise(range, document))
+            ranges = ranges.map(range => UtilRange.toLinewise(range, document));
         }
 
-        return activeTextEditor.edit((editBuilder) => {
-            ranges.forEach(selection => {
-                originalTexts.push(document.getText(selection));
-                editBuilder.replace(selection, stash.text);
-            });
-        })
-            .then(() => {
-                if (args.shouldYank) {
-                    const register = new Register({
-                        text: originalTexts.join('\n'),
-                        isLinewise: args.isLinewise
-                    });
-                    ActionRegister.SetStash(register);
-                }
-            })
+        return (args.shouldYank ? ActionRegister.yankRanges({
+                ranges: ranges,
+                isLinewise: args.isLinewise!,
+            }) : Promise.resolve(true))
+            .then(() => activeTextEditor.edit((editBuilder) => {
+                ranges.forEach(selection => {
+                    editBuilder.replace(selection, stash.text);
+                });
+            }))
             .then(() => ActionSelection.shrinkToActives())
             .then(() => ActionReveal.primaryCursor());
     }
