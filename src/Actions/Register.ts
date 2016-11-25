@@ -15,7 +15,7 @@ export class Register {
     readonly isLinewise: boolean;
 
     private _lineCount: number | undefined = undefined;
-    public get lineCount() : number {
+    public get lineCount(): number {
         if (this._lineCount === undefined) {
             this._lineCount = UtilText.getLineCount(this.text);
         }
