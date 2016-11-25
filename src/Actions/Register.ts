@@ -8,10 +8,19 @@ import {MotionCharacter} from '../Motions/Character';
 import {MotionLine} from '../Motions/Line';
 import {TextObject} from '../TextObjects/TextObject';
 import {UtilRange} from '../Utils/Range';
+import {UtilText} from '../Utils/Text';
 
 export class Register {
     readonly text: string;
     readonly isLinewise: boolean;
+
+    private _lineCount: number | undefined = undefined;
+    public get lineCount() : number {
+        if (this._lineCount === undefined) {
+            this._lineCount = UtilText.getLineCount(this.text);
+        }
+        return this._lineCount;
+    }
 
     constructor(args: {
         text: string,
@@ -172,14 +181,18 @@ export class ActionRegister {
             })
             .then(() => {
                 if (stash.isLinewise) {
-                    const lines = stash.text.split('\n').length;
                     return ActionMoveCursor.byMotions({motions: [
-                        MotionCharacter.down({n: lines - 1}),
+                        MotionCharacter.down(),
                         MotionLine.firstNonBlank(),
                     ]});
                 }
+                else if (stash.lineCount > 1) {
+                    return ActionMoveCursor.byMotions({motions: [
+                        MotionCharacter.right(),
+                    ]});
+                }
                 else {
-                    const characters = ActionRegister.stash.text.length;
+                    const characters = stash.text.length;
                     return ActionMoveCursor.byMotions({motions: [
                         MotionCharacter.right({n: characters}),
                     ]});
@@ -218,7 +231,7 @@ export class ActionRegister {
             .then(() => {
                 if (stash.isLinewise) {
                     return ActionMoveCursor.byMotions({motions: [
-                        MotionCharacter.up(),
+                        MotionCharacter.up({n: stash.lineCount - 1}),
                         MotionLine.firstNonBlank(),
                     ]});
                 }
