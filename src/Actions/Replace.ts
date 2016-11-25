@@ -36,8 +36,7 @@ export class ActionReplace {
             ranges = ranges.map(range => UtilRange.toLinewise(range, document));
         }
 
-        return (args.shouldYank ? ActionRegister.yankRanges({
-                ranges: ranges,
+        return (args.shouldYank ? ActionRegister.yankSelections({
                 isLinewise: args.isLinewise!,
             }) : Promise.resolve(true))
             .then(() => activeTextEditor.edit((editBuilder) => {
