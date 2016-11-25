@@ -34,10 +34,9 @@ export class MotionLine extends Motion {
 
         const document = activeTextEditor.document;
 
-        const matches = document.lineAt(from.line).text.match(/^\s+/);
-        const toCharacter = matches ? matches[0].length : 0;
+        const line = document.lineAt(from.line);
 
-        return from.with(undefined, toCharacter);
+        return from.with(undefined, line.firstNonWhitespaceCharacterIndex);
     }
 
 }
