@@ -108,6 +108,8 @@ export class ActionRegister {
             return Promise.resolve(false);
         }
 
+        const document = activeTextEditor.document;
+
         let ranges: Range[] = [];
 
         activeTextEditor.selections.forEach(selection => {
@@ -117,10 +119,20 @@ export class ActionRegister {
             }
         });
 
-        return ActionRegister.yankRanges({
-            ranges: ranges,
-            isLinewise: false,
+        // `ranges` is already line-wise so yankRanges is not suitable.
+
+        ranges = UtilRange.unionOverlaps(ranges);
+
+        const text = ranges.map(range => {
+            return document.getText(document.validateRange(range));
+        }).join('');
+
+        ActionRegister.stash = new Register({
+            text: text,
+            isLinewise: args.textObject.isLinewise,
         });
+
+        return Promise.resolve(true);
     }
 
     static yankSelections(args: {isLinewise?: boolean}): Thenable<boolean> {
