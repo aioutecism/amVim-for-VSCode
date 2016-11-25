@@ -1,8 +1,14 @@
 import {window, TextDocument, Position, Range} from 'vscode';
+import {UtilRange} from '../Utils/Range';
 
 export abstract class TextObject {
 
     protected isInclusive: boolean;
+
+    protected _isLinewise: boolean | undefined = undefined;
+    public get isLinewise() {
+        return this._isLinewise === undefined ? false : this._isLinewise;
+    }
 
     /**
      * Override this to return start range of text object or null if not found.
@@ -41,7 +47,13 @@ export abstract class TextObject {
             return null;
         }
 
-        return this.createRangeDueToIsInclusive(startRange, endRange);
+        let range = this.createRangeDueToIsInclusive(startRange, endRange);
+
+        if (this._isLinewise) {
+            range = UtilRange.toLinewise(range, document);
+        }
+
+        return range;
     }
 
     protected createRangeDueToIsInclusive(startRange: Range, endRange: Range): Range {
