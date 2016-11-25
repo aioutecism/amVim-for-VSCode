@@ -3,7 +3,7 @@ import {StaticReflect} from '../LanguageExtensions/StaticReflect';
 import {SymbolMetadata} from '../Symbols/Metadata';
 import {ActionReveal} from './Reveal';
 import {UtilRange} from '../Utils/Range';
-import {UtilCharacter} from '../Utils/Character';
+import {UtilText} from '../Utils/Text';
 
 export class ActionCase {
 
@@ -18,7 +18,7 @@ export class ActionCase {
         return activeTextEditor.edit((editBuilder) => {
             activeTextEditor.selections.forEach(selection => {
                 const text = activeTextEditor.document.getText(selection);
-                editBuilder.replace(selection, UtilCharacter.switchCase(text));
+                editBuilder.replace(selection, UtilText.switchCase(text));
             });
         })
             .then(() => ActionReveal.primaryCursor());
@@ -43,7 +43,7 @@ export class ActionCase {
         return activeTextEditor.edit((editBuilder) => {
             ranges.forEach(range => {
                 const text = activeTextEditor.document.getText(range);
-                editBuilder.replace(range, UtilCharacter.switchCase(text));
+                editBuilder.replace(range, UtilText.switchCase(text));
             });
         })
             .then(() => ActionReveal.primaryCursor());
