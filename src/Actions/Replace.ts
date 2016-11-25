@@ -34,13 +34,13 @@ export class ActionReplace {
         return activeTextEditor.edit((editBuilder) => {
             activeTextEditor.selections.forEach(selection => {
                 originalTexts.push(document.getText(selection));
-                editBuilder.replace(selection, stash.content);
+                editBuilder.replace(selection, stash.text);
             });
         })
             .then(() => {
                 if (args.shouldYank) {
                     const register = new Register({
-                        content: originalTexts.join('\n'),
+                        text: originalTexts.join('\n'),
                         isLinewise: args.isLinewise
                     });
                     ActionRegister.SetStash(register);

@@ -10,14 +10,14 @@ import {TextObject} from '../TextObjects/TextObject';
 import {UtilRange} from '../Utils/Range';
 
 export class Register {
-    readonly content: string;
+    readonly text: string;
     readonly isLinewise: boolean;
 
     constructor(args: {
-        content: string,
+        text: string,
         isLinewise?: boolean
     }) {
-        this.content = args.content;
+        this.text = args.text;
         this.isLinewise = args.isLinewise === undefined ? false : args.isLinewise;
     }
 }
@@ -43,12 +43,12 @@ export class ActionRegister {
 
         const document = activeTextEditor.document;
 
-        const content = ranges.map(range => {
+        const text = ranges.map(range => {
             return document.getText(document.validateRange(range));
         }).join('');
 
         ActionRegister.stash = new Register({
-            content: content,
+            text: text,
         });
 
         return Promise.resolve(true);
@@ -87,12 +87,12 @@ export class ActionRegister {
 
         ranges = UtilRange.unionOverlaps(ranges);
 
-        const content = ranges.map(range => {
+        const text = ranges.map(range => {
             return document.getText(document.validateRange(range));
         }).join('');
 
         ActionRegister.stash = new Register({
-            content: content,
+            text: text,
             isLinewise: isLinewise,
         });
 
@@ -143,12 +143,12 @@ export class ActionRegister {
 
         ranges = UtilRange.unionOverlaps(ranges);
 
-        const content = ranges.map(range => {
+        const text = ranges.map(range => {
             return document.getText(document.validateRange(range));
         }).join('');
 
         ActionRegister.stash = new Register({
-            content: content,
+            text: text,
             isLinewise: true,
         });
 
@@ -179,20 +179,20 @@ export class ActionRegister {
             .then(() => {
                 return activeTextEditor.edit((editBuilder) => {
                     putPositions.forEach(position => {
-                        editBuilder.insert(position, stash.content);
+                        editBuilder.insert(position, stash.text);
                     });
                 });
             })
             .then(() => {
                 if (stash.isLinewise) {
-                    const lines = stash.content.split('\n').length;
+                    const lines = stash.text.split('\n').length;
                     return ActionMoveCursor.byMotions({motions: [
                         MotionCharacter.down({n: lines - 1}),
                         MotionLine.firstNonBlank(),
                     ]});
                 }
                 else {
-                    const characters = ActionRegister.stash.content.length;
+                    const characters = ActionRegister.stash.text.length;
                     return ActionMoveCursor.byMotions({motions: [
                         MotionCharacter.right({n: characters}),
                     ]});
@@ -224,7 +224,7 @@ export class ActionRegister {
             .then(() => {
                 return activeTextEditor.edit((editBuilder) => {
                     putPositions.forEach(position => {
-                        editBuilder.insert(position, stash.content);
+                        editBuilder.insert(position, stash.text);
                     });
                 });
             })
