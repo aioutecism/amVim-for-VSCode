@@ -8,27 +8,41 @@ import {MotionCharacter} from '../Motions/Character';
 import {MotionLine} from '../Motions/Line';
 import {TextObject} from '../TextObjects/TextObject';
 import {UtilRange} from '../Utils/Range';
+import {UtilText} from '../Utils/Text';
+
+export class Register {
+    readonly text: string;
+    readonly isLinewise: boolean;
+
+    private _lineCount: number | undefined = undefined;
+    public get lineCount(): number {
+        if (this._lineCount === undefined) {
+            this._lineCount = UtilText.getLineCount(this.text);
+        }
+        return this._lineCount;
+    }
+
+    constructor(args: {
+        text: string,
+        isLinewise?: boolean
+    }) {
+        this.text = args.text;
+        this.isLinewise = args.isLinewise === undefined ? false : args.isLinewise;
+    }
+}
 
 export class ActionRegister {
 
-    private static stash: string = '';
+    private static stash: Register;
 
-    static GetStash(): string {
+    static GetStash(): Register {
         return ActionRegister.stash;
     }
 
-    static SetStash(one: string): void;
-    static SetStash(list: string[]): void;
-    static SetStash(input: string | string[]): void {
-        if (typeof input === 'string') {
-            ActionRegister.stash = input;
-        }
-        else {
-            ActionRegister.stash = input.join('');
-        }
-    }
-
-    static yankRanges(ranges: Range[]): Thenable<boolean> {
+    static yankRanges(args: {
+        ranges: Range[],
+        isLinewise: boolean,
+    }): Thenable<boolean> {
         const activeTextEditor = window.activeTextEditor;
 
         if (! activeTextEditor) {
@@ -37,40 +51,54 @@ export class ActionRegister {
 
         const document = activeTextEditor.document;
 
-        ActionRegister.stash = ranges.map(range => {
+        if (args.isLinewise) {
+            args.ranges = args.ranges.map(range => UtilRange.toLinewise(range, document));
+        }
+
+        args.ranges = UtilRange.unionOverlaps(args.ranges);
+
+        const text = args.ranges.map(range => {
             return document.getText(document.validateRange(range));
         }).join('');
+
+        ActionRegister.stash = new Register({
+            text: text,
+            isLinewise: args.isLinewise,
+        });
 
         return Promise.resolve(true);
     }
 
-    static yankByMotions(args: {motions: Motion[]}): Thenable<boolean> {
+    static yankByMotions(args: {
+        motions: Motion[],
+        isChangeAction?: boolean,
+    }): Thenable<boolean> {
+        args.isChangeAction = args.isChangeAction === undefined ? false : args.isChangeAction;
+
         const activeTextEditor = window.activeTextEditor;
 
         if (! activeTextEditor) {
             return Promise.resolve(false);
         }
 
-        const document = activeTextEditor.document;
+        const isLinewise = args.motions.some(motion => motion.isLinewise);
 
-        let ranges = activeTextEditor.selections.map(selection => {
+        const ranges = activeTextEditor.selections.map(selection => {
             const start = selection.active;
             const end = args.motions.reduce((position, motion) => {
                 return motion.apply(position, {
                     isInclusive: true,
                     shouldCrossLines: false,
+                    isChangeAction: args.isChangeAction,
                 });
             }, start);
             return new Range(start, end);
         });
 
-        if (args.motions.some(motion => motion.isLinewise)) {
-            ranges = ranges.map(range => UtilRange.toLinewise(range, document));
-        }
-
-        ranges = UtilRange.unionOverlaps(ranges);
-
-        return ActionRegister.yankRanges(ranges);
+        return ActionRegister.yankRanges({
+            ranges: ranges,
+            isLinewise: isLinewise,
+        });
     }
 
     static yankByTextObject(args: {textObject: TextObject}): Thenable<boolean> {
@@ -79,6 +107,8 @@ export class ActionRegister {
         if (! activeTextEditor) {
             return Promise.resolve(false);
         }
+
+        const document = activeTextEditor.document;
 
         let ranges: Range[] = [];
 
@@ -89,19 +119,35 @@ export class ActionRegister {
             }
         });
 
+        // `ranges` is already line-wise so yankRanges is not suitable.
+
         ranges = UtilRange.unionOverlaps(ranges);
 
-        return ActionRegister.yankRanges(ranges);
+        const text = ranges.map(range => {
+            return document.getText(document.validateRange(range));
+        }).join('');
+
+        ActionRegister.stash = new Register({
+            text: text,
+            isLinewise: args.textObject.isLinewise,
+        });
+
+        return Promise.resolve(true);
     }
 
-    static yankSelections(): Thenable<boolean> {
+    static yankSelections(args: {isLinewise?: boolean}): Thenable<boolean> {
+        args.isLinewise = args.isLinewise === undefined ? false : args.isLinewise;
+
         const activeTextEditor = window.activeTextEditor;
 
         if (! activeTextEditor) {
             return Promise.resolve(false);
         }
 
-        return ActionRegister.yankRanges(activeTextEditor.selections);
+        return ActionRegister.yankRanges({
+            ranges: activeTextEditor.selections,
+            isLinewise: args.isLinewise,
+        });
     }
 
     static yankLines(): Thenable<boolean> {
@@ -111,50 +157,56 @@ export class ActionRegister {
             return Promise.resolve(false);
         }
 
-        const document = activeTextEditor.document;
-
-        let ranges = activeTextEditor.selections.map(selection => UtilRange.toLinewise(selection, document));
-
-        ranges = UtilRange.unionOverlaps(ranges);
-
-        return ActionRegister.yankRanges(ranges);
+        return ActionRegister.yankRanges({
+            ranges: activeTextEditor.selections,
+            isLinewise: true,
+        });
     }
 
     @StaticReflect.metadata(SymbolMetadata.Action.isChange, true)
     static putAfter(): Thenable<boolean> {
+        if (! ActionRegister.stash) {
+            return Promise.resolve(false);
+        }
+
         const activeTextEditor = window.activeTextEditor;
 
         if (! activeTextEditor) {
             return Promise.resolve(false);
         }
 
-        const characters = ActionRegister.stash.length;
-        const lines = ActionRegister.stash.split(/\n/).length;
+        const stash = ActionRegister.stash;
 
         const putPositions = activeTextEditor.selections.map(selection => {
-            return lines === 1
-                ? selection.active.translate(0, +1)
-                : new Position(selection.active.line + 1, 0);
+            return stash.isLinewise
+                ? new Position(selection.active.line + 1, 0)
+                : selection.active.translate(0, +1);
         });
 
         return ActionSelection.shrinkToActives()
             .then(() => {
                 return activeTextEditor.edit((editBuilder) => {
                     putPositions.forEach(position => {
-                        editBuilder.insert(position, ActionRegister.stash);
+                        editBuilder.insert(position, stash.text);
                     });
                 });
             })
             .then(() => {
-                if (lines === 1) {
+                if (stash.isLinewise) {
                     return ActionMoveCursor.byMotions({motions: [
-                        MotionCharacter.right({n: characters}),
+                        MotionCharacter.down(),
+                        MotionLine.firstNonBlank(),
+                    ]});
+                }
+                else if (stash.lineCount > 1) {
+                    return ActionMoveCursor.byMotions({motions: [
+                        MotionCharacter.right(),
                     ]});
                 }
                 else {
+                    const characters = stash.text.length;
                     return ActionMoveCursor.byMotions({motions: [
-                        MotionCharacter.down({n: lines - 1}),
-                        MotionLine.firstNonBlank(),
+                        MotionCharacter.right({n: characters}),
                     ]});
                 }
             });
@@ -162,38 +214,42 @@ export class ActionRegister {
 
     @StaticReflect.metadata(SymbolMetadata.Action.isChange, true)
     static putBefore(): Thenable<boolean> {
+        if (! ActionRegister.stash) {
+            return Promise.resolve(false);
+        }
+
         const activeTextEditor = window.activeTextEditor;
 
         if (! activeTextEditor) {
             return Promise.resolve(false);
         }
 
-        const lines = ActionRegister.stash.split(/\n/).length;
+        const stash = ActionRegister.stash;
 
         const putPositions = activeTextEditor.selections.map(selection => {
-            return lines === 1
-                ? selection.active
-                : selection.active.with(undefined, 0);
+            return stash.isLinewise
+                ? selection.active.with(undefined, 0)
+                : selection.active;
         });
 
         return ActionSelection.shrinkToActives()
             .then(() => {
                 return activeTextEditor.edit((editBuilder) => {
                     putPositions.forEach(position => {
-                        editBuilder.insert(position, ActionRegister.stash);
+                        editBuilder.insert(position, stash.text);
                     });
                 });
             })
             .then(() => {
-                if (lines === 1) {
+                if (stash.isLinewise) {
                     return ActionMoveCursor.byMotions({motions: [
-                        MotionCharacter.left(),
+                        MotionCharacter.up({n: stash.lineCount - 1}),
+                        MotionLine.firstNonBlank(),
                     ]});
                 }
                 else {
                     return ActionMoveCursor.byMotions({motions: [
-                        MotionCharacter.up(),
-                        MotionLine.firstNonBlank(),
+                        MotionCharacter.left(),
                     ]});
                 }
             });

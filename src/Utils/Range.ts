@@ -3,6 +3,9 @@ import {TextDocument, Range} from 'vscode';
 export class UtilRange {
 
     static unionOverlaps(from: Range[]): Range[] {
+        // Make a copy so we won't destory the array passed in.
+        from = from.map(range => range);
+
         const to: Range[] = [];
 
         while (from.length > 0) {

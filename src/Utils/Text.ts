@@ -1,4 +1,4 @@
-export class UtilCharacter {
+export class UtilText {
 
     static switchCase(from: string): string {
         let to = '';
@@ -17,6 +17,19 @@ export class UtilCharacter {
         }
 
         return to;
+    }
+
+    static getLineCount(text: string): number {
+        let count = 1;
+        let position = -1;
+
+        while (true) {
+            position = text.indexOf('\n', position + 1);
+            if (position < 0) { break; }
+            count++;
+        }
+
+        return count;
     }
 
 }
