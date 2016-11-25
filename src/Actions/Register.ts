@@ -42,12 +42,19 @@ export class ActionRegister {
 
         const document = activeTextEditor.document;
 
+        if (args.isLinewise) {
+            args.ranges = args.ranges.map(range => UtilRange.toLinewise(range, document));
+        }
+
+        args.ranges = UtilRange.unionOverlaps(args.ranges);
+
         const text = args.ranges.map(range => {
             return document.getText(document.validateRange(range));
         }).join('');
 
         ActionRegister.stash = new Register({
             text: text,
+            isLinewise: args.isLinewise,
         });
 
         return Promise.resolve(true);
@@ -65,10 +72,9 @@ export class ActionRegister {
             return Promise.resolve(false);
         }
 
-        const document = activeTextEditor.document;
         const isLinewise = args.motions.some(motion => motion.isLinewise);
 
-        let ranges = activeTextEditor.selections.map(selection => {
+        const ranges = activeTextEditor.selections.map(selection => {
             const start = selection.active;
             const end = args.motions.reduce((position, motion) => {
                 return motion.apply(position, {
@@ -80,22 +86,10 @@ export class ActionRegister {
             return new Range(start, end);
         });
 
-        if (isLinewise) {
-            ranges = ranges.map(range => UtilRange.toLinewise(range, document));
-        }
-
-        ranges = UtilRange.unionOverlaps(ranges);
-
-        const text = ranges.map(range => {
-            return document.getText(document.validateRange(range));
-        }).join('');
-
-        ActionRegister.stash = new Register({
-            text: text,
+        return ActionRegister.yankRanges({
+            ranges: ranges,
             isLinewise: isLinewise,
         });
-
-        return Promise.resolve(true);
     }
 
     static yankByTextObject(args: {textObject: TextObject}): Thenable<boolean> {
@@ -114,15 +108,15 @@ export class ActionRegister {
             }
         });
 
-        ranges = UtilRange.unionOverlaps(ranges);
-
         return ActionRegister.yankRanges({
             ranges: ranges,
             isLinewise: false,
         });
     }
 
-    static yankSelections(): Thenable<boolean> {
+    static yankSelections(args: {isLinewise?: boolean}): Thenable<boolean> {
+        args.isLinewise = args.isLinewise === undefined ? false : args.isLinewise;
+
         const activeTextEditor = window.activeTextEditor;
 
         if (! activeTextEditor) {
@@ -131,7 +125,7 @@ export class ActionRegister {
 
         return ActionRegister.yankRanges({
             ranges: activeTextEditor.selections,
-            isLinewise: false,
+            isLinewise: args.isLinewise,
         });
     }
 
@@ -142,22 +136,10 @@ export class ActionRegister {
             return Promise.resolve(false);
         }
 
-        const document = activeTextEditor.document;
-
-        let ranges = activeTextEditor.selections.map(selection => UtilRange.toLinewise(selection, document));
-
-        ranges = UtilRange.unionOverlaps(ranges);
-
-        const text = ranges.map(range => {
-            return document.getText(document.validateRange(range));
-        }).join('');
-
-        ActionRegister.stash = new Register({
-            text: text,
+        return ActionRegister.yankRanges({
+            ranges: activeTextEditor.selections,
             isLinewise: true,
         });
-
-        return Promise.resolve(true);
     }
 
     @StaticReflect.metadata(SymbolMetadata.Action.isChange, true)
