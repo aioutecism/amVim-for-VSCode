@@ -92,8 +92,8 @@ const extractInfo = (originalText: string) => {
 let reusableDocument: TextDocument;
 
 export const run = (testCase: TestCase) => {
-    const plainFrom = testCase.from.replace('\n', '\\n');
-    const plainTo = testCase.to.replace('\n', '\\n');
+    const plainFrom = testCase.from.replace(/\n/g, '\\n');
+    const plainTo = testCase.to.replace(/\n/g, '\\n');
     const expectation = `Inputs: ${testCase.inputs}\n> ${plainFrom}\n< ${plainTo}`;
 
     let tries = 0;
