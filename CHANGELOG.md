@@ -1,3 +1,8 @@
+# [1.17.5](https://github.com/aioutecism/amVim-for-VSCode/releases/tag/1.17.2)
+
+- Fix wrong behavior when using inclusive TextObject.
+
+
 # [1.17.4](https://github.com/aioutecism/amVim-for-VSCode/releases/tag/1.17.2)
 
 - Corrects register handling. #152
