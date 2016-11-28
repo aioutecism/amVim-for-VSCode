@@ -3,12 +3,12 @@ import {UtilRange} from '../Utils/Range';
 
 export abstract class TextObject {
 
-    protected isInclusive: boolean;
+    protected shouldExpandToLinewise: boolean = false;
 
-    protected _isLinewise: boolean | undefined = undefined;
-    public get isLinewise() {
-        return this._isLinewise === undefined ? false : this._isLinewise;
-    }
+    private _isLinewise: boolean = false;
+    public get isLinewise() { return this._isLinewise; }
+
+    protected isInclusive: boolean;
 
     /**
      * Override this to return start range of text object or null if not found.
@@ -49,8 +49,8 @@ export abstract class TextObject {
 
         let range = this.createRangeDueToIsInclusive(startRange, endRange);
 
-        if (this._isLinewise) {
-            range = UtilRange.toLinewise(range, document);
+        if (this.shouldExpandToLinewise) {
+            range = this.tryExpandToLinewise(range);
         }
 
         return range;
@@ -60,5 +60,41 @@ export abstract class TextObject {
         return this.isInclusive
             ? new Range(startRange.start, endRange.end)
             : new Range(startRange.end, endRange.start);
+    }
+
+    private tryExpandToLinewise(range: Range): Range {
+        if (range.isSingleLine) {
+            return range;
+        }
+
+        const document = window.activeTextEditor.document;
+
+        const startLine = document.lineAt(range.start.line);
+        const endLine = document.lineAt(range.start.line);
+
+        if (this.isInclusive) {
+
+            if (
+                range.start.character === startLine.firstNonWhitespaceCharacterIndex
+                && range.end.character === endLine.text.length
+            ) {
+                range = UtilRange.toLinewise(range, document);
+                this._isLinewise = true;
+            }
+        }
+        else {
+            if (
+                range.start.character === startLine.text.length
+                && range.end.character === endLine.firstNonWhitespaceCharacterIndex
+            ) {
+                range = new Range(
+                    range.start.line + 1, 0,
+                    range.end.line, 0
+                );
+                this._isLinewise = true;
+            }
+        }
+
+        return range;
     }
 }

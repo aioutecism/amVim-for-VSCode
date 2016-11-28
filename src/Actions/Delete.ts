@@ -88,13 +88,13 @@ export class ActionDelete {
             return Promise.reject<boolean>(false);
         }
 
-        // Selections will be adjust to matched ranges' start.
-        activeTextEditor.selections = ranges.map(range => new Selection(range.start, range.start));
-
         return (args.shouldYank ? ActionRegister.yankByTextObject({
             textObject: args.textObject,
         }) : Promise.resolve(true))
             .then(() => {
+                // Selections will be adjust to matched ranges' start.
+                activeTextEditor.selections = ranges.map(range => new Selection(range.start, range.start));
+
                 return activeTextEditor.edit((editBuilder) => {
                     ranges.forEach((range) => editBuilder.delete(range));
                 });

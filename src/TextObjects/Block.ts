@@ -3,6 +3,8 @@ import {TextObject} from './TextObject';
 
 export class TextObjectBlock extends TextObject {
 
+    protected shouldExpandToLinewise: boolean = true;
+
     private openingCharacter: string;
     private closingCharacter: string;
 
@@ -62,24 +64,10 @@ export class TextObjectBlock extends TextObject {
                 }
                 else if (lineText[characterIndex] === this.openingCharacter) {
                     if (matchingCount === 0) {
-                        const isAtEndOfLine =
-                            characterIndex === lineText.length - 1
-                            && lineIndex < document.lineCount - 1;
-                        this._isLinewise = (this._isLinewise !== false) && isAtEndOfLine;
-
-                        // Including line break if character is at the end of line.
-                        if (isAtEndOfLine) {
-                            return new Range(
-                                lineIndex, characterIndex,
-                                lineIndex + 1, 0
-                            );
-                        }
-                        else {
-                            return new Range(
-                                lineIndex, characterIndex,
-                                lineIndex, characterIndex + 1
-                            );
-                        }
+                        return new Range(
+                            lineIndex, characterIndex,
+                            lineIndex, characterIndex + 1
+                        );
                     }
                     else {
                         matchingCount--;
@@ -118,24 +106,10 @@ export class TextObjectBlock extends TextObject {
                 }
                 else if (lineText[characterIndex] === this.closingCharacter) {
                     if (matchingCount === 0) {
-                        const isAtStartOfLine =
-                            characterIndex === line.firstNonWhitespaceCharacterIndex
-                            && lineIndex > 0;
-                        this._isLinewise = (this._isLinewise !== false) && isAtStartOfLine;
-
-                        // Including line break if character is at the begining of line(excluding whitespaces).
-                        if (isAtStartOfLine) {
-                            return new Range(
-                                lineIndex - 1, document.lineAt(lineIndex - 1).text.length,
-                                lineIndex, characterIndex + 1
-                            );
-                        }
-                        else {
-                            return new Range(
-                                lineIndex, characterIndex,
-                                lineIndex, characterIndex + 1
-                            );
-                        }
+                        return new Range(
+                            lineIndex, characterIndex,
+                            lineIndex, characterIndex + 1
+                        );
                     }
                     else {
                         matchingCount--;
