@@ -1,9 +1,15 @@
-# [1.17.5](https://github.com/aioutecism/amVim-for-VSCode/releases/tag/1.17.2)
+# [1.17.6](https://github.com/aioutecism/amVim-for-VSCode/releases/tag/1.17.6)
+
+- Fix cursor position when exiting insert mode. #155 #154
+- Better escape handling. #156 #147 
+
+
+# [1.17.5](https://github.com/aioutecism/amVim-for-VSCode/releases/tag/1.17.5)
 
 - Fix wrong behavior when using inclusive TextObject.
 
 
-# [1.17.4](https://github.com/aioutecism/amVim-for-VSCode/releases/tag/1.17.2)
+# [1.17.4](https://github.com/aioutecism/amVim-for-VSCode/releases/tag/1.17.4)
 
 - Corrects register handling. #152
 
