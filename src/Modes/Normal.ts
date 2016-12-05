@@ -12,7 +12,7 @@ import {ActionReplace} from '../Actions/Replace';
 import {ActionCase} from '../Actions/Case';
 import {ActionRegister} from '../Actions/Register';
 import {ActionReveal} from '../Actions/Reveal';
-import {ActionSuggestion} from '../Actions/Suggestion';
+import {ActionNativeEscape} from '../Actions/NativeEscape';
 import {ActionJoinLines} from '../Actions/JoinLines';
 import {ActionFind} from '../Actions/Find';
 import {ActionSelection} from '../Actions/Selection';
@@ -189,9 +189,18 @@ export class ModeNormal extends Mode {
 
         { keys: '.', actions: [this.repeatRecordedCommandMaps.bind(this)] },
 
-        { keys: 'ctrl+c', actions: [ActionSelection.shrinkToPrimaryActive] },
-        { keys: 'ctrl+[', actions: [ActionSelection.shrinkToPrimaryActive] },
-        { keys: 'escape', actions: [ActionSelection.shrinkToPrimaryActive] },
+        { keys: 'ctrl+c', actions: [
+            ActionNativeEscape.press,
+            ActionSelection.shrinkToPrimaryActive,
+        ] },
+        { keys: 'ctrl+[', actions: [
+            ActionNativeEscape.press,
+            ActionSelection.shrinkToPrimaryActive,
+        ] },
+        { keys: 'escape', actions: [
+            ActionNativeEscape.press,
+            ActionSelection.shrinkToPrimaryActive,
+        ] },
     ];
 
     constructor() {
@@ -260,7 +269,7 @@ export class ModeNormal extends Mode {
         this.recordedCommandMaps.forEach(map => this.pushCommandMap(map));
         this.pushCommandMap({
             keys: 'escape',
-            actions: [ActionSuggestion.hide],
+            actions: [ActionNativeEscape.press],
         });
         this.execute();
 

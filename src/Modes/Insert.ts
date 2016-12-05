@@ -5,6 +5,7 @@ import {ActionInsert} from '../Actions/Insert';
 import {ActionDelete} from '../Actions/Delete';
 import {ActionSelection} from '../Actions/Selection';
 import {ActionMoveCursor} from '../Actions/MoveCursor';
+import {ActionNativeEscape} from '../Actions/NativeEscape';
 import {ActionMode} from '../Actions/Mode';
 import {MotionCharacter} from '../Motions/Character';
 import {MotionWord} from '../Motions/Word';
@@ -19,12 +20,21 @@ export class ModeInsert extends Mode {
         { keys: 'ctrl+w', actions: [() => ActionDelete.byMotions({motions: [MotionWord.prevStart()]})] },
         { keys: 'ctrl+u', actions: [() => ActionDelete.byMotions({motions: [MotionLine.firstNonBlank()]})] },
 
-        { keys: 'ctrl+c', actions: [() => ActionSelection.shrinkToActives()
-            .then(isShrinked => isShrinked ? Promise.resolve(true) : ActionMode.toNormal())] },
-        { keys: 'ctrl+[', actions: [() => ActionSelection.shrinkToActives()
-            .then(isShrinked => isShrinked ? Promise.resolve(true) : ActionMode.toNormal())] },
-        { keys: 'escape', actions: [() => ActionSelection.shrinkToActives()
-            .then(isShrinked => isShrinked ? Promise.resolve(true) : ActionMode.toNormal())] },
+        { keys: 'ctrl+c', actions: [
+            ActionNativeEscape.press,
+            () => ActionSelection.shrinkToActives()
+                .then(isShrinked => isShrinked ? Promise.resolve(true) : ActionMode.toNormal()),
+        ] },
+        { keys: 'ctrl+[', actions: [
+            ActionNativeEscape.press,
+            () => ActionSelection.shrinkToActives()
+                .then(isShrinked => isShrinked ? Promise.resolve(true) : ActionMode.toNormal()),
+        ] },
+        { keys: 'escape', actions: [
+            ActionNativeEscape.press,
+            () => ActionSelection.shrinkToActives()
+                .then(isShrinked => isShrinked ? Promise.resolve(true) : ActionMode.toNormal()),
+        ] },
     ];
 
     constructor() {
