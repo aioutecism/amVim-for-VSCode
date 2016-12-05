@@ -11,6 +11,7 @@ import {ActionCase} from '../Actions/Case';
 import {ActionJoinLines} from '../Actions/JoinLines';
 import {ActionFilter} from '../Actions/Filter';
 import {ActionFind} from '../Actions/Find';
+import {ActionNativeEscape} from '../Actions/NativeEscape';
 import {ActionMode} from '../Actions/Mode';
 import {ActionIndent} from '../Actions/Indent';
 import {ActionFold} from '../Actions/Fold';
@@ -97,9 +98,18 @@ export class ModeVisualLine extends Mode {
         { keys: 'z M', actions: [ActionFold.foldAll]},
         { keys: 'z R', actions: [ActionFold.unfoldAll]},
 
-        { keys: 'ctrl+c', actions: [ActionSelection.shrinkToActives] },
-        { keys: 'ctrl+[', actions: [ActionSelection.shrinkToActives] },
-        { keys: 'escape', actions: [ActionSelection.shrinkToActives] },
+        { keys: 'ctrl+c', actions: [
+            ActionNativeEscape.press,
+            ActionSelection.shrinkToActives,
+        ] },
+        { keys: 'ctrl+[', actions: [
+            ActionNativeEscape.press,
+            ActionSelection.shrinkToActives,
+        ] },
+        { keys: 'escape', actions: [
+            ActionNativeEscape.press,
+            ActionSelection.shrinkToActives,
+        ] },
     ];
 
     constructor() {

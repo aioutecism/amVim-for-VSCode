@@ -63,17 +63,15 @@
             { "command": "amVim.ctrl+f", "key": "ctrl+f", "when": "editorTextFocus && amVim.configuration.shouldBindCtrlCommands && amVim.mode != 'INSERT'" },
             { "command": "amVim.ctrl+b", "key": "ctrl+b", "when": "editorTextFocus && amVim.configuration.shouldBindCtrlCommands && amVim.mode != 'INSERT'" },
 
-            { "key": "escape", "command": "closeReferenceSearchEditor",     "when": "inReferenceSearchEditor && !config.editor.stablePeek" },
-            { "key": "escape", "command": "closeBreakpointWidget",          "when": "breakpointWidgetVisible && editorFocus" },
-            { "key": "escape", "command": "leaveSnippet",                   "when": "editorTextFocus && inSnippetMode" },
-            { "key": "escape", "command": "closeMarkersNavigation",         "when": "editorFocus && markersNavigationVisible" },
-            { "key": "escape", "command": "closeReferenceSearch",           "when": "referenceSearchVisible && !config.editor.stablePeek" },
-            { "key": "escape", "command": "closeParameterHints",            "when": "editorTextFocus && parameterHintsVisible" },
-            { "key": "escape", "command": "closeQuickFixWidget",            "when": "editorFocus && quickFixWidgetVisible" },
-            { "key": "escape", "command": "hideSuggestWidget",              "when": "editorTextFocus && suggestWidgetVisible" },
-            { "key": "escape", "command": "cancelRenameInput",              "when": "editorFocus && renameInputVisible" },
-            { "key": "escape", "command": "closeAccessibilityHelp",         "when": "accessibilityHelpWidgetVisible && editorFocus" },
-            { "key": "escape", "command": "workbench.action.closeMessages", "when": "globalMessageVisible" }
+            { "key": "escape", "command": "closeFindWidget",                 "when": "editorFocus && findWidgetVisible" },
+            { "key": "escape", "command": "closeBreakpointWidget",           "when": "breakpointWidgetVisible && editorFocus" },
+            { "key": "escape", "command": "closeMarkersNavigation",          "when": "editorFocus && markersNavigationVisible" },
+            { "key": "escape", "command": "closeReferenceSearch",            "when": "referenceSearchVisible && !config.editor.stablePeek" },
+            { "key": "escape", "command": "cancelRenameInput",               "when": "editorFocus && renameInputVisible" },
+            { "key": "escape", "command": "closeAccessibilityHelp",          "when": "accessibilityHelpWidgetVisible && editorFocus" },
+            { "key": "escape", "command": "closeReplaceInFilesWidget",       "when": "replaceInputBoxFocus && searchViewletVisible" },
+            { "key": "escape", "command": "workbench.action.closeMessages",  "when": "globalMessageVisible" },
+            { "key": "escape", "command": "workbench.action.closeQuickOpen", "when": "inQuickOpen" }
         ]
     },
     "activationEvents": [
