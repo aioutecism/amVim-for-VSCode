@@ -35,13 +35,13 @@ export class ActionMode {
             return Promise.resolve(false);
         }
 
-        const selections = activeTextEditor.selections;
-
-        let mode: ModeID;
-
         if (currentMode === ModeID.INSERT) {
             return Promise.resolve(true);
         }
+
+        const selections = activeTextEditor.selections;
+
+        let mode: ModeID;
 
         if (selections.every(selection => selection.isEmpty)) {
             mode = ModeID.NORMAL;

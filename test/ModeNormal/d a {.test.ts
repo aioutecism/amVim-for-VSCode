@@ -1,6 +1,6 @@
 import * as BlackBox from '../Framework/BlackBox';
 
-suite.only('Normal: d a {', () => {
+suite('Normal: d a {', () => {
     const testCases: BlackBox.TestCase[] = [
         {
             from: `{[] content }`,

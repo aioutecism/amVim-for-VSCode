@@ -4,7 +4,9 @@ import {CommandMap} from '../Mappers/Command';
 import {ActionInsert} from '../Actions/Insert';
 import {ActionDelete} from '../Actions/Delete';
 import {ActionSelection} from '../Actions/Selection';
+import {ActionMoveCursor} from '../Actions/MoveCursor';
 import {ActionMode} from '../Actions/Mode';
+import {MotionCharacter} from '../Motions/Character';
 import {MotionWord} from '../Motions/Word';
 import {MotionLine} from '../Motions/Line';
 
@@ -43,6 +45,8 @@ export class ModeInsert extends Mode {
         super.exit();
 
         this.stopRecord();
+
+        ActionMoveCursor.byMotions({ motions: [ MotionCharacter.left() ] });
     }
 
     input(key: string, args: {replaceCharCnt?: number} = {}): MatchResultKind {
