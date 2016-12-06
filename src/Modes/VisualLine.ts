@@ -93,12 +93,10 @@ export class ModeVisualLine extends Mode {
 
         { keys: '<', actions: [
             ActionIndent.decrease,
-            ActionSelection.shrinkToStarts,
             () => ActionMoveCursor.byMotions({ motions: [MotionLine.firstNonBlank()] }),
         ] },
         { keys: '>', actions: [
             ActionIndent.increase,
-            ActionSelection.shrinkToStarts,
             () => ActionMoveCursor.byMotions({ motions: [MotionLine.firstNonBlank()] }),
         ] },
 
