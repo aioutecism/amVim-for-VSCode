@@ -1,3 +1,9 @@
+# [1.18.0](https://github.com/aioutecism/amVim-for-VSCode/releases/tag/1.18.0)
+
+- Exit Visual/VisualLine mode after indent, outdent or replace. #108
+- Added support to repeat Visual and VisualLine mode's command (Alpha status). #157
+
+
 # [1.17.6](https://github.com/aioutecism/amVim-for-VSCode/releases/tag/1.17.6)
 
 - Fix cursor position when exiting insert mode. #155 #154
