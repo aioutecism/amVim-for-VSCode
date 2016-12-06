@@ -1,6 +1,6 @@
 import {window, commands, Disposable, ExtensionContext} from 'vscode';
 import * as Keys from './Keys';
-import {Mode, ModeID} from './Modes/Mode';
+import {Mode, ModeID, ModeIDConfig} from './Modes/Mode';
 import {ModeNormal} from './Modes/Normal';
 import {ModeVisual} from './Modes/Visual';
 import {ModeVisualLine} from './Modes/VisualLine';
@@ -9,7 +9,6 @@ import {ActionMode} from './Actions/Mode';
 import {ActionMoveCursor} from './Actions/MoveCursor';
 
 export class Dispatcher {
-
     private _currentMode: Mode;
     get currentMode(): Mode { return this._currentMode; }
 
@@ -22,7 +21,7 @@ export class Dispatcher {
 
     private disposables: Disposable[] = [];
 
-    constructor(context: ExtensionContext) {
+    constructor(context: ExtensionContext, Configuration) {
         Object.keys(this.modes).forEach(key => {
             let mode = this.modes[key];
             context.subscriptions.push(commands.registerCommand(`amVim.mode.${mode.id}`, () => {
@@ -43,8 +42,8 @@ export class Dispatcher {
         });
 
         ActionMoveCursor.updatePreferedColumn();
-
-        this.switchMode(ModeID.NORMAL);
+        // set to default mode of Configuration
+        this.switchMode(ModeIDConfig[Configuration.defaultMode]);
 
         this.disposables.push(
             window.onDidChangeTextEditorSelection(() => {
@@ -56,7 +55,7 @@ export class Dispatcher {
             }),
             window.onDidChangeActiveTextEditor(() => {
                 // Passing `null` to `currentMode` to force mode switch.
-                ActionMode.switchByActiveSelections(null);
+                ActionMode.switchByActiveSelections(ModeIDConfig[Configuration.defaultMode]);
                 ActionMoveCursor.updatePreferedColumn();
             })
         );
