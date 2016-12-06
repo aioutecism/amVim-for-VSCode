@@ -15,6 +15,7 @@ import {ActionFind} from '../Actions/Find';
 import {ActionNativeEscape} from '../Actions/NativeEscape';
 import {ActionMode} from '../Actions/Mode';
 import {ActionFold} from '../Actions/Fold';
+import {MotionLine} from '../Motions/Line';
 
 export class ModeVisual extends Mode {
 
@@ -78,8 +79,16 @@ export class ModeVisual extends Mode {
 
         { keys: '=', actions: [ActionFilter.Format.bySelections] },
 
-        { keys: '<', actions: [ActionIndent.decrease] },
-        { keys: '>', actions: [ActionIndent.increase] },
+        { keys: '<', actions: [
+            ActionIndent.decrease,
+            ActionSelection.shrinkToStarts,
+            () => ActionMoveCursor.byMotions({ motions: [MotionLine.firstNonBlank()] }),
+        ] },
+        { keys: '>', actions: [
+            ActionIndent.increase,
+            ActionSelection.shrinkToStarts,
+            () => ActionMoveCursor.byMotions({ motions: [MotionLine.firstNonBlank()] }),
+        ] },
 
         { keys: '/', actions: [ActionFind.focusFindWidget] },
 
