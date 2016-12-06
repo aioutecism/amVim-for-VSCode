@@ -1,6 +1,6 @@
 import * as assert from 'assert';
 import * as TestUtil from './Util';
-import {TextDocument, Selection} from 'vscode';
+import {TextEditor, TextDocument, Selection} from 'vscode';
 import {getCurrentMode} from '../../src/extension';
 
 export interface TestCase {
@@ -91,7 +91,7 @@ const extractInfo = (originalText: string) => {
 
 let reusableDocument: TextDocument;
 
-export const run = (testCase: TestCase) => {
+export const run = (testCase: TestCase, before?: (textEditor: TextEditor) => void) => {
     const plainFrom = testCase.from.replace(/\n/g, '\\n');
     const plainTo = testCase.to.replace(/\n/g, '\\n');
     const expectation = `Inputs: ${testCase.inputs}\n> ${plainFrom}\n< ${plainTo}`;
@@ -106,8 +106,12 @@ export const run = (testCase: TestCase) => {
         const inputs = testCase.inputs.split(' ');
 
         TestUtil.createTempDocument(fromInfo.cleanText, reusableDocument)
-        .then(async document => {
-            reusableDocument = document;
+        .then(async textEditor => {
+            reusableDocument = textEditor.document;
+
+            if (before) {
+                before(textEditor);
+            }
 
             TestUtil.setSelections(fromInfo.selections);
 

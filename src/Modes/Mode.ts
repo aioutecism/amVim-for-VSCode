@@ -83,6 +83,11 @@ export abstract class Mode {
     }
 
     /**
+     * Override this to return recorded command maps.
+     */
+    get recordedCommandMaps(): CommandMap[] { return []; }
+
+    /**
      * Override this to do something before command map makes changes.
      */
     protected onWillCommandMapMakesChanges(map: CommandMap): void {}
@@ -90,7 +95,7 @@ export abstract class Mode {
     /**
      * Override this to do something after recording ends.
      */
-    onDidRecordFinish(recordedCommandMaps: CommandMap[]): void {}
+    onDidRecordFinish(recordedCommandMaps: CommandMap[], previousModeID: ModeID): void {}
 
     protected execute(): void {
         if (this.executing) {

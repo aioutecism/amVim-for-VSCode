@@ -19,17 +19,21 @@ export class UtilText {
         return to;
     }
 
-    static getLineCount(text: string): number {
-        let count = 1;
+    static countStringAppearance(searchString: string, text: string): number {
+        let count = 0;
         let position = -1;
 
         while (true) {
-            position = text.indexOf('\n', position + 1);
+            position = text.indexOf(searchString, position + 1);
             if (position < 0) { break; }
             count++;
         }
 
         return count;
+    }
+
+    static getLineCount(text: string): number {
+        return UtilText.countStringAppearance('\n', text) + 1;
     }
 
 }
