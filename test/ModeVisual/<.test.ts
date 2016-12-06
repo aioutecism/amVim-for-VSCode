@@ -28,6 +28,11 @@ suite('Visual: <', () => {
             to: '    []foo\nbar\nabc',
         },
         {
+            from: '      [f]o[o]\nbar\nabc',
+            inputs: '<',
+            to: '    []foo\nbar\nabc',
+        },
+        {
             from: '    f[oo\nba]r\nabc',
             inputs: '<',
             to: '[]foo\nbar\nabc',
