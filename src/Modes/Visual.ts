@@ -85,11 +85,11 @@ export class ModeVisual extends Mode {
         { keys: '=', actions: [ActionFilter.Format.bySelections] },
 
         { keys: '<', actions: [
-            ActionIndent.decrease,
+            () => ActionIndent.decrease({ shouldShrinkToStarts: true }),
             () => ActionMoveCursor.byMotions({ motions: [MotionLine.firstNonBlank()] }),
         ] },
         { keys: '>', actions: [
-            ActionIndent.increase,
+            () => ActionIndent.increase({ shouldShrinkToStarts: true }),
             () => ActionMoveCursor.byMotions({ motions: [MotionLine.firstNonBlank()] }),
         ] },
 

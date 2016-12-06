@@ -75,7 +75,11 @@ export class ActionIndent {
     }
 
     @StaticReflect.metadata(SymbolMetadata.Action.isChange, true)
-    static increase(): Thenable<boolean> {
+    static increase(args: {
+        shouldShrinkToStarts?: boolean,
+    }): Thenable<boolean> {
+        args.shouldShrinkToStarts = args.shouldShrinkToStarts === undefined ? false : args.shouldShrinkToStarts;
+
         const activeTextEditor = window.activeTextEditor;
 
         if (! activeTextEditor) {
@@ -90,12 +94,17 @@ export class ActionIndent {
         });
 
         return ActionIndent.changeIndentLevel(lineNumbers, +1)
-            .then(() => ActionSelection.shrinkToStarts())
+            .then(() => args.shouldShrinkToStarts
+                ? ActionSelection.shrinkToStarts() : ActionSelection.shrinkToEnds())
             .then(() => ActionReveal.primaryCursor());
     }
 
     @StaticReflect.metadata(SymbolMetadata.Action.isChange, true)
-    static decrease(): Thenable<boolean> {
+    static decrease(args: {
+        shouldShrinkToStarts?: boolean,
+    }): Thenable<boolean> {
+        args.shouldShrinkToStarts = args.shouldShrinkToStarts === undefined ? false : args.shouldShrinkToStarts;
+
         const activeTextEditor = window.activeTextEditor;
 
         if (! activeTextEditor) {
@@ -110,7 +119,8 @@ export class ActionIndent {
         });
 
         return ActionIndent.changeIndentLevel(lineNumbers, -1)
-            .then(() => ActionSelection.shrinkToStarts())
+            .then(() => args.shouldShrinkToStarts
+                ? ActionSelection.shrinkToStarts() : ActionSelection.shrinkToEnds())
             .then(() => ActionReveal.primaryCursor());
     }
 
