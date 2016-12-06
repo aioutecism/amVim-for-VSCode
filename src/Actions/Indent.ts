@@ -59,15 +59,16 @@ export class ActionIndent {
         const document = activeTextEditor.document;
         const indentUnit = ActionIndent.getIndentUnit();
 
-        const lineNumbers: number[] = [];
+        const lineNumbers: {[lineNumber: number]: boolean} = {};
         activeTextEditor.selections.forEach(selection => {
             for (let i = selection.start.line; i <= selection.end.line; i++) {
-                lineNumbers.push(i);
+                lineNumbers[i] = true;
             }
         });
 
         return window.activeTextEditor.edit((editBuilder) => {
-            lineNumbers.forEach(lineNumber => {
+            Object.keys(lineNumbers).forEach(key => {
+                const lineNumber = parseInt(key, 10);
                 const line = document.lineAt(lineNumber);
 
                 const currentIndentLevel = ActionIndent.getIndentLevel(lineNumber);
