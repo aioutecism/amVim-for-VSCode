@@ -81,7 +81,10 @@ export class ModeVisualLine extends Mode {
             isLinewise: true,
         } },
 
-        { keys: 'r {char}', actions: [ActionReplace.selectionsWithCharacter] },
+        { keys: 'r {char}', actions: [
+            ActionReplace.selectionsWithCharacter,
+            ActionSelection.shrinkToStarts,
+        ] },
         { keys: '~', actions: [ActionCase.switchSelections] },
 
         { keys: '=', actions: [ActionFilter.Format.bySelections] },
