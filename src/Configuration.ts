@@ -7,6 +7,7 @@ export class Configuration {
     private static extensionNamespace: WorkspaceConfiguration;
     private static editorNamespace: WorkspaceConfiguration;
     private static disposables: Disposable[] = [];
+    private static defaultMode:string;
 
     static init(): void {
         if (this.isReady) {
