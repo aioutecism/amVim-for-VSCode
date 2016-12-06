@@ -1,3 +1,5 @@
+import {StaticReflect} from '../LanguageExtensions/StaticReflect';
+import {SymbolMetadata} from '../Symbols/Metadata';
 import {Mode, ModeID} from './Mode';
 import {CommandMap} from '../Mappers/Command';
 import {ActionMoveCursor} from '../Actions/MoveCursor';
@@ -129,6 +131,24 @@ export class ModeVisual extends Mode {
         super.enter();
 
         ActionSelection.expandToOne();
+    }
+
+    private _recordedCommandMaps: CommandMap[];
+    get recordedCommandMaps() { return this._recordedCommandMaps; }
+
+    protected onWillCommandMapMakesChanges(map: CommandMap): void {
+        const actions = map.actions.filter(action => {
+            return StaticReflect.getMetadata(SymbolMetadata.Action.shouldSkipOnRepeat, action) !== true;
+        });
+
+        this._recordedCommandMaps = [
+            {
+                keys: map.keys,
+                actions: actions,
+                args: map.args,
+                isRepeating: true,
+            }
+        ];
     }
 
 }

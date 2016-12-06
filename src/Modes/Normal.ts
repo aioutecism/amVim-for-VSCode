@@ -223,7 +223,8 @@ export class ModeNormal extends Mode {
         ActionBlockCursor.off();
     }
 
-    private recordedCommandMaps: CommandMap[];
+    private _recordedCommandMaps: CommandMap[];
+    get recordedCommandMaps() { return this._recordedCommandMaps; }
 
     protected onWillCommandMapMakesChanges(map: CommandMap): void {
         if (map.isRepeating) {
@@ -234,7 +235,7 @@ export class ModeNormal extends Mode {
             return StaticReflect.getMetadata(SymbolMetadata.Action.shouldSkipOnRepeat, action) !== true;
         });
 
-        this.recordedCommandMaps = [
+        this._recordedCommandMaps = [
             {
                 keys: map.keys,
                 actions: actions,
@@ -244,29 +245,34 @@ export class ModeNormal extends Mode {
         ];
     }
 
-    onDidRecordFinish(recordedCommandMaps: CommandMap[]): void {
+    onDidRecordFinish(recordedCommandMaps: CommandMap[], previousModeID: ModeID): void {
         if (! recordedCommandMaps || recordedCommandMaps.length === 0) {
             return;
         }
 
-        recordedCommandMaps.forEach(map => map.isRepeating = true);
+        if (previousModeID === ModeID.INSERT) {
+            recordedCommandMaps.forEach(map => map.isRepeating = true);
 
-        if (this.recordedCommandMaps === undefined) {
-            this.recordedCommandMaps = recordedCommandMaps;
+            if (this._recordedCommandMaps === undefined) {
+                this._recordedCommandMaps = recordedCommandMaps;
+            }
+            else {
+                this._recordedCommandMaps = this._recordedCommandMaps.concat(recordedCommandMaps);
+            }
         }
         else {
-            this.recordedCommandMaps = this.recordedCommandMaps.concat(recordedCommandMaps);
+            this._recordedCommandMaps = recordedCommandMaps;
         }
     }
 
     private repeatRecordedCommandMaps(): Thenable<boolean> {
-        if (this.recordedCommandMaps === undefined) {
+        if (this._recordedCommandMaps === undefined) {
             return Promise.resolve(false);
         }
 
         // TODO: Replace `args.n` if provided
 
-        this.recordedCommandMaps.forEach(map => this.pushCommandMap(map));
+        this._recordedCommandMaps.forEach(map => this.pushCommandMap(map));
         this.pushCommandMap({
             keys: 'escape',
             actions: [ActionNativeEscape.press],
