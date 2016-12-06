@@ -1,6 +1,7 @@
 import {window} from 'vscode';
 import {StaticReflect} from '../LanguageExtensions/StaticReflect';
 import {SymbolMetadata} from '../Symbols/Metadata';
+import {RangeOffset} from '../Types/RangeOffset';
 import {Mode, ModeID} from './Mode';
 import {CommandMap} from '../Mappers/Command';
 import {ActionMoveCursor} from '../Actions/MoveCursor';
@@ -18,7 +19,6 @@ import {ActionFind} from '../Actions/Find';
 import {ActionNativeEscape} from '../Actions/NativeEscape';
 import {ActionMode} from '../Actions/Mode';
 import {ActionFold} from '../Actions/Fold';
-import {UtilRange} from '../Utils/Range';
 
 export class ModeVisual extends Mode {
 
@@ -136,7 +136,7 @@ export class ModeVisual extends Mode {
 
         const args = Object.assign({
             preferedRelativeRange: window.activeTextEditor
-                ? UtilRange.getRelativeRange(window.activeTextEditor.selection)
+                ? new RangeOffset(window.activeTextEditor.selection)
                 : undefined,
         }, map.args);
 

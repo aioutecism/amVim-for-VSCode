@@ -1,6 +1,7 @@
 import {window, Range} from 'vscode';
 import {StaticReflect} from '../LanguageExtensions/StaticReflect';
 import {SymbolMetadata} from '../Symbols/Metadata';
+import {RangeOffset} from '../Types/RangeOffset';
 import {ActionSelection} from './Selection';
 import {ActionMoveCursor} from './MoveCursor';
 import {ActionReveal} from './Reveal';
@@ -46,7 +47,7 @@ export class ActionIndent {
         indentLevelOffset: number,
         isVisualMode?: boolean,
         isVisualLineMode?: boolean,
-        preferedRelativeRange?: Range,
+        preferedRelativeRange?: RangeOffset,
     }): Thenable<boolean> {
         args.isVisualMode = args.isVisualMode === undefined ? false : args.isVisualMode;
         args.isVisualLineMode = args.isVisualLineMode === undefined ? false : args.isVisualLineMode;
@@ -64,7 +65,7 @@ export class ActionIndent {
 
         if (args.preferedRelativeRange) {
             activeTextEditor.selections.forEach(selection => {
-                for (let i = selection.active.line; i <= selection.active.line + args.preferedRelativeRange!.end.line; i++) {
+                for (let i = selection.active.line; i <= selection.active.line + args.preferedRelativeRange!.lineOffset; i++) {
                     lineNumbers[i] = true;
                 }
             });
@@ -120,7 +121,7 @@ export class ActionIndent {
     static increase(args: {
         isVisualMode?: boolean,
         isVisualLineMode?: boolean,
-        preferedRelativeRange?: Range,
+        preferedRelativeRange?: RangeOffset,
     }): Thenable<boolean> {
         return ActionIndent.changeIndentLevel(Object.assign({
             indentLevelOffset: +1,
@@ -131,7 +132,7 @@ export class ActionIndent {
     static decrease(args: {
         isVisualMode?: boolean,
         isVisualLineMode?: boolean,
-        preferedRelativeRange?: Range,
+        preferedRelativeRange?: RangeOffset,
     }): Thenable<boolean> {
         return ActionIndent.changeIndentLevel(Object.assign({
             indentLevelOffset: -1,
