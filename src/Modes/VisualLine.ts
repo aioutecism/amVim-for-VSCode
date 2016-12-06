@@ -17,7 +17,6 @@ import {ActionNativeEscape} from '../Actions/NativeEscape';
 import {ActionMode} from '../Actions/Mode';
 import {ActionIndent} from '../Actions/Indent';
 import {ActionFold} from '../Actions/Fold';
-import {MotionLine} from '../Motions/Line';
 
 export class ModeVisualLine extends Mode {
 

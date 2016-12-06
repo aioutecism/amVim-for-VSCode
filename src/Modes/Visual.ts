@@ -17,7 +17,6 @@ import {ActionFind} from '../Actions/Find';
 import {ActionNativeEscape} from '../Actions/NativeEscape';
 import {ActionMode} from '../Actions/Mode';
 import {ActionFold} from '../Actions/Fold';
-import {MotionLine} from '../Motions/Line';
 
 export class ModeVisual extends Mode {
 

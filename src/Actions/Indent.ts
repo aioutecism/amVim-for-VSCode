@@ -42,25 +42,38 @@ export class ActionIndent {
         return indentLength / tabSize;
     }
 
-    private static changeIndentLevel(
-        lineNumbers: number[],
+    private static changeIndentLevel(args: {
         indentLevelOffset: number,
-    ): Thenable<boolean> {
-        if (lineNumbers.length === 0) {
-            return Promise.resolve(true);
+        isVisualMode?: boolean,
+        isVisualLineMode?: boolean,
+    }): Thenable<boolean> {
+        args.isVisualMode = args.isVisualMode === undefined ? false : args.isVisualMode;
+        args.isVisualLineMode = args.isVisualLineMode === undefined ? false : args.isVisualLineMode;
+
+        const activeTextEditor = window.activeTextEditor;
+
+        if (! activeTextEditor) {
+            return Promise.resolve(false);
         }
 
-        const document = window.activeTextEditor.document;
+        const document = activeTextEditor.document;
         const indentUnit = ActionIndent.getIndentUnit();
+
+        const lineNumbers: number[] = [];
+        activeTextEditor.selections.forEach(selection => {
+            for (let i = selection.start.line; i <= selection.end.line; i++) {
+                lineNumbers.push(i);
+            }
+        });
 
         return window.activeTextEditor.edit((editBuilder) => {
             lineNumbers.forEach(lineNumber => {
                 const line = document.lineAt(lineNumber);
 
                 const currentIndentLevel = ActionIndent.getIndentLevel(lineNumber);
-                let toIndentLevel = indentLevelOffset > 0
-                    ? Math.floor(currentIndentLevel + indentLevelOffset)
-                    : Math.ceil(currentIndentLevel + indentLevelOffset);
+                let toIndentLevel = args.indentLevelOffset > 0
+                    ? Math.floor(currentIndentLevel + args.indentLevelOffset)
+                    : Math.ceil(currentIndentLevel + args.indentLevelOffset);
 
                 if (toIndentLevel < 0) {
                     toIndentLevel = 0;
@@ -73,7 +86,17 @@ export class ActionIndent {
                     lineNumber, line.firstNonWhitespaceCharacterIndex,
                 ), indentText);
             });
-        });
+        })
+        .then(() => {
+            if (args.isVisualMode || args.isVisualLineMode) {
+                return ActionSelection.shrinkToStarts()
+                    .then(() => ActionMoveCursor.byMotions({ motions: [MotionLine.firstNonBlank()] }));
+            }
+            else {
+                return ActionSelection.shrinkToEnds();
+            }
+        })
+        .then(() => ActionReveal.primaryCursor());
     }
 
     @StaticReflect.metadata(SymbolMetadata.Action.isChange, true)
@@ -81,33 +104,9 @@ export class ActionIndent {
         isVisualMode?: boolean,
         isVisualLineMode?: boolean,
     }): Thenable<boolean> {
-        args.isVisualMode = args.isVisualMode === undefined ? false : args.isVisualMode;
-        args.isVisualLineMode = args.isVisualLineMode === undefined ? false : args.isVisualLineMode;
-
-        const activeTextEditor = window.activeTextEditor;
-
-        if (! activeTextEditor) {
-            return Promise.resolve(false);
-        }
-
-        const lineNumbers: number[] = [];
-        activeTextEditor.selections.forEach(selection => {
-            for (let i = selection.start.line; i <= selection.end.line; i++) {
-                lineNumbers.push(i);
-            }
-        });
-
-        return ActionIndent.changeIndentLevel(lineNumbers, +1)
-            .then(() => {
-                if (args.isVisualMode || args.isVisualLineMode) {
-                    return ActionSelection.shrinkToStarts()
-                        .then(() => ActionMoveCursor.byMotions({ motions: [MotionLine.firstNonBlank()] }));
-                }
-                else {
-                    return ActionSelection.shrinkToEnds();
-                }
-            })
-            .then(() => ActionReveal.primaryCursor());
+        return ActionIndent.changeIndentLevel(Object.assign({
+            indentLevelOffset: +1,
+        }, args));
     }
 
     @StaticReflect.metadata(SymbolMetadata.Action.isChange, true)
@@ -115,33 +114,9 @@ export class ActionIndent {
         isVisualMode?: boolean,
         isVisualLineMode?: boolean,
     }): Thenable<boolean> {
-        args.isVisualMode = args.isVisualMode === undefined ? false : args.isVisualMode;
-        args.isVisualLineMode = args.isVisualLineMode === undefined ? false : args.isVisualLineMode;
-
-        const activeTextEditor = window.activeTextEditor;
-
-        if (! activeTextEditor) {
-            return Promise.resolve(false);
-        }
-
-        const lineNumbers: number[] = [];
-        activeTextEditor.selections.forEach(selection => {
-            for (let i = selection.start.line; i <= selection.end.line; i++) {
-                lineNumbers.push(i);
-            }
-        });
-
-        return ActionIndent.changeIndentLevel(lineNumbers, -1)
-            .then(() => {
-                if (args.isVisualMode || args.isVisualLineMode) {
-                    return ActionSelection.shrinkToStarts()
-                        .then(() => ActionMoveCursor.byMotions({ motions: [MotionLine.firstNonBlank()] }));
-                }
-                else {
-                    return ActionSelection.shrinkToEnds();
-                }
-            })
-            .then(() => ActionReveal.primaryCursor());
+        return ActionIndent.changeIndentLevel(Object.assign({
+            indentLevelOffset: -1,
+        }, args));
     }
 
 };
