@@ -1,3 +1,8 @@
+# [1.18.1](https://github.com/aioutecism/amVim-for-VSCode/releases/tag/1.18.1)
+
+- Workaround native API's bug where insertSpace and tabSize may be undefined.
+
+
 # [1.18.0](https://github.com/aioutecism/amVim-for-VSCode/releases/tag/1.18.0)
 
 - Exit Visual/VisualLine mode after indent, outdent or replace. #108
