@@ -84,14 +84,8 @@ export class ModeVisual extends Mode {
 
         { keys: '=', actions: [ActionFilter.Format.bySelections] },
 
-        { keys: '<', actions: [
-            () => ActionIndent.decrease({ shouldShrinkToStarts: true }),
-            () => ActionMoveCursor.byMotions({ motions: [MotionLine.firstNonBlank()] }),
-        ] },
-        { keys: '>', actions: [
-            () => ActionIndent.increase({ shouldShrinkToStarts: true }),
-            () => ActionMoveCursor.byMotions({ motions: [MotionLine.firstNonBlank()] }),
-        ] },
+        { keys: '<', actions: [ActionIndent.decrease], args: { isVisualMode: true } },
+        { keys: '>', actions: [ActionIndent.increase], args: { isVisualMode: true } },
 
         { keys: '/', actions: [ActionFind.focusFindWidget] },
 

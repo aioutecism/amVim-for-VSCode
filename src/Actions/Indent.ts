@@ -2,7 +2,9 @@ import {window, Range} from 'vscode';
 import {StaticReflect} from '../LanguageExtensions/StaticReflect';
 import {SymbolMetadata} from '../Symbols/Metadata';
 import {ActionSelection} from './Selection';
+import {ActionMoveCursor} from './MoveCursor';
 import {ActionReveal} from './Reveal';
+import {MotionLine} from '../Motions/Line';
 import {UtilText} from '../Utils/Text';
 
 export class ActionIndent {
@@ -76,9 +78,11 @@ export class ActionIndent {
 
     @StaticReflect.metadata(SymbolMetadata.Action.isChange, true)
     static increase(args: {
-        shouldShrinkToStarts?: boolean,
+        isVisualMode?: boolean,
+        isVisualLineMode?: boolean,
     }): Thenable<boolean> {
-        args.shouldShrinkToStarts = args.shouldShrinkToStarts === undefined ? false : args.shouldShrinkToStarts;
+        args.isVisualMode = args.isVisualMode === undefined ? false : args.isVisualMode;
+        args.isVisualLineMode = args.isVisualLineMode === undefined ? false : args.isVisualLineMode;
 
         const activeTextEditor = window.activeTextEditor;
 
@@ -94,16 +98,25 @@ export class ActionIndent {
         });
 
         return ActionIndent.changeIndentLevel(lineNumbers, +1)
-            .then(() => args.shouldShrinkToStarts
-                ? ActionSelection.shrinkToStarts() : ActionSelection.shrinkToEnds())
+            .then(() => {
+                if (args.isVisualMode || args.isVisualLineMode) {
+                    return ActionSelection.shrinkToStarts()
+                        .then(() => ActionMoveCursor.byMotions({ motions: [MotionLine.firstNonBlank()] }));
+                }
+                else {
+                    return ActionSelection.shrinkToEnds();
+                }
+            })
             .then(() => ActionReveal.primaryCursor());
     }
 
     @StaticReflect.metadata(SymbolMetadata.Action.isChange, true)
     static decrease(args: {
-        shouldShrinkToStarts?: boolean,
+        isVisualMode?: boolean,
+        isVisualLineMode?: boolean,
     }): Thenable<boolean> {
-        args.shouldShrinkToStarts = args.shouldShrinkToStarts === undefined ? false : args.shouldShrinkToStarts;
+        args.isVisualMode = args.isVisualMode === undefined ? false : args.isVisualMode;
+        args.isVisualLineMode = args.isVisualLineMode === undefined ? false : args.isVisualLineMode;
 
         const activeTextEditor = window.activeTextEditor;
 
@@ -119,8 +132,15 @@ export class ActionIndent {
         });
 
         return ActionIndent.changeIndentLevel(lineNumbers, -1)
-            .then(() => args.shouldShrinkToStarts
-                ? ActionSelection.shrinkToStarts() : ActionSelection.shrinkToEnds())
+            .then(() => {
+                if (args.isVisualMode || args.isVisualLineMode) {
+                    return ActionSelection.shrinkToStarts()
+                        .then(() => ActionMoveCursor.byMotions({ motions: [MotionLine.firstNonBlank()] }));
+                }
+                else {
+                    return ActionSelection.shrinkToEnds();
+                }
+            })
             .then(() => ActionReveal.primaryCursor());
     }
 

@@ -91,14 +91,8 @@ export class ModeVisualLine extends Mode {
 
         { keys: '=', actions: [ActionFilter.Format.bySelections] },
 
-        { keys: '<', actions: [
-            () => ActionIndent.decrease({ shouldShrinkToStarts: true }),
-            () => ActionMoveCursor.byMotions({ motions: [MotionLine.firstNonBlank()] }),
-        ] },
-        { keys: '>', actions: [
-            () => ActionIndent.increase({ shouldShrinkToStarts: true }),
-            () => ActionMoveCursor.byMotions({ motions: [MotionLine.firstNonBlank()] }),
-        ] },
+        { keys: '<', actions: [ActionIndent.decrease], args: { isVisualLineMode: true } },
+        { keys: '>', actions: [ActionIndent.increase], args: { isVisualLineMode: true } },
 
         { keys: '/', actions: [ActionFind.focusFindWidget] },
 
