@@ -42,7 +42,7 @@ export class Dispatcher {
         });
 
         ActionMoveCursor.updatePreferedColumn();
-        // 设置默认模式 default mode
+        // set to default mode of Configuration
         this.switchMode(ModeIDConfig[Configuration.defaultMode]);
 
         this.disposables.push(
@@ -55,7 +55,6 @@ export class Dispatcher {
             }),
             window.onDidChangeActiveTextEditor(() => {
                 // Passing `null` to `currentMode` to force mode switch.
-                // 根据默认配置模式来设置模式
                 ActionMode.switchByActiveSelections(ModeIDConfig[Configuration.defaultMode]);
                 ActionMoveCursor.updatePreferedColumn();
             })
