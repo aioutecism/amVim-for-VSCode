@@ -1,3 +1,4 @@
+import {window} from 'vscode';
 import {StaticReflect} from '../LanguageExtensions/StaticReflect';
 import {SymbolMetadata} from '../Symbols/Metadata';
 import {Mode, ModeID} from './Mode';
@@ -17,6 +18,7 @@ import {ActionNativeEscape} from '../Actions/NativeEscape';
 import {ActionMode} from '../Actions/Mode';
 import {ActionIndent} from '../Actions/Indent';
 import {ActionFold} from '../Actions/Fold';
+import {UtilRange} from '../Utils/Range';
 
 export class ModeVisualLine extends Mode {
 
@@ -139,11 +141,17 @@ export class ModeVisualLine extends Mode {
             return StaticReflect.getMetadata(SymbolMetadata.Action.shouldSkipOnRepeat, action) !== true;
         });
 
+        const args = Object.assign({
+            preferedRelativeRange: window.activeTextEditor
+                ? UtilRange.getRelativeRange(window.activeTextEditor.selection)
+                : undefined,
+        }, map.args);
+
         this._recordedCommandMaps = [
             {
                 keys: map.keys,
                 actions: actions,
-                args: map.args,
+                args: args,
                 isRepeating: true,
             }
         ];

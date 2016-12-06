@@ -45,4 +45,11 @@ export class UtilRange {
         ));
     }
 
+    static getRelativeRange(from: Range): Range {
+        return new Range(
+            0, 0,
+            from.end.line - from.start.line, from.end.character - from.start.character,
+        );
+    }
+
 }
