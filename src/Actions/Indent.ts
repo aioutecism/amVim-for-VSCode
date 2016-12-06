@@ -1,6 +1,7 @@
 import {window, Range} from 'vscode';
 import {StaticReflect} from '../LanguageExtensions/StaticReflect';
 import {SymbolMetadata} from '../Symbols/Metadata';
+import {Configuration} from '../Configuration';
 import {RangeOffset} from '../Types/RangeOffset';
 import {ActionSelection} from './Selection';
 import {ActionMoveCursor} from './MoveCursor';
@@ -11,10 +12,8 @@ import {UtilText} from '../Utils/Text';
 export class ActionIndent {
 
     private static getIndentUnit(): string {
-        const options = window.activeTextEditor.options;
-
-        if (options.insertSpaces) {
-            return ' '.repeat(options.tabSize as number);
+        if (Configuration.getInsertSpace()) {
+            return ' '.repeat(Configuration.getTabSize() as number);
         }
         else {
             return '\t';
@@ -28,8 +27,7 @@ export class ActionIndent {
             return 0;
         }
 
-        const options = window.activeTextEditor.options;
-        const tabSize = options.tabSize as number;
+        const tabSize = Configuration.getTabSize();
 
         const line = document.lineAt(lineNumber);
 

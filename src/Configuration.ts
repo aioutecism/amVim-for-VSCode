@@ -1,4 +1,4 @@
-import {commands, workspace, WorkspaceConfiguration, Disposable} from 'vscode';
+import {commands, window, workspace, WorkspaceConfiguration, Disposable} from 'vscode';
 import {UtilWord} from './Utils/Word';
 
 export class Configuration {
@@ -44,6 +44,34 @@ export class Configuration {
 
     static getEditorSetting<T>(section: string, defaultValue?: T): T {
         return this.editorNamespace.get(section, defaultValue);
+    }
+
+    /**
+     * Remarks: Workaround undefined bug in native API.
+     */
+    static getInsertSpace(): boolean {
+        if (window.activeTextEditor) {
+            const options = window.activeTextEditor.options;
+            if (options.insertSpaces !== undefined) {
+                return options.insertSpaces as boolean;
+            }
+        }
+
+        return this.getEditorSetting<boolean>('insertSpaces');
+    }
+
+    /**
+     * Remarks: Workaround undefined bug in native API.
+     */
+    static getTabSize(): number {
+        if (window.activeTextEditor) {
+            const options = window.activeTextEditor.options;
+            if (options.tabSize !== undefined) {
+                return options.tabSize as number;
+            }
+        }
+
+        return this.getEditorSetting<number>('tabSize');
     }
 
     static dispose(): void {
