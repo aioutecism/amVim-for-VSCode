@@ -25,6 +25,7 @@ export class Configuration {
     private static onDidChangeConfiguration(): void {
         this.updateCache();
         this.updateKeybindingContexts();
+        this.defaultMode = this.getExtensionSetting<string>('defaultMode');
         UtilWord.updateCharacterKindCache(this.getEditorSetting<string>('wordSeparators'));
     }
 

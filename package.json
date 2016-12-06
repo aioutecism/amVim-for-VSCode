@@ -42,6 +42,15 @@
                     "type": "boolean",
                     "default": true,
                     "description": "Set to `false` to disable `Ctrl+<key>` keybindings."
+                },
+                "amVim.defaultMode": {
+                    "type": "string",
+                    "default": "normal",
+                    "description": "default mode",
+                    "enum": [
+                        "normal",
+                        "insert"
+                    ]
                 }
             }
         },
