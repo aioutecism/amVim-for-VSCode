@@ -7,8 +7,8 @@ let dispatcher: Dispatcher;
 
 export function activate(context: ExtensionContext) {
     Configuration.init();
-    dispatcher = new Dispatcher(context, Configuration);
-    
+    dispatcher = new Dispatcher(context);
+
     context.subscriptions.push(
         Configuration,
         dispatcher

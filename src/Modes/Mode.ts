@@ -5,12 +5,6 @@ import {MatchResultKind} from '../Mappers/Generic';
 import {CommandMap, CommandMapper} from '../Mappers/Command';
 
 export enum ModeID {NORMAL, VISUAL, VISUAL_LINE, INSERT};
-export const ModeIDConfig = {
-    normal: ModeID.NORMAL,
-    insert: ModeID.INSERT,
-    visual: ModeID.VISUAL,
-    visual_line: ModeID.VISUAL_LINE
-};
 
 export abstract class Mode {
 
