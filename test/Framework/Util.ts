@@ -1,6 +1,6 @@
 import {workspace, window, Uri, TextDocument, TextEditor, Position, Range, Selection} from 'vscode';
 
-export function createTempDocument(content?: string, reusableDocument?: TextDocument): Thenable<TextDocument> {
+export function createTempDocument(content?: string, reusableDocument?: TextDocument): Thenable<TextEditor> {
     let getTextEditor: Thenable<TextEditor>;
 
     if (reusableDocument && window.activeTextEditor.document === reusableDocument) {
@@ -22,10 +22,10 @@ export function createTempDocument(content?: string, reusableDocument?: TextDocu
                     textEditor.document.lineCount, 0
                 ), content);
             })
-            .then(() => textEditor.document);
+            .then(() => textEditor);
         }
 
-        return textEditor.document;
+        return textEditor;
     });
 }
 

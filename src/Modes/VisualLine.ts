@@ -1,3 +1,7 @@
+import {window} from 'vscode';
+import {StaticReflect} from '../LanguageExtensions/StaticReflect';
+import {SymbolMetadata} from '../Symbols/Metadata';
+import {RangeOffset} from '../Types/RangeOffset';
 import {Mode, ModeID} from './Mode';
 import {CommandMap} from '../Mappers/Command';
 import {ActionMoveCursor} from '../Actions/MoveCursor';
@@ -80,13 +84,16 @@ export class ModeVisualLine extends Mode {
             isLinewise: true,
         } },
 
-        { keys: 'r {char}', actions: [ActionReplace.selectionsWithCharacter] },
+        { keys: 'r {char}', actions: [
+            ActionReplace.selectionsWithCharacter,
+            ActionSelection.shrinkToStarts,
+        ] },
         { keys: '~', actions: [ActionCase.switchSelections] },
 
         { keys: '=', actions: [ActionFilter.Format.bySelections] },
 
-        { keys: '<', actions: [ActionIndent.decrease] },
-        { keys: '>', actions: [ActionIndent.increase] },
+        { keys: '<', actions: [ActionIndent.decrease], args: { isVisualLineMode: true } },
+        { keys: '>', actions: [ActionIndent.increase], args: { isVisualLineMode: true } },
 
         { keys: '/', actions: [ActionFind.focusFindWidget] },
 
@@ -124,6 +131,30 @@ export class ModeVisualLine extends Mode {
         super.enter();
 
         ActionSelection.expandToLine();
+    }
+
+    private _recordedCommandMaps: CommandMap[];
+    get recordedCommandMaps() { return this._recordedCommandMaps; }
+
+    protected onWillCommandMapMakesChanges(map: CommandMap): void {
+        const actions = map.actions.filter(action => {
+            return StaticReflect.getMetadata(SymbolMetadata.Action.shouldSkipOnRepeat, action) !== true;
+        });
+
+        const args = Object.assign({
+            preferedRelativeRange: window.activeTextEditor
+                ? new RangeOffset(window.activeTextEditor.selection)
+                : undefined,
+        }, map.args);
+
+        this._recordedCommandMaps = [
+            {
+                keys: map.keys,
+                actions: actions,
+                args: args,
+                isRepeating: true,
+            }
+        ];
     }
 
 }

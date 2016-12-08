@@ -88,9 +88,8 @@ export class Dispatcher {
         commands.executeCommand('setContext', 'amVim.mode', this._currentMode.name);
 
         // For use in repeat command
-        if (previousMode && previousMode.id === ModeID.INSERT) {
-            const recordedCommandMaps = (previousMode as ModeInsert).recordedCommandMaps;
-            this._currentMode.onDidRecordFinish(recordedCommandMaps);
+        if (previousMode) {
+            this._currentMode.onDidRecordFinish(previousMode.recordedCommandMaps, previousMode.id);
         }
     }
 
