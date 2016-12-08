@@ -8,8 +8,8 @@ export class Configuration {
     private static extensionNamespace: WorkspaceConfiguration;
     private static editorNamespace: WorkspaceConfiguration;
     private static disposables: Disposable[] = [];
-    private static _defaultModeID: ModeID;
 
+    private static _defaultModeID: ModeID;
     static get defaultModeID(): ModeID { return this._defaultModeID; }
 
     static init(): void {

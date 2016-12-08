@@ -44,6 +44,7 @@ export class Dispatcher {
         });
 
         ActionMoveCursor.updatePreferedColumn();
+
         this.switchMode(Configuration.defaultModeID);
 
         this.disposables.push(
