@@ -1,3 +1,8 @@
+# [1.19.0](https://github.com/aioutecism/amVim-for-VSCode/releases/tag/1.19.0)
+
+- Added configuration to start in Insert mode when opening files. Thanks @welkang. #159
+
+
 # [1.18.1](https://github.com/aioutecism/amVim-for-VSCode/releases/tag/1.18.1)
 
 - Workaround native API's bug where insertSpace and tabSize may be undefined.
