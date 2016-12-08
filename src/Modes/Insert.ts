@@ -46,6 +46,12 @@ export class ModeInsert extends Mode {
         });
     }
 
+    enter(): void {
+        super.enter();
+
+        this.startRecord();
+    }
+
     exit(): void {
         super.exit();
 
@@ -116,6 +122,10 @@ export class ModeInsert extends Mode {
         this.isRecording = false;
 
         this.processRecord();
+
+        if (this.recordedText === '') {
+            return;
+        }
 
         this._recordedCommandMaps = [{
             keys: '',
