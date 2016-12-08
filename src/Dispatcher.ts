@@ -7,6 +7,7 @@ import {ModeVisualLine} from './Modes/VisualLine';
 import {ModeInsert} from './Modes/Insert';
 import {ActionMode} from './Actions/Mode';
 import {ActionMoveCursor} from './Actions/MoveCursor';
+import {Configuration} from './Configuration';
 
 export class Dispatcher {
 
@@ -43,8 +44,7 @@ export class Dispatcher {
         });
 
         ActionMoveCursor.updatePreferedColumn();
-
-        this.switchMode(ModeID.NORMAL);
+        this.switchMode(Configuration.defaultModeID);
 
         this.disposables.push(
             window.onDidChangeTextEditorSelection(() => {
@@ -55,8 +55,13 @@ export class Dispatcher {
                 }, 0);
             }),
             window.onDidChangeActiveTextEditor(() => {
-                // Passing `null` to `currentMode` to force mode switch.
-                ActionMode.switchByActiveSelections(null);
+                if (Configuration.defaultModeID === ModeID.INSERT) {
+                    ActionMode.toInsert();
+                }
+                else {
+                    // Passing `null` to `currentMode` to force mode switch.
+                    ActionMode.switchByActiveSelections(null);
+                }
                 ActionMoveCursor.updatePreferedColumn();
             })
         );

@@ -1,4 +1,5 @@
 import {commands, window, workspace, WorkspaceConfiguration, Disposable} from 'vscode';
+import {ModeID} from './Modes/Mode';
 import {UtilWord} from './Utils/Word';
 
 export class Configuration {
@@ -7,6 +8,9 @@ export class Configuration {
     private static extensionNamespace: WorkspaceConfiguration;
     private static editorNamespace: WorkspaceConfiguration;
     private static disposables: Disposable[] = [];
+    private static _defaultModeID: ModeID;
+
+    static get defaultModeID(): ModeID { return this._defaultModeID; }
 
     static init(): void {
         if (this.isReady) {
@@ -25,6 +29,7 @@ export class Configuration {
     private static onDidChangeConfiguration(): void {
         this.updateCache();
         this.updateKeybindingContexts();
+        this._defaultModeID = this.getExtensionSetting<boolean>('startInInsertMode') ? ModeID.INSERT : ModeID.NORMAL;
         UtilWord.updateCharacterKindCache(this.getEditorSetting<string>('wordSeparators'));
     }
 
