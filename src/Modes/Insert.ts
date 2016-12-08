@@ -1,3 +1,4 @@
+import {window, Position, Range} from 'vscode';
 import {Mode, ModeID} from './Mode';
 import {MatchResultKind} from '../Mappers/Generic';
 import {CommandMap} from '../Mappers/Command';
@@ -45,16 +46,10 @@ export class ModeInsert extends Mode {
         });
     }
 
-    enter(): void {
-      super.enter();
-
-      this.startRecord();
-    }
-
     exit(): void {
         super.exit();
 
-        this.stopRecord();
+        this.endRecord();
 
         ActionMoveCursor.byMotions({ motions: [ MotionCharacter.left() ] });
     }
@@ -66,6 +61,8 @@ export class ModeInsert extends Mode {
         if (matchResultKind !== MatchResultKind.FAILED) {
             return matchResultKind;
         }
+
+        this.startRecord();
 
         this.pushCommandMap({
             keys: key,
@@ -80,23 +77,81 @@ export class ModeInsert extends Mode {
         return MatchResultKind.FOUND;
     }
 
-    private shouldRecord: boolean = false;
+    private isRecording: boolean = false;
+    private recordStartPosition: Position;
+    private recordedText: string;
+
     private _recordedCommandMaps: CommandMap[];
     get recordedCommandMaps() { return this._recordedCommandMaps; }
 
     private startRecord(): void {
-        this.shouldRecord = true;
-        this._recordedCommandMaps = [];
+        if (this.isRecording) {
+            return;
+        }
+
+        const activeTextEditor = window.activeTextEditor;
+        if (! activeTextEditor) {
+            return;
+        }
+
+        this.isRecording = true;
+        this.recordStartPosition = activeTextEditor.selection.active;
+        this.recordedText = '';
     }
 
-    private stopRecord(): void {
-        this.shouldRecord = false;
+    private processRecord(): void {
+        const activeTextEditor = window.activeTextEditor;
+        if (! activeTextEditor) {
+            return;
+        }
+
+        // TODO: check if end position is before start position.
+
+        this.recordedText += activeTextEditor.document.getText(new Range(
+            this.recordStartPosition, activeTextEditor.selection.active
+        ));
     }
 
-    // TODO: Deletion and autocomplete is not tracked now.
+    private endRecord(): void {
+        this.isRecording = false;
+
+        this.processRecord();
+
+        this._recordedCommandMaps = [{
+            keys: '',
+            actions: [ ActionInsert.textAtSelections ],
+            args: {
+                text: this.recordedText,
+            },
+            isRepeating: true,
+        }];
+
+        // TODO: Move cursor.
+    }
+
     protected onWillCommandMapMakesChanges(map: CommandMap): void {
-        if (this.shouldRecord) {
-            this._recordedCommandMaps.push(map);
+        if (! this.isRecording) {
+            return;
+        }
+
+        if (map.keys === '\n') {
+            this.processRecord();
+            this.recordedText += '\n';
+        }
+    }
+
+    protected onDidCommandMapMakesChanges(map: CommandMap): void {
+        if (! this.isRecording) {
+            return;
+        }
+
+        if (map.keys === '\n') {
+            const activeTextEditor = window.activeTextEditor;
+            if (! activeTextEditor) {
+                return;
+            }
+
+            this.recordStartPosition = window.activeTextEditor.selection.active;
         }
     }
 
