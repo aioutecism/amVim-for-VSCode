@@ -120,6 +120,10 @@ export class ModeInsert extends Mode {
 
     // TODO: Call this when cursor is moved without modification.
     private endRecord(): void {
+        if (! this.isRecording) {
+            return;
+        }
+
         this.isRecording = false;
 
         this.processRecord();
