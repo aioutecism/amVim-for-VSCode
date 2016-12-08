@@ -111,13 +111,14 @@ export class ModeInsert extends Mode {
             return;
         }
 
-        // TODO: check if end position is before start position.
+        // TODO: Check for deletion.
 
         this.recordedText += activeTextEditor.document.getText(new Range(
             this.recordStartPosition, activeTextEditor.selection.active
         ));
     }
 
+    // TODO: Call this when cursor is moved without modification.
     private endRecord(): void {
         this.isRecording = false;
 
@@ -136,7 +137,7 @@ export class ModeInsert extends Mode {
             isRepeating: true,
         }];
 
-        // TODO: Move cursor.
+        // TODO: Cursor positions are wrong sometimes.
     }
 
     protected onWillCommandMapMakesChanges(map: CommandMap): void {
