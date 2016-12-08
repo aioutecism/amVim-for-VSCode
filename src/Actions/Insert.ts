@@ -5,14 +5,14 @@ import {SymbolMetadata} from '../Symbols/Metadata';
 export class ActionInsert {
 
     @StaticReflect.metadata(SymbolMetadata.Action.isChange, true)
-    static characterAtSelections(args: { character: string, replaceCharCnt?: number }): Thenable<boolean> {
+    static textAtSelections(args: { text: string, replaceCharCnt?: number }): Thenable<boolean> {
         if (args.replaceCharCnt !== undefined) {
             return commands.executeCommand('default:replacePreviousChar', {
-                text: args.character,
+                text: args.text,
                 replaceCharCnt: args.replaceCharCnt,
             });
         }
-        return commands.executeCommand('default:type', { text: args.character });
+        return commands.executeCommand('default:type', { text: args.text });
     }
 
     @StaticReflect.metadata(SymbolMetadata.Action.isChange, true)

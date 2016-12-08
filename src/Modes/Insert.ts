@@ -69,9 +69,9 @@ export class ModeInsert extends Mode {
 
         this.pushCommandMap({
             keys: key,
-            actions: [ ActionInsert.characterAtSelections ],
+            actions: [ ActionInsert.textAtSelections ],
             args: {
-                character: key,
+                text: key,
                 replaceCharCnt: args.replaceCharCnt,
             }
         });
