@@ -44,8 +44,6 @@ export class Dispatcher {
         });
 
         ActionMoveCursor.updatePreferedColumn();
-        // set to default mode of Configuration
-        console.log(Configuration.defaultModeID);
         this.switchMode(Configuration.defaultModeID);
 
         this.disposables.push(
