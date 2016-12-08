@@ -46,7 +46,7 @@
                 "amVim.startInInsertMode": {
                     "type": "boolean",
                     "default": false,
-                    "description": "Set default mode to insert mode"
+                    "description": "Set to `true` to start in Insert mode when opening files."
                 }
             }
         },

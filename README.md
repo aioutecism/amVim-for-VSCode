@@ -36,6 +36,12 @@ You can overwrite default configurations in
 
 Set to `false` to disable `Ctrl+<key>` keybindings.
 
+#### `amVim.startInInsertMode`
+
+`Boolean`, Default: `false`
+
+Set to `true` to start in Insert mode when opening files.
+
 
 ## Contribution
 
