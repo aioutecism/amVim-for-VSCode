@@ -93,6 +93,16 @@ export abstract class Mode {
     protected onWillCommandMapMakesChanges(map: CommandMap): void {}
 
     /**
+     * Override this to do something after command map made changes.
+     */
+    protected onDidCommandMapMakesChanges(map: CommandMap): void {}
+
+    /**
+     * Override this to do something after selection changes.
+     */
+    onDidChangeTextEditorSelection(): void {}
+
+    /**
      * Override this to do something after recording ends.
      */
     onDidRecordFinish(recordedCommandMaps: CommandMap[], previousModeID: ModeID): void {}
@@ -124,6 +134,10 @@ export abstract class Mode {
             map.actions.forEach(action => {
                 promise = promise.then(() => action(map.args));
             });
+
+            if (isAnyActionIsChange) {
+                promise = promise.then(() => this.onDidCommandMapMakesChanges(map));
+            }
 
             promise.then(
                 one.bind(this),
