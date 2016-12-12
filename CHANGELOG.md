@@ -1,3 +1,8 @@
+# [1.20.0](https://github.com/aioutecism/amVim-for-VSCode/releases/tag/1.20.0)
+
+- Added repeat support of deletion and autocomplete in Insert mode.
+
+
 # [1.19.0](https://github.com/aioutecism/amVim-for-VSCode/releases/tag/1.19.0)
 
 - Added configuration to start in Insert mode when opening files. Thanks @welkang. #159
