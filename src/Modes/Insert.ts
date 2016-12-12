@@ -154,6 +154,7 @@ export class ModeInsert extends Mode {
                         motions: [MotionCharacter.left({ n: deletionCountBefore })]
                     })
                 ],
+                isRepeating: true,
             });
         }
 
@@ -163,7 +164,8 @@ export class ModeInsert extends Mode {
                 actions: [ ActionInsert.textAtSelections ],
                 args: {
                     text: inputedText,
-                }
+                },
+                isRepeating: true,
             });
         }
 
@@ -175,6 +177,7 @@ export class ModeInsert extends Mode {
                         motions: [MotionCharacter.right({ n: deletionCountAfter })]
                     })
                 ],
+                isRepeating: true,
             }, {
                 keys: '',
                 actions: [
@@ -182,6 +185,7 @@ export class ModeInsert extends Mode {
                         motions: [MotionCharacter.left({ n: deletionCountAfter - 1 })]
                     })
                 ],
+                isRepeating: true,
             });
         }
     }
