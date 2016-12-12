@@ -98,6 +98,11 @@ export abstract class Mode {
     protected onDidCommandMapMakesChanges(map: CommandMap): void {}
 
     /**
+     * Override this to do something after selection changes.
+     */
+    onDidChangeTextEditorSelection(): void {}
+
+    /**
      * Override this to do something after recording ends.
      */
     onDidRecordFinish(recordedCommandMaps: CommandMap[], previousModeID: ModeID): void {}

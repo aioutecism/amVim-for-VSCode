@@ -52,6 +52,7 @@ export class Dispatcher {
                 setTimeout(() => {
                     ActionMode.switchByActiveSelections(this._currentMode.id);
                     ActionMoveCursor.updatePreferedColumn();
+                    this._currentMode.onDidChangeTextEditorSelection();
                 }, 0);
             }),
             window.onDidChangeActiveTextEditor(() => {
