@@ -200,9 +200,9 @@ export class ModeInsert extends Mode {
         this.processRecord();
     }
 
-    protected onWillCommandMapMakesChanges(map: CommandMap): void {
+    protected onWillCommandMapMakesChanges(map: CommandMap): Promise<boolean> {
         if (! this.isRecording) {
-            return;
+            return Promise.resolve(false);
         }
 
         if (map.keys === '\n') {
@@ -216,22 +216,26 @@ export class ModeInsert extends Mode {
                 isRepeating: true,
             });
         }
+
+        return Promise.resolve(true);
     }
 
-    protected onDidCommandMapMakesChanges(map: CommandMap): void {
+    protected onDidCommandMapMakesChanges(map: CommandMap): Promise<boolean> {
         if (! this.isRecording) {
-            return;
+            return Promise.resolve(false);
         }
 
         if (map.keys === '\n') {
             const activeTextEditor = window.activeTextEditor;
             if (! activeTextEditor) {
-                return;
+                return Promise.resolve(false);
             }
 
             this.recordStartPosition = activeTextEditor.selection.active;
             this.recordStartLineText = activeTextEditor.document.lineAt(this.recordStartPosition.line).text;
         }
+
+        return Promise.resolve(true);
     }
 
     onDidChangeTextEditorSelection(): void {

@@ -31,7 +31,7 @@
     "author": "aioutecism",
     "license": "ISC",
     "engines": {
-        "vscode": "^1.6.0"
+        "vscode": "^1.8.0"
     },
     "main": "./out/src/extension",
     "contributes": {
@@ -89,7 +89,7 @@
         "sync-changelog": "node ./node_modules/github-releases-renderer/index.js run aioutecism amVim-for-VSCode CHANGELOG.template.md CHANGELOG.md -c 0"
     },
     "devDependencies": {
-        "typescript": "^2.0.3",
+        "typescript": "^2.1.0",
         "vscode": "^1.0.0",
         "mocha": "^2.3.3",
         "@types/node": "^6.0.40",

@@ -226,9 +226,9 @@ export class ModeNormal extends Mode {
     private _recordedCommandMaps: CommandMap[];
     get recordedCommandMaps() { return this._recordedCommandMaps; }
 
-    protected onWillCommandMapMakesChanges(map: CommandMap): void {
+    protected onWillCommandMapMakesChanges(map: CommandMap): Promise<boolean> {
         if (map.isRepeating) {
-            return;
+            return Promise.resolve(false);
         }
 
         const actions = map.actions.filter(action => {
@@ -243,6 +243,8 @@ export class ModeNormal extends Mode {
                 isRepeating: true,
             }
         ];
+
+        return Promise.resolve(true);
     }
 
     onDidRecordFinish(recordedCommandMaps: CommandMap[], previousModeID: ModeID): void {

@@ -136,7 +136,7 @@ export class ModeVisualLine extends Mode {
     private _recordedCommandMaps: CommandMap[];
     get recordedCommandMaps() { return this._recordedCommandMaps; }
 
-    protected onWillCommandMapMakesChanges(map: CommandMap): void {
+    protected onWillCommandMapMakesChanges(map: CommandMap): Promise<boolean> {
         const actions = map.actions.filter(action => {
             return StaticReflect.getMetadata(SymbolMetadata.Action.shouldSkipOnRepeat, action) !== true;
         });
@@ -155,6 +155,8 @@ export class ModeVisualLine extends Mode {
                 isRepeating: true,
             }
         ];
+
+        return Promise.resolve(true);
     }
 
 }
