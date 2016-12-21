@@ -13,7 +13,7 @@ export class ActionBlockCursor {
 
                 // Workaround for VSCode API's bug: https://github.com/Microsoft/vscode/issues/17513
                 // TODO: Remove next line when the bug is fixed.
-                activeTextEditor.options.cursorStyle = TextEditorCursorStyle.Underline;
+                activeTextEditor.options.cursorStyle = TextEditorCursorStyle.Line;
                 activeTextEditor.options.cursorStyle = TextEditorCursorStyle.Block;
 
                 resovle(true);
