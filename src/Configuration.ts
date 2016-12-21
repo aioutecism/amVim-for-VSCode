@@ -29,8 +29,8 @@ export class Configuration {
     private static onDidChangeConfiguration(): void {
         this.updateCache();
         this.updateKeybindingContexts();
-        this._defaultModeID = this.getExtensionSetting<boolean>('startInInsertMode') ? ModeID.INSERT : ModeID.NORMAL;
-        UtilWord.updateCharacterKindCache(this.getEditorSetting<string>('wordSeparators'));
+        this._defaultModeID = this.getExtensionSetting<boolean>('startInInsertMode', false) ? ModeID.INSERT : ModeID.NORMAL;
+        UtilWord.updateCharacterKindCache(this.getEditorSetting<string>('wordSeparators', '`~!@#$%^&*()-=+[{]}\\|;:\'",.<>/?'));
     }
 
     private static updateCache(): void {
@@ -40,15 +40,15 @@ export class Configuration {
 
     private static updateKeybindingContexts(): void {
         commands.executeCommand('setContext',
-            'amVim.configuration.shouldBindCtrlCommands', this.getExtensionSetting<boolean>('bindCtrlCommands'));
+            'amVim.configuration.shouldBindCtrlCommands', this.getExtensionSetting<boolean>('bindCtrlCommands', true));
     }
 
-    static getExtensionSetting<T>(section: string, defaultValue?: T): T {
-        return this.extensionNamespace.get(section, defaultValue);
+    static getExtensionSetting<T>(section: string, defaultValue: T): T {
+        return this.extensionNamespace.get<T>(section, defaultValue);
     }
 
-    static getEditorSetting<T>(section: string, defaultValue?: T): T {
-        return this.editorNamespace.get(section, defaultValue);
+    static getEditorSetting<T>(section: string, defaultValue: T): T {
+        return this.editorNamespace.get<T>(section, defaultValue);
     }
 
     /**
@@ -62,7 +62,7 @@ export class Configuration {
             }
         }
 
-        return this.getEditorSetting<boolean>('insertSpaces');
+        return this.getEditorSetting<boolean>('insertSpaces', true);
     }
 
     /**
@@ -76,7 +76,7 @@ export class Configuration {
             }
         }
 
-        return this.getEditorSetting<number>('tabSize');
+        return this.getEditorSetting<number>('tabSize', 4);
     }
 
     static dispose(): void {

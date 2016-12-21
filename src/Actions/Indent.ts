@@ -1,4 +1,4 @@
-import {window, Range} from 'vscode';
+import {window, TextDocument, Range} from 'vscode';
 import {StaticReflect} from '../LanguageExtensions/StaticReflect';
 import {SymbolMetadata} from '../Symbols/Metadata';
 import {Configuration} from '../Configuration';
@@ -20,9 +20,7 @@ export class ActionIndent {
         }
     }
 
-    private static getIndentLevel(lineNumber: number): number {
-        const document = window.activeTextEditor.document;
-
+    private static getIndentLevel(lineNumber: number, document: TextDocument): number {
         if (lineNumber >= document.lineCount) {
             return 0;
         }
@@ -76,7 +74,7 @@ export class ActionIndent {
             });
         }
 
-        return window.activeTextEditor.edit((editBuilder) => {
+        return activeTextEditor.edit((editBuilder) => {
             Object.keys(lineNumbers).forEach(key => {
                 const lineNumber = parseInt(key, 10);
 
@@ -86,7 +84,7 @@ export class ActionIndent {
 
                 const line = document.lineAt(lineNumber);
 
-                const currentIndentLevel = ActionIndent.getIndentLevel(lineNumber);
+                const currentIndentLevel = ActionIndent.getIndentLevel(lineNumber, document);
                 let toIndentLevel = args.indentLevelOffset > 0
                     ? Math.floor(currentIndentLevel + args.indentLevelOffset)
                     : Math.ceil(currentIndentLevel + args.indentLevelOffset);

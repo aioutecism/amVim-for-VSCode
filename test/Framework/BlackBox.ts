@@ -123,7 +123,7 @@ export const run = (testCase: TestCase, before?: (textEditor: TextEditor) => voi
             }
 
             try {
-                assert.equal(TestUtil.getDocument().getText(), toInfo.cleanText);
+                assert.equal(TestUtil.getDocument()!.getText(), toInfo.cleanText);
                 assert.deepEqual(TestUtil.getSelections(), toInfo.selections);
             }
             catch (error) {

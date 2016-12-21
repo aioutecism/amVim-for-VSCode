@@ -3,7 +3,7 @@ import {workspace, window, Uri, TextDocument, TextEditor, Position, Range, Selec
 export function createTempDocument(content?: string, reusableDocument?: TextDocument): Thenable<TextEditor> {
     let getTextEditor: Thenable<TextEditor>;
 
-    if (reusableDocument && window.activeTextEditor.document === reusableDocument) {
+    if (reusableDocument && window.activeTextEditor && window.activeTextEditor.document === reusableDocument) {
         getTextEditor = Promise.resolve(window.activeTextEditor);
     }
     else {
@@ -29,8 +29,8 @@ export function createTempDocument(content?: string, reusableDocument?: TextDocu
     });
 }
 
-export function getDocument(): TextDocument {
-    return window.activeTextEditor.document;
+export function getDocument(): TextDocument | undefined {
+    return window.activeTextEditor && window.activeTextEditor.document;
 }
 
 export function setPosition(position: Position): void {
@@ -38,6 +38,10 @@ export function setPosition(position: Position): void {
 }
 
 export function setPositions(positions: Position[]): void {
+    if (! window.activeTextEditor) {
+        throw new Error('No active text editor.');
+    }
+
     window.activeTextEditor.selections = positions.map(position => {
         return new Selection(position, position);
     });
@@ -48,10 +52,18 @@ export function setSelection(selection: Selection): void {
 }
 
 export function setSelections(selections: Selection[]): void {
+    if (! window.activeTextEditor) {
+        throw new Error('No active text editor.');
+    }
+
     window.activeTextEditor.selections = selections;
 }
 
 export function getPosition(): Position {
+    if (! window.activeTextEditor) {
+        throw new Error('No active text editor.');
+    }
+
     const activeEditor = window.activeTextEditor;
 
     if (activeEditor.selections.length > 1) {
@@ -65,6 +77,10 @@ export function getPosition(): Position {
 }
 
 export function getPositions(): Position[] {
+    if (! window.activeTextEditor) {
+        throw new Error('No active text editor.');
+    }
+
     const activeEditor = window.activeTextEditor;
 
     const positions: Position[] = [];
@@ -83,6 +99,10 @@ export function getPositions(): Position[] {
 }
 
 export function getSelection(): Selection {
+    if (! window.activeTextEditor) {
+        throw new Error('No active text editor.');
+    }
+
     const activeEditor = window.activeTextEditor;
 
     if (activeEditor.selections.length > 1) {
@@ -93,5 +113,9 @@ export function getSelection(): Selection {
 }
 
 export function getSelections(): Selection[] {
+    if (! window.activeTextEditor) {
+        throw new Error('No active text editor.');
+    }
+
     return window.activeTextEditor.selections;
 }

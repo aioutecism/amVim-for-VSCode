@@ -50,7 +50,7 @@ export abstract class TextObject {
         let range = this.createRangeDueToIsInclusive(startRange, endRange);
 
         if (this.shouldExpandToLinewise) {
-            range = this.tryExpandToLinewise(range);
+            range = this.tryExpandToLinewise(range, document);
         }
 
         return range;
@@ -62,18 +62,15 @@ export abstract class TextObject {
             : new Range(startRange.end, endRange.start);
     }
 
-    private tryExpandToLinewise(range: Range): Range {
+    private tryExpandToLinewise(range: Range, document: TextDocument): Range {
         if (range.isSingleLine) {
             return range;
         }
-
-        const document = window.activeTextEditor.document;
 
         const startLine = document.lineAt(range.start.line);
         const endLine = document.lineAt(range.start.line);
 
         if (this.isInclusive) {
-
             if (
                 range.start.character === startLine.firstNonWhitespaceCharacterIndex
                 && range.end.character === endLine.text.length
