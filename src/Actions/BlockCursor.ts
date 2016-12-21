@@ -9,9 +9,10 @@ export class ActionBlockCursor {
             return Promise.resolve(false);
         }
 
-        let opt = activeTextEditor.options;
-        opt.cursorStyle = TextEditorCursorStyle.Block;
-        activeTextEditor.options = opt;
+        // Workaround for VSCode API's bug: https://github.com/Microsoft/vscode/issues/17513
+        // TODO: Remove next line when the bug is fixed.
+        activeTextEditor.options.cursorStyle = TextEditorCursorStyle.Line;
+        activeTextEditor.options.cursorStyle = TextEditorCursorStyle.Block;
 
         return Promise.resolve(true);
     }
@@ -23,9 +24,10 @@ export class ActionBlockCursor {
             return Promise.resolve(false);
         }
 
-        let opt = activeTextEditor.options;
-        opt.cursorStyle = TextEditorCursorStyle.Line;
-        activeTextEditor.options = opt;
+        // Workaround for VSCode API's bug: https://github.com/Microsoft/vscode/issues/17513
+        // TODO: Remove next line when the bug is fixed.
+        activeTextEditor.options.cursorStyle = TextEditorCursorStyle.Block;
+        activeTextEditor.options.cursorStyle = TextEditorCursorStyle.Line;
 
         return Promise.resolve(true);
     }
