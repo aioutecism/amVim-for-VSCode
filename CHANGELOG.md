@@ -1,3 +1,8 @@
+# [1.20.1](https://github.com/aioutecism/amVim-for-VSCode/releases/tag/1.20.1)
+
+- Workarounded wrong cursor style when switching editor. #161
+
+
 # [1.20.0](https://github.com/aioutecism/amVim-for-VSCode/releases/tag/1.20.0)
 
 - Added repeat support of deletion and autocomplete in Insert mode.
