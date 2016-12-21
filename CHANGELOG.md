@@ -1,3 +1,8 @@
+# [1.20.2](https://github.com/aioutecism/amVim-for-VSCode/releases/tag/1.20.2)
+
+- Update dependencies to VSCode 1.8.0 and TypeScript 2.1.0.
+
+
 # [1.20.1](https://github.com/aioutecism/amVim-for-VSCode/releases/tag/1.20.1)
 
 - Workarounded wrong cursor style when switching editor. #161
