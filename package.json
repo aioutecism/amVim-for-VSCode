@@ -47,6 +47,26 @@
                     "type": "boolean",
                     "default": false,
                     "description": "Set to `true` to start in Insert mode when opening files."
+                },
+                "amVim.leftKey" : {
+                    "type": "string",
+                    "default": "h",
+                    "description": "Left movement key binding."
+                },
+                "amVim.downKey" : {
+                    "type": "string",
+                    "default": "j",
+                    "description": "Down movement key binding."
+                },
+                "amVim.upKey" : {
+                    "type": "string",
+                    "default": "k",
+                    "description": "Up movement key binding."
+                },
+                "amVim.rightKey" : {
+                    "type": "string",
+                    "default": "l",
+                    "description": "Right movement key binding."
                 }
             }
         },

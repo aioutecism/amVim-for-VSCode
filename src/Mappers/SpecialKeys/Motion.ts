@@ -10,6 +10,7 @@ import {MotionMatch} from '../../Motions/Match';
 import {MotionMatchPair} from '../../Motions/MatchPair';
 import {MotionLine} from '../../Motions/Line';
 import {MotionDocument} from '../../Motions/Document';
+import {Configuration} from '../../Configuration';
 
 interface MotionGenerator {
     (args?: {}): Motion;
@@ -26,20 +27,20 @@ export class SpecialKeyMotion extends GenericMapper implements SpecialKeyCommon 
     private conflictRegExp = /^[1-9]|\{N\}|\{char\}$/;
 
     private maps: MotionMap[] = [
-        { keys: 'h',         motionGenerators: [MotionCharacter.left] },
-        { keys: '{N} h',     motionGenerators: [MotionCharacter.left] },
+        { keys: Configuration.getExtensionSetting<string>('leftKey'), motionGenerators: [MotionCharacter.left] },
+        { keys: '{N} ' + Configuration.getExtensionSetting<string>('leftKey'), motionGenerators: [MotionCharacter.left] },
         { keys: 'left',      motionGenerators: [MotionCharacter.left] },
         { keys: '{N} left',  motionGenerators: [MotionCharacter.left] },
-        { keys: 'l',         motionGenerators: [MotionCharacter.right] },
-        { keys: '{N} l',     motionGenerators: [MotionCharacter.right] },
+        { keys: Configuration.getExtensionSetting<string>('rightKey'), motionGenerators: [MotionCharacter.right] },
+        { keys: '{N} ' + Configuration.getExtensionSetting<string>('rightKey'), motionGenerators: [MotionCharacter.right] },
         { keys: 'right',     motionGenerators: [MotionCharacter.right] },
         { keys: '{N} right', motionGenerators: [MotionCharacter.right] },
-        { keys: 'k',         motionGenerators: [MotionCharacter.up] },
-        { keys: '{N} k',     motionGenerators: [MotionCharacter.up] },
+        { keys: Configuration.getExtensionSetting<string>('upKey'), motionGenerators: [MotionCharacter.up] },
+        { keys: '{N} ' + Configuration.getExtensionSetting<string>('upKey'), motionGenerators: [MotionCharacter.up] },
         { keys: 'up',        motionGenerators: [MotionCharacter.up] },
         { keys: '{N} up',    motionGenerators: [MotionCharacter.up] },
-        { keys: 'j',         motionGenerators: [MotionCharacter.down] },
-        { keys: '{N} j',     motionGenerators: [MotionCharacter.down] },
+        { keys: Configuration.getExtensionSetting<string>('downKey'), motionGenerators: [MotionCharacter.down] },
+        { keys: '{N} ' + Configuration.getExtensionSetting<string>('downKey'), motionGenerators: [MotionCharacter.down] },
         { keys: 'down',      motionGenerators: [MotionCharacter.down] },
         { keys: '{N} down',  motionGenerators: [MotionCharacter.down] },
 
