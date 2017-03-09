@@ -1,4 +1,4 @@
-import {window} from 'vscode';
+import {commands, window} from 'vscode';
 import {StaticReflect} from '../LanguageExtensions/StaticReflect';
 import {SymbolMetadata} from '../Symbols/Metadata';
 import {RangeOffset} from '../Types/RangeOffset';
@@ -81,7 +81,19 @@ export class ModeVisual extends Mode {
             ActionReplace.selectionsWithCharacter,
             ActionSelection.shrinkToStarts,
         ] },
-        { keys: '~', actions: [ActionCase.switchSelections] },
+
+        { keys: '~', actions: [
+            ActionCase.switchSelections,
+            ActionSelection.shrinkToStarts,
+        ] },
+        { keys: 'u', actions: [
+            () => commands.executeCommand('editor.action.transformToLowercase'),
+            ActionSelection.shrinkToStarts,
+        ] },
+        { keys: 'U', actions: [
+            () => commands.executeCommand('editor.action.transformToUppercase'),
+            ActionSelection.shrinkToStarts,
+        ] },
 
         { keys: '=', actions: [ActionFilter.Format.bySelections] },
 
