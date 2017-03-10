@@ -1,4 +1,4 @@
-import {commands, window} from 'vscode';
+import {window} from 'vscode';
 import {StaticReflect} from '../LanguageExtensions/StaticReflect';
 import {SymbolMetadata} from '../Symbols/Metadata';
 import {RangeOffset} from '../Types/RangeOffset';
@@ -94,11 +94,11 @@ export class ModeVisualLine extends Mode {
             ActionSelection.shrinkToStarts,
         ] },
         { keys: 'u', actions: [
-            () => commands.executeCommand('editor.action.transformToLowercase'),
+            ActionCase.lowercaseSelections,
             ActionSelection.shrinkToStarts,
         ] },
         { keys: 'U', actions: [
-            () => commands.executeCommand('editor.action.transformToUppercase'),
+            ActionCase.uppercaseSelections,
             ActionSelection.shrinkToStarts,
         ] },
 

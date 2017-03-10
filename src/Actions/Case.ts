@@ -1,4 +1,4 @@
-import {window, Range} from 'vscode';
+import {commands, window, Range} from 'vscode';
 import {StaticReflect} from '../LanguageExtensions/StaticReflect';
 import {SymbolMetadata} from '../Symbols/Metadata';
 import {ActionReveal} from './Reveal';
@@ -21,6 +21,30 @@ export class ActionCase {
                 editBuilder.replace(selection, UtilText.switchCase(text));
             });
         })
+            .then(() => ActionReveal.primaryCursor());
+    }
+
+    @StaticReflect.metadata(SymbolMetadata.Action.isChange, true)
+    static lowercaseSelections(): Thenable<boolean> {
+        const activeTextEditor = window.activeTextEditor;
+
+        if (! activeTextEditor) {
+            return Promise.resolve(false);
+        }
+
+        return commands.executeCommand('editor.action.transformToLowercase')
+            .then(() => ActionReveal.primaryCursor());
+    }
+
+    @StaticReflect.metadata(SymbolMetadata.Action.isChange, true)
+    static uppercaseSelections(): Thenable<boolean> {
+        const activeTextEditor = window.activeTextEditor;
+
+        if (! activeTextEditor) {
+            return Promise.resolve(false);
+        }
+
+        return commands.executeCommand('editor.action.transformToUppercase')
             .then(() => ActionReveal.primaryCursor());
     }
 
