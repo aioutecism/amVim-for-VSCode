@@ -3,16 +3,15 @@ export class UtilText {
     static switchCase(from: string): string {
         let to = '';
 
+        const lowercase = from.toLocaleLowerCase();
+        const uppercase = from.toLocaleUpperCase();
+
         for (let i = 0; i < from.length; i++) {
-            const charCode = from.charCodeAt(i);
-            if (charCode >= 97 && charCode <= 122) {
-                to += String.fromCharCode(charCode - 32);
-            }
-            else if (charCode >= 65 && charCode <= 90) {
-                to += String.fromCharCode(charCode + 32);
+            if (from[i] !== lowercase[i]) {
+                to += lowercase[i];
             }
             else {
-                to += from[i];
+                to += uppercase[i];
             }
         }
 
