@@ -1,3 +1,8 @@
+# [1.21.1](https://github.com/aioutecism/amVim-for-VSCode/releases/tag/1.21.1)
+
+- Fix `~` to work with special characters. Thanks @mtsk #170.
+
+
 # [1.21.0](https://github.com/aioutecism/amVim-for-VSCode/releases/tag/1.21.0)
 
 - Added `u` and `U` support in Visual and VisualLIne modes. Thanks @mtsk. #169
