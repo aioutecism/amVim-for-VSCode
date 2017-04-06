@@ -81,17 +81,20 @@ export class ActionMoveCursor {
             if (args.isVisualMode) {
                 anchor = selection.anchor;
 
-                if (active.isAfterOrEqual(anchor)) {
-                    const lineLength = activeTextEditor.document.lineAt(active.line).text.length;
-                    if (active.character < lineLength) {
-                        active = active.translate(0, +1);
-                    }
+                const anchorLineLength = activeTextEditor.document.lineAt(anchor.line).text.length;
+                const activeLineLength = activeTextEditor.document.lineAt(active.line).text.length;
+
+                if (active.isAfterOrEqual(anchor) && active.character < activeLineLength) {
+                    active = active.translate(0, +1);
                 }
 
-                if (active.isAfter(anchor) && selection.isReversed) {
+                if (active.isEqual(anchor) && anchor.character > 0) {
                     anchor = anchor.translate(0, -1);
                 }
-                else if (active.isBefore(anchor) && !selection.isReversed) {
+                else if (active.isAfter(anchor) && selection.isReversed && anchor.character > 0) {
+                    anchor = anchor.translate(0, -1);
+                }
+                else if (active.isBefore(anchor) && !selection.isReversed && anchor.character < anchorLineLength) {
                     anchor = anchor.translate(0, +1);
                 }
             }
