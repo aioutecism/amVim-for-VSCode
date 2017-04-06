@@ -1,4 +1,4 @@
-import {Selection} from 'vscode';
+import {Selection, Position} from 'vscode';
 
 export class UtilSelection {
 
@@ -45,6 +45,26 @@ export class UtilSelection {
 
     static shrinkToActives(selections: Selection[]): Selection[] {
         return selections.map(selection => UtilSelection.shrinkToActive(selection));
+    }
+
+    static getActiveInVisualMode(anchor: Position, active: Position): Position;
+    static getActiveInVisualMode(selection: Selection): Position;
+    static getActiveInVisualMode(first: Position | Selection, second?: Position): Position {
+        let active: Position;
+        let isReversed: boolean;
+
+        if (second) {
+            isReversed = (first as Position).isAfter(second);
+            active = second;
+        }
+        else {
+            isReversed = (first as Selection).isReversed;
+            active = (first as Selection).active;
+        }
+
+        return !isReversed && active.character > 0
+            ? active.translate(0, -1)
+            : active;
     }
 
 }

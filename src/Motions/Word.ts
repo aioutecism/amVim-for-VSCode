@@ -2,8 +2,8 @@ import {window, TextDocument, Position} from 'vscode';
 import {Motion} from './Motion';
 import {WordCharacterKind, UtilWord} from '../Utils/Word';
 
-enum MotionWordDirection {Previous, Next};
-enum MotionWordMatchKind {Start, End, Both};
+enum MotionWordDirection {Previous, Next}
+enum MotionWordMatchKind {Start, End, Both}
 
 export class MotionWord extends Motion {
 
