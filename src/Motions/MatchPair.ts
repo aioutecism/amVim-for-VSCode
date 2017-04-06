@@ -35,7 +35,14 @@ export class MotionMatchPair extends Motion {
         return new MotionMatchPair();
     }
 
-    apply(from: Position, option?: any): Position {
+    apply(
+        from: Position,
+        option: {
+            isInclusive?: boolean,
+        } = {}
+    ): Position {
+        option.isInclusive = option.isInclusive === undefined ? false : option.isInclusive;
+
         from = super.apply(from);
 
         const activeTextEditor = window.activeTextEditor;
@@ -65,7 +72,7 @@ export class MotionMatchPair extends Motion {
             else {
                 const endRange = textObject.findEndRange(document, new Position(from.line, character));
                 if (endRange !== null) {
-                    return endRange.start;
+                    return option.isInclusive ? endRange.end : endRange.start;
                 }
             }
 
