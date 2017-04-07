@@ -1,3 +1,9 @@
+# [1.21.2](https://github.com/aioutecism/amVim-for-VSCode/releases/tag/1.21.2)
+
+- Fixed wrong behavior with `%`.
+- More accurate motion handling in Visual mode.
+
+
 # [1.21.1](https://github.com/aioutecism/amVim-for-VSCode/releases/tag/1.21.1)
 
 - Fix `~` to work with special characters. Thanks @mtsk #170.
