@@ -2,6 +2,7 @@ import {window, Position, Selection} from 'vscode';
 import {ActionReveal} from './Reveal';
 import {Motion} from '../Motions/Motion';
 import {UtilPosition} from '../Utils/Position';
+import {UtilSelection} from '../Utils/Selection';
 
 export class ActionMoveCursor {
 
@@ -66,34 +67,34 @@ export class ActionMoveCursor {
         activeTextEditor.selections = activeTextEditor.selections.map((selection, i) => {
             let anchor: Position;
 
-            let active = args.motions.reduce((position, motion) => {
-                return motion.apply(position, {
-                    isInclusive: args.isVisualMode,
-                    preferedColumn: ActionMoveCursor.preferedColumnBySelectionIndex[i]
-                });
-            }, selection.active);
+            let active = args.motions.reduce(
+                (position, motion) => {
+                    return motion.apply(position, {
+                        preferedColumn: ActionMoveCursor.preferedColumnBySelectionIndex[i]
+                    });
+                },
+                args.isVisualMode
+                    ? UtilSelection.getActiveInVisualMode(selection)
+                    : selection.active
+            );
 
             if (args.isVisualMode) {
                 anchor = selection.anchor;
 
-                if (anchor.isEqual(active)) {
-                    if (active.isBefore(selection.active)) {
-                        anchor = anchor.translate(0, +1);
-                        if (active.character > 0) {
-                            active = active.translate(0, -1);
-                        }
-                    }
-                    else {
-                        if (anchor.character > 0) {
-                            anchor = anchor.translate(0, -1);
-                        }
-                        active = active.translate(0, +1);
-                    }
+                const anchorLineLength = activeTextEditor.document.lineAt(anchor.line).text.length;
+                const activeLineLength = activeTextEditor.document.lineAt(active.line).text.length;
+
+                if (active.isAfterOrEqual(anchor) && active.character < activeLineLength) {
+                    active = active.translate(0, +1);
                 }
-                else if (active.isAfter(anchor) && selection.active.isBefore(selection.anchor)) {
+
+                if (active.isEqual(anchor) && anchor.character > 0) {
                     anchor = anchor.translate(0, -1);
                 }
-                else if (active.isBefore(anchor) && selection.active.isAfter(selection.anchor)) {
+                else if (active.isAfter(anchor) && selection.isReversed && anchor.character > 0) {
+                    anchor = anchor.translate(0, -1);
+                }
+                else if (active.isBefore(anchor) && !selection.isReversed && anchor.character < anchorLineLength) {
                     anchor = anchor.translate(0, +1);
                 }
             }
