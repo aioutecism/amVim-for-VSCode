@@ -16,6 +16,7 @@ export class SpecialKeyChar implements SpecialKeyCommon {
     matchSpecial(
         inputs: string[],
         additionalArgs: {[key: string]: any},
+        lastSpecialKeyMatch?: SpecialKeyMatchResult,
     ): SpecialKeyMatchResult | null {
         let character = inputs[0];
 

@@ -107,6 +107,7 @@ export class SpecialKeyTextObject extends GenericMapper implements SpecialKeyCom
     matchSpecial(
         inputs: string[],
         additionalArgs: {[key: string]: any},
+        lastSpecialKeyMatch?: SpecialKeyMatchResult,
     ): SpecialKeyMatchResult | null {
         const {kind, map} = this.match(inputs);
 

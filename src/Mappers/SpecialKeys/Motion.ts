@@ -1,5 +1,6 @@
 import {GenericMapper, GenericMap, RecursiveMap, MatchResultKind} from '../Generic';
 import {SpecialKeyCommon, SpecialKeyMatchResult} from './Common';
+import {SpecialKeyN} from './N';
 import {SpecialKeyChar} from './Char';
 import {Motion} from '../../Motions/Motion';
 import {MotionCharacter} from '../../Motions/Character';
@@ -98,6 +99,7 @@ export class SpecialKeyMotion extends GenericMapper implements SpecialKeyCommon 
     matchSpecial(
         inputs: string[],
         additionalArgs: {[key: string]: any},
+        lastSpecialKeyMatch?: SpecialKeyMatchResult,
     ): SpecialKeyMatchResult | null {
         const {kind, map} = this.match(inputs);
 
@@ -106,6 +108,12 @@ export class SpecialKeyMotion extends GenericMapper implements SpecialKeyCommon 
         }
 
         if (map) {
+            // Take N from last special key match.
+            if (lastSpecialKeyMatch && lastSpecialKeyMatch.specialKey instanceof SpecialKeyN) {
+                map.args = Object.assign(map.args, { n: additionalArgs.n });
+                delete additionalArgs.n;
+            }
+
             additionalArgs.motions = (map as MotionMap).motionGenerators.map(generator => generator(map.args));
         }
 

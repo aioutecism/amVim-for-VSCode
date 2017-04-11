@@ -22,6 +22,7 @@ export class SpecialKeyN implements SpecialKeyCommon {
     matchSpecial(
         inputs: string[],
         additionalArgs: {[key: string]: any},
+        lastSpecialKeyMatch?: SpecialKeyMatchResult,
     ): SpecialKeyMatchResult | null {
         if (! /[1-9]/.test(inputs[0])) {
             return null;

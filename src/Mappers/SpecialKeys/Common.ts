@@ -13,5 +13,6 @@ export interface SpecialKeyCommon {
     matchSpecial(
         inputs: string[],
         additionalArgs: {[key: string]: any},
+        lastSpecialKeyMatch?: SpecialKeyMatchResult,
     ): SpecialKeyMatchResult | null;
 }
