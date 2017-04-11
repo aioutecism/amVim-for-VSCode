@@ -95,14 +95,16 @@ export class SpecialKeyMotion extends GenericMapper implements SpecialKeyCommon 
         // This class has lower priority than other keys.
     }
 
-    matchSpecial(inputs: string[]): SpecialKeyMatchResult | null {
+    matchSpecial(
+        inputs: string[],
+        additionalArgs: {[key: string]: any},
+    ): SpecialKeyMatchResult | null {
         const {kind, map} = this.match(inputs);
 
         if (kind === MatchResultKind.FAILED) {
             return null;
         }
 
-        let additionalArgs: {motions?: Motion[]} = {};
         if (map) {
             additionalArgs.motions = (map as MotionMap).motionGenerators.map(generator => generator(map.args));
         }
@@ -111,7 +113,6 @@ export class SpecialKeyMotion extends GenericMapper implements SpecialKeyCommon 
             specialKey: this,
             kind,
             matchedCount: inputs.length,
-            additionalArgs
         };
     }
 

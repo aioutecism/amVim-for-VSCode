@@ -19,7 +19,10 @@ export class SpecialKeyN implements SpecialKeyCommon {
         }
     }
 
-    matchSpecial(inputs: string[]): SpecialKeyMatchResult | null {
+    matchSpecial(
+        inputs: string[],
+        additionalArgs: {[key: string]: any},
+    ): SpecialKeyMatchResult | null {
         if (! /[1-9]/.test(inputs[0])) {
             return null;
         }
@@ -34,11 +37,12 @@ export class SpecialKeyN implements SpecialKeyCommon {
             return false;
         });
 
+        additionalArgs.n = parseInt(n.join(''), 10);
+
         return {
             specialKey: this,
             kind: MatchResultKind.FOUND,
             matchedCount: n.length,
-            additionalArgs: {n: parseInt(n.join(''), 10)}
         };
     }
 

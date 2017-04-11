@@ -82,7 +82,7 @@ export abstract class GenericMapper {
                     return false;
                 }
 
-                match = specialKey.matchSpecial(inputs.slice(index));
+                match = specialKey.matchSpecial(inputs.slice(index), additionalArgs);
 
                 return match ? true : false;
             });
@@ -90,10 +90,6 @@ export abstract class GenericMapper {
             if (match) {
                 if (match.kind === MatchResultKind.FOUND) {
                     node = node[match.specialKey.indicator];
-
-                    Object.getOwnPropertyNames(match.additionalArgs).forEach(key => {
-                        additionalArgs[key] = match!.additionalArgs[key];
-                    });
 
                     index += match.matchedCount - 1;
                     continue;

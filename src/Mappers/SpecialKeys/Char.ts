@@ -13,18 +13,22 @@ export class SpecialKeyChar implements SpecialKeyCommon {
         }
     }
 
-    matchSpecial(inputs: string[]): SpecialKeyMatchResult {
+    matchSpecial(
+        inputs: string[],
+        additionalArgs: {[key: string]: any},
+    ): SpecialKeyMatchResult | null {
         let character = inputs[0];
 
         if (character === 'space') {
             character = ' ';
         }
 
+        additionalArgs.character = character;
+
         return {
             specialKey: this,
             kind: MatchResultKind.FOUND,
             matchedCount: 1,
-            additionalArgs: {character}
         };
     }
 
