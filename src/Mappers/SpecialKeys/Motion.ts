@@ -1,6 +1,5 @@
 import {GenericMapper, GenericMap, RecursiveMap, MatchResultKind} from '../Generic';
 import {SpecialKeyCommon, SpecialKeyMatchResult} from './Common';
-import {SpecialKeyN} from './N';
 import {SpecialKeyChar} from './Char';
 import {Motion} from '../../Motions/Motion';
 import {MotionCharacter} from '../../Motions/Character';
@@ -23,38 +22,24 @@ export class SpecialKeyMotion extends GenericMapper implements SpecialKeyCommon 
 
     indicator = '{motion}';
 
-    private conflictRegExp = /^[1-9]|\{N\}|\{char\}$/;
+    private conflictRegExp = /^[1-9]|\{char\}$/;
 
     private maps: MotionMap[] = [
-        { keys: 'h',         motionGenerators: [MotionCharacter.left] },
-        { keys: '{N} h',     motionGenerators: [MotionCharacter.left] },
-        { keys: 'left',      motionGenerators: [MotionCharacter.left] },
-        { keys: '{N} left',  motionGenerators: [MotionCharacter.left] },
-        { keys: 'l',         motionGenerators: [MotionCharacter.right] },
-        { keys: '{N} l',     motionGenerators: [MotionCharacter.right] },
-        { keys: 'right',     motionGenerators: [MotionCharacter.right] },
-        { keys: '{N} right', motionGenerators: [MotionCharacter.right] },
-        { keys: 'k',         motionGenerators: [MotionCharacter.up] },
-        { keys: '{N} k',     motionGenerators: [MotionCharacter.up] },
-        { keys: 'up',        motionGenerators: [MotionCharacter.up] },
-        { keys: '{N} up',    motionGenerators: [MotionCharacter.up] },
-        { keys: 'j',         motionGenerators: [MotionCharacter.down] },
-        { keys: '{N} j',     motionGenerators: [MotionCharacter.down] },
-        { keys: 'down',      motionGenerators: [MotionCharacter.down] },
-        { keys: '{N} down',  motionGenerators: [MotionCharacter.down] },
+        { keys: 'h',     motionGenerators: [MotionCharacter.left] },
+        { keys: 'left',  motionGenerators: [MotionCharacter.left] },
+        { keys: 'l',     motionGenerators: [MotionCharacter.right] },
+        { keys: 'right', motionGenerators: [MotionCharacter.right] },
+        { keys: 'k',     motionGenerators: [MotionCharacter.up] },
+        { keys: 'up',    motionGenerators: [MotionCharacter.up] },
+        { keys: 'j',     motionGenerators: [MotionCharacter.down] },
+        { keys: 'down',  motionGenerators: [MotionCharacter.down] },
 
         { keys: 'w', motionGenerators: [MotionWord.nextStart] },
-        { keys: '{N} w', motionGenerators: [MotionWord.nextStart] },
         { keys: 'W', motionGenerators: [MotionWord.nextStart], args: {useBlankSeparatedStyle: true} },
-        { keys: '{N} W', motionGenerators: [MotionWord.nextStart], args: {useBlankSeparatedStyle: true} },
         { keys: 'e', motionGenerators: [MotionWord.nextEnd] },
-        { keys: '{N} e', motionGenerators: [MotionWord.nextEnd] },
         { keys: 'E', motionGenerators: [MotionWord.nextEnd], args: {useBlankSeparatedStyle: true} },
-        { keys: '{N} E', motionGenerators: [MotionWord.nextEnd], args: {useBlankSeparatedStyle: true} },
         { keys: 'b', motionGenerators: [MotionWord.prevStart] },
-        { keys: '{N} b', motionGenerators: [MotionWord.prevStart] },
         { keys: 'B', motionGenerators: [MotionWord.prevStart], args: {useBlankSeparatedStyle: true} },
-        { keys: '{N} B', motionGenerators: [MotionWord.prevStart], args: {useBlankSeparatedStyle: true} },
 
         { keys: 'f {char}', motionGenerators: [MotionMatch.next] },
         { keys: 'F {char}', motionGenerators: [MotionMatch.prev] },
@@ -68,29 +53,21 @@ export class SpecialKeyMotion extends GenericMapper implements SpecialKeyCommon 
         { keys: '$', motionGenerators: [MotionLine.end] },
 
         { keys: '-',     motionGenerators: [MotionCharacter.up, MotionLine.firstNonBlank] },
-        { keys: '{N} -', motionGenerators: [MotionCharacter.up, MotionLine.firstNonBlank] },
         { keys: '+',     motionGenerators: [MotionCharacter.down, MotionLine.firstNonBlank] },
-        { keys: '{N} +', motionGenerators: [MotionCharacter.down, MotionLine.firstNonBlank] },
-        { keys: '_',     motionGenerators: [MotionLine.firstNonBlank] },
-        { keys: '{N} _', motionGenerators: [
-            (args: {n: number}) => MotionCharacter.down({ n: args.n - 1 }),
+        { keys: '_', motionGenerators: [
+            (args: {n?: number}) => MotionCharacter.down({ n: (args.n === undefined ? 0 : args.n - 1) }),
             MotionLine.firstNonBlank
         ] },
 
-        { keys: 'g g',     motionGenerators: [MotionDocument.toLine, MotionLine.firstNonBlank], args: {n: 1} },
-        { keys: '{N} g g', motionGenerators: [MotionDocument.toLine, MotionLine.firstNonBlank] },
-        { keys: 'G',       motionGenerators: [MotionDocument.toLine, MotionLine.firstNonBlank], args: {n: +Infinity} },
-        { keys: '{N} G',   motionGenerators: [MotionDocument.toLine, MotionLine.firstNonBlank] },
+        { keys: 'g g', motionGenerators: [MotionDocument.toLineOrFirst, MotionLine.firstNonBlank] },
+        { keys: 'G',   motionGenerators: [MotionDocument.toLineOrLast, MotionLine.firstNonBlank] },
 
         { keys: 'space', motionGenerators: [MotionDirection.next] },
-        { keys: '{N} space', motionGenerators: [MotionDirection.next] },
         { keys: 'backspace', motionGenerators: [MotionDirection.previous] },
-        { keys: '{N} backspace', motionGenerators: [MotionDirection.previous] },
     ];
 
     constructor() {
         super([
-            new SpecialKeyN(),
             new SpecialKeyChar(),
         ]);
 

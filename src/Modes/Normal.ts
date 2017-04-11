@@ -31,6 +31,7 @@ export class ModeNormal extends Mode {
 
     private maps: CommandMap[] = [
         { keys: '{motion}', actions: [ActionMoveCursor.byMotions], args: {noEmptyAtLineEnd: true} },
+        { keys: '{N} {motion}', actions: [ActionMoveCursor.byMotions], args: {noEmptyAtLineEnd: true} },
 
         { keys: 'ctrl+b', actions: [ActionPage.up] },
         { keys: 'ctrl+f', actions: [ActionPage.down] },
@@ -92,6 +93,12 @@ export class ModeNormal extends Mode {
         ], args: {
             shouldYank: true
         } },
+        { keys: 'd {N} {motion}', actions: [
+            ActionDelete.byMotions,
+            ActionSelection.validateSelections,
+        ], args: {
+            shouldYank: true
+        } },
         { keys: 'd {textObject}', actions: [
             ActionDelete.byTextObject,
             ActionSelection.validateSelections,
@@ -128,6 +135,13 @@ export class ModeNormal extends Mode {
             shouldYank: true,
             isChangeAction: true,
         } },
+        { keys: 'c {N} {motion}', actions: [
+            ActionDelete.byMotions,
+            ActionMode.toInsert,
+        ], args: {
+            shouldYank: true,
+            isChangeAction: true,
+        } },
         { keys: 'c {textObject}', actions: [
             ActionDelete.byTextObject,
             ActionMode.toInsert,
@@ -145,6 +159,7 @@ export class ModeNormal extends Mode {
         { keys: 'y y', actions: [ActionRegister.yankLines] },
         { keys: 'Y', actions: [ActionRegister.yankLines] },
         { keys: 'y {motion}', actions: [ActionRegister.yankByMotions] },
+        { keys: 'y {N} {motion}', actions: [ActionRegister.yankByMotions] },
         { keys: 'y {textObject}', actions: [ActionRegister.yankByTextObject] },
         { keys: 'p', actions: [ActionRegister.putAfter] },
         { keys: 'P', actions: [ActionRegister.putBefore] },
@@ -161,6 +176,7 @@ export class ModeNormal extends Mode {
         ] },
 
         { keys: '= {motion}', actions: [ActionFilter.Format.byMotions] },
+        { keys: '= {N} {motion}', actions: [ActionFilter.Format.byMotions] },
         { keys: '= =', actions: [ActionFilter.Format.byCursors] },
 
         { keys: 'u', actions: [
