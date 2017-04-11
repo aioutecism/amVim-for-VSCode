@@ -22,7 +22,7 @@ export class SpecialKeyMotion extends GenericMapper implements SpecialKeyCommon 
 
     indicator = '{motion}';
 
-    private conflictRegExp = /^[1-9]|\{char\}$/;
+    private conflictRegExp = /^[0]|\{char\}$/;
 
     private maps: MotionMap[] = [
         { keys: 'h',     motionGenerators: [MotionCharacter.left] },

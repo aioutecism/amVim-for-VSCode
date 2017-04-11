@@ -23,7 +23,7 @@ export class SpecialKeyTextObject extends GenericMapper implements SpecialKeyCom
 
     indicator = '{textObject}';
 
-    private conflictRegExp = /^[1-9]|\{N\}|\{char\}$/;
+    private conflictRegExp = /^[ai]|\{char\}$/;
 
     private mapInfos: TextObjectMapInfo[] = [
         {
