@@ -1,7 +1,7 @@
 import {window, Position} from 'vscode';
 import {Motion} from './Motion';
 
-enum MotionMatchDirection {NEXT, PREV};
+enum MotionMatchDirection {NEXT, PREV}
 
 export class MotionMatch extends Motion {
 

@@ -73,4 +73,4 @@ export class ActionCase {
             .then(() => ActionReveal.primaryCursor());
     }
 
-};
+}

@@ -1,6 +1,6 @@
 import {SpecialKeyCommon, SpecialKeyMatchResult} from './SpecialKeys/Common';
 
-export enum MatchResultKind {FAILED, WAITING, FOUND};
+export enum MatchResultKind {FAILED, WAITING, FOUND}
 
 export interface MatchResult {
     kind: MatchResultKind;

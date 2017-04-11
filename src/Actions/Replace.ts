@@ -90,4 +90,4 @@ export class ActionReplace {
             .then(() => ActionReveal.primaryCursor());
     }
 
-};
+}

@@ -4,7 +4,7 @@ import {SymbolMetadata} from '../Symbols/Metadata';
 import {MatchResultKind} from '../Mappers/Generic';
 import {CommandMap, CommandMapper} from '../Mappers/Command';
 
-export enum ModeID {NORMAL, VISUAL, VISUAL_LINE, INSERT};
+export enum ModeID {NORMAL, VISUAL, VISUAL_LINE, INSERT}
 
 export abstract class Mode {
 

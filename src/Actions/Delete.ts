@@ -261,4 +261,4 @@ export class ActionDelete {
             .then(() => ActionReveal.primaryCursor());
     }
 
-};
+}

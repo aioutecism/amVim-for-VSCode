@@ -13,4 +13,4 @@ export class ActionHistory {
         .then(() => ActionSelection.shrinkToActives());
     }
 
-};
+}

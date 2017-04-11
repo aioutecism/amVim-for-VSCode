@@ -1,7 +1,7 @@
 import {commands} from 'vscode';
 import {ActionSelection} from './Selection';
 
-export enum PageMoveType {Normal, Select, SelectLine};
+export enum PageMoveType {Normal, Select, SelectLine}
 
 export class ActionPage {
 
@@ -39,4 +39,4 @@ export class ActionPage {
         }
     }
 
-};
+}

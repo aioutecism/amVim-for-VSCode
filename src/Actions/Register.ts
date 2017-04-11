@@ -255,4 +255,4 @@ export class ActionRegister {
             });
     }
 
-};
+}

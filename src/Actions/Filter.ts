@@ -67,7 +67,7 @@ class Format {
         .then(() => ActionReveal.primaryCursor());
     }
 
-};
+}
 
 
 export const ActionFilter = {

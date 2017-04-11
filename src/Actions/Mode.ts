@@ -67,4 +67,4 @@ export class ActionMode {
         }
     }
 
-};
+}

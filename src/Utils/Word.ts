@@ -7,7 +7,7 @@ export enum WordCharacterKind {
     Katakana,
     FullWidthRomanOrHalfWidthKatakana,
     Kanji,
-};
+}
 
 export class UtilWord {
 

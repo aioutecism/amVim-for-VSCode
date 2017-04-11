@@ -105,7 +105,7 @@ export class StaticReflect {
                 }
                 StaticReflect.defineMetadata(key, value, targetObject);
             }
-        };
+        }
 
         return decorator;
     }

@@ -174,4 +174,4 @@ export class ActionSelection {
         return Promise.resolve(true);
     }
 
-};
+}
