@@ -159,6 +159,8 @@ export class ModeNormal extends Mode {
         ] },
 
         { keys: 'y y', actions: [ActionRegister.yankLines] },
+        { keys: '{N} y y', actions: [ActionRegister.yankLines] },
+        { keys: 'y {N} y', actions: [ActionRegister.yankLines] },
         { keys: 'Y', actions: [ActionRegister.yankLines] },
         { keys: 'y {motion}', actions: [ActionRegister.yankByMotions] },
         { keys: 'y {N} {motion}', actions: [ActionRegister.yankByMotions] },
