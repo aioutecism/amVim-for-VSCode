@@ -67,6 +67,8 @@ export abstract class GenericMapper {
         let matched = true;
         let additionalArgs = {};
 
+        let lastSpecialKeyMatch: SpecialKeyMatchResult | undefined;
+
         for (let index = 0; index < inputs.length; index++) {
             const input = inputs[index];
 
@@ -82,7 +84,7 @@ export abstract class GenericMapper {
                     return false;
                 }
 
-                match = specialKey.matchSpecial(inputs.slice(index));
+                match = specialKey.matchSpecial(inputs.slice(index), additionalArgs, lastSpecialKeyMatch);
 
                 return match ? true : false;
             });
@@ -91,10 +93,7 @@ export abstract class GenericMapper {
                 if (match.kind === MatchResultKind.FOUND) {
                     node = node[match.specialKey.indicator];
 
-                    Object.getOwnPropertyNames(match.additionalArgs).forEach(key => {
-                        additionalArgs[key] = match!.additionalArgs[key];
-                    });
-
+                    lastSpecialKeyMatch = match;
                     index += match.matchedCount - 1;
                     continue;
                 }

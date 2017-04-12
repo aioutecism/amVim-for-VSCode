@@ -31,6 +31,7 @@ export class ModeNormal extends Mode {
 
     private maps: CommandMap[] = [
         { keys: '{motion}', actions: [ActionMoveCursor.byMotions], args: {noEmptyAtLineEnd: true} },
+        { keys: '{N} {motion}', actions: [ActionMoveCursor.byMotions], args: {noEmptyAtLineEnd: true} },
 
         { keys: 'ctrl+b', actions: [ActionPage.up] },
         { keys: 'ctrl+f', actions: [ActionPage.down] },
@@ -79,6 +80,8 @@ export class ModeNormal extends Mode {
             shouldYank: true
         } },
         { keys: 'd d', actions: [ActionDelete.byLines], args: {shouldYank: true} },
+        { keys: '{N} d d', actions: [ActionDelete.byLines], args: {shouldYank: true} },
+        { keys: 'd {N} d', actions: [ActionDelete.byLines], args: {shouldYank: true} },
         { keys: 'D', actions: [
             ActionDelete.byMotions,
             ActionSelection.validateSelections,
@@ -87,6 +90,12 @@ export class ModeNormal extends Mode {
             shouldYank: true
         } },
         { keys: 'd {motion}', actions: [
+            ActionDelete.byMotions,
+            ActionSelection.validateSelections,
+        ], args: {
+            shouldYank: true
+        } },
+        { keys: 'd {N} {motion}', actions: [
             ActionDelete.byMotions,
             ActionSelection.validateSelections,
         ], args: {
@@ -128,6 +137,13 @@ export class ModeNormal extends Mode {
             shouldYank: true,
             isChangeAction: true,
         } },
+        { keys: 'c {N} {motion}', actions: [
+            ActionDelete.byMotions,
+            ActionMode.toInsert,
+        ], args: {
+            shouldYank: true,
+            isChangeAction: true,
+        } },
         { keys: 'c {textObject}', actions: [
             ActionDelete.byTextObject,
             ActionMode.toInsert,
@@ -143,11 +159,16 @@ export class ModeNormal extends Mode {
         ] },
 
         { keys: 'y y', actions: [ActionRegister.yankLines] },
+        { keys: '{N} y y', actions: [ActionRegister.yankLines] },
+        { keys: 'y {N} y', actions: [ActionRegister.yankLines] },
         { keys: 'Y', actions: [ActionRegister.yankLines] },
         { keys: 'y {motion}', actions: [ActionRegister.yankByMotions] },
+        { keys: 'y {N} {motion}', actions: [ActionRegister.yankByMotions] },
         { keys: 'y {textObject}', actions: [ActionRegister.yankByTextObject] },
         { keys: 'p', actions: [ActionRegister.putAfter] },
+        { keys: '{N} p', actions: [ActionRegister.putAfter] },
         { keys: 'P', actions: [ActionRegister.putBefore] },
+        { keys: '{N} P', actions: [ActionRegister.putBefore] },
 
         { keys: 'n', actions: [ActionFind.next] },
         { keys: 'N', actions: [ActionFind.prev] },
@@ -161,6 +182,7 @@ export class ModeNormal extends Mode {
         ] },
 
         { keys: '= {motion}', actions: [ActionFilter.Format.byMotions] },
+        { keys: '= {N} {motion}', actions: [ActionFilter.Format.byMotions] },
         { keys: '= =', actions: [ActionFilter.Format.byCursors] },
 
         { keys: 'u', actions: [

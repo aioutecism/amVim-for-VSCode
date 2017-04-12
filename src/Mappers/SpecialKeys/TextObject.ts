@@ -23,7 +23,7 @@ export class SpecialKeyTextObject extends GenericMapper implements SpecialKeyCom
 
     indicator = '{textObject}';
 
-    private conflictRegExp = /^[1-9]|\{N\}|\{char\}$/;
+    private conflictRegExp = /^[ai]|\{char\}$/;
 
     private mapInfos: TextObjectMapInfo[] = [
         {
@@ -104,14 +104,17 @@ export class SpecialKeyTextObject extends GenericMapper implements SpecialKeyCom
         // This class has lower priority than other keys.
     }
 
-    matchSpecial(inputs: string[]): SpecialKeyMatchResult | null {
+    matchSpecial(
+        inputs: string[],
+        additionalArgs: {[key: string]: any},
+        lastSpecialKeyMatch?: SpecialKeyMatchResult,
+    ): SpecialKeyMatchResult | null {
         const {kind, map} = this.match(inputs);
 
         if (kind === MatchResultKind.FAILED) {
             return null;
         }
 
-        let additionalArgs: {textObject?: TextObject} = {};
         if (map) {
             additionalArgs.textObject = (map as TextObjectMap).textObjectGenerator(map.args);
         }
@@ -120,7 +123,6 @@ export class SpecialKeyTextObject extends GenericMapper implements SpecialKeyCom
             specialKey: this,
             kind,
             matchedCount: inputs.length,
-            additionalArgs
         };
     }
 

@@ -27,6 +27,7 @@ export class ModeVisualLine extends Mode {
 
     private maps: CommandMap[] = [
         { keys: '{motion}', actions: [ActionMoveCursor.byMotions], args: {isVisualLineMode: true} },
+        { keys: '{N} {motion}', actions: [ActionMoveCursor.byMotions], args: {isVisualLineMode: true} },
 
         { keys: 'ctrl+b', actions: [ActionPage.up], args: {moveType: PageMoveType.SelectLine} },
         { keys: 'ctrl+f', actions: [ActionPage.down], args: {moveType: PageMoveType.SelectLine} },

@@ -5,7 +5,7 @@ export class SpecialKeyN implements SpecialKeyCommon {
 
     indicator = '{N}';
 
-    private conflictRegExp = /^[1-9]|\{motion\}|\{textObject\}|\{char\}$/;
+    private conflictRegExp = /^[1-9]|\{char\}$/;
 
     unmapConflicts(node: RecursiveMap, keyToMap: string): void {
         if (keyToMap === this.indicator) {
@@ -19,7 +19,11 @@ export class SpecialKeyN implements SpecialKeyCommon {
         }
     }
 
-    matchSpecial(inputs: string[]): SpecialKeyMatchResult | null {
+    matchSpecial(
+        inputs: string[],
+        additionalArgs: {[key: string]: any},
+        lastSpecialKeyMatch?: SpecialKeyMatchResult,
+    ): SpecialKeyMatchResult | null {
         if (! /[1-9]/.test(inputs[0])) {
             return null;
         }
@@ -34,11 +38,12 @@ export class SpecialKeyN implements SpecialKeyCommon {
             return false;
         });
 
+        additionalArgs.n = parseInt(n.join(''), 10);
+
         return {
             specialKey: this,
             kind: MatchResultKind.FOUND,
             matchedCount: n.length,
-            additionalArgs: {n: parseInt(n.join(''), 10)}
         };
     }
 

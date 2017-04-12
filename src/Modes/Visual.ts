@@ -27,6 +27,7 @@ export class ModeVisual extends Mode {
 
     private maps: CommandMap[] = [
         { keys: '{motion}', actions: [ActionMoveCursor.byMotions], args: {isVisualMode: true} },
+        { keys: '{N} {motion}', actions: [ActionMoveCursor.byMotions], args: {isVisualMode: true} },
         { keys: '{textObject}', actions: [ActionSelection.expandByTextObject]},
 
         { keys: 'ctrl+b', actions: [ActionPage.up], args: {moveType: PageMoveType.Select} },

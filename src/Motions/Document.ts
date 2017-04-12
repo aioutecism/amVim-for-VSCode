@@ -12,6 +12,14 @@ export class MotionDocument extends Motion {
         return obj;
     }
 
+    static toLineOrFirst(args: {n?: number}): Motion {
+        return MotionDocument.toLine({n: args.n === undefined ? 1 : args.n});
+    }
+
+    static toLineOrLast(args: {n?: number}): Motion {
+        return MotionDocument.toLine({n: args.n === undefined ? +Infinity : args.n});
+    }
+
     apply(from: Position): Position {
         from = super.apply(from);
 
