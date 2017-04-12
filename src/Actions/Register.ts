@@ -150,15 +150,23 @@ export class ActionRegister {
         });
     }
 
-    static yankLines(): Thenable<boolean> {
+    static yankLines(args: {n?: number}): Thenable<boolean> {
+        args.n = args.n === undefined ? 1 : args.n;
+
         const activeTextEditor = window.activeTextEditor;
 
         if (! activeTextEditor) {
             return Promise.resolve(false);
         }
 
+        const ranges = args.n === 1
+            ? activeTextEditor.selections
+            : activeTextEditor.selections.map(selection => selection.with({
+                end: selection.end.translate(args.n! - 1),
+            }));
+
         return ActionRegister.yankRanges({
-            ranges: activeTextEditor.selections,
+            ranges: ranges,
             isLinewise: true,
         });
     }

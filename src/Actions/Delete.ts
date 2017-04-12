@@ -235,8 +235,10 @@ export class ActionDelete {
 
     @StaticReflect.metadata(SymbolMetadata.Action.isChange, true)
     static byLines(args: {
+        n?: number,
         shouldYank?: boolean
     }): Thenable<boolean> {
+        args.n = args.n === undefined ? 1 : args.n;
         args.shouldYank = args.shouldYank === undefined ? false : args.shouldYank;
 
         const activeTextEditor = window.activeTextEditor;
@@ -247,11 +249,18 @@ export class ActionDelete {
 
         const document = activeTextEditor.document;
 
-        let ranges = activeTextEditor.selections.map(selection => UtilRange.toLinewise(selection, document));
+        let ranges = activeTextEditor.selections.map(selection => {
+            const range = args.n === 1
+                ? selection
+                : selection.with({
+                    end: selection.end.translate(args.n! - 1),
+                });
+            return UtilRange.toLinewise(range, document);
+        });
 
         ranges = UtilRange.unionOverlaps(ranges);
 
-        return (args.shouldYank ? ActionRegister.yankLines() : Promise.resolve(true))
+        return (args.shouldYank ? ActionRegister.yankLines({ n: args.n }) : Promise.resolve(true))
             .then(() => {
                 return activeTextEditor.edit((editBuilder) => {
                     ranges.forEach((range) => editBuilder.delete(range));
