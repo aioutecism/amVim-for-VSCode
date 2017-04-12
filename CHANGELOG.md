@@ -1,3 +1,9 @@
+# [1.22.0](https://github.com/aioutecism/amVim-for-VSCode/releases/tag/1.22.0)
+
+- Added support for: `Ndd`, `dNd`, `Nyy`, `yNy`, `Np`, `NP`.
+- Other `N` support for commands are coming soon.
+
+
 # [1.21.2](https://github.com/aioutecism/amVim-for-VSCode/releases/tag/1.21.2)
 
 - Fixed wrong behavior with `%`.
