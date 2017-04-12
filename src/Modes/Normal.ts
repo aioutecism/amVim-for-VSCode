@@ -81,6 +81,7 @@ export class ModeNormal extends Mode {
         } },
         { keys: 'd d', actions: [ActionDelete.byLines], args: {shouldYank: true} },
         { keys: '{N} d d', actions: [ActionDelete.byLines], args: {shouldYank: true} },
+        { keys: 'd {N} d', actions: [ActionDelete.byLines], args: {shouldYank: true} },
         { keys: 'D', actions: [
             ActionDelete.byMotions,
             ActionSelection.validateSelections,
