@@ -166,7 +166,9 @@ export class ModeNormal extends Mode {
         { keys: 'y {N} {motion}', actions: [ActionRegister.yankByMotions] },
         { keys: 'y {textObject}', actions: [ActionRegister.yankByTextObject] },
         { keys: 'p', actions: [ActionRegister.putAfter] },
+        { keys: '{N} p', actions: [ActionRegister.putAfter] },
         { keys: 'P', actions: [ActionRegister.putBefore] },
+        { keys: '{N} P', actions: [ActionRegister.putBefore] },
 
         { keys: 'n', actions: [ActionFind.next] },
         { keys: 'N', actions: [ActionFind.prev] },

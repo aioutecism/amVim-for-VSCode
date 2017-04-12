@@ -5,6 +5,7 @@ import {ActionMoveCursor} from './MoveCursor';
 import {ActionSelection} from './Selection';
 import {Motion} from '../Motions/Motion';
 import {MotionCharacter} from '../Motions/Character';
+import {MotionDirection} from '../Motions/Direction';
 import {MotionLine} from '../Motions/Line';
 import {TextObject} from '../TextObjects/TextObject';
 import {UtilRange} from '../Utils/Range';
@@ -172,7 +173,9 @@ export class ActionRegister {
     }
 
     @StaticReflect.metadata(SymbolMetadata.Action.isChange, true)
-    static putAfter(): Thenable<boolean> {
+    static putAfter(args: {n?: number}): Thenable<boolean> {
+        args.n = args.n === undefined ? 1 : args.n;
+
         if (! ActionRegister.stash) {
             return Promise.resolve(false);
         }
@@ -191,11 +194,13 @@ export class ActionRegister {
                 : selection.active.translate(0, +1);
         });
 
+        const textToPut = stash.text.repeat(args.n);
+
         return ActionSelection.shrinkToActives()
             .then(() => {
                 return activeTextEditor.edit((editBuilder) => {
                     putPositions.forEach(position => {
-                        editBuilder.insert(position, stash.text);
+                        editBuilder.insert(position, textToPut);
                     });
                 });
             })
@@ -212,7 +217,7 @@ export class ActionRegister {
                     ]});
                 }
                 else {
-                    const characters = stash.text.length;
+                    const characters = textToPut.length;
                     return ActionMoveCursor.byMotions({motions: [
                         MotionCharacter.right({n: characters}),
                     ]});
@@ -221,7 +226,9 @@ export class ActionRegister {
     }
 
     @StaticReflect.metadata(SymbolMetadata.Action.isChange, true)
-    static putBefore(): Thenable<boolean> {
+    static putBefore(args: {n?: number}): Thenable<boolean> {
+        args.n = args.n === undefined ? 1 : args.n;
+
         if (! ActionRegister.stash) {
             return Promise.resolve(false);
         }
@@ -240,19 +247,26 @@ export class ActionRegister {
                 : selection.active;
         });
 
+        const textToPut = stash.text.repeat(args.n);
+
         return ActionSelection.shrinkToActives()
             .then(() => {
                 return activeTextEditor.edit((editBuilder) => {
                     putPositions.forEach(position => {
-                        editBuilder.insert(position, stash.text);
+                        editBuilder.insert(position, textToPut);
                     });
                 });
             })
             .then(() => {
                 if (stash.isLinewise) {
                     return ActionMoveCursor.byMotions({motions: [
-                        MotionCharacter.up({n: stash.lineCount - 1}),
+                        MotionCharacter.up({n: UtilText.getLineCount(textToPut) - 1}),
                         MotionLine.firstNonBlank(),
+                    ]});
+                }
+                else if (stash.lineCount > 1) {
+                    return ActionMoveCursor.byMotions({motions: [
+                        MotionDirection.previous({n: textToPut.length - args.n!}),
                     ]});
                 }
                 else {
