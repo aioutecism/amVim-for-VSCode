@@ -1,7 +1,7 @@
 import {window, Position} from 'vscode';
 import {Motion} from './Motion';
 
-enum Direction {Previous, Next}
+enum Direction {Prev, Next}
 
 export class MotionDirection extends Motion {
 
@@ -17,17 +17,17 @@ export class MotionDirection extends Motion {
         this.n = args.n;
     }
 
-    static previous(args: {n?: number} = {}): Motion {
+    static prev(args: {n?: number} = {}): Motion {
         return new MotionDirection({
-            direction: Direction.Previous,
-            n: args.n
+            direction: Direction.Prev,
+            n: args.n,
         });
     }
 
     static next(args: {n?: number} = {}): Motion {
         return new MotionDirection({
             direction: Direction.Next,
-            n: args.n
+            n: args.n,
         });
     }
 
@@ -36,7 +36,7 @@ export class MotionDirection extends Motion {
 
         const activeTextEditor = window.activeTextEditor;
 
-        if (! activeTextEditor || this.direction === undefined) {
+        if (! activeTextEditor || this.direction === undefined || this.n === undefined) {
             return from;
         }
 
@@ -50,7 +50,7 @@ export class MotionDirection extends Motion {
             return _lengthByLine[line];
         };
 
-        const offset = this.direction === Direction.Previous ? -1 : +1;
+        const offset = this.direction === Direction.Prev ? -1 : +1;
         let toLine = from.line;
         let toCharacter = from.character;
 

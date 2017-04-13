@@ -9,6 +9,7 @@ import {MotionWord} from '../../Motions/Word';
 import {MotionMatch} from '../../Motions/Match';
 import {MotionMatchPair} from '../../Motions/MatchPair';
 import {MotionLine} from '../../Motions/Line';
+import {MotionParagraph} from '../../Motions/Paragraph';
 import {MotionDocument} from '../../Motions/Document';
 
 interface MotionGenerator {
@@ -53,18 +54,21 @@ export class SpecialKeyMotion extends GenericMapper implements SpecialKeyCommon 
         { keys: '0', motionGenerators: [MotionLine.start] },
         { keys: '$', motionGenerators: [MotionLine.end] },
 
-        { keys: '-',     motionGenerators: [MotionCharacter.up, MotionLine.firstNonBlank] },
-        { keys: '+',     motionGenerators: [MotionCharacter.down, MotionLine.firstNonBlank] },
+        { keys: '-', motionGenerators: [MotionCharacter.up, MotionLine.firstNonBlank] },
+        { keys: '+', motionGenerators: [MotionCharacter.down, MotionLine.firstNonBlank] },
         { keys: '_', motionGenerators: [
             (args: {n?: number}) => MotionCharacter.down({ n: (args.n === undefined ? 0 : args.n - 1) }),
             MotionLine.firstNonBlank
         ] },
 
+        { keys: '{', motionGenerators: [MotionParagraph.prev] },
+        { keys: '}', motionGenerators: [MotionParagraph.next] },
+
         { keys: 'g g', motionGenerators: [MotionDocument.toLineOrFirst, MotionLine.firstNonBlank] },
         { keys: 'G',   motionGenerators: [MotionDocument.toLineOrLast, MotionLine.firstNonBlank] },
 
         { keys: 'space', motionGenerators: [MotionDirection.next] },
-        { keys: 'backspace', motionGenerators: [MotionDirection.previous] },
+        { keys: 'backspace', motionGenerators: [MotionDirection.prev] },
     ];
 
     constructor() {

@@ -2,7 +2,7 @@ import {window, TextDocument, Position} from 'vscode';
 import {Motion} from './Motion';
 import {WordCharacterKind, UtilWord} from '../Utils/Word';
 
-enum MotionWordDirection {Previous, Next}
+enum MotionWordDirection {Prev, Next}
 enum MotionWordMatchKind {Start, End, Both}
 
 export class MotionWord extends Motion {
@@ -47,7 +47,7 @@ export class MotionWord extends Motion {
         useBlankSeparatedStyle?: boolean,
     } = {}): Motion {
         const obj = new MotionWord(args);
-        obj.direction = MotionWordDirection.Previous;
+        obj.direction = MotionWordDirection.Prev;
         obj.matchKind = MotionWordMatchKind.Start;
         return obj;
     }
@@ -57,7 +57,7 @@ export class MotionWord extends Motion {
         useBlankSeparatedStyle?: boolean,
     } = {}): Motion {
         const obj = new MotionWord(args);
-        obj.direction = MotionWordDirection.Previous;
+        obj.direction = MotionWordDirection.Prev;
         obj.matchKind = MotionWordMatchKind.End;
         return obj;
     }
@@ -112,7 +112,7 @@ export class MotionWord extends Motion {
         return from;
     }
 
-    applyOnce(
+    private applyOnce(
         document: TextDocument,
         from: Position,
         matchKind: MotionWordMatchKind,
@@ -125,8 +125,8 @@ export class MotionWord extends Motion {
         shouldStop: boolean,
     } {
         let line = from.line;
-        let previousPosition: Position | undefined;
-        let previousCharacterKind: WordCharacterKind | undefined;
+        let lastPosition: Position | undefined;
+        let lastCharacterKind: WordCharacterKind | undefined;
 
         if (this.direction === MotionWordDirection.Next) {
             while (line < document.lineCount) {
@@ -137,15 +137,15 @@ export class MotionWord extends Motion {
                     const currentCharacterKind = UtilWord.getCharacterKind(
                         text.charCodeAt(character), this.useBlankSeparatedStyle);
 
-                    if (previousPosition !== undefined && previousCharacterKind !== currentCharacterKind) {
+                    if (lastPosition !== undefined && lastCharacterKind !== currentCharacterKind) {
                         let startPosition: Position | undefined;
                         let endPosition: Position | undefined;
 
                         if (currentCharacterKind !== WordCharacterKind.Blank) {
                             startPosition = new Position(line, character);
                         }
-                        if (previousCharacterKind !== WordCharacterKind.Blank) {
-                            endPosition = previousPosition;
+                        if (lastCharacterKind !== WordCharacterKind.Blank) {
+                            endPosition = lastPosition;
                             if (endPosition.isEqual(from)) {
                                 endPosition = undefined;
                             }
@@ -188,8 +188,8 @@ export class MotionWord extends Motion {
                         }
                     }
 
-                    previousPosition = new Position(line, character);
-                    previousCharacterKind = currentCharacterKind;
+                    lastPosition = new Position(line, character);
+                    lastCharacterKind = currentCharacterKind;
                     character++;
                 }
 
@@ -209,7 +209,7 @@ export class MotionWord extends Motion {
                 shouldStop: true,
             };
         }
-        else if (this.direction === MotionWordDirection.Previous) {
+        else if (this.direction === MotionWordDirection.Prev) {
             while (line >= 0) {
                 const text = document.lineAt(line).text + '\n';
                 let character = line === from.line ? from.character : text.length - 1;
@@ -218,12 +218,12 @@ export class MotionWord extends Motion {
                     const currentCharacterKind = UtilWord.getCharacterKind(
                         text.charCodeAt(character), this.useBlankSeparatedStyle);
 
-                    if (previousPosition !== undefined && previousCharacterKind !== currentCharacterKind) {
+                    if (lastPosition !== undefined && lastCharacterKind !== currentCharacterKind) {
                         let startPosition: Position | undefined;
                         let endPosition: Position | undefined;
 
-                        if (previousCharacterKind !== WordCharacterKind.Blank) {
-                            startPosition = previousPosition;
+                        if (lastCharacterKind !== WordCharacterKind.Blank) {
+                            startPosition = lastPosition;
                             if (startPosition.isEqual(from)) {
                                 startPosition = undefined;
                             }
@@ -264,8 +264,8 @@ export class MotionWord extends Motion {
                         }
                     }
 
-                    previousPosition = new Position(line, character);
-                    previousCharacterKind = currentCharacterKind;
+                    lastPosition = new Position(line, character);
+                    lastCharacterKind = currentCharacterKind;
                     character--;
                 }
 

@@ -76,10 +76,10 @@ export class Dispatcher {
     }
 
     private switchMode(id: ModeID): void {
-        const previousMode = this._currentMode;
+        const lastMode = this._currentMode;
 
-        if (previousMode) {
-            previousMode.exit();
+        if (lastMode) {
+            lastMode.exit();
         }
 
         this._currentMode = this.modes[id];
@@ -88,8 +88,8 @@ export class Dispatcher {
         commands.executeCommand('setContext', 'amVim.mode', this._currentMode.name);
 
         // For use in repeat command
-        if (previousMode) {
-            this._currentMode.onDidRecordFinish(previousMode.recordedCommandMaps, previousMode.id);
+        if (lastMode) {
+            this._currentMode.onDidRecordFinish(lastMode.recordedCommandMaps, lastMode.id);
         }
     }
 

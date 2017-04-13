@@ -266,7 +266,7 @@ export class ActionRegister {
                 }
                 else if (stash.lineCount > 1) {
                     return ActionMoveCursor.byMotions({motions: [
-                        MotionDirection.previous({n: textToPut.length - args.n!}),
+                        MotionDirection.prev({n: textToPut.length - args.n!}),
                     ]});
                 }
                 else {
