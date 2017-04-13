@@ -1,3 +1,8 @@
+# [1.23.0](https://github.com/aioutecism/amVim-for-VSCode/releases/tag/1.23.0)
+
+- Added support for `N {` and `N }`.
+
+
 # [1.22.0](https://github.com/aioutecism/amVim-for-VSCode/releases/tag/1.22.0)
 
 - Added support for: `Ndd`, `dNd`, `Nyy`, `yNy`, `Np`, `NP`.
