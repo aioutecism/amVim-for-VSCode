@@ -269,12 +269,12 @@ export class ModeNormal extends Mode {
         return Promise.resolve(true);
     }
 
-    onDidRecordFinish(recordedCommandMaps: CommandMap[], previousModeID: ModeID): void {
+    onDidRecordFinish(recordedCommandMaps: CommandMap[], lastModeID: ModeID): void {
         if (! recordedCommandMaps || recordedCommandMaps.length === 0) {
             return;
         }
 
-        if (previousModeID === ModeID.INSERT) {
+        if (lastModeID === ModeID.INSERT) {
             recordedCommandMaps.forEach(map => map.isRepeating = true);
 
             if (this._recordedCommandMaps === undefined) {

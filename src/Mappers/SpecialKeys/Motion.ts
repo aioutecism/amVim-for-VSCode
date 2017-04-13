@@ -53,8 +53,8 @@ export class SpecialKeyMotion extends GenericMapper implements SpecialKeyCommon 
         { keys: '0', motionGenerators: [MotionLine.start] },
         { keys: '$', motionGenerators: [MotionLine.end] },
 
-        { keys: '-',     motionGenerators: [MotionCharacter.up, MotionLine.firstNonBlank] },
-        { keys: '+',     motionGenerators: [MotionCharacter.down, MotionLine.firstNonBlank] },
+        { keys: '-', motionGenerators: [MotionCharacter.up, MotionLine.firstNonBlank] },
+        { keys: '+', motionGenerators: [MotionCharacter.down, MotionLine.firstNonBlank] },
         { keys: '_', motionGenerators: [
             (args: {n?: number}) => MotionCharacter.down({ n: (args.n === undefined ? 0 : args.n - 1) }),
             MotionLine.firstNonBlank
@@ -64,7 +64,7 @@ export class SpecialKeyMotion extends GenericMapper implements SpecialKeyCommon 
         { keys: 'G',   motionGenerators: [MotionDocument.toLineOrLast, MotionLine.firstNonBlank] },
 
         { keys: 'space', motionGenerators: [MotionDirection.next] },
-        { keys: 'backspace', motionGenerators: [MotionDirection.previous] },
+        { keys: 'backspace', motionGenerators: [MotionDirection.prev] },
     ];
 
     constructor() {

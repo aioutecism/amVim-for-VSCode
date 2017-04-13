@@ -109,7 +109,7 @@ export abstract class Mode {
     /**
      * Override this to do something after recording ends.
      */
-    onDidRecordFinish(recordedCommandMaps: CommandMap[], previousModeID: ModeID): void {}
+    onDidRecordFinish(recordedCommandMaps: CommandMap[], lastModeID: ModeID): void {}
 
     protected execute(): void {
         if (this.executing) {
