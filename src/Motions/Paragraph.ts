@@ -42,8 +42,29 @@ export class MotionParagraph extends Motion {
 
         const document = activeTextEditor.document;
 
+        for (let i = 0; i < this.n; i++) {
+            const result = this.applyOnce(document, from);
+
+            from = result.to;
+
+            if (result.shouldStop) {
+                break;
+            }
+        }
+
+        return from;
+    }
+
+    private applyOnce(
+        document: TextDocument,
+        from: Position,
+    ): {
+        to: Position,
+        shouldStop: boolean,
+    } {
         let toLine: number | undefined = undefined;
         let toCharacter = 0;
+        let shouldStop = false;
 
         // Skip first group of empty lines if currently on empty line.
         let shouldSkip = MotionParagraph.isLineEmpty(document, from.line);
@@ -66,6 +87,7 @@ export class MotionParagraph extends Motion {
             }
 
             if (toLine === undefined) {
+                shouldStop = true;
                 toLine = 0;
             }
         }
@@ -87,12 +109,16 @@ export class MotionParagraph extends Motion {
             }
 
             if (toLine === undefined) {
+                shouldStop = true;
                 toLine = document.lineCount - 1;
                 toCharacter = document.lineAt(toLine).text.length;
             }
         }
 
-        return new Position(toLine, toCharacter);
+        return {
+            to: new Position(toLine, toCharacter),
+            shouldStop: shouldStop,
+        };
     }
 
     private static isLineEmpty(document: TextDocument, line: number): boolean {

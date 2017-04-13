@@ -112,7 +112,7 @@ export class MotionWord extends Motion {
         return from;
     }
 
-    applyOnce(
+    private applyOnce(
         document: TextDocument,
         from: Position,
         matchKind: MotionWordMatchKind,
