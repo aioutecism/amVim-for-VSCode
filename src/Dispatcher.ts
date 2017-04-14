@@ -5,6 +5,7 @@ import {ModeNormal} from './Modes/Normal';
 import {ModeVisual} from './Modes/Visual';
 import {ModeVisualLine} from './Modes/VisualLine';
 import {ModeInsert} from './Modes/Insert';
+import {ActionBlockCursor} from './Actions/BlockCursor';
 import {ActionMode} from './Actions/Mode';
 import {ActionMoveCursor} from './Actions/MoveCursor';
 import {Configuration} from './Configuration';
@@ -58,6 +59,8 @@ export class Dispatcher {
             }),
             window.onDidChangeActiveTextEditor(() => {
                 if (Configuration.defaultModeID === ModeID.INSERT) {
+                    ActionBlockCursor.on();
+                    ActionBlockCursor.off();
                     ActionMode.toInsert();
                 }
                 else {
