@@ -57,14 +57,17 @@ export class Dispatcher {
                 }, 0);
             }),
             window.onDidChangeActiveTextEditor(() => {
-                if (Configuration.defaultModeID === ModeID.INSERT) {
-                    ActionMode.toInsert();
-                }
-                else {
-                    // Passing `null` to `currentMode` to force mode switch.
-                    ActionMode.switchByActiveSelections(null);
-                }
-                ActionMoveCursor.updatePreferedColumn();
+                // Ensure correct selection after changing to new TextEditor
+                setTimeout(() => {
+                    if (Configuration.defaultModeID === ModeID.INSERT) {
+                        ActionMode.toInsert();
+                    }
+                    else {
+                        // Passing `null` to `currentMode` to force mode switch.
+                        ActionMode.switchByActiveSelections(null);
+                    }
+                    ActionMoveCursor.updatePreferedColumn();
+                }, 0);
             })
         );
     }
