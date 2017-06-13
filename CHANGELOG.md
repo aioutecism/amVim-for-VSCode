@@ -1,3 +1,8 @@
+# [1.23.1](https://github.com/aioutecism/amVim-for-VSCode/releases/tag/1.23.1)
+
+- Fixed a bug where switching tabs sometimes doesn't preserve the line the cursor was at #176 .
+
+
 # [1.23.0](https://github.com/aioutecism/amVim-for-VSCode/releases/tag/1.23.0)
 
 - Added support for `N {` and `N }`.
