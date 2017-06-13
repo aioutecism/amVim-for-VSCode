@@ -61,7 +61,9 @@ export class ModeInsert extends Mode {
 
         this.endRecord();
 
-        ActionMoveCursor.byMotions({ motions: [ MotionCharacter.left() ] });
+        if (this.textEditor === window.activeTextEditor) {
+            ActionMoveCursor.byMotions({ motions: [ MotionCharacter.left() ] });
+        }
     }
 
     input(key: string, args: {replaceCharCnt?: number} = {}): MatchResultKind {
