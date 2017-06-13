@@ -1,4 +1,4 @@
-import {window, Position} from 'vscode';
+import {window, TextEditor, Position} from 'vscode';
 import {Mode, ModeID} from './Mode';
 import {MatchResultKind} from '../Mappers/Generic';
 import {CommandMap} from '../Mappers/Command';
@@ -46,8 +46,12 @@ export class ModeInsert extends Mode {
         });
     }
 
+    private textEditor?: TextEditor;
+
     enter(): void {
         super.enter();
+
+        this.textEditor = window.activeTextEditor;
 
         this.startRecord();
     }
@@ -57,7 +61,9 @@ export class ModeInsert extends Mode {
 
         this.endRecord();
 
-        ActionMoveCursor.byMotions({ motions: [ MotionCharacter.left() ] });
+        if (this.textEditor === window.activeTextEditor) {
+            ActionMoveCursor.byMotions({ motions: [ MotionCharacter.left() ] });
+        }
     }
 
     input(key: string, args: {replaceCharCnt?: number} = {}): MatchResultKind {
@@ -95,24 +101,22 @@ export class ModeInsert extends Mode {
             return;
         }
 
-        const activeTextEditor = window.activeTextEditor;
-        if (! activeTextEditor) {
+        if (! this.textEditor) {
             return;
         }
 
         this.isRecording = true;
-        this.recordStartPosition = activeTextEditor.selection.active;
-        this.recordStartLineText = activeTextEditor.document.lineAt(this.recordStartPosition.line).text;
+        this.recordStartPosition = this.textEditor.selection.active;
+        this.recordStartLineText = this.textEditor.document.lineAt(this.recordStartPosition.line).text;
         this._recordedCommandMaps = [];
     }
 
     private processRecord(): void {
-        const activeTextEditor = window.activeTextEditor;
-        if (! activeTextEditor) {
+        if (! this.textEditor) {
             return;
         }
 
-        const currentLineText = activeTextEditor.document.lineAt(this.recordStartPosition.line).text;
+        const currentLineText = this.textEditor.document.lineAt(this.recordStartPosition.line).text;
 
         let deletionCountBefore = 0;
         let deletionCountAfter = 0;
@@ -226,25 +230,23 @@ export class ModeInsert extends Mode {
         }
 
         if (map.keys === '\n') {
-            const activeTextEditor = window.activeTextEditor;
-            if (! activeTextEditor) {
+            if (! this.textEditor) {
                 return Promise.resolve(false);
             }
 
-            this.recordStartPosition = activeTextEditor.selection.active;
-            this.recordStartLineText = activeTextEditor.document.lineAt(this.recordStartPosition.line).text;
+            this.recordStartPosition = this.textEditor.selection.active;
+            this.recordStartLineText = this.textEditor.document.lineAt(this.recordStartPosition.line).text;
         }
 
         return Promise.resolve(true);
     }
 
     onDidChangeTextEditorSelection(): void {
-        const activeTextEditor = window.activeTextEditor;
-        if (! activeTextEditor) {
+        if (! this.textEditor) {
             return;
         }
 
-        if (activeTextEditor.selection.active.line !== this.recordStartPosition.line) {
+        if (this.textEditor.selection.active.line !== this.recordStartPosition.line) {
             this.endRecord();
         }
     }
