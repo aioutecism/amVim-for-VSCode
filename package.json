@@ -49,6 +49,11 @@
                     "type": "boolean",
                     "default": false,
                     "description": "Set to `true` to start in Insert mode when opening files."
+                },
+                "amVim.vimStyleNavigationInTreeView": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Set to `false` to disable Vim style navigation in sidebar."
                 }
             }
         },
@@ -69,6 +74,16 @@
             { "command": "amVim.ctrl+w", "key": "ctrl+w", "when": "editorTextFocus && amVim.configuration.shouldBindCtrlCommands && amVim.mode == 'INSERT'" },
             { "command": "amVim.ctrl+f", "key": "ctrl+f", "when": "editorTextFocus && amVim.configuration.shouldBindCtrlCommands && amVim.mode != 'INSERT'" },
             { "command": "amVim.ctrl+b", "key": "ctrl+b", "when": "editorTextFocus && amVim.configuration.shouldBindCtrlCommands && amVim.mode != 'INSERT'" },
+
+            { "key": "j", "command": "list.focusDown", "when": "amVim.configuration.shouldUseVimStyleNavigationInTreeView && listFocus && !inputFocus" },
+            { "key": "k", "command": "list.focusUp", "when": "amVim.configuration.shouldUseVimStyleNavigationInTreeView && listFocus && !inputFocus" },
+            { "key": "o", "command": "list.toggleExpand", "when": "amVim.configuration.shouldUseVimStyleNavigationInTreeView && listFocus && !inputFocus" },
+            { "key": "l", "command": "list.select", "when": "amVim.configuration.shouldUseVimStyleNavigationInTreeView && listFocus && !inputFocus" },
+            { "key": "h", "command": "list.collapse", "when": "amVim.configuration.shouldUseVimStyleNavigationInTreeView && listFocus && !inputFocus" },
+            { "key": "g g", "command": "list.focusFirst", "when": "amVim.configuration.shouldUseVimStyleNavigationInTreeView && listFocus && !inputFocus" },
+            { "key": "shift+G", "command": "list.focusLast", "when": "amVim.configuration.shouldUseVimStyleNavigationInTreeView && listFocus && !inputFocus" },
+            { "key": "ctrl+d", "command": "list.focusPageDown", "when": "amVim.configuration.shouldUseVimStyleNavigationInTreeView && listFocus && !inputFocus" },
+            { "key": "ctrl+u", "command": "list.focusPageUp", "when": "amVim.configuration.shouldUseVimStyleNavigationInTreeView && listFocus && !inputFocus" },
 
             { "key": "escape", "command": "closeFindWidget", "when": "editorFocus && findWidgetVisible" },
             { "key": "escape", "command": "closeBreakpointWidget", "when": "breakpointWidgetVisible && editorFocus" },
