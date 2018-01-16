@@ -23,6 +23,7 @@ import {ActionMode} from '../Actions/Mode';
 import {ActionFold} from '../Actions/Fold';
 import {MotionCharacter} from '../Motions/Character';
 import {MotionLine} from '../Motions/Line';
+import { ActionCommand } from '../Actions/Command';
 
 export class ModeNormal extends Mode {
 
@@ -204,10 +205,12 @@ export class ModeNormal extends Mode {
 
         { keys: 'z .', actions: [ActionReveal.primaryCursor], args: {revealType: TextEditorRevealType.InCenter} },
         { keys: 'z z', actions: [ActionReveal.primaryCursor], args: {revealType: TextEditorRevealType.InCenter} },
-        { keys: 'z c', actions: [ActionFold.fold]},
-        { keys: 'z o', actions: [ActionFold.unfold]},
-        { keys: 'z M', actions: [ActionFold.foldAll]},
-        { keys: 'z R', actions: [ActionFold.unfoldAll]},
+        { keys: 'z c', actions: [ActionFold.fold] },
+        { keys: 'z o', actions: [ActionFold.unfold] },
+        { keys: 'z M', actions: [ActionFold.foldAll] },
+        { keys: 'z R', actions: [ActionFold.unfoldAll] },
+
+        { keys: ':', actions: [ActionCommand.goToLine] },
 
         { keys: '.', actions: [this.repeatRecordedCommandMaps.bind(this)] },
 
