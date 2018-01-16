@@ -42,7 +42,7 @@ export class Configuration {
         commands.executeCommand('setContext',
             'amVim.configuration.shouldBindCtrlCommands', this.getExtensionSetting<boolean>('bindCtrlCommands', true));
         commands.executeCommand('setContext',
-            'amVim.configuration.shouldUseVimStyleNavigationInTreeView', this.getExtensionSetting<boolean>('vimStyleNavigationInTreeView', true));
+            'amVim.configuration.shouldUseVimStyleNavigationInListView', this.getExtensionSetting<boolean>('vimStyleNavigationInListView', true));
     }
 
     static getExtensionSetting<T>(section: string, defaultValue: T): T {

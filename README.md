@@ -42,7 +42,7 @@ Set to `false` to disable `Ctrl+<key>` keybindings.
 
 Set to `true` to start in Insert mode when opening files.
 
-#### `amVim.vimStyleNavigationInTreeView`
+#### `amVim.vimStyleNavigationInListView`
 
 `Boolean`, Default: `true`
 
