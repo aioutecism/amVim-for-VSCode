@@ -5,14 +5,14 @@ export enum PageMoveType {Normal, Select, SelectLine}
 
 export class ActionPage {
 
-    static up(args: {moveType?: PageMoveType} = {}): Thenable<boolean> {
+    static up(args: {moveType?: PageMoveType} = {}): Thenable<boolean | undefined> {
         args.moveType = args.moveType === undefined ? PageMoveType.Normal : args.moveType;
 
         if (args.moveType === PageMoveType.Normal) {
             return commands.executeCommand('cursorPageUp');
         }
         else {
-            const thenable = commands.executeCommand('cursorPageUpSelect');
+            const thenable: Thenable<boolean | undefined> = commands.executeCommand('cursorPageUpSelect');
 
             if (args.moveType === PageMoveType.SelectLine) {
                 thenable.then(() => ActionSelection.expandToLine());
@@ -22,14 +22,14 @@ export class ActionPage {
         }
     }
 
-    static down(args: {moveType?: PageMoveType} = {}): Thenable<boolean> {
+    static down(args: {moveType?: PageMoveType} = {}): Thenable<boolean | undefined> {
         args.moveType = args.moveType === undefined ? PageMoveType.Normal : args.moveType;
 
         if (args.moveType === PageMoveType.Normal) {
             return commands.executeCommand('cursorPageDown');
         }
         else {
-            const thenable = commands.executeCommand('cursorPageDownSelect');
+            const thenable: Thenable<boolean | undefined> = commands.executeCommand('cursorPageDownSelect');
 
             if (args.moveType === PageMoveType.SelectLine) {
                 thenable.then(() => ActionSelection.expandToLine());

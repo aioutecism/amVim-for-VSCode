@@ -5,7 +5,7 @@ import {SymbolMetadata} from '../Symbols/Metadata';
 export class ActionInsert {
 
     @StaticReflect.metadata(SymbolMetadata.Action.isChange, true)
-    static textAtSelections(args: { text: string, replaceCharCnt?: number }): Thenable<boolean> {
+    static textAtSelections(args: { text: string, replaceCharCnt?: number }): Thenable<boolean | undefined> {
         if (args.replaceCharCnt !== undefined) {
             return commands.executeCommand('default:replacePreviousChar', {
                 text: args.text,
@@ -16,12 +16,12 @@ export class ActionInsert {
     }
 
     @StaticReflect.metadata(SymbolMetadata.Action.isChange, true)
-    static newLineBefore(): Thenable<boolean> {
+    static newLineBefore(): Thenable<boolean | undefined> {
         return commands.executeCommand('editor.action.insertLineBefore');
     }
 
     @StaticReflect.metadata(SymbolMetadata.Action.isChange, true)
-    static newLineAfter(): Thenable<boolean> {
+    static newLineAfter(): Thenable<boolean | undefined> {
         return commands.executeCommand('editor.action.insertLineAfter');
     }
 

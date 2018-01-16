@@ -6,7 +6,7 @@ import {ActionReveal} from './Reveal';
 
 class Format {
 
-    static bySelections(): Thenable<boolean> {
+    static bySelections(): Thenable<boolean | undefined> {
         const activeTextEditor = window.activeTextEditor;
 
         if (! activeTextEditor) {

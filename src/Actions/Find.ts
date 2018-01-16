@@ -2,13 +2,13 @@ import {window, commands, Selection} from 'vscode';
 
 export class ActionFind {
 
-    static focusFindWidget(): Thenable<boolean> {
+    static focusFindWidget(): Thenable<boolean | undefined> {
         return commands.executeCommand('actions.find');
     }
 
     // TODO: Implement independent find function to avoid incorrect cursor position after `next()`
 
-    static byIndicator(): Thenable<boolean> {
+    static byIndicator(): Thenable<boolean | undefined> {
         const activeTextEditor = window.activeTextEditor;
 
         if (! activeTextEditor) {
