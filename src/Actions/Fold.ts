@@ -2,19 +2,19 @@ import {commands} from 'vscode';
 
 export class ActionFold {
 
-    static fold(): Thenable<boolean> {
+    static fold(): Thenable<boolean | undefined> {
         return commands.executeCommand('editor.fold');
     }
 
-    static unfold(): Thenable<boolean> {
+    static unfold(): Thenable<boolean | undefined> {
         return commands.executeCommand('editor.unfold');
     }
 
-    static foldAll(): Thenable<boolean> {
+    static foldAll(): Thenable<boolean | undefined> {
         return commands.executeCommand('editor.foldAll');
     }
 
-    static unfoldAll(): Thenable<boolean> {
+    static unfoldAll(): Thenable<boolean | undefined> {
         return commands.executeCommand('editor.unfoldAll');
     }
 }

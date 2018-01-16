@@ -13,18 +13,18 @@ export class ActionMode {
     }
 
     @StaticReflect.metadata(SymbolMetadata.Action.shouldSkipOnRepeat, true)
-    static toVisual(): Thenable<boolean> {
+    static toVisual(): Thenable<boolean | undefined> {
         return commands.executeCommand(`amVim.mode.${ModeID.VISUAL}`);
     }
 
     @StaticReflect.metadata(SymbolMetadata.Action.shouldSkipOnRepeat, true)
-    static toVisualLine(): Thenable<boolean> {
+    static toVisualLine(): Thenable<boolean | undefined> {
         return commands.executeCommand(`amVim.mode.${ModeID.VISUAL_LINE}`);
     }
 
     @StaticReflect.metadata(SymbolMetadata.Action.isChange, true)
     @StaticReflect.metadata(SymbolMetadata.Action.shouldSkipOnRepeat, true)
-    static toInsert(): Thenable<boolean> {
+    static toInsert(): Thenable<boolean | undefined> {
         return commands.executeCommand(`amVim.mode.${ModeID.INSERT}`);
     }
 

@@ -1,6 +1,6 @@
 {
     "name": "amvim",
-    "version": "1.23.2-pre",
+    "version": "1.24.0-pre",
     "publisher": "auiworks",
     "icon": "images/icon.png",
     "displayName": "amVim",
@@ -31,7 +31,9 @@
     "author": "aioutecism",
     "license": "ISC",
     "engines": {
-        "vscode": "^1.8.0"
+        "node": "^8.6.0",
+        "npm": "^5.6.0",
+        "vscode": "^1.19.0"
     },
     "main": "./out/src/extension",
     "contributes": {
@@ -52,13 +54,13 @@
         },
         "keybindings": [
             { "command": "amVim.backspace", "key": "backspace", "when": "editorTextFocus && amVim.mode != 'INSERT'" },
-            { "command": "amVim.delete",    "key": "delete",    "when": "editorTextFocus && amVim.mode != 'INSERT'" },
-            { "command": "amVim.space",     "key": "space",     "when": "editorTextFocus && amVim.mode != 'INSERT'" },
-            { "command": "amVim.left",      "key": "left",      "when": "editorTextFocus && amVim.mode != 'INSERT'" },
-            { "command": "amVim.right",     "key": "right",     "when": "editorTextFocus && amVim.mode != 'INSERT'" },
-            { "command": "amVim.up",        "key": "up",        "when": "editorTextFocus && amVim.mode != 'INSERT'" },
-            { "command": "amVim.down",      "key": "down",      "when": "editorTextFocus && amVim.mode != 'INSERT'" },
-            { "command": "amVim.escape",    "key": "escape",    "when": "editorTextFocus" },
+            { "command": "amVim.delete", "key": "delete", "when": "editorTextFocus && amVim.mode != 'INSERT'" },
+            { "command": "amVim.space", "key": "space", "when": "editorTextFocus && amVim.mode != 'INSERT'" },
+            { "command": "amVim.left", "key": "left", "when": "editorTextFocus && amVim.mode != 'INSERT'" },
+            { "command": "amVim.right", "key": "right", "when": "editorTextFocus && amVim.mode != 'INSERT'" },
+            { "command": "amVim.up", "key": "up", "when": "editorTextFocus && amVim.mode != 'INSERT'" },
+            { "command": "amVim.down", "key": "down", "when": "editorTextFocus && amVim.mode != 'INSERT'" },
+            { "command": "amVim.escape", "key": "escape", "when": "editorTextFocus" },
 
             { "command": "amVim.ctrl+[", "key": "ctrl+[", "when": "editorTextFocus && amVim.configuration.shouldBindCtrlCommands" },
             { "command": "amVim.ctrl+c", "key": "ctrl+c", "when": "editorTextFocus && amVim.configuration.shouldBindCtrlCommands" },
@@ -68,14 +70,14 @@
             { "command": "amVim.ctrl+f", "key": "ctrl+f", "when": "editorTextFocus && amVim.configuration.shouldBindCtrlCommands && amVim.mode != 'INSERT'" },
             { "command": "amVim.ctrl+b", "key": "ctrl+b", "when": "editorTextFocus && amVim.configuration.shouldBindCtrlCommands && amVim.mode != 'INSERT'" },
 
-            { "key": "escape", "command": "closeFindWidget",                 "when": "editorFocus && findWidgetVisible" },
-            { "key": "escape", "command": "closeBreakpointWidget",           "when": "breakpointWidgetVisible && editorFocus" },
-            { "key": "escape", "command": "closeMarkersNavigation",          "when": "editorFocus && markersNavigationVisible" },
-            { "key": "escape", "command": "closeReferenceSearch",            "when": "referenceSearchVisible && !config.editor.stablePeek" },
-            { "key": "escape", "command": "cancelRenameInput",               "when": "editorFocus && renameInputVisible" },
-            { "key": "escape", "command": "closeAccessibilityHelp",          "when": "accessibilityHelpWidgetVisible && editorFocus" },
-            { "key": "escape", "command": "closeReplaceInFilesWidget",       "when": "replaceInputBoxFocus && searchViewletVisible" },
-            { "key": "escape", "command": "workbench.action.closeMessages",  "when": "globalMessageVisible" },
+            { "key": "escape", "command": "closeFindWidget", "when": "editorFocus && findWidgetVisible" },
+            { "key": "escape", "command": "closeBreakpointWidget", "when": "breakpointWidgetVisible && editorFocus" },
+            { "key": "escape", "command": "closeMarkersNavigation", "when": "editorFocus && markersNavigationVisible" },
+            { "key": "escape", "command": "closeReferenceSearch", "when": "referenceSearchVisible && !config.editor.stablePeek" },
+            { "key": "escape", "command": "cancelRenameInput", "when": "editorFocus && renameInputVisible" },
+            { "key": "escape", "command": "closeAccessibilityHelp", "when": "accessibilityHelpWidgetVisible && editorFocus" },
+            { "key": "escape", "command": "closeReplaceInFilesWidget", "when": "replaceInputBoxFocus && searchViewletVisible" },
+            { "key": "escape", "command": "workbench.action.closeMessages", "when": "globalMessageVisible" },
             { "key": "escape", "command": "workbench.action.closeQuickOpen", "when": "inQuickOpen" }
         ]
     },
@@ -83,17 +85,19 @@
         "*"
     ],
     "scripts": {
-        "vscode:prepublish": "tsc -p ./",
-        "compile": "tsc -watch -p ./",
+        "vscode:prepublish": "npm run compile",
+        "compile": "tsc -p ./",
+        "watch": "tsc -watch -p ./",
         "postinstall": "node ./node_modules/vscode/bin/install",
+        "test": "npm run compile && node ./node_modules/vscode/bin/test",
         "sync-changelog": "node ./node_modules/github-releases-renderer/index.js run aioutecism amVim-for-VSCode CHANGELOG.template.md CHANGELOG.md -c 0"
     },
     "devDependencies": {
-        "typescript": "^2.1.0",
-        "vscode": "^1.0.0",
-        "mocha": "^2.3.3",
-        "@types/node": "^6.0.40",
-        "@types/mocha": "^2.2.32",
+        "typescript": "^2.6.2",
+        "vscode": "^1.1.10",
+        "mocha": "^4.1.0",
+        "@types/node": "^9.3.0",
+        "@types/mocha": "^2.2.46",
         "github-releases-renderer": "aioutecism/github-releases-renderer"
     }
 }

@@ -126,7 +126,7 @@ export abstract class Mode {
                 return;
             }
 
-            let promise = Promise.resolve(true);
+            let promise: Promise<boolean | undefined> = Promise.resolve(true);
 
             const isAnyActionIsChange = map.actions.some(action => {
                 return StaticReflect.getMetadata(SymbolMetadata.Action.isChange, action);

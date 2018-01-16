@@ -1,3 +1,3 @@
 export interface Action {
-    (args?: {}): Thenable<boolean>;
+    (args?: {}): Thenable<boolean | undefined>;
 }
