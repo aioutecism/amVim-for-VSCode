@@ -53,126 +53,32 @@
             }
         },
         "keybindings": [
-            {
-                "command": "amVim.backspace",
-                "key": "backspace",
-                "when": "editorTextFocus && amVim.mode != 'INSERT'"
-            },
-            {
-                "command": "amVim.delete",
-                "key": "delete",
-                "when": "editorTextFocus && amVim.mode != 'INSERT'"
-            },
-            {
-                "command": "amVim.space",
-                "key": "space",
-                "when": "editorTextFocus && amVim.mode != 'INSERT'"
-            },
-            {
-                "command": "amVim.left",
-                "key": "left",
-                "when": "editorTextFocus && amVim.mode != 'INSERT'"
-            },
-            {
-                "command": "amVim.right",
-                "key": "right",
-                "when": "editorTextFocus && amVim.mode != 'INSERT'"
-            },
-            {
-                "command": "amVim.up",
-                "key": "up",
-                "when": "editorTextFocus && amVim.mode != 'INSERT'"
-            },
-            {
-                "command": "amVim.down",
-                "key": "down",
-                "when": "editorTextFocus && amVim.mode != 'INSERT'"
-            },
-            {
-                "command": "amVim.escape",
-                "key": "escape",
-                "when": "editorTextFocus"
-            },
-            {
-                "command": "amVim.ctrl+[",
-                "key": "ctrl+[",
-                "when": "editorTextFocus && amVim.configuration.shouldBindCtrlCommands"
-            },
-            {
-                "command": "amVim.ctrl+c",
-                "key": "ctrl+c",
-                "when": "editorTextFocus && amVim.configuration.shouldBindCtrlCommands"
-            },
-            {
-                "command": "amVim.ctrl+r",
-                "key": "ctrl+r",
-                "when": "editorTextFocus && amVim.configuration.shouldBindCtrlCommands && amVim.mode == 'NORMAL'"
-            },
-            {
-                "command": "amVim.ctrl+u",
-                "key": "ctrl+u",
-                "when": "editorTextFocus && amVim.configuration.shouldBindCtrlCommands && amVim.mode == 'INSERT'"
-            },
-            {
-                "command": "amVim.ctrl+w",
-                "key": "ctrl+w",
-                "when": "editorTextFocus && amVim.configuration.shouldBindCtrlCommands && amVim.mode == 'INSERT'"
-            },
-            {
-                "command": "amVim.ctrl+f",
-                "key": "ctrl+f",
-                "when": "editorTextFocus && amVim.configuration.shouldBindCtrlCommands && amVim.mode != 'INSERT'"
-            },
-            {
-                "command": "amVim.ctrl+b",
-                "key": "ctrl+b",
-                "when": "editorTextFocus && amVim.configuration.shouldBindCtrlCommands && amVim.mode != 'INSERT'"
-            },
-            {
-                "key": "escape",
-                "command": "closeFindWidget",
-                "when": "editorFocus && findWidgetVisible"
-            },
-            {
-                "key": "escape",
-                "command": "closeBreakpointWidget",
-                "when": "breakpointWidgetVisible && editorFocus"
-            },
-            {
-                "key": "escape",
-                "command": "closeMarkersNavigation",
-                "when": "editorFocus && markersNavigationVisible"
-            },
-            {
-                "key": "escape",
-                "command": "closeReferenceSearch",
-                "when": "referenceSearchVisible && !config.editor.stablePeek"
-            },
-            {
-                "key": "escape",
-                "command": "cancelRenameInput",
-                "when": "editorFocus && renameInputVisible"
-            },
-            {
-                "key": "escape",
-                "command": "closeAccessibilityHelp",
-                "when": "accessibilityHelpWidgetVisible && editorFocus"
-            },
-            {
-                "key": "escape",
-                "command": "closeReplaceInFilesWidget",
-                "when": "replaceInputBoxFocus && searchViewletVisible"
-            },
-            {
-                "key": "escape",
-                "command": "workbench.action.closeMessages",
-                "when": "globalMessageVisible"
-            },
-            {
-                "key": "escape",
-                "command": "workbench.action.closeQuickOpen",
-                "when": "inQuickOpen"
-            }
+            { "command": "amVim.backspace", "key": "backspace", "when": "editorTextFocus && amVim.mode != 'INSERT'" },
+            { "command": "amVim.delete", "key": "delete", "when": "editorTextFocus && amVim.mode != 'INSERT'" },
+            { "command": "amVim.space", "key": "space", "when": "editorTextFocus && amVim.mode != 'INSERT'" },
+            { "command": "amVim.left", "key": "left", "when": "editorTextFocus && amVim.mode != 'INSERT'" },
+            { "command": "amVim.right", "key": "right", "when": "editorTextFocus && amVim.mode != 'INSERT'" },
+            { "command": "amVim.up", "key": "up", "when": "editorTextFocus && amVim.mode != 'INSERT'" },
+            { "command": "amVim.down", "key": "down", "when": "editorTextFocus && amVim.mode != 'INSERT'" },
+            { "command": "amVim.escape", "key": "escape", "when": "editorTextFocus" },
+
+            { "command": "amVim.ctrl+[", "key": "ctrl+[", "when": "editorTextFocus && amVim.configuration.shouldBindCtrlCommands" },
+            { "command": "amVim.ctrl+c", "key": "ctrl+c", "when": "editorTextFocus && amVim.configuration.shouldBindCtrlCommands" },
+            { "command": "amVim.ctrl+r", "key": "ctrl+r", "when": "editorTextFocus && amVim.configuration.shouldBindCtrlCommands && amVim.mode == 'NORMAL'" },
+            { "command": "amVim.ctrl+u", "key": "ctrl+u", "when": "editorTextFocus && amVim.configuration.shouldBindCtrlCommands && amVim.mode == 'INSERT'" },
+            { "command": "amVim.ctrl+w", "key": "ctrl+w", "when": "editorTextFocus && amVim.configuration.shouldBindCtrlCommands && amVim.mode == 'INSERT'" },
+            { "command": "amVim.ctrl+f", "key": "ctrl+f", "when": "editorTextFocus && amVim.configuration.shouldBindCtrlCommands && amVim.mode != 'INSERT'" },
+            { "command": "amVim.ctrl+b", "key": "ctrl+b", "when": "editorTextFocus && amVim.configuration.shouldBindCtrlCommands && amVim.mode != 'INSERT'" },
+
+            { "key": "escape", "command": "closeFindWidget", "when": "editorFocus && findWidgetVisible" },
+            { "key": "escape", "command": "closeBreakpointWidget", "when": "breakpointWidgetVisible && editorFocus" },
+            { "key": "escape", "command": "closeMarkersNavigation", "when": "editorFocus && markersNavigationVisible" },
+            { "key": "escape", "command": "closeReferenceSearch", "when": "referenceSearchVisible && !config.editor.stablePeek" },
+            { "key": "escape", "command": "cancelRenameInput", "when": "editorFocus && renameInputVisible" },
+            { "key": "escape", "command": "closeAccessibilityHelp", "when": "accessibilityHelpWidgetVisible && editorFocus" },
+            { "key": "escape", "command": "closeReplaceInFilesWidget", "when": "replaceInputBoxFocus && searchViewletVisible" },
+            { "key": "escape", "command": "workbench.action.closeMessages", "when": "globalMessageVisible" },
+            { "key": "escape", "command": "workbench.action.closeQuickOpen", "when": "inQuickOpen" }
         ]
     },
     "activationEvents": [
