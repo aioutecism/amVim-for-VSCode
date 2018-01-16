@@ -1,6 +1,6 @@
 {
     "name": "amvim",
-    "version": "1.24.0-pre",
+    "version": "1.24.0",
     "publisher": "auiworks",
     "icon": "images/icon.png",
     "displayName": "amVim",
