@@ -28,7 +28,7 @@ export class ModeVisual extends Mode {
     private maps: CommandMap[] = [
         { keys: '{motion}', actions: [ActionMoveCursor.byMotions], args: {isVisualMode: true} },
         { keys: '{N} {motion}', actions: [ActionMoveCursor.byMotions], args: {isVisualMode: true} },
-        { keys: '{textObject}', actions: [ActionSelection.expandByTextObject]},
+        { keys: '{textObject}', actions: [ActionSelection.expandByTextObject] },
 
         { keys: 'ctrl+b', actions: [ActionPage.up], args: {moveType: PageMoveType.Select} },
         { keys: 'ctrl+f', actions: [ActionPage.down], args: {moveType: PageMoveType.Select} },
@@ -106,10 +106,10 @@ export class ModeVisual extends Mode {
         { keys: 'V', actions: [ActionMode.toVisualLine] },
         { keys: 'v', actions: [ActionSelection.shrinkToActives] },
 
-        { keys: 'z c', actions: [ActionFold.fold]},
-        { keys: 'z o', actions: [ActionFold.unfold]},
-        { keys: 'z M', actions: [ActionFold.foldAll]},
-        { keys: 'z R', actions: [ActionFold.unfoldAll]},
+        { keys: 'z c', actions: [ActionFold.fold] },
+        { keys: 'z o', actions: [ActionFold.unfold] },
+        { keys: 'z M', actions: [ActionFold.foldAll] },
+        { keys: 'z R', actions: [ActionFold.unfoldAll] },
 
         { keys: 'ctrl+c', actions: [
             ActionNativeEscape.press,

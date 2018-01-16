@@ -17,4 +17,5 @@ export class ActionFold {
     static unfoldAll(): Thenable<boolean | undefined> {
         return commands.executeCommand('editor.unfoldAll');
     }
+
 }

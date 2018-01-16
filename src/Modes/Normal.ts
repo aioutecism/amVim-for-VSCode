@@ -204,10 +204,10 @@ export class ModeNormal extends Mode {
 
         { keys: 'z .', actions: [ActionReveal.primaryCursor], args: {revealType: TextEditorRevealType.InCenter} },
         { keys: 'z z', actions: [ActionReveal.primaryCursor], args: {revealType: TextEditorRevealType.InCenter} },
-        { keys: 'z c', actions: [ActionFold.fold]},
-        { keys: 'z o', actions: [ActionFold.unfold]},
-        { keys: 'z M', actions: [ActionFold.foldAll]},
-        { keys: 'z R', actions: [ActionFold.unfoldAll]},
+        { keys: 'z c', actions: [ActionFold.fold] },
+        { keys: 'z o', actions: [ActionFold.unfold] },
+        { keys: 'z M', actions: [ActionFold.foldAll] },
+        { keys: 'z R', actions: [ActionFold.unfoldAll] },
 
         { keys: '.', actions: [this.repeatRecordedCommandMaps.bind(this)] },
 
