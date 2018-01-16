@@ -1,3 +1,9 @@
+# [1.24.0](https://github.com/aioutecism/amVim-for-VSCode/releases/tag/1.24.0)
+
+- Added Go To Line command #192.
+- Added Vim style navigation in sidebar #193.
+
+
 # [1.23.1](https://github.com/aioutecism/amVim-for-VSCode/releases/tag/1.23.1)
 
 - Fixed a bug where switching tabs sometimes doesn't preserve the line the cursor was at #176 .
