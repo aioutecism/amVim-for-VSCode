@@ -41,6 +41,8 @@ export class Configuration {
     private static updateKeybindingContexts(): void {
         commands.executeCommand('setContext',
             'amVim.configuration.shouldBindCtrlCommands', this.getExtensionSetting<boolean>('bindCtrlCommands', true));
+        commands.executeCommand('setContext',
+            'amVim.configuration.shouldUseVimStyleNavigationInListView', this.getExtensionSetting<boolean>('vimStyleNavigationInListView', true));
     }
 
     static getExtensionSetting<T>(section: string, defaultValue: T): T {
