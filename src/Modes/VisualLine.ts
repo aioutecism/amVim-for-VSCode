@@ -71,6 +71,10 @@ export class ModeVisualLine extends Mode {
             ActionRegister.yankLines,
             ActionSelection.shrinkToStarts,
         ] },
+        { keys: 'Y', actions: [
+            ActionRegister.yankLines,
+            ActionSelection.shrinkToStarts,
+        ] },
         { keys: 'J', actions: [
             ActionJoinLines.onSelections,
             ActionSelection.shrinkToActives,
@@ -155,7 +159,7 @@ export class ModeVisualLine extends Mode {
         });
 
         const args = Object.assign({
-            preferedRelativeRange: window.activeTextEditor
+            preferredRelativeRange: window.activeTextEditor
                 ? new RangeOffset(window.activeTextEditor.selection)
                 : undefined,
         }, map.args);

@@ -19,6 +19,7 @@ import {ActionFind} from '../Actions/Find';
 import {ActionNativeEscape} from '../Actions/NativeEscape';
 import {ActionMode} from '../Actions/Mode';
 import {ActionFold} from '../Actions/Fold';
+import {MotionLine} from '../Motions/Line';
 
 export class ModeVisual extends Mode {
 
@@ -69,6 +70,11 @@ export class ModeVisual extends Mode {
         { keys: 'y', actions: [
             ActionRegister.yankSelections,
             ActionSelection.shrinkToStarts,
+        ] },
+        { keys: 'Y', actions: [
+            ActionRegister.yankLines,
+            ActionSelection.shrinkToStarts,
+            () => ActionMoveCursor.byMotions({motions: [MotionLine.start()]}),
         ] },
         { keys: 'J', actions: [
             ActionJoinLines.onSelections,
@@ -148,7 +154,7 @@ export class ModeVisual extends Mode {
         });
 
         const args = Object.assign({
-            preferedRelativeRange: window.activeTextEditor
+            preferredRelativeRange: window.activeTextEditor
                 ? new RangeOffset(window.activeTextEditor.selection)
                 : undefined,
         }, map.args);
