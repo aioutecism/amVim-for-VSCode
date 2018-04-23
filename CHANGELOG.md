@@ -1,3 +1,8 @@
+# [1.25.0](https://github.com/aioutecism/amVim-for-VSCode/releases/tag/1.25.0)
+
+- Supports `Y` in Visual and VisualLine modes #196.
+
+
 # [1.24.0](https://github.com/aioutecism/amVim-for-VSCode/releases/tag/1.24.0)
 
 - Added Go To Line command #192.
