@@ -71,6 +71,10 @@ export class ModeVisualLine extends Mode {
             ActionRegister.yankLines,
             ActionSelection.shrinkToStarts,
         ] },
+        { keys: 'Y', actions: [
+            ActionRegister.yankLines,
+            ActionSelection.shrinkToStarts,
+        ] },
         { keys: 'J', actions: [
             ActionJoinLines.onSelections,
             ActionSelection.shrinkToActives,
