@@ -155,7 +155,7 @@ export class ModeVisualLine extends Mode {
         });
 
         const args = Object.assign({
-            preferedRelativeRange: window.activeTextEditor
+            preferredRelativeRange: window.activeTextEditor
                 ? new RangeOffset(window.activeTextEditor.selection)
                 : undefined,
         }, map.args);

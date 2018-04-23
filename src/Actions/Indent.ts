@@ -43,7 +43,7 @@ export class ActionIndent {
         indentLevelOffset: number,
         isVisualMode?: boolean,
         isVisualLineMode?: boolean,
-        preferedRelativeRange?: RangeOffset,
+        preferredRelativeRange?: RangeOffset,
     }): Thenable<boolean> {
         args.isVisualMode = args.isVisualMode === undefined ? false : args.isVisualMode;
         args.isVisualLineMode = args.isVisualLineMode === undefined ? false : args.isVisualLineMode;
@@ -59,9 +59,9 @@ export class ActionIndent {
 
         const lineNumbers: {[lineNumber: number]: boolean} = {};
 
-        if (args.preferedRelativeRange) {
+        if (args.preferredRelativeRange) {
             activeTextEditor.selections.forEach(selection => {
-                for (let i = selection.active.line; i <= selection.active.line + args.preferedRelativeRange!.lineOffset; i++) {
+                for (let i = selection.active.line; i <= selection.active.line + args.preferredRelativeRange!.lineOffset; i++) {
                     lineNumbers[i] = true;
                 }
             });
@@ -117,7 +117,7 @@ export class ActionIndent {
     static increase(args: {
         isVisualMode?: boolean,
         isVisualLineMode?: boolean,
-        preferedRelativeRange?: RangeOffset,
+        preferredRelativeRange?: RangeOffset,
     }): Thenable<boolean> {
         return ActionIndent.changeIndentLevel(Object.assign({
             indentLevelOffset: +1,
@@ -128,7 +128,7 @@ export class ActionIndent {
     static decrease(args: {
         isVisualMode?: boolean,
         isVisualLineMode?: boolean,
-        preferedRelativeRange?: RangeOffset,
+        preferredRelativeRange?: RangeOffset,
     }): Thenable<boolean> {
         return ActionIndent.changeIndentLevel(Object.assign({
             indentLevelOffset: -1,
