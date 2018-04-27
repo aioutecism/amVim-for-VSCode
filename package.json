@@ -108,11 +108,11 @@
         "sync-changelog": "node ./node_modules/github-releases-renderer/index.js run aioutecism amVim-for-VSCode CHANGELOG.template.md CHANGELOG.md -c 0"
     },
     "devDependencies": {
-        "typescript": "^2.6.2",
-        "vscode": "^1.1.10",
-        "mocha": "^4.1.0",
-        "@types/node": "^9.3.0",
-        "@types/mocha": "^2.2.46",
-        "github-releases-renderer": "aioutecism/github-releases-renderer"
+        "@types/mocha": "^5.2.0",
+        "@types/node": "^8.6.0",
+        "github-releases-renderer": "github:aioutecism/github-releases-renderer",
+        "mocha": "^5.1.1",
+        "typescript": "^2.8.3",
+        "vscode": "^1.1.14"
     }
 }
