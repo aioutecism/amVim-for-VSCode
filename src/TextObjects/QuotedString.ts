@@ -3,6 +3,8 @@ import {TextObject} from './TextObject';
 
 export class TextObjectQuotedString extends TextObject {
 
+    readonly willFindForward = true;
+
     private static escapeCharacter = '\\';
 
     private quoteCharacter: string;

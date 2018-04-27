@@ -3,7 +3,8 @@ import {UtilRange} from '../Utils/Range';
 
 export abstract class TextObject {
 
-    protected shouldExpandToLinewise: boolean = false;
+    protected readonly shouldExpandToLinewise: boolean = false;
+    readonly willFindForward: boolean = false;
 
     private _isLinewise: boolean = false;
     public get isLinewise() { return this._isLinewise; }

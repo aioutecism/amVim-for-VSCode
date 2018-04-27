@@ -45,4 +45,8 @@ export class UtilRange {
         ));
     }
 
+    static isSingleCharacter(range: Range): boolean {
+        return range.start.line === range.end.line && range.end.character - range.start.character === 1;
+    }
+
 }

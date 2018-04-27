@@ -3,7 +3,7 @@ import {TextObject} from './TextObject';
 
 export class TextObjectBlock extends TextObject {
 
-    protected shouldExpandToLinewise: boolean = true;
+    protected readonly shouldExpandToLinewise = true;
 
     private openingCharacter: string;
     private closingCharacter: string;

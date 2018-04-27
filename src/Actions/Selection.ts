@@ -1,8 +1,9 @@
-import {window, Selection} from 'vscode';
+import {window, Selection, Position} from 'vscode';
 import {getCurrentMode} from '../extension';
 import {ModeID} from '../Modes/Mode';
 import {TextObject} from '../TextObjects/TextObject';
 import {UtilSelection} from '../Utils/Selection';
+import {UtilRange} from '../Utils/Range';
 
 export class ActionSelection {
 
@@ -133,12 +134,27 @@ export class ActionSelection {
         let selections: Selection[] = [];
 
         activeTextEditor.selections.forEach(selection => {
-            const positionToApply = selection.isReversed && selection.active.character > 0
-                ? selection.active.translate(0, -1)
-                : selection.active;
+            let positionToApply: Position;
+
+            if (selection.isEmpty || UtilRange.isSingleCharacter(selection)) {
+                positionToApply = selection.start;
+            }
+            else {
+                positionToApply = UtilSelection.getActiveInVisualMode(selection);
+
+                if (selection.isReversed && positionToApply.character > 0) {
+                    positionToApply = positionToApply.translate(0, -1);
+                }
+                else if (!selection.isReversed) {
+                    positionToApply = positionToApply.translate(0, +1);
+                }
+            }
+
             const match = args.textObject.apply(positionToApply);
             if (match) {
-                const range = selection.union(match);
+                const intersection = selection.intersection(match);
+                const range = args.textObject.willFindForward && (!intersection || intersection.isEmpty)
+                    ? match : selection.union(match);
                 selection = selection.isReversed
                     ? new Selection(range.end, range.start)
                     : new Selection(range.start, range.end);
