@@ -1,6 +1,6 @@
 import * as BlackBox from '../Framework/BlackBox';
 
-suite('Visual: Y', () => {
+suite('VisualLine: Y', () => {
     const testCases: BlackBox.TestCase[] = [
         {
             from: '[]Foo end\nBar end',

@@ -7,26 +7,29 @@ export class MotionMatch extends Motion {
 
     private character: string;
     private direction: MotionMatchDirection;
+    private n: number;
     private isTill: boolean;
 
-    static next(args: {character: string, isTill?: boolean}): Motion {
+    static next(args: {character: string, isTill?: boolean, n?: number}): Motion {
         args.isTill = args.isTill === undefined ? false : args.isTill;
 
         const obj = new MotionMatch();
         obj.character = args.character;
         obj.direction = MotionMatchDirection.NEXT;
         obj.isTill = args.isTill;
+        obj.n = args.n === undefined ? 1 : args.n;
 
         return obj;
     }
 
-    static prev(args: {character: string, isTill?: boolean}): Motion {
+    static prev(args: {character: string, isTill?: boolean, n?: number}): Motion {
         args.isTill = args.isTill === undefined ? false : args.isTill;
 
         const obj = new MotionMatch();
         obj.character = args.character;
         obj.direction = MotionMatchDirection.PREV;
         obj.isTill = args.isTill;
+        obj.n = args.n === undefined ? 1 : args.n;
 
         return obj;
     }
@@ -52,7 +55,14 @@ export class MotionMatch extends Motion {
         if (this.direction === MotionMatchDirection.NEXT) {
             targetText = targetText.substr(toCharacter + 1);
 
-            const offset = targetText.indexOf(this.character);
+            let offset = -1;
+
+            for (let i = 0; i < this.n; i++) {
+                offset = targetText.indexOf(this.character, offset + 1);
+                if (!~offset) {
+                    break;
+                }
+            }
 
             if (!!~offset) {
                 toCharacter += offset + 1;
@@ -72,7 +82,14 @@ export class MotionMatch extends Motion {
                 .substr(0, toCharacter)
                 .split('').reverse().join('');
 
-            const offset = targetText.indexOf(this.character);
+            let offset = -1;
+
+            for (let i = 0; i < this.n; i++) {
+                offset = targetText.indexOf(this.character, offset + 1);
+                if (!~offset) {
+                    break;
+                }
+            }
 
             if (!!~offset) {
                 toCharacter -= offset + 1;
