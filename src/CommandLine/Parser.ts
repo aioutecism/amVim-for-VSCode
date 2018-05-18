@@ -5,6 +5,8 @@ import QuitCommand from './Commands/Quit';
 import QuitAllCommand from './Commands/QuitAll';
 import WriteQuitCommand from './Commands/WriteQuit';
 import WriteQuitAllCommand from './Commands/WriteQuitAll';
+import VisualSplitCommand from './Commands/VisualSplit';
+import NewFileCommand from './Commands/NewFile'
 import GoToLineCommand from './Commands/GoToLine';
 
 const commandParsers = {
@@ -25,7 +27,17 @@ const commandParsers = {
     wqa: WriteQuitAllCommand,
     wqall: WriteQuitAllCommand,
     xa: WriteQuitAllCommand,
-    xall: WriteQuitAllCommand
+    xall: WriteQuitAllCommand,
+
+    vs: VisualSplitCommand,
+    vsp: VisualSplitCommand,
+    sp: VisualSplitCommand,
+    split: VisualSplitCommand,
+    vsplit: VisualSplitCommand,
+    ne: NewFileCommand,
+    vne: NewFileCommand,
+    new: NewFileCommand,
+    vnew: NewFileCommand
 }
 
 const isNumber = (input: string | undefined): boolean => {
@@ -41,4 +53,3 @@ export function parser(input: string): CommandBase | undefined {
         return undefined;
     }
 }
-
