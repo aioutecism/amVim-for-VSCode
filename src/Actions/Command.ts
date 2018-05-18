@@ -1,9 +1,11 @@
-import {commands} from 'vscode';
+import {CommandLine} from '../CommandLine/CommandLine';
 
 export class ActionCommand {
 
-    static goToLine(): Thenable<boolean | undefined> {
-        return commands.executeCommand('workbench.action.gotoLine');
+    static async command(): Promise<void> {
+        // this is undefined
+        return await CommandLine.PromptAndRun();
     }
 
 }
+

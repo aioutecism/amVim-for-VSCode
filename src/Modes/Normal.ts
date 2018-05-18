@@ -210,7 +210,8 @@ export class ModeNormal extends Mode {
         { keys: 'z M', actions: [ActionFold.foldAll] },
         { keys: 'z R', actions: [ActionFold.unfoldAll] },
 
-        { keys: ':', actions: [ActionCommand.goToLine] },
+        // { keys: ':', actions: [ActionCommand.goToLine] },
+        { keys: ':', actions: [ActionCommand.command] },
 
         { keys: '.', actions: [this.repeatRecordedCommandMaps.bind(this)] },
 
