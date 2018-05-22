@@ -6,7 +6,8 @@ import QuitAllCommand from './Commands/QuitAll';
 import WriteQuitCommand from './Commands/WriteQuit';
 import WriteQuitAllCommand from './Commands/WriteQuitAll';
 import VisualSplitCommand from './Commands/VisualSplit';
-import NewFileCommand from './Commands/NewFile'
+import NewFileCommand from './Commands/NewFile';
+import VerticalNewFileCommand from './Commands/VerticalNewFile';
 import GoToLineCommand from './Commands/GoToLine';
 
 const commandParsers = {
@@ -21,7 +22,6 @@ const commandParsers = {
     qall: QuitAllCommand,
 
     wq: WriteQuitCommand,
-    writequit: WriteQuitCommand,
     x: WriteQuitCommand,
 
     wqa: WriteQuitAllCommand,
@@ -31,24 +31,22 @@ const commandParsers = {
 
     vs: VisualSplitCommand,
     vsp: VisualSplitCommand,
-    sp: VisualSplitCommand,
-    split: VisualSplitCommand,
-    vsplit: VisualSplitCommand,
-    ne: NewFileCommand,
-    vne: NewFileCommand,
+
     new: NewFileCommand,
-    vnew: NewFileCommand
-}
+    vne: VerticalNewFileCommand,
+    vnew: VerticalNewFileCommand
+};
 
 const isNumber = (input: string | undefined): boolean => {
-    return !Number.isNaN(Number(input))
-}
+    const num = Number(input);
+    return !Number.isNaN(num) && Number.isInteger(num);
+};
 
 export function parser(input: string): CommandBase | undefined {
     if (commandParsers[input]) {
-        return commandParsers[input]
+        return commandParsers[input];
     } else if (isNumber(input)) {
-        return GoToLineCommand
+        return GoToLineCommand;
     } else {
         return undefined;
     }

@@ -6,39 +6,37 @@ export class CommandLine {
       if (!command || command.length === 0) {
           return;
       }
-  
       try {
           const cmd = parser(command);
           if (cmd) {
               await cmd.execute(command);
           }
       } catch (e) {
-          console.log(e)
+          console.error(e);
       }
   }
 
   public static async PromptAndRun(): Promise<void> {
       if (!vscode.window.activeTextEditor) {
-          return
+          return;
       }
-      let text = ''
       try {
-          let cmd = await vscode.window.showInputBox(this.getInputBoxOptions(text));
+          let cmd = await vscode.window.showInputBox(CommandLine.getInputBoxOptions());
           if (cmd && cmd[0] === ':') {
               cmd = cmd.slice(1);
           }
           return await CommandLine.Run(cmd);
       } catch (e) {
-          console.log(e)
+          console.error(e);
       }
   }
 
-  private static getInputBoxOptions(text: string): vscode.InputBoxOptions {
+  private static getInputBoxOptions(): vscode.InputBoxOptions {
       return {
           prompt: 'Vim command line',
-          value: ':' + text,
+          value: ':',
           ignoreFocusOut: false,
-          valueSelection: [ text.length + 1, text.length + 1]
+          valueSelection: [1, 1]
       };
   }
 }
