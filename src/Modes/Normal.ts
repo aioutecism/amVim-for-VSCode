@@ -21,9 +21,9 @@ import {ActionIndent} from '../Actions/Indent';
 import {ActionFilter} from '../Actions/Filter';
 import {ActionMode} from '../Actions/Mode';
 import {ActionFold} from '../Actions/Fold';
+import {ActionCommandLine} from '../Actions/CommandLine';
 import {MotionCharacter} from '../Motions/Character';
 import {MotionLine} from '../Motions/Line';
-import {CommandLine as ActionCommandLine} from '../Actions/CommandLine/CommandLine';
 
 export class ModeNormal extends Mode {
 
@@ -210,7 +210,7 @@ export class ModeNormal extends Mode {
         { keys: 'z M', actions: [ActionFold.foldAll] },
         { keys: 'z R', actions: [ActionFold.unfoldAll] },
 
-        { keys: ':', actions: [ActionCommandLine.PromptAndRun] },
+        { keys: ':', actions: [ActionCommandLine.promptAndRun] },
 
         { keys: '.', actions: [this.repeatRecordedCommandMaps.bind(this)] },
 
