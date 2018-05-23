@@ -37,15 +37,10 @@ const commandParsers = {
     vnew: VerticalNewFileCommand
 };
 
-const isNumber = (input: string | undefined): boolean => {
-    const num = Number(input);
-    return !Number.isNaN(num) && Number.isInteger(num);
-};
-
 export function parser(input: string): CommandBase | undefined {
     if (commandParsers[input]) {
         return commandParsers[input];
-    } else if (isNumber(input)) {
+    } else if (Number.isInteger(Number(input))) {
         return GoToLineCommand;
     } else {
         return undefined;

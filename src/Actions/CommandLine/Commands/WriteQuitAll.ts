@@ -2,7 +2,7 @@ import { CommandBase } from './Base';
 import WriteAllCommand from './WriteAll';
 import QuitAllCommand from './QuitAll';
 
-class WriteQuitCommand extends CommandBase {
+class WriteQuitAllCommand extends CommandBase {
   constructor() {
     super();
   }
@@ -12,4 +12,4 @@ class WriteQuitCommand extends CommandBase {
   }
 }
 
-export default new WriteQuitCommand();
+export default new WriteQuitAllCommand();

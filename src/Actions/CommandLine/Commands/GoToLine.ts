@@ -12,7 +12,7 @@ class GoToLineCommand extends CommandBase {
     const lineNumber = Number(line);
     let editor = vscode.window.activeTextEditor;
     if (editor) {
-      ActionMoveCursor.byMotions({
+      await ActionMoveCursor.byMotions({
         motions: [
           MotionDocument.toLine({ n: lineNumber }),
           MotionLine.firstNonBlank()

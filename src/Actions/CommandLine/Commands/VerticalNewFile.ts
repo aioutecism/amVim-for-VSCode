@@ -1,6 +1,5 @@
 import * as vscode from 'vscode';
 import { CommandBase } from './Base';
-import VisualSplit from './VisualSplit';
 import NewFile from './NewFile';
 
 class VerticalNewFileCommand extends CommandBase {
@@ -8,9 +7,8 @@ class VerticalNewFileCommand extends CommandBase {
     super();
   }
   async execute(): Promise<void> {
-    await VisualSplit.execute();
     await NewFile.execute();
-    await vscode.commands.executeCommand('workbench.action.closeOtherEditors');
+    await vscode.commands.executeCommand('workbench.action.moveEditorToNextGroup');
   }
 }
 

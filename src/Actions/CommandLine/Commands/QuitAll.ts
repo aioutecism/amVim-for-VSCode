@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 import { CommandBase } from './Base';
 
-class QuitCommand extends CommandBase {
+class QuitAllCommand extends CommandBase {
   constructor() {
     super();
   }
@@ -10,4 +10,4 @@ class QuitCommand extends CommandBase {
   }
 }
 
-export default new QuitCommand();
+export default new QuitAllCommand();
