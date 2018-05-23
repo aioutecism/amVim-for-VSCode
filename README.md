@@ -15,7 +15,7 @@ The [Vim](http://www.vim.org/) mode for [Visual Studio Code](https://code.visual
 
 ## Not supported
 
-- `:` started commands: Please use `Command Palette` (`Shift+Cmd+P` on OSX, `Shift+Ctrl+P` on Windows) instead.
+- `:` started commands: Only a few are supported now.
 - Visual Block mode: Please use multi-cursor instead for now.
 - Custom keybindings: On the roadmap.
 
