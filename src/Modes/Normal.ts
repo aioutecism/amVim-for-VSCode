@@ -23,7 +23,7 @@ import {ActionMode} from '../Actions/Mode';
 import {ActionFold} from '../Actions/Fold';
 import {MotionCharacter} from '../Motions/Character';
 import {MotionLine} from '../Motions/Line';
-import { ActionCommand } from '../Actions/Command';
+import {CommandLine as ActionCommandLine} from '../Actions/CommandLine/CommandLine';
 
 export class ModeNormal extends Mode {
 
@@ -210,7 +210,7 @@ export class ModeNormal extends Mode {
         { keys: 'z M', actions: [ActionFold.foldAll] },
         { keys: 'z R', actions: [ActionFold.unfoldAll] },
 
-        { keys: ':', actions: [ActionCommand.goToLine] },
+        { keys: ':', actions: [ActionCommandLine.PromptAndRun] },
 
         { keys: '.', actions: [this.repeatRecordedCommandMaps.bind(this)] },
 
