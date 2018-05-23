@@ -1,3 +1,8 @@
+# [1.26.0](https://github.com/aioutecism/amVim-for-VSCode/releases/tag/1.26.0)
+
+- Supports a few `:` commands #199. Thanks @Molunerfinn.
+
+
 # [1.25.0](https://github.com/aioutecism/amVim-for-VSCode/releases/tag/1.25.0)
 
 - Supports `Y` in Visual and VisualLine modes #196.
