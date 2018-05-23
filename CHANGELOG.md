@@ -1,3 +1,8 @@
+# [1.26.1](https://github.com/aioutecism/amVim-for-VSCode/releases/tag/1.26.1)
+
+- Fixed issue when `:wq` may empty file content.
+
+
 # [1.26.0](https://github.com/aioutecism/amVim-for-VSCode/releases/tag/1.26.0)
 
 - Supports a few `:` commands #199. Thanks @Molunerfinn.
