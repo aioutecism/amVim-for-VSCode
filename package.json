@@ -50,6 +50,11 @@
                     "default": false,
                     "description": "Set to `true` to start in Insert mode when opening files."
                 },
+                "amVim.smartRelativeLineNumbers": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Set to `true` to will make line numbers relative when not in Insert mode."
+                },
                 "amVim.vimStyleNavigationInListView": {
                     "type": "boolean",
                     "default": true,
