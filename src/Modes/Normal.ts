@@ -102,6 +102,12 @@ export class ModeNormal extends Mode {
         ], args: {
             shouldYank: true
         } },
+        { keys: '{N} d {motion}', actions: [
+            ActionDelete.byMotions,
+            ActionSelection.validateSelections,
+        ], args: {
+            shouldYank: true
+        } },
         { keys: 'd {textObject}', actions: [
             ActionDelete.byTextObject,
             ActionSelection.validateSelections,
