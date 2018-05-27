@@ -1,7 +1,9 @@
 import {window, TextEditor, Position} from 'vscode';
 import {Mode, ModeID} from './Mode';
+import {Configuration} from '../Configuration';
 import {MatchResultKind} from '../Mappers/Generic';
 import {CommandMap} from '../Mappers/Command';
+import {ActionRelativeLineNumbers} from '../Actions/RelativeLineNumbers';
 import {ActionInsert} from '../Actions/Insert';
 import {ActionDelete} from '../Actions/Delete';
 import {ActionSelection} from '../Actions/Selection';
@@ -54,6 +56,10 @@ export class ModeInsert extends Mode {
         this.textEditor = window.activeTextEditor;
 
         this.startRecord();
+
+        if (Configuration.smartRelativeLineNumbers) {
+            ActionRelativeLineNumbers.off();
+        }
     }
 
     exit(): void {

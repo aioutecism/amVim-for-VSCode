@@ -2,8 +2,10 @@ import {TextEditorRevealType} from 'vscode';
 import {StaticReflect} from '../LanguageExtensions/StaticReflect';
 import {SymbolMetadata} from '../Symbols/Metadata';
 import {Mode, ModeID} from './Mode';
+import {Configuration} from '../Configuration';
 import {CommandMap} from '../Mappers/Command';
 import {ActionBlockCursor} from '../Actions/BlockCursor';
+import {ActionRelativeLineNumbers} from '../Actions/RelativeLineNumbers';
 import {ActionMoveCursor} from '../Actions/MoveCursor';
 import {ActionPage} from '../Actions/Page';
 import {ActionInsert} from '../Actions/Insert';
@@ -246,6 +248,10 @@ export class ModeNormal extends Mode {
         super.enter();
 
         ActionBlockCursor.on();
+
+        if (Configuration.smartRelativeLineNumbers) {
+            ActionRelativeLineNumbers.on();
+        }
     }
 
     exit(): void {

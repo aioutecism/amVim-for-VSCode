@@ -42,6 +42,12 @@ Set to `false` to disable `Ctrl+<key>` keybindings.
 
 Set to `true` to start in Insert mode when opening files.
 
+#### `amVim.smartRelativeLineNumbers`
+
+`Boolean`, Default: `false`
+
+Set to `true` to will make line numbers relative when not in Insert mode.
+
 #### `amVim.vimStyleNavigationInListView`
 
 `Boolean`, Default: `true`
