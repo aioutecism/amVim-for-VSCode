@@ -6,25 +6,25 @@ import {UtilSelection} from '../Utils/Selection';
 
 export class ActionMoveCursor {
 
-    private static preferedColumnBySelectionIndex: {[i: number]: number} = [];
-    private static isUpdatePreferedColumnBlocked = false;
-    private static preferedColumnBlockTimer: NodeJS.Timer | undefined;
+    private static preferredColumnBySelectionIndex: {[i: number]: number} = [];
+    private static isUpdatePreferredColumnBlocked = false;
+    private static preferredColumnBlockTimer: NodeJS.Timer | undefined;
 
-    private static blockUpdatePreferedColumn(): void {
-        if (ActionMoveCursor.preferedColumnBlockTimer) {
-            clearTimeout(ActionMoveCursor.preferedColumnBlockTimer);
+    private static blockUpdatePreferredColumn(): void {
+        if (ActionMoveCursor.preferredColumnBlockTimer) {
+            clearTimeout(ActionMoveCursor.preferredColumnBlockTimer);
         }
 
-        ActionMoveCursor.isUpdatePreferedColumnBlocked = true;
+        ActionMoveCursor.isUpdatePreferredColumnBlocked = true;
 
-        ActionMoveCursor.preferedColumnBlockTimer = setTimeout(function() {
-            ActionMoveCursor.isUpdatePreferedColumnBlocked = false;
-            ActionMoveCursor.preferedColumnBlockTimer = undefined;
+        ActionMoveCursor.preferredColumnBlockTimer = setTimeout(function() {
+            ActionMoveCursor.isUpdatePreferredColumnBlocked = false;
+            ActionMoveCursor.preferredColumnBlockTimer = undefined;
         }, 100);
     }
 
-    static updatePreferedColumn(): Thenable<boolean> {
-        if (ActionMoveCursor.isUpdatePreferedColumnBlocked) {
+    static updatePreferredColumn(): Thenable<boolean> {
+        if (ActionMoveCursor.isUpdatePreferredColumnBlocked) {
             return Promise.resolve(false);
         }
 
@@ -34,7 +34,7 @@ export class ActionMoveCursor {
             return Promise.resolve(false);
         }
 
-        ActionMoveCursor.preferedColumnBySelectionIndex =
+        ActionMoveCursor.preferredColumnBySelectionIndex =
             activeTextEditor.selections.map(selection =>
                 UtilPosition.getColumn(activeTextEditor, selection.active));
 
@@ -57,9 +57,9 @@ export class ActionMoveCursor {
             return Promise.resolve(false);
         }
 
-        // Prevent prefered character update if no motion updates character.
+        // Prevent preferred character update if no motion updates character.
         if (args.motions.every(motion => ! motion.isCharacterUpdated)) {
-            ActionMoveCursor.blockUpdatePreferedColumn();
+            ActionMoveCursor.blockUpdatePreferredColumn();
         }
 
         const document = activeTextEditor.document;
@@ -70,7 +70,7 @@ export class ActionMoveCursor {
             let active = args.motions.reduce(
                 (position, motion) => {
                     return motion.apply(position, {
-                        preferedColumn: ActionMoveCursor.preferedColumnBySelectionIndex[i]
+                        preferredColumn: ActionMoveCursor.preferredColumnBySelectionIndex[i]
                     });
                 },
                 args.isVisualMode
