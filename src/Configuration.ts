@@ -12,6 +12,9 @@ export class Configuration {
     private static _defaultModeID: ModeID;
     static get defaultModeID(): ModeID { return this._defaultModeID; }
 
+    private static _smartRelativeLineNumbers: boolean;
+    static get smartRelativeLineNumbers(): boolean { return this._smartRelativeLineNumbers; }
+
     static init(): void {
         if (this.isReady) {
             return;
@@ -29,7 +32,10 @@ export class Configuration {
     private static onDidChangeConfiguration(): void {
         this.updateCache();
         this.updateKeybindingContexts();
+
         this._defaultModeID = this.getExtensionSetting<boolean>('startInInsertMode', false) ? ModeID.INSERT : ModeID.NORMAL;
+        this._smartRelativeLineNumbers = this.getExtensionSetting<boolean>('smartRelativeLineNumbers', false);
+
         UtilWord.updateCharacterKindCache(this.getEditorSetting<string>('wordSeparators', '`~!@#$%^&*()-=+[{]}\\|;:\'",.<>/?'));
     }
 

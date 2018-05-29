@@ -46,10 +46,10 @@ export abstract class Motion {
             toCharacter = document.lineAt(toLine).text.length;
         }
 
-        const preferedColumn = !this.isCharacterUpdated && option
-            ? option.preferedColumn as number : null;
+        const preferredColumn = !this.isCharacterUpdated && option
+            ? option.preferredColumn as number : null;
 
-        if (preferedColumn) {
+        if (preferredColumn) {
             const tabSize = activeTextEditor.options.tabSize as number;
             const toLineText = document.lineAt(toLine).text;
 
@@ -57,14 +57,14 @@ export abstract class Motion {
             let thisColumn = 0;
             let i: number;
 
-            for (i = 0; i < toLineText.length && thisColumn <= preferedColumn; i++) {
+            for (i = 0; i < toLineText.length && thisColumn <= preferredColumn; i++) {
                 lastColumn = thisColumn;
                 thisColumn += toLineText.charAt(i) === '\t' ? tabSize : 1;
             }
 
             // Choose the closest
-            const thisColumnDiff = Math.abs(preferedColumn - thisColumn);
-            const lastColumnDiff = Math.abs(preferedColumn - lastColumn);
+            const thisColumnDiff = Math.abs(preferredColumn - thisColumn);
+            const lastColumnDiff = Math.abs(preferredColumn - lastColumn);
             toCharacter = thisColumnDiff < lastColumnDiff ? i : i - 1;
         }
 

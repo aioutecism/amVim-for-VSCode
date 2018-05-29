@@ -1,3 +1,9 @@
+# [1.27.0](https://github.com/aioutecism/amVim-for-VSCode/releases/tag/1.27.0)
+
+- Supports `{N} d {motion}`. #200
+- Added `smartRelativeLineNumbers` setting. #201
+
+
 # [1.26.1](https://github.com/aioutecism/amVim-for-VSCode/releases/tag/1.26.1)
 
 - Fixed issue when `:wq` may empty file content.

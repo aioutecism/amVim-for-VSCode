@@ -3,7 +3,7 @@ import {Selection, Position} from 'vscode';
 export class UtilSelection {
 
     static unionOverlaps(from: Selection[]): Selection[] {
-        // Make a copy so we won't destory the array passed in.
+        // Make a copy so we won't destroy the array passed in.
         from = from.map(selection => selection);
 
         const to: Selection[] = [];

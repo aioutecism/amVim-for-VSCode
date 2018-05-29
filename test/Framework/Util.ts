@@ -68,7 +68,7 @@ export function getPosition(): Position {
     const activeEditor = window.activeTextEditor;
 
     if (activeEditor.selections.length > 1) {
-        throw Error('Multiple selections detacted.');
+        throw Error('Multiple selections detected.');
     }
     if (!activeEditor.selection.isEmpty) {
         throw Error('Selection is not empty.');
@@ -90,7 +90,7 @@ export function getPositions(): Position[] {
         const selection = activeEditor.selections[i];
 
         if (!selection.isEmpty) {
-            throw Error('Non-empty selection detacted.');
+            throw Error('Non-empty selection detected.');
         }
 
         positions.push(selection.active);
@@ -107,7 +107,7 @@ export function getSelection(): Selection {
     const activeEditor = window.activeTextEditor;
 
     if (activeEditor.selections.length > 1) {
-        throw Error('Multiple selections detacted.');
+        throw Error('Multiple selections detected.');
     }
 
     return activeEditor.selection;

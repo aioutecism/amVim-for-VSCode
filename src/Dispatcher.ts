@@ -43,7 +43,7 @@ export class Dispatcher {
             context.subscriptions.push(commands.registerCommand(`amVim.${key}`, this.inputHandler(key)));
         });
 
-        ActionMoveCursor.updatePreferedColumn();
+        ActionMoveCursor.updatePreferredColumn();
 
         this.switchMode(Configuration.defaultModeID);
 
@@ -52,7 +52,7 @@ export class Dispatcher {
                 // Ensure this is executed after all pending commands.
                 setTimeout(() => {
                     ActionMode.switchByActiveSelections(this._currentMode.id);
-                    ActionMoveCursor.updatePreferedColumn();
+                    ActionMoveCursor.updatePreferredColumn();
                     this._currentMode.onDidChangeTextEditorSelection();
                 }, 0);
             }),
@@ -64,7 +64,7 @@ export class Dispatcher {
                     // Passing `null` to `currentMode` to force mode switch.
                     ActionMode.switchByActiveSelections(null);
                 }
-                ActionMoveCursor.updatePreferedColumn();
+                ActionMoveCursor.updatePreferredColumn();
             })
         );
     }

@@ -3,7 +3,9 @@ import {StaticReflect} from '../LanguageExtensions/StaticReflect';
 import {SymbolMetadata} from '../Symbols/Metadata';
 import {RangeOffset} from '../Types/RangeOffset';
 import {Mode, ModeID} from './Mode';
+import {Configuration} from '../Configuration';
 import {CommandMap} from '../Mappers/Command';
+import {ActionRelativeLineNumbers} from '../Actions/RelativeLineNumbers';
 import {ActionMoveCursor} from '../Actions/MoveCursor';
 import {ActionPage, PageMoveType} from '../Actions/Page';
 import {ActionSelection} from '../Actions/Selection';
@@ -143,6 +145,10 @@ export class ModeVisual extends Mode {
         super.enter();
 
         ActionSelection.expandToOne();
+
+        if (Configuration.smartRelativeLineNumbers) {
+            ActionRelativeLineNumbers.on();
+        }
     }
 
     private _recordedCommandMaps: CommandMap[];

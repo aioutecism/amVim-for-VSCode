@@ -1,7 +1,9 @@
 import {window, TextEditor, Position} from 'vscode';
 import {Mode, ModeID} from './Mode';
+import {Configuration} from '../Configuration';
 import {MatchResultKind} from '../Mappers/Generic';
 import {CommandMap} from '../Mappers/Command';
+import {ActionRelativeLineNumbers} from '../Actions/RelativeLineNumbers';
 import {ActionInsert} from '../Actions/Insert';
 import {ActionDelete} from '../Actions/Delete';
 import {ActionSelection} from '../Actions/Selection';
@@ -24,17 +26,17 @@ export class ModeInsert extends Mode {
         { keys: 'ctrl+c', actions: [
             ActionNativeEscape.press,
             () => ActionSelection.shrinkToActives()
-                .then(isShrinked => isShrinked ? Promise.resolve(true) : ActionMode.toNormal()),
+                .then(isShrunken => isShrunken ? Promise.resolve(true) : ActionMode.toNormal()),
         ] },
         { keys: 'ctrl+[', actions: [
             ActionNativeEscape.press,
             () => ActionSelection.shrinkToActives()
-                .then(isShrinked => isShrinked ? Promise.resolve(true) : ActionMode.toNormal()),
+                .then(isShrunken => isShrunken ? Promise.resolve(true) : ActionMode.toNormal()),
         ] },
         { keys: 'escape', actions: [
             ActionNativeEscape.press,
             () => ActionSelection.shrinkToActives()
-                .then(isShrinked => isShrinked ? Promise.resolve(true) : ActionMode.toNormal()),
+                .then(isShrunken => isShrunken ? Promise.resolve(true) : ActionMode.toNormal()),
         ] },
     ];
 
@@ -54,6 +56,10 @@ export class ModeInsert extends Mode {
         this.textEditor = window.activeTextEditor;
 
         this.startRecord();
+
+        if (Configuration.smartRelativeLineNumbers) {
+            ActionRelativeLineNumbers.off();
+        }
     }
 
     exit(): void {
@@ -145,7 +151,7 @@ export class ModeInsert extends Mode {
             }
         }
 
-        const inputedText = currentLineText.substring(
+        const inputText = currentLineText.substring(
             this.recordStartPosition.character - deletionCountBefore,
             currentLineText.length - (this.recordStartLineText.length - this.recordStartPosition.character - deletionCountAfter)
         );
@@ -162,12 +168,12 @@ export class ModeInsert extends Mode {
             });
         }
 
-        if (inputedText.length > 0) {
+        if (inputText.length > 0) {
             this._recordedCommandMaps.push({
                 keys: '',
                 actions: [ ActionInsert.textAtSelections ],
                 args: {
-                    text: inputedText,
+                    text: inputText,
                 },
                 isRepeating: true,
             });
