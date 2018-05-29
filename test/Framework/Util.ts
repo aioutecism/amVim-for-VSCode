@@ -1,4 +1,4 @@
-import {workspace, window, Uri, TextDocument, TextEditor, Position, Range, Selection} from 'vscode';
+import {workspace, window, Uri, TextDocument, TextEditor, Position, Range, Selection, EndOfLine} from 'vscode';
 
 export function createTempDocument(content?: string, reusableDocument?: TextDocument): Thenable<TextEditor> {
     let getTextEditor: Thenable<TextEditor>;
@@ -17,6 +17,7 @@ export function createTempDocument(content?: string, reusableDocument?: TextDocu
     return getTextEditor.then(textEditor => {
         if (content) {
             return textEditor.edit(editBuilder => {
+                editBuilder.setEndOfLine(EndOfLine.LF);
                 editBuilder.replace(new Range(
                     0, 0,
                     textEditor.document.lineCount, 0
