@@ -106,7 +106,8 @@
     ],
     "scripts": {
         "vscode:prepublish": "npm run compile",
-        "compile": "tsc -p ./",
+        "clean": "rimraf ./out",
+        "compile": "npm run clean && tsc -p ./",
         "watch": "tsc -watch -p ./",
         "postinstall": "node ./node_modules/vscode/bin/install",
         "test": "npm run compile && node ./node_modules/vscode/bin/test",
@@ -117,6 +118,7 @@
         "@types/node": "^8.6.0",
         "github-releases-renderer": "github:aioutecism/github-releases-renderer",
         "mocha": "^5.1.1",
+        "rimraf": "^2.6.2",
         "typescript": "^2.8.3",
         "vscode": "^1.1.14"
     }
