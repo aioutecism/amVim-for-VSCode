@@ -110,6 +110,7 @@ export class ActionDelete {
         shouldYank?: boolean
     } = {}): Thenable<boolean> {
         args.n = args.n === undefined ? 1 : args.n;
+        args.isMultiLine = args.isMultiLine === undefined ? false : args.isMultiLine;
         args.shouldYank = args.shouldYank === undefined ? false : args.shouldYank;
 
         const activeTextEditor = window.activeTextEditor;
