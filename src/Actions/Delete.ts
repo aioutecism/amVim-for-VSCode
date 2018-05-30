@@ -105,10 +105,11 @@ export class ActionDelete {
 
     @StaticReflect.metadata(SymbolMetadata.Action.isChange, true)
     static selectionsOrLeft(args: {
+        n?: number,
         isMultiLine?: boolean,
         shouldYank?: boolean
     } = {}): Thenable<boolean> {
-        args.isMultiLine = args.isMultiLine === undefined ? false : args.isMultiLine;
+        args.n = args.n === undefined ? 1 : args.n;
         args.shouldYank = args.shouldYank === undefined ? false : args.shouldYank;
 
         const activeTextEditor = window.activeTextEditor;
@@ -147,8 +148,9 @@ export class ActionDelete {
         }
         else {
             ranges = activeTextEditor.selections.map(selection => {
+                let n = Math.min(selection.active.character, args.n!);
                 return selection.isEmpty && selection.active.character !== 0
-                    ? new Range(selection.active, selection.active.translate(0, -1))
+                    ? new Range(selection.active, selection.active.translate(0, -n))
                     : selection;
             });
         }
@@ -170,9 +172,11 @@ export class ActionDelete {
 
     @StaticReflect.metadata(SymbolMetadata.Action.isChange, true)
     static selectionsOrRight(args: {
+        n?: number,
         isMultiLine?: boolean,
         shouldYank?: boolean
     } = {}): Thenable<boolean> {
+        args.n = args.n === undefined ? 1 : args.n;
         args.isMultiLine = args.isMultiLine === undefined ? false : args.isMultiLine;
         args.shouldYank = args.shouldYank === undefined ? false : args.shouldYank;
 
@@ -213,7 +217,7 @@ export class ActionDelete {
         else {
             ranges = activeTextEditor.selections.map(selection => {
                 return selection.isEmpty
-                    ? new Range(selection.active, selection.active.translate(0, +1))
+                    ? new Range(selection.active, selection.active.translate(0, +args.n!))
                     : selection;
             });
         }
