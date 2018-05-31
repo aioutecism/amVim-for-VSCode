@@ -1,3 +1,8 @@
+# [1.28.0](https://github.com/aioutecism/amVim-for-VSCode/releases/tag/1.28.0)
+
+- Added `N x` and `N X` supports. #206. Thanks to @wmaurer!
+
+
 # [1.27.0](https://github.com/aioutecism/amVim-for-VSCode/releases/tag/1.27.0)
 
 - Supports `{N} d {motion}`. #200
