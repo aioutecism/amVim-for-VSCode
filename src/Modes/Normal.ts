@@ -70,7 +70,14 @@ export class ModeNormal extends Mode {
         } },
 
         { keys: 'X', actions: [ActionDelete.selectionsOrLeft], args: {shouldYank: true} },
+        { keys: '{N} X', actions: [ ActionDelete.selectionsOrLeft, ], args: { shouldYank: true } },
         { keys: 'x', actions: [
+            ActionDelete.selectionsOrRight,
+            ActionSelection.validateSelections,
+        ], args: {
+            shouldYank: true
+        } },
+        { keys: '{N} x', actions: [
             ActionDelete.selectionsOrRight,
             ActionSelection.validateSelections,
         ], args: {
