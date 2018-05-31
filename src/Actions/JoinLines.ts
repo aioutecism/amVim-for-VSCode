@@ -1,4 +1,4 @@
-import {window, Range} from 'vscode';
+import {window, Range, Selection, Position} from 'vscode';
 import {StaticReflect} from '../LanguageExtensions/StaticReflect';
 import {SymbolMetadata} from '../Symbols/Metadata';
 import {ActionReveal} from './Reveal';
@@ -63,6 +63,13 @@ export class ActionJoinLines {
             ranges.forEach(range => {
                 editBuilder.replace(range, ' ');
             });
+
+            // move to the space between the last two joined lines
+            linesToJoin.sort();
+            const lastLine = linesToJoin[linesToJoin.length - 1];
+            const char = activeTextEditor.document.lineAt(lastLine).text.length;
+            const position = new Position(lastLine, char)
+            activeTextEditor.selection = new Selection(position, position);
         })
             .then(() => ActionReveal.primaryCursor());
     }
