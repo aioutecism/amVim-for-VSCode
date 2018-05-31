@@ -106,11 +106,9 @@ export class ActionDelete {
     @StaticReflect.metadata(SymbolMetadata.Action.isChange, true)
     static selectionsOrLeft(args: {
         n?: number,
-        isMultiLine?: boolean,
         shouldYank?: boolean
     } = {}): Thenable<boolean> {
         args.n = args.n === undefined ? 1 : args.n;
-        args.isMultiLine = args.isMultiLine === undefined ? false : args.isMultiLine;
         args.shouldYank = args.shouldYank === undefined ? false : args.shouldYank;
 
         const activeTextEditor = window.activeTextEditor;
@@ -119,42 +117,12 @@ export class ActionDelete {
             return Promise.resolve(false);
         }
 
-        let document = activeTextEditor.document;
-        let ranges: Range[];
-
-        if (args.isMultiLine) {
-            ranges = activeTextEditor.selections.map(selection => {
-                if (! selection.isEmpty) {
-                    return selection;
-                }
-
-                let position = selection.active;
-
-                if (position.character === 0) {
-                    if (position.line === 0) {
-                        return selection;
-                    }
-                    else {
-                        let lineLength = document.lineAt(position.line - 1).text.length;
-                        return new Range(
-                            position.translate(-1, lineLength),
-                            position
-                        );
-                    }
-                }
-                else {
-                    return new Range(selection.active, selection.active.translate(0, -1));
-                }
-            });
-        }
-        else {
-            ranges = activeTextEditor.selections.map(selection => {
-                let n = Math.min(selection.active.character, args.n!);
-                return selection.isEmpty && selection.active.character !== 0
-                    ? new Range(selection.active, selection.active.translate(0, -n))
-                    : selection;
-            });
-        }
+        let ranges = activeTextEditor.selections.map(selection => {
+            let n = Math.min(selection.active.character, args.n!);
+            return selection.isEmpty && selection.active.character !== 0
+                ? new Range(selection.active, selection.active.translate(0, -n))
+                : selection;
+        });
 
         ranges = UtilRange.unionOverlaps(ranges);
 
@@ -174,11 +142,9 @@ export class ActionDelete {
     @StaticReflect.metadata(SymbolMetadata.Action.isChange, true)
     static selectionsOrRight(args: {
         n?: number,
-        isMultiLine?: boolean,
         shouldYank?: boolean
     } = {}): Thenable<boolean> {
         args.n = args.n === undefined ? 1 : args.n;
-        args.isMultiLine = args.isMultiLine === undefined ? false : args.isMultiLine;
         args.shouldYank = args.shouldYank === undefined ? false : args.shouldYank;
 
         const activeTextEditor = window.activeTextEditor;
@@ -187,41 +153,11 @@ export class ActionDelete {
             return Promise.resolve(false);
         }
 
-        let document = activeTextEditor.document;
-        let ranges: Range[];
-
-        if (args.isMultiLine) {
-            ranges = activeTextEditor.selections.map(selection => {
-                if (! selection.isEmpty) {
-                    return selection;
-                }
-
-                let position = selection.active;
-                let lineLength = document.lineAt(position.line).text.length;
-
-                if (position.character === lineLength) {
-                    if (position.line === document.lineCount - 1) {
-                        return selection;
-                    }
-                    else {
-                        return new Range(
-                            position.line, position.character,
-                            position.line + 1, 0
-                        );
-                    }
-                }
-                else {
-                    return new Range(selection.active, selection.active.translate(0, +1));
-                }
-            });
-        }
-        else {
-            ranges = activeTextEditor.selections.map(selection => {
-                return selection.isEmpty
-                    ? new Range(selection.active, selection.active.translate(0, +args.n!))
-                    : selection;
-            });
-        }
+        let ranges = activeTextEditor.selections.map(selection => {
+            return selection.isEmpty
+                ? new Range(selection.active, selection.active.translate(0, +args.n!))
+                : selection;
+        });
 
         ranges = UtilRange.unionOverlaps(ranges);
 
