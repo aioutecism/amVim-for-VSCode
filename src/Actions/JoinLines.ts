@@ -1,4 +1,4 @@
-import {window, Range} from 'vscode';
+import {window, Range, Selection, Position} from 'vscode';
 import {StaticReflect} from '../LanguageExtensions/StaticReflect';
 import {SymbolMetadata} from '../Symbols/Metadata';
 import {ActionReveal} from './Reveal';
@@ -38,17 +38,26 @@ export class ActionJoinLines {
                 );
             };
 
-            let linesToJoin: number[] = [];
+            const targetPositions: Position[] = [];
+            const linesToJoin: number[] = [];
             activeTextEditor.selections.forEach(selection => {
                 if (selection.isSingleLine) {
+                    const line = activeTextEditor.document.lineAt(selection.active.line);
+                    targetPositions.push(new Position(line.lineNumber, line.text.length));
+                    
                     linesToJoin.push(selection.active.line);
                 }
                 else {
+                    const line = activeTextEditor.document.lineAt(selection.end.line - 1);
+                    targetPositions.push(new Position(line.lineNumber, line.text.length));
+
                     for (let line = selection.start.line; line < selection.end.line; line++) {
                         linesToJoin.push(line);
                     }
                 }
             });
+
+            activeTextEditor.selections = targetPositions.map((position) => new Selection(position, position));
 
             let ranges: Range[] = [];
             linesToJoin.forEach(line => {
