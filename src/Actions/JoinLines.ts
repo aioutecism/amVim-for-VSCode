@@ -38,17 +38,26 @@ export class ActionJoinLines {
                 );
             };
 
-            let linesToJoin: number[] = [];
+            const targetPositions: Position[] = [];
+            const linesToJoin: number[] = [];
             activeTextEditor.selections.forEach(selection => {
                 if (selection.isSingleLine) {
+                    const line = activeTextEditor.document.lineAt(selection.active.line);
+                    targetPositions.push(new Position(line.lineNumber, line.text.length));
+                    
                     linesToJoin.push(selection.active.line);
                 }
                 else {
+                    const line = activeTextEditor.document.lineAt(selection.end.line - 1);
+                    targetPositions.push(new Position(line.lineNumber, line.text.length));
+
                     for (let line = selection.start.line; line < selection.end.line; line++) {
                         linesToJoin.push(line);
                     }
                 }
             });
+
+            activeTextEditor.selections = targetPositions.map((position) => new Selection(position, position));
 
             let ranges: Range[] = [];
             linesToJoin.forEach(line => {
@@ -63,13 +72,6 @@ export class ActionJoinLines {
             ranges.forEach(range => {
                 editBuilder.replace(range, ' ');
             });
-
-            // move to the space between the last two joined lines
-            linesToJoin.sort();
-            const lastLine = linesToJoin[linesToJoin.length - 1];
-            const char = activeTextEditor.document.lineAt(lastLine).text.length;
-            const position = new Position(lastLine, char)
-            activeTextEditor.selection = new Selection(position, position);
         })
             .then(() => ActionReveal.primaryCursor());
     }

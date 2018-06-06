@@ -15,7 +15,7 @@ suite('Visual: J', () => {
         {
             from: '[foo\nb]ar\nabc\n[123\n4]56\n789',
             inputs: 'J',
-            to: 'foo bar\nabc\n123[] 456\n789',
+            to: 'foo[] bar\nabc\n123[] 456\n789',
         },
     ];
 
