@@ -1,3 +1,8 @@
+# [1.28.2](https://github.com/aioutecism/amVim-for-VSCode/releases/tag/1.28.2)
+
+- Fixed cursor position after `J`. Thanks @wmaurer. #207
+
+
 # [1.28.0](https://github.com/aioutecism/amVim-for-VSCode/releases/tag/1.28.0)
 
 - Added `N x` and `N X` supports. #206. Thanks to @wmaurer!
