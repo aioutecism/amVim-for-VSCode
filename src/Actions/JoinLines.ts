@@ -40,19 +40,20 @@ export class ActionJoinLines {
 
             const targetPositions: Position[] = [];
             const linesToJoin: number[] = [];
+
             activeTextEditor.selections.forEach(selection => {
                 if (selection.isSingleLine) {
                     const line = activeTextEditor.document.lineAt(selection.active.line);
                     targetPositions.push(new Position(line.lineNumber, line.text.length));
-                    
-                    linesToJoin.push(selection.active.line);
+
+                    linesToJoin.push(line.lineNumber);
                 }
                 else {
                     const line = activeTextEditor.document.lineAt(selection.end.line - 1);
                     targetPositions.push(new Position(line.lineNumber, line.text.length));
 
-                    for (let line = selection.start.line; line < selection.end.line; line++) {
-                        linesToJoin.push(line);
+                    for (let lineNumber = selection.start.line; lineNumber <= line.lineNumber; lineNumber++) {
+                        linesToJoin.push(lineNumber);
                     }
                 }
             });

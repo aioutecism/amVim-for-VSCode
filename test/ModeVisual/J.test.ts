@@ -8,6 +8,11 @@ suite('Visual: J', () => {
             to: 'foo[] bar\nabc',
         },
         {
+            from: '[foo\nbar\na]bc',
+            inputs: 'J',
+            to: 'foo bar[] abc',
+        },
+        {
             from: '[f]o[o]\nbar\nabc',
             inputs: 'J',
             to: 'foo[] bar\nabc',
