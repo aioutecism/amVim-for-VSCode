@@ -42,6 +42,10 @@ export class MotionMatch extends Motion {
         return obj;
     }
 
+    static clearLast() {
+        MotionMatch.last = undefined;
+    }
+
     static repeatLast(args: { isReverse?: boolean, n?: number }): Motion {
         return MotionMatch.last ? MotionMatch.last.clone(args) : new MotionEmpty();
     }
