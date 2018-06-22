@@ -8,13 +8,11 @@ export class ActionRelativeLineNumbers {
                 const activeTextEditor = window.activeTextEditor;
 
                 if (! activeTextEditor) {
-                    return Promise.resolve(false);
+                    return resolve(false);
                 }
 
-                const lineNumbersTurnedOff = activeTextEditor.options.lineNumbers === TextEditorLineNumbersStyle.Off
-
-                if (lineNumbersTurnedOff) {
-                    return Promise.resolve(false)
+                if (activeTextEditor.options.lineNumbers === TextEditorLineNumbersStyle.Off) {
+                    return resolve(false);
                 }
 
                 activeTextEditor.options.lineNumbers = TextEditorLineNumbersStyle.Relative;
@@ -30,13 +28,11 @@ export class ActionRelativeLineNumbers {
                 const activeTextEditor = window.activeTextEditor;
 
                 if (! activeTextEditor) {
-                    return Promise.resolve(false);
+                    return resolve(false);
                 }
 
-                const lineNumbersTurnedOff = activeTextEditor.options.lineNumbers === TextEditorLineNumbersStyle.Off
-
-                if (lineNumbersTurnedOff) {
-                    return Promise.resolve(false)
+                if (activeTextEditor.options.lineNumbers === TextEditorLineNumbersStyle.Off) {
+                    return resolve(false);
                 }
 
                 activeTextEditor.options.lineNumbers = TextEditorLineNumbersStyle.On;
