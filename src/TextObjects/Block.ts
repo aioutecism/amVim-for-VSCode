@@ -1,130 +1,121 @@
-import {TextDocument, Position, Range} from 'vscode';
-import {TextObject} from './TextObject';
+import { TextDocument, Position, Range } from 'vscode';
+import { TextObject } from './TextObject';
 
 export class TextObjectBlock extends TextObject {
+  protected readonly shouldExpandToLinewise = true;
 
-    protected readonly shouldExpandToLinewise = true;
+  private openingCharacter: string;
+  private closingCharacter: string;
 
-    private openingCharacter: string;
-    private closingCharacter: string;
+  static byParentheses(args: { isInclusive: boolean }): TextObject {
+    const obj = new TextObjectBlock();
+    obj.isInclusive = args.isInclusive;
+    obj.openingCharacter = '(';
+    obj.closingCharacter = ')';
 
-    static byParentheses(args: {isInclusive: boolean}): TextObject {
-        const obj = new TextObjectBlock();
-        obj.isInclusive = args.isInclusive;
-        obj.openingCharacter = '(';
-        obj.closingCharacter = ')';
+    return obj;
+  }
 
-        return obj;
-    }
+  static byBrackets(args: { isInclusive: boolean }): TextObject {
+    const obj = new TextObjectBlock();
+    obj.isInclusive = args.isInclusive;
+    obj.openingCharacter = '[';
+    obj.closingCharacter = ']';
 
-    static byBrackets(args: {isInclusive: boolean}): TextObject {
-        const obj = new TextObjectBlock();
-        obj.isInclusive = args.isInclusive;
-        obj.openingCharacter = '[';
-        obj.closingCharacter = ']';
+    return obj;
+  }
 
-        return obj;
-    }
+  static byBraces(args: { isInclusive: boolean }): TextObject {
+    const obj = new TextObjectBlock();
+    obj.isInclusive = args.isInclusive;
+    obj.openingCharacter = '{';
+    obj.closingCharacter = '}';
 
-    static byBraces(args: {isInclusive: boolean}): TextObject {
-        const obj = new TextObjectBlock();
-        obj.isInclusive = args.isInclusive;
-        obj.openingCharacter = '{';
-        obj.closingCharacter = '}';
+    return obj;
+  }
 
-        return obj;
-    }
+  static byChevrons(args: { isInclusive: boolean }): TextObject {
+    const obj = new TextObjectBlock();
+    obj.isInclusive = args.isInclusive;
+    obj.openingCharacter = '<';
+    obj.closingCharacter = '>';
 
-    static byChevrons(args: {isInclusive: boolean}): TextObject {
-        const obj = new TextObjectBlock();
-        obj.isInclusive = args.isInclusive;
-        obj.openingCharacter = '<';
-        obj.closingCharacter = '>';
+    return obj;
+  }
 
-        return obj;
-    }
+  findStartRange(document: TextDocument, anchor: Position): Range | null {
+    let matchingCount = 0;
+    let lineIndex = anchor.line;
 
-    findStartRange(document: TextDocument, anchor: Position): Range | null {
-        let matchingCount = 0;
-        let lineIndex = anchor.line;
+    do {
+      const lineText = document.lineAt(lineIndex).text;
 
-        do {
+      let characterIndex =
+        lineIndex === anchor.line ? anchor.character : lineText.length - 1;
 
-            const lineText = document.lineAt(lineIndex).text;
+      while (characterIndex >= 0) {
+        if (lineText[characterIndex] === this.closingCharacter) {
+          // Don't count closing character on anchor.
+          if (!anchor.isEqual(new Position(lineIndex, characterIndex))) {
+            matchingCount++;
+          }
+        } else if (lineText[characterIndex] === this.openingCharacter) {
+          if (matchingCount === 0) {
+            return new Range(
+              lineIndex,
+              characterIndex,
+              lineIndex,
+              characterIndex + 1
+            );
+          } else {
+            matchingCount--;
+          }
+        }
 
-            let characterIndex = lineIndex === anchor.line ? anchor.character : lineText.length - 1;
+        characterIndex--;
+      }
 
-            while (characterIndex >= 0) {
+      lineIndex--;
+    } while (lineIndex >= 0);
 
-                if (lineText[characterIndex] === this.closingCharacter) {
-                    // Don't count closing character on anchor.
-                    if (! anchor.isEqual(new Position(lineIndex, characterIndex))) {
-                        matchingCount++;
-                    }
-                }
-                else if (lineText[characterIndex] === this.openingCharacter) {
-                    if (matchingCount === 0) {
-                        return new Range(
-                            lineIndex, characterIndex,
-                            lineIndex, characterIndex + 1
-                        );
-                    }
-                    else {
-                        matchingCount--;
-                    }
-                }
+    return null;
+  }
 
-                characterIndex--;
+  findEndRange(document: TextDocument, anchor: Position): Range | null {
+    let matchingCount = 0;
+    let lineIndex = anchor.line;
 
-            }
+    do {
+      const line = document.lineAt(lineIndex);
+      const lineText = line.text;
 
-            lineIndex--;
+      let characterIndex = lineIndex === anchor.line ? anchor.character : 0;
 
-        } while (lineIndex >= 0);
+      while (characterIndex < lineText.length) {
+        if (lineText[characterIndex] === this.openingCharacter) {
+          // Don't count opening character on anchor.
+          if (!anchor.isEqual(new Position(lineIndex, characterIndex))) {
+            matchingCount++;
+          }
+        } else if (lineText[characterIndex] === this.closingCharacter) {
+          if (matchingCount === 0) {
+            return new Range(
+              lineIndex,
+              characterIndex,
+              lineIndex,
+              characterIndex + 1
+            );
+          } else {
+            matchingCount--;
+          }
+        }
 
-        return null;
-    }
+        characterIndex++;
+      }
 
-    findEndRange(document: TextDocument, anchor: Position): Range | null {
-        let matchingCount = 0;
-        let lineIndex = anchor.line;
+      lineIndex++;
+    } while (lineIndex < document.lineCount);
 
-        do {
-
-            const line = document.lineAt(lineIndex);
-            const lineText = line.text;
-
-            let characterIndex = lineIndex === anchor.line ? anchor.character : 0;
-
-            while (characterIndex < lineText.length) {
-
-                if (lineText[characterIndex] === this.openingCharacter) {
-                    // Don't count opening character on anchor.
-                    if (! anchor.isEqual(new Position(lineIndex, characterIndex))) {
-                        matchingCount++;
-                    }
-                }
-                else if (lineText[characterIndex] === this.closingCharacter) {
-                    if (matchingCount === 0) {
-                        return new Range(
-                            lineIndex, characterIndex,
-                            lineIndex, characterIndex + 1
-                        );
-                    }
-                    else {
-                        matchingCount--;
-                    }
-                }
-
-                characterIndex++;
-
-            }
-
-            lineIndex++;
-
-        } while (lineIndex < document.lineCount);
-
-        return null;
-    }
-
+    return null;
+  }
 }
