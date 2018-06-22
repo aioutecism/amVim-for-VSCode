@@ -1,3 +1,8 @@
+# [1.29.1](https://github.com/aioutecism/amVim-for-VSCode/releases/tag/1.29.1)
+
+- Fixed a bug when `"editor.lineNumbers": "off"` is not respected. Thanks @jackfranklin. #215
+
+
 # [1.29.0](https://github.com/aioutecism/amVim-for-VSCode/releases/tag/1.29.0)
 
 - Added support for `;` and `,`. #209
