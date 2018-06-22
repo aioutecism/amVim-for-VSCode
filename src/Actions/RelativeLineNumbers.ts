@@ -11,6 +11,12 @@ export class ActionRelativeLineNumbers {
                     return Promise.resolve(false);
                 }
 
+                const lineNumbersTurnedOff = activeTextEditor.options.lineNumbers === TextEditorLineNumbersStyle.Off
+
+                if (lineNumbersTurnedOff) {
+                    return Promise.resolve(false)
+                }
+
                 activeTextEditor.options.lineNumbers = TextEditorLineNumbersStyle.Relative;
 
                 resolve(true);
@@ -25,6 +31,12 @@ export class ActionRelativeLineNumbers {
 
                 if (! activeTextEditor) {
                     return Promise.resolve(false);
+                }
+
+                const lineNumbersTurnedOff = activeTextEditor.options.lineNumbers === TextEditorLineNumbersStyle.Off
+
+                if (lineNumbersTurnedOff) {
+                    return Promise.resolve(false)
                 }
 
                 activeTextEditor.options.lineNumbers = TextEditorLineNumbersStyle.On;
