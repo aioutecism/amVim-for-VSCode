@@ -10,14 +10,7 @@ function isConstructor(x: any): boolean {
     return typeof x === 'function';
 }
 
-interface Metadata {
-    [key: string]: any;
-}
-
-interface MetadataMap {
-    target: any;
-    metadata: Metadata;
-}
+type Metadata = Map<string | symbol, any>;
 
 /**
  * Static version of https://github.com/rbuckton/ReflectDecorators/ (Partial)
@@ -25,29 +18,18 @@ interface MetadataMap {
  */
 export class StaticReflect {
 
-    private static metadataMaps: MetadataMap[] = [];
+    private static metadataMap = new Map<any, Metadata>();
 
     private static obtainMetadata(target: any, shouldCreateWhenNotExist: boolean = false): Metadata | undefined {
-        for (let i = 0; i < this.metadataMaps.length; i++) {
-            const map = this.metadataMaps[i];
-            if (map.target === target) {
-                return map.metadata;
-            }
+        let metadata = this.metadataMap.get(target);
+
+        if (!metadata && shouldCreateWhenNotExist) {
+            metadata = new Map();
+
+            this.metadataMap.set(target, metadata);
         }
 
-        if (shouldCreateWhenNotExist) {
-            const map = {
-                target,
-                metadata: {}
-            };
-
-            this.metadataMaps.push(map);
-
-            return map.metadata;
-        }
-        else {
-            return undefined;
-        }
+        return metadata;
     }
 
     /**
@@ -112,14 +94,14 @@ export class StaticReflect {
 
     static defineMetadata(key: string | symbol, value: any, target: any): void {
         const metadata = this.obtainMetadata(target, true);
-        metadata![key] = value;
+        metadata!.set(key, value);
     }
 
     static getMetadata(key: string | symbol, target: any): any {
         const metadata = this.obtainMetadata(target);
 
         if (metadata !== undefined) {
-            return metadata[key];
+            return metadata.get(key);
         }
         else {
             return undefined;
