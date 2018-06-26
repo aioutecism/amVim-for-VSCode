@@ -1,3 +1,8 @@
+# [1.29.2](https://github.com/aioutecism/amVim-for-VSCode/releases/tag/1.29.2)
+
+- Focus back to text when pressing enter at find widget. #218
+
+
 # [1.29.1](https://github.com/aioutecism/amVim-for-VSCode/releases/tag/1.29.1)
 
 - Fixed a bug when `"editor.lineNumbers": "off"` is not respected. Thanks @jackfranklin. #215
