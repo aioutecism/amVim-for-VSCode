@@ -6,6 +6,7 @@ import {ModeVisual} from './Modes/Visual';
 import {ModeVisualLine} from './Modes/VisualLine';
 import {ModeInsert} from './Modes/Insert';
 import {ActionMode} from './Actions/Mode';
+import {ActionFind} from './Actions/Find';
 import {ActionMoveCursor} from './Actions/MoveCursor';
 import {Configuration} from './Configuration';
 
@@ -42,6 +43,8 @@ export class Dispatcher {
         Keys.raws.forEach(key => {
             context.subscriptions.push(commands.registerCommand(`amVim.${key}`, this.inputHandler(key)));
         });
+
+        context.subscriptions.push(commands.registerCommand('amVim.executeNativeFind', ActionFind.executeNativeFind));
 
         ActionMoveCursor.updatePreferredColumn();
 
