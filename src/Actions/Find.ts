@@ -1,9 +1,15 @@
 import {window, commands, Selection} from 'vscode';
+import {ActionSelection} from './Selection';
 
 export class ActionFind {
 
     static focusFindWidget(): Thenable<boolean | undefined> {
         return commands.executeCommand('actions.find');
+    }
+
+    static executeNativeFind(): Thenable<boolean> {
+        return commands.executeCommand('search.action.focusActiveEditor')
+            .then(ActionSelection.shrinkToEnds);
     }
 
     // TODO: Implement independent find function to avoid incorrect cursor position after `next()`

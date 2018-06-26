@@ -80,6 +80,8 @@
             { "command": "amVim.ctrl+f", "key": "ctrl+f", "when": "editorTextFocus && amVim.configuration.shouldBindCtrlCommands && amVim.mode != 'INSERT'" },
             { "command": "amVim.ctrl+b", "key": "ctrl+b", "when": "editorTextFocus && amVim.configuration.shouldBindCtrlCommands && amVim.mode != 'INSERT'" },
 
+            { "key": "enter", "command": "amVim.executeNativeFind", "when": "editorFocus && findInputFocussed && findWidgetVisible" },
+
             { "key": "j", "command": "list.focusDown", "when": "amVim.configuration.shouldUseVimStyleNavigationInListView && listFocus && !inputFocus" },
             { "key": "k", "command": "list.focusUp", "when": "amVim.configuration.shouldUseVimStyleNavigationInListView && listFocus && !inputFocus" },
             { "key": "o", "command": "list.toggleExpand", "when": "amVim.configuration.shouldUseVimStyleNavigationInListView && listFocus && !inputFocus" },
