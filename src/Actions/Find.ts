@@ -8,7 +8,7 @@ export class ActionFind {
     }
 
     static executeNativeFind(): Thenable<boolean> {
-        return commands.executeCommand('search.action.focusActiveEditor')
+        return commands.executeCommand('workbench.action.focusActiveEditorGroup')
             .then(ActionSelection.shrinkToEnds);
     }
 
