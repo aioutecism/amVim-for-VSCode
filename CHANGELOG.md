@@ -1,3 +1,8 @@
+# [1.29.3](https://github.com/aioutecism/amVim-for-VSCode/releases/tag/1.29.3)
+
+- Fixed `command 'search.action.focusActiveEditor' not found` when searching. Thanks @marek2901. #223 
+
+
 # [1.29.2](https://github.com/aioutecism/amVim-for-VSCode/releases/tag/1.29.2)
 
 - Focus back to text when pressing enter at find widget. #218
