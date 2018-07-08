@@ -55,6 +55,11 @@
                     "default": false,
                     "description": "Set to `true` to will make line numbers relative when not in Insert mode."
                 },
+                "amVim.mimicVimSearchBehavior": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Set to `false` to keep VSCode's keybinding when searching."
+                },
                 "amVim.vimStyleNavigationInListView": {
                     "type": "boolean",
                     "default": true,
@@ -80,7 +85,7 @@
             { "command": "amVim.ctrl+f", "key": "ctrl+f", "when": "editorTextFocus && amVim.configuration.shouldBindCtrlCommands && amVim.mode != 'INSERT'" },
             { "command": "amVim.ctrl+b", "key": "ctrl+b", "when": "editorTextFocus && amVim.configuration.shouldBindCtrlCommands && amVim.mode != 'INSERT'" },
 
-            { "key": "enter", "command": "amVim.executeNativeFind", "when": "editorFocus && findInputFocussed && findWidgetVisible" },
+            { "key": "enter", "command": "amVim.executeNativeFind", "when": "amVim.configuration.shouldMimicVimSearchBehavior && editorFocus && findInputFocussed && findWidgetVisible" },
 
             { "key": "j", "command": "list.focusDown", "when": "amVim.configuration.shouldUseVimStyleNavigationInListView && listFocus && !inputFocus" },
             { "key": "k", "command": "list.focusUp", "when": "amVim.configuration.shouldUseVimStyleNavigationInListView && listFocus && !inputFocus" },
