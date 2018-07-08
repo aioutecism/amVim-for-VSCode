@@ -48,6 +48,12 @@ Set to `true` to start in Insert mode when opening files.
 
 Set to `true` to will make line numbers relative when not in Insert mode.
 
+#### `amVim.mimicVimSearchBehavior`
+
+`Boolean`, Default: `true`
+
+Set to `false` to keep VSCode's keybinding when searching.
+
 #### `amVim.vimStyleNavigationInListView`
 
 `Boolean`, Default: `true`
