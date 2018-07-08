@@ -1,3 +1,8 @@
+# [1.30.0](https://github.com/aioutecism/amVim-for-VSCode/releases/tag/1.30.0)
+
+- Added `amVim.mimicVimSearchBehavior` configuration. #224
+
+
 # [1.29.3](https://github.com/aioutecism/amVim-for-VSCode/releases/tag/1.29.3)
 
 - Fixed `command 'search.action.focusActiveEditor' not found` when searching. Thanks @marek2901. #223 
