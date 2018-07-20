@@ -20,6 +20,19 @@ export class MotionDocument extends Motion {
         return MotionDocument.toLine({n: args.n === undefined ? +Infinity : args.n});
     }
 
+    static toLinePercent(args: {n: number}): Motion {
+        const activeTextEditor = window.activeTextEditor;
+        var line
+        if (! activeTextEditor ) {
+            line = 0
+        }else{
+            const document = activeTextEditor.document;
+            line = Math.round(document.lineCount * args.n / 100)
+            line = Math.min(document.lineCount, line)
+        }
+        return MotionDocument.toLine({n: line})
+    }
+
     apply(from: Position): Position {
         from = super.apply(from);
 

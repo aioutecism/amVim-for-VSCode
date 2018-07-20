@@ -69,6 +69,9 @@ export class SpecialKeyMotion extends GenericMapper implements SpecialKeyCommon 
 
         { keys: 'g g', motionGenerators: [MotionDocument.toLineOrFirst, MotionLine.firstNonBlank] },
         { keys: 'G',   motionGenerators: [MotionDocument.toLineOrLast, MotionLine.firstNonBlank] },
+        { keys: '%', motionGenerators: [
+            (args: {n : number}) => MotionDocument.toLinePercent({n:args.n})
+        ]},
 
         { keys: 'space', motionGenerators: [MotionDirection.next] },
         { keys: 'backspace', motionGenerators: [MotionDirection.prev] },
