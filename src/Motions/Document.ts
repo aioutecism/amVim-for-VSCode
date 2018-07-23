@@ -22,7 +22,7 @@ export class MotionDocument extends Motion {
 
     static toLinePercent(args: {n: number}): Motion {
         const activeTextEditor = window.activeTextEditor;
-        var line
+        let line
         if (! activeTextEditor ) {
             line = 0
         }else{
