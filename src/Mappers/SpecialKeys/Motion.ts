@@ -11,6 +11,7 @@ import {MotionMatchPair} from '../../Motions/MatchPair';
 import {MotionLine} from '../../Motions/Line';
 import {MotionParagraph} from '../../Motions/Paragraph';
 import {MotionDocument} from '../../Motions/Document';
+import { MotionMethod } from '../../Motions/Methods';
 
 interface MotionGenerator {
     (args?: {}): Motion;
@@ -75,6 +76,8 @@ export class SpecialKeyMotion extends GenericMapper implements SpecialKeyCommon 
         { keys: '%', motionGenerators: [
             (args: {n : number}) => MotionDocument.toLinePercent({n:args.n})
         ]},
+        { keys: '] m', motionGenerators: [MotionMethod.next]},
+        { keys: '[ m', motionGenerators: [MotionMethod.prev]},
 
         { keys: 'space', motionGenerators: [MotionDirection.next] },
         { keys: 'backspace', motionGenerators: [MotionDirection.prev] },
