@@ -11,6 +11,7 @@ import {MotionMatchPair} from '../../Motions/MatchPair';
 import {MotionLine} from '../../Motions/Line';
 import {MotionParagraph} from '../../Motions/Paragraph';
 import {MotionDocument} from '../../Motions/Document';
+import { MotionMethod } from '../../Motions/Methods';
 
 interface MotionGenerator {
     (args?: {}): Motion;
@@ -42,6 +43,9 @@ export class SpecialKeyMotion extends GenericMapper implements SpecialKeyCommon 
         { keys: 'E', motionGenerators: [MotionWord.nextEnd], args: {useBlankSeparatedStyle: true} },
         { keys: 'b', motionGenerators: [MotionWord.prevStart] },
         { keys: 'B', motionGenerators: [MotionWord.prevStart], args: {useBlankSeparatedStyle: true} },
+        { keys: 'g e', motionGenerators: [MotionWord.prevEnd] },
+        { keys: 'g E', motionGenerators: [MotionWord.prevEnd], args: {useBlankSeparatedStyle: true}},
+        
 
         { keys: 'f {char}', motionGenerators: [MotionMatch.next] },
         { keys: 'F {char}', motionGenerators: [MotionMatch.prev] },
@@ -69,6 +73,11 @@ export class SpecialKeyMotion extends GenericMapper implements SpecialKeyCommon 
 
         { keys: 'g g', motionGenerators: [MotionDocument.toLineOrFirst, MotionLine.firstNonBlank] },
         { keys: 'G',   motionGenerators: [MotionDocument.toLineOrLast, MotionLine.firstNonBlank] },
+        { keys: '%', motionGenerators: [
+            (args: {n : number}) => MotionDocument.toLinePercent({n:args.n})
+        ]},
+        { keys: '] m', motionGenerators: [MotionMethod.next]},
+        { keys: '[ m', motionGenerators: [MotionMethod.prev]},
 
         { keys: 'space', motionGenerators: [MotionDirection.next] },
         { keys: 'backspace', motionGenerators: [MotionDirection.prev] },
