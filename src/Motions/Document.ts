@@ -46,7 +46,7 @@ export class MotionDocument extends Motion {
 
         let line = this.line;
         line = Math.max(0, this.line);
-        line = Math.min(document.lineCount, this.line);
+        line = Math.min(document.lineCount - 1, this.line);
 
         return from.with(line);
     }
