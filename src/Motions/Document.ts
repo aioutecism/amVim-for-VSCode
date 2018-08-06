@@ -28,7 +28,7 @@ export class MotionDocument extends Motion {
         }else{
             const document = activeTextEditor.document;
             line = Math.round(document.lineCount * args.n / 100)
-            line = Math.min(document.lineCount, line)
+            line = Math.min(document.lineCount-1, line)
         }
         return MotionDocument.toLine({n: line})
     }
@@ -47,8 +47,8 @@ export class MotionDocument extends Motion {
         let line = this.line;
         line = Math.max(0, this.line);
         line = Math.min(document.lineCount - 1, this.line);
-
-        return from.with(line);
+        let lineText = document.lineAt(line)
+        return from.with(line, lineText.firstNonWhitespaceCharacterIndex);
     }
 
 }
