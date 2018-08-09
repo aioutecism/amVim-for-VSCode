@@ -21,7 +21,6 @@ export class GoToLineCommand extends Command {
         return ActionMoveCursor.byMotions({
             motions: [
                 MotionDocument.toLine({ n: this.line }),
-                MotionLine.firstNonBlank()
             ],
             noEmptyAtLineEnd: true,
         });
