@@ -1,7 +1,6 @@
 import { Command } from './Base';
 import { ActionMoveCursor } from '../MoveCursor';
 import { MotionDocument } from '../../Motions/Document';
-import { MotionLine } from '../../Motions/Line';
 
 export class GoToLineCommand extends Command {
 

@@ -1,6 +1,5 @@
 import {window, Position} from 'vscode';
 import {Motion} from './Motion';
-import { print } from 'util';
 
 export class MotionDocument extends Motion {
 
