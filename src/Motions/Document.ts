@@ -1,9 +1,11 @@
 import {window, Position} from 'vscode';
 import {Motion} from './Motion';
+import { print } from 'util';
 
 export class MotionDocument extends Motion {
 
     private line: number;
+    private percent: number|undefined;
 
     static toLine(args: {n: number}): Motion {
         const obj = new MotionDocument({isLinewise: true});
@@ -21,16 +23,10 @@ export class MotionDocument extends Motion {
     }
 
     static toLinePercent(args: {n: number}): Motion {
-        const activeTextEditor = window.activeTextEditor;
-        let line
-        if (! activeTextEditor ) {
-            line = 0
-        }else{
-            const document = activeTextEditor.document;
-            line = Math.round(document.lineCount * args.n / 100)
-            line = Math.min(document.lineCount-1, line)
-        }
-        return MotionDocument.toLine({n: line})
+        const obj = new MotionDocument();
+        obj.percent = args.n/100;
+        obj.line = 0;
+        return obj;
     }
 
     apply(from: Position): Position {
@@ -44,10 +40,13 @@ export class MotionDocument extends Motion {
 
         const document = activeTextEditor.document;
 
-        let line = this.line;
-        line = Math.max(0, this.line);
-        line = Math.min(document.lineCount - 1, this.line);
-        let lineText = document.lineAt(line)
+        let line = (this.percent === undefined)
+            ? this.line
+            : Math.round((document.lineCount-1) * this.percent);
+        
+        line = Math.max(0, line);
+        line = Math.min(document.lineCount - 1, line);
+        let lineText = document.lineAt(line);
         return from.with(line, lineText.firstNonWhitespaceCharacterIndex);
     }
 
