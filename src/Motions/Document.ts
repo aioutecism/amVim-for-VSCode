@@ -3,8 +3,8 @@ import {Motion} from './Motion';
 
 export class MotionDocument extends Motion {
 
-    private line: number;
-    private percent: number|undefined;
+    private line?: number;
+    private percent?: number;
 
     static toLine(args: {n: number}): Motion {
         const obj = new MotionDocument({isLinewise: true});
@@ -23,7 +23,7 @@ export class MotionDocument extends Motion {
 
     static toLinePercent(args: {n: number}): Motion {
         const obj = new MotionDocument();
-        obj.percent = args.n/100;
+        obj.percent = Math.min(1, args.n/100);
         obj.line = 0;
         return obj;
     }
@@ -45,7 +45,9 @@ export class MotionDocument extends Motion {
         
         line = Math.max(0, line);
         line = Math.min(document.lineCount - 1, line);
-        let lineText = document.lineAt(line);
+
+        const lineText = document.lineAt(line);
+        
         return from.with(line, lineText.firstNonWhitespaceCharacterIndex);
     }
 
