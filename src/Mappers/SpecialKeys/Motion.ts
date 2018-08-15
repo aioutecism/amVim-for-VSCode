@@ -52,9 +52,9 @@ export class SpecialKeyMotion extends GenericMapper implements SpecialKeyCommon 
         { keys: ',', motionGenerators: [MotionMatch.repeatLast], args: {isReverse: true} },
 
         { keys: '%', motionGenerators: [
-            (args: {n? : number}) => args.n === undefined
-            ? MotionMatchPair.matchPair()
-            : MotionDocument.toLinePercent({n:args.n})
+            (args: {n?: number}) => args.n === undefined
+                ? MotionMatchPair.matchPair()
+                : MotionDocument.toLinePercent({n: args.n})
         ]},
         { keys: '^', motionGenerators: [MotionLine.firstNonBlank] },
         { keys: '0', motionGenerators: [MotionLine.start] },

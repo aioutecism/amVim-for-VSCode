@@ -22,9 +22,8 @@ export class MotionDocument extends Motion {
     }
 
     static toLinePercent(args: {n: number}): Motion {
-        const obj = new MotionDocument();
-        obj.percent = Math.min(1, args.n/100);
-        obj.line = 0;
+        const obj = new MotionDocument({isLinewise: true});
+        obj.percent = Math.min(args.n / 100, 1);
         return obj;
     }
 
@@ -33,21 +32,25 @@ export class MotionDocument extends Motion {
 
         const activeTextEditor = window.activeTextEditor;
 
-        if (! activeTextEditor || this.line === undefined) {
+        if (! activeTextEditor) {
             return from;
         }
 
         const document = activeTextEditor.document;
 
-        let line = (this.percent === undefined)
-            ? this.line
-            : Math.round((document.lineCount-1) * this.percent);
-        
+        let line = this.line !== undefined ? this.line
+            : this.percent !== undefined ? Math.round((document.lineCount - 1) * this.percent)
+            : undefined;
+
+        if (line === undefined) {
+            return from;
+        }
+
         line = Math.max(0, line);
         line = Math.min(document.lineCount - 1, line);
 
         const lineText = document.lineAt(line);
-        
+
         return from.with(line, lineText.firstNonWhitespaceCharacterIndex);
     }
 
