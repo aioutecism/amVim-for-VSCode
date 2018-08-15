@@ -51,8 +51,11 @@ export class SpecialKeyMotion extends GenericMapper implements SpecialKeyCommon 
         { keys: ';', motionGenerators: [MotionMatch.repeatLast] },
         { keys: ',', motionGenerators: [MotionMatch.repeatLast], args: {isReverse: true} },
 
-        { keys: '%', motionGenerators: [MotionMatchPair.matchPair] },
-
+        { keys: '%', motionGenerators: [
+            (args: {n? : number}) => args.n === undefined
+            ? MotionMatchPair.matchPair()
+            : MotionDocument.toLinePercent({n:args.n})
+        ]},
         { keys: '^', motionGenerators: [MotionLine.firstNonBlank] },
         { keys: '0', motionGenerators: [MotionLine.start] },
         { keys: '$', motionGenerators: [MotionLine.end] },
@@ -67,8 +70,8 @@ export class SpecialKeyMotion extends GenericMapper implements SpecialKeyCommon 
         { keys: '{', motionGenerators: [MotionParagraph.prev] },
         { keys: '}', motionGenerators: [MotionParagraph.next] },
 
-        { keys: 'g g', motionGenerators: [MotionDocument.toLineOrFirst, MotionLine.firstNonBlank] },
-        { keys: 'G',   motionGenerators: [MotionDocument.toLineOrLast, MotionLine.firstNonBlank] },
+        { keys: 'g g', motionGenerators: [MotionDocument.toLineOrFirst] },
+        { keys: 'G',   motionGenerators: [MotionDocument.toLineOrLast] },
 
         { keys: 'space', motionGenerators: [MotionDirection.next] },
         { keys: 'backspace', motionGenerators: [MotionDirection.prev] },

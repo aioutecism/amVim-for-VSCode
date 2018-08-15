@@ -3,7 +3,8 @@ import {Motion} from './Motion';
 
 export class MotionDocument extends Motion {
 
-    private line: number;
+    private line?: number;
+    private percent?: number;
 
     static toLine(args: {n: number}): Motion {
         const obj = new MotionDocument({isLinewise: true});
@@ -20,6 +21,13 @@ export class MotionDocument extends Motion {
         return MotionDocument.toLine({n: args.n === undefined ? +Infinity : args.n});
     }
 
+    static toLinePercent(args: {n: number}): Motion {
+        const obj = new MotionDocument();
+        obj.percent = Math.min(1, args.n/100);
+        obj.line = 0;
+        return obj;
+    }
+
     apply(from: Position): Position {
         from = super.apply(from);
 
@@ -31,11 +39,16 @@ export class MotionDocument extends Motion {
 
         const document = activeTextEditor.document;
 
-        let line = this.line;
-        line = Math.max(0, this.line);
-        line = Math.min(document.lineCount, this.line);
+        let line = (this.percent === undefined)
+            ? this.line
+            : Math.round((document.lineCount-1) * this.percent);
+        
+        line = Math.max(0, line);
+        line = Math.min(document.lineCount - 1, line);
 
-        return from.with(line);
+        const lineText = document.lineAt(line);
+        
+        return from.with(line, lineText.firstNonWhitespaceCharacterIndex);
     }
 
 }
