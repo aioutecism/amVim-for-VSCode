@@ -1,4 +1,4 @@
-# amVim for VSCode
+# amVim for VS Code
 
 ![icon](images/icon.png)
 
@@ -10,7 +10,7 @@ The [Vim](http://www.vim.org/) mode for [Visual Studio Code](https://code.visual
 - Vim style keybindings & looks
 - Normal, Visual and Visual Line modes support
 - Multi-cursor support
-- Works with VSCode's default behaviors
+- Works with VS Code's default behaviors
 
 
 ## Not supported
