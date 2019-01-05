@@ -173,6 +173,10 @@ export class ModeNormal extends Mode {
             ActionCase.switchActives,
             () => ActionMoveCursor.byMotions({motions: [MotionCharacter.right()]}),
         ] },
+        { keys: '{N} ~', actions: [
+            ActionCase.switchActives,
+            (n) => ActionMoveCursor.byMotions({motions: [MotionCharacter.right(n)]}),
+        ] },
 
         { keys: 'y y', actions: [ActionRegister.yankLines] },
         { keys: '{N} y y', actions: [ActionRegister.yankLines] },
