@@ -103,6 +103,10 @@ export class ModeVisual extends Mode {
             ActionCase.uppercaseSelections,
             ActionSelection.shrinkToStarts,
         ] },
+        { keys: 'g ?', actions: [
+            ActionCase.rot13Selections,
+            ActionSelection.shrinkToStarts,
+        ] },
 
         { keys: '=', actions: [ActionFilter.Format.bySelections] },
 
