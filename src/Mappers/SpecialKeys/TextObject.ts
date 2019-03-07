@@ -3,6 +3,7 @@ import {SpecialKeyCommon, SpecialKeyMatchResult} from './Common';
 import {TextObject} from '../../TextObjects/TextObject';
 import {TextObjectBlock} from '../../TextObjects/Block';
 import {TextObjectQuotedString} from '../../TextObjects/QuotedString';
+import {TextObjectTag} from '../../TextObjects/Tag';
 import {TextObjectWord} from '../../TextObjects/Word';
 
 interface TextObjectGenerator {
@@ -53,6 +54,10 @@ export class SpecialKeyTextObject extends GenericMapper implements SpecialKeyCom
         {
             characters: ['`'],
             method: TextObjectQuotedString.byBackward,
+        },
+        {
+            characters: ['t'],
+            method: TextObjectTag.byTag,
         },
         {
             characters: ['w'],
