@@ -26,6 +26,7 @@ import {ActionFold} from '../Actions/Fold';
 import {ActionCommandLine} from '../Actions/CommandLine';
 import {MotionCharacter} from '../Motions/Character';
 import {MotionLine} from '../Motions/Line';
+import { ActionNavigation } from '../Actions/Navigation';
 
 export class ModeNormal extends Mode {
 
@@ -216,6 +217,9 @@ export class ModeNormal extends Mode {
 
         { keys: '< <', actions: [ActionIndent.decrease] },
         { keys: '> >', actions: [ActionIndent.increase] },
+
+        { keys: 'g d', actions: [ActionNavigation.goToDeclaration] },
+        { keys: 'g D', actions: [ActionNavigation.goToTypeDefinition] },
 
         { keys: '/', actions: [ActionFind.focusFindWidget] },
 
