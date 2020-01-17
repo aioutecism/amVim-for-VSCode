@@ -36,6 +36,7 @@
         "vscode": "^1.19.0"
     },
     "main": "./out/src/extension",
+    "extensionKind": ["ui"],
     "contributes": {
         "configuration": {
             "title": "amVim configuration",
