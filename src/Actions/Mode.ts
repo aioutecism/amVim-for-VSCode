@@ -1,14 +1,14 @@
-import {window, commands} from 'vscode';
-import {StaticReflect} from '../LanguageExtensions/StaticReflect';
-import {SymbolMetadata} from '../Symbols/Metadata';
-import {ModeID} from '../Modes/Mode';
-import {ActionSelection} from '../Actions/Selection';
+import { window, commands } from 'vscode';
+import { StaticReflect } from '../LanguageExtensions/StaticReflect';
+import { SymbolMetadata } from '../Symbols/Metadata';
+import { ModeID } from '../Modes/Mode';
+import { ActionSelection } from '../Actions/Selection';
 
 export class ActionMode {
-
     @StaticReflect.metadata(SymbolMetadata.Action.shouldSkipOnRepeat, true)
     static toNormal(): Thenable<boolean> {
-        return commands.executeCommand(`amVim.mode.${ModeID.NORMAL}`)
+        return commands
+            .executeCommand(`amVim.mode.${ModeID.NORMAL}`)
             .then(() => ActionSelection.validateSelections());
     }
 
@@ -28,10 +28,12 @@ export class ActionMode {
         return commands.executeCommand(`amVim.mode.${ModeID.INSERT}`);
     }
 
-    static switchByActiveSelections(currentMode: ModeID | null): Thenable<boolean> {
+    static switchByActiveSelections(
+        currentMode: ModeID | null,
+    ): Thenable<boolean> {
         const activeTextEditor = window.activeTextEditor;
 
-        if (! activeTextEditor) {
+        if (!activeTextEditor) {
             return Promise.resolve(false);
         }
 
@@ -43,28 +45,27 @@ export class ActionMode {
 
         let mode: ModeID;
 
-        if (selections.every(selection => selection.isEmpty)) {
+        if (selections.every((selection) => selection.isEmpty)) {
             mode = ModeID.NORMAL;
-        }
-        else {
+        } else {
             mode = ModeID.VISUAL;
         }
 
         if (mode === currentMode) {
             if (mode === ModeID.NORMAL) {
                 return ActionSelection.validateSelections();
-            }
-            else {
+            } else {
                 return Promise.resolve(true);
             }
-        }
-        else if (mode === ModeID.VISUAL && currentMode === ModeID.VISUAL_LINE) {
+        } else if (
+            mode === ModeID.VISUAL &&
+            currentMode === ModeID.VISUAL_LINE
+        ) {
             return Promise.resolve(true);
-        }
-        else {
-            return commands.executeCommand(`amVim.mode.${mode}`)
+        } else {
+            return commands
+                .executeCommand(`amVim.mode.${mode}`)
                 .then(() => ActionSelection.validateSelections());
         }
     }
-
 }

@@ -1,6 +1,10 @@
-import {SpecialKeyCommon, SpecialKeyMatchResult} from './SpecialKeys/Common';
+import { SpecialKeyCommon, SpecialKeyMatchResult } from './SpecialKeys/Common';
 
-export enum MatchResultKind {FAILED, WAITING, FOUND}
+export enum MatchResultKind {
+    FAILED,
+    WAITING,
+    FOUND,
+}
 
 export interface MatchResult {
     kind: MatchResultKind;
@@ -17,7 +21,6 @@ export interface RecursiveMap {
 }
 
 export abstract class GenericMapper {
-
     private static separator: string = ' ';
     private specialKeys: SpecialKeyCommon[];
 
@@ -41,7 +44,7 @@ export abstract class GenericMapper {
         const keys = joinedKeys.split(GenericMapper.separator);
 
         keys.forEach((key, index) => {
-            this.specialKeys.forEach(specialKey => {
+            this.specialKeys.forEach((specialKey) => {
                 specialKey.unmapConflicts(node as RecursiveMap, key);
             });
 
@@ -51,8 +54,7 @@ export abstract class GenericMapper {
 
             if (index === keys.length - 1) {
                 node[key] = map;
-            }
-            else {
+            } else {
                 node[key] = node[key] || {};
                 node = node[key];
             }
@@ -79,12 +81,16 @@ export abstract class GenericMapper {
 
             let match: SpecialKeyMatchResult | null | undefined;
 
-            this.specialKeys.some(specialKey => {
-                if (! node[specialKey.indicator]) {
+            this.specialKeys.some((specialKey) => {
+                if (!node[specialKey.indicator]) {
                     return false;
                 }
 
-                match = specialKey.matchSpecial(inputs.slice(index), additionalArgs, lastSpecialKeyMatch);
+                match = specialKey.matchSpecial(
+                    inputs.slice(index),
+                    additionalArgs,
+                    lastSpecialKeyMatch,
+                );
 
                 return match ? true : false;
             });
@@ -96,8 +102,7 @@ export abstract class GenericMapper {
                     lastSpecialKeyMatch = match;
                     index += match.matchedCount - 1;
                     continue;
-                }
-                else if (match.kind === MatchResultKind.WAITING) {
+                } else if (match.kind === MatchResultKind.WAITING) {
                     break;
                 }
             }
@@ -106,25 +111,22 @@ export abstract class GenericMapper {
             break;
         }
 
-        if (! matched) {
-            return {kind: MatchResultKind.FAILED};
-        }
-        else if (GenericMapper.isMapLeaf(node)) {
+        if (!matched) {
+            return { kind: MatchResultKind.FAILED };
+        } else if (GenericMapper.isMapLeaf(node)) {
             // Make a copy of node and args object
             const map = Object.assign({}, node) as GenericMap;
             const args = Object.assign({}, map.args);
 
-            Object.getOwnPropertyNames(additionalArgs).forEach(name => {
+            Object.getOwnPropertyNames(additionalArgs).forEach((name) => {
                 args[name] = additionalArgs[name];
             });
 
             map.args = args;
 
-            return {kind: MatchResultKind.FOUND, map};
-        }
-        else {
-            return {kind: MatchResultKind.WAITING};
+            return { kind: MatchResultKind.FOUND, map };
+        } else {
+            return { kind: MatchResultKind.WAITING };
         }
     }
-
 }

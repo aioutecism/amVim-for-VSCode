@@ -1,14 +1,16 @@
-import {window, Position} from 'vscode';
-import {Motion} from './Motion';
+import { window, Position } from 'vscode';
+import { Motion } from './Motion';
 
-enum Direction {Prev, Next}
+enum Direction {
+    Prev,
+    Next,
+}
 
 export class MotionDirection extends Motion {
-
     private direction: Direction;
     private n: number;
 
-    constructor(args: {direction: Direction, n?: number}) {
+    constructor(args: { direction: Direction; n?: number }) {
         args.n = args.n === undefined ? 1 : args.n;
 
         super();
@@ -17,14 +19,14 @@ export class MotionDirection extends Motion {
         this.n = args.n;
     }
 
-    static prev(args: {n?: number} = {}): Motion {
+    static prev(args: { n?: number } = {}): Motion {
         return new MotionDirection({
             direction: Direction.Prev,
             n: args.n,
         });
     }
 
-    static next(args: {n?: number} = {}): Motion {
+    static next(args: { n?: number } = {}): Motion {
         return new MotionDirection({
             direction: Direction.Next,
             n: args.n,
@@ -36,13 +38,17 @@ export class MotionDirection extends Motion {
 
         const activeTextEditor = window.activeTextEditor;
 
-        if (! activeTextEditor || this.direction === undefined || this.n === undefined) {
+        if (
+            !activeTextEditor ||
+            this.direction === undefined ||
+            this.n === undefined
+        ) {
             return from;
         }
 
         const document = activeTextEditor.document;
 
-        const _lengthByLine: {[line: number]: number} = [];
+        const _lengthByLine: { [line: number]: number } = [];
         const getLengthOfLine = (line: number): number => {
             if (_lengthByLine[line] === undefined) {
                 _lengthByLine[line] = document.lineAt(line).text.length;
@@ -67,8 +73,7 @@ export class MotionDirection extends Motion {
                 }
 
                 toCharacter = Math.max(getLengthOfLine(toLine) - 1, 0);
-            }
-            else if (toCharacter >= getLengthOfLine(toLine)) {
+            } else if (toCharacter >= getLengthOfLine(toLine)) {
                 toLine++;
 
                 if (toLine >= document.lineCount) {
@@ -83,5 +88,4 @@ export class MotionDirection extends Motion {
 
         return new Position(toLine, toCharacter);
     }
-
 }

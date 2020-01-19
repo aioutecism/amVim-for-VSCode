@@ -24,10 +24,12 @@ interface MetadataMap {
  * Save metadata as static so we can get it without context.
  */
 export class StaticReflect {
-
     private static metadataMaps: MetadataMap[] = [];
 
-    private static obtainMetadata(target: any, shouldCreateWhenNotExist: boolean = false): Metadata | undefined {
+    private static obtainMetadata(
+        target: any,
+        shouldCreateWhenNotExist: boolean = false,
+    ): Metadata | undefined {
         for (let i = 0; i < this.metadataMaps.length; i++) {
             const map = this.metadataMaps[i];
             if (map.target === target) {
@@ -38,68 +40,76 @@ export class StaticReflect {
         if (shouldCreateWhenNotExist) {
             const map = {
                 target,
-                metadata: {}
+                metadata: {},
             };
 
             this.metadataMaps.push(map);
 
             return map.metadata;
-        }
-        else {
+        } else {
             return undefined;
         }
     }
 
     /**
-      * A default metadata decorator factory that can be used on a class, class member, or parameter.
-      * @param metadataKey The key for the metadata entry.
-      * @param metadataValue The value for the metadata entry.
-      * @returns A decorator function.
-      * @remarks
-      * If `metadataKey` is already defined for the target and target key, the
-      * metadataValue for that key will be overwritten.
-      * @example
-      *
-      *     // constructor
-      *     @StaticReflect.metadata(key, value)
-      *     class C {
-      *     }
-      *
-      *     // property (on constructor)
-      *     class C {
-      *         @StaticReflect.metadata(key, value)
-      *         static staticProperty;
-      *     }
-      *
-      *     // property (on prototype)
-      *     class C {
-      *         @StaticReflect.metadata(key, value)
-      *         property;
-      *     }
-      *
-      *     // method (on constructor)
-      *     class C {
-      *         @StaticReflect.metadata(key, value)
-      *         static staticMethod() { }
-      *     }
-      *
-      *     // method (on prototype)
-      *     class C {
-      *         @StaticReflect.metadata(key, value)
-      *         method() { }
-      *     }
-      */
+     * A default metadata decorator factory that can be used on a class, class member, or parameter.
+     * @param metadataKey The key for the metadata entry.
+     * @param metadataValue The value for the metadata entry.
+     * @returns A decorator function.
+     * @remarks
+     * If `metadataKey` is already defined for the target and target key, the
+     * metadataValue for that key will be overwritten.
+     * @example
+     *
+     *     // constructor
+     *     @StaticReflect.metadata(key, value)
+     *     class C {
+     *     }
+     *
+     *     // property (on constructor)
+     *     class C {
+     *         @StaticReflect.metadata(key, value)
+     *         static staticProperty;
+     *     }
+     *
+     *     // property (on prototype)
+     *     class C {
+     *         @StaticReflect.metadata(key, value)
+     *         property;
+     *     }
+     *
+     *     // method (on constructor)
+     *     class C {
+     *         @StaticReflect.metadata(key, value)
+     *         static staticMethod() { }
+     *     }
+     *
+     *     // method (on prototype)
+     *     class C {
+     *         @StaticReflect.metadata(key, value)
+     *         method() { }
+     *     }
+     */
     static metadata(key: string | symbol, value: any) {
         function decorator(targetObject: Function): void;
-        function decorator(targetObject: Object, targetKey: string | symbol): void;
-        function decorator(targetObject: Object, targetKey?: string | symbol): void {
+        function decorator(
+            targetObject: Object,
+            targetKey: string | symbol,
+        ): void;
+        function decorator(
+            targetObject: Object,
+            targetKey?: string | symbol,
+        ): void {
             if (!isUndefined(targetKey)) {
                 if (!isObject(targetObject)) {
                     throw new TypeError();
                 }
-                StaticReflect.defineMetadata(key, value, targetObject[targetKey!]);
-            }
-            else {
+                StaticReflect.defineMetadata(
+                    key,
+                    value,
+                    targetObject[targetKey!],
+                );
+            } else {
                 if (!isConstructor(targetObject)) {
                     throw new TypeError();
                 }
@@ -120,10 +130,8 @@ export class StaticReflect {
 
         if (metadata !== undefined) {
             return metadata[key];
-        }
-        else {
+        } else {
             return undefined;
         }
     }
-
 }

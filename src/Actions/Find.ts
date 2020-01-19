@@ -1,14 +1,14 @@
-import {window, commands, Selection} from 'vscode';
-import {ActionSelection} from './Selection';
+import { window, commands, Selection } from 'vscode';
+import { ActionSelection } from './Selection';
 
 export class ActionFind {
-
     static focusFindWidget(): Thenable<boolean | undefined> {
         return commands.executeCommand('actions.find');
     }
 
     static executeNativeFind(): Thenable<boolean> {
-        return commands.executeCommand('workbench.action.focusActiveEditorGroup')
+        return commands
+            .executeCommand('workbench.action.focusActiveEditorGroup')
             .then(ActionSelection.shrinkToEnds);
     }
 
@@ -17,26 +17,38 @@ export class ActionFind {
     static byIndicator(): Thenable<boolean | undefined> {
         const activeTextEditor = window.activeTextEditor;
 
-        if (! activeTextEditor) {
+        if (!activeTextEditor) {
             return Promise.resolve(false);
         }
 
-        activeTextEditor.selection = new Selection(activeTextEditor.selection.active, activeTextEditor.selection.active);
+        activeTextEditor.selection = new Selection(
+            activeTextEditor.selection.active,
+            activeTextEditor.selection.active,
+        );
 
-        return commands.executeCommand('editor.action.addSelectionToNextFindMatch');
+        return commands.executeCommand(
+            'editor.action.addSelectionToNextFindMatch',
+        );
     }
 
     static next(): Thenable<boolean> {
         const activeTextEditor = window.activeTextEditor;
 
-        if (! activeTextEditor) {
+        if (!activeTextEditor) {
             return Promise.resolve(false);
         }
 
-        return commands.executeCommand('editor.action.nextMatchFindAction')
+        return commands
+            .executeCommand('editor.action.nextMatchFindAction')
             .then(() => {
-                window.showTextDocument(activeTextEditor.document, activeTextEditor.viewColumn);
-                activeTextEditor.selection = new Selection(activeTextEditor.selection.end, activeTextEditor.selection.end);
+                window.showTextDocument(
+                    activeTextEditor.document,
+                    activeTextEditor.viewColumn,
+                );
+                activeTextEditor.selection = new Selection(
+                    activeTextEditor.selection.end,
+                    activeTextEditor.selection.end,
+                );
                 return Promise.resolve(true);
             });
     }
@@ -44,16 +56,22 @@ export class ActionFind {
     static prev(): Thenable<boolean> {
         const activeTextEditor = window.activeTextEditor;
 
-        if (! activeTextEditor) {
+        if (!activeTextEditor) {
             return Promise.resolve(false);
         }
 
-        return commands.executeCommand('editor.action.previousMatchFindAction')
+        return commands
+            .executeCommand('editor.action.previousMatchFindAction')
             .then(() => {
-                window.showTextDocument(activeTextEditor.document, activeTextEditor.viewColumn);
-                activeTextEditor.selection = new Selection(activeTextEditor.selection.start, activeTextEditor.selection.start);
+                window.showTextDocument(
+                    activeTextEditor.document,
+                    activeTextEditor.viewColumn,
+                );
+                activeTextEditor.selection = new Selection(
+                    activeTextEditor.selection.start,
+                    activeTextEditor.selection.start,
+                );
                 return Promise.resolve(true);
             });
     }
-
 }

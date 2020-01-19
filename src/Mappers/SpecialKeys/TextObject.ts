@@ -1,9 +1,14 @@
-import {GenericMapper, GenericMap, RecursiveMap, MatchResultKind} from '../Generic';
-import {SpecialKeyCommon, SpecialKeyMatchResult} from './Common';
-import {TextObject} from '../../TextObjects/TextObject';
-import {TextObjectBlock} from '../../TextObjects/Block';
-import {TextObjectQuotedString} from '../../TextObjects/QuotedString';
-import {TextObjectWord} from '../../TextObjects/Word';
+import {
+    GenericMapper,
+    GenericMap,
+    RecursiveMap,
+    MatchResultKind,
+} from '../Generic';
+import { SpecialKeyCommon, SpecialKeyMatchResult } from './Common';
+import { TextObject } from '../../TextObjects/TextObject';
+import { TextObjectBlock } from '../../TextObjects/Block';
+import { TextObjectQuotedString } from '../../TextObjects/QuotedString';
+import { TextObjectWord } from '../../TextObjects/Word';
 
 interface TextObjectGenerator {
     (args?: {}): TextObject;
@@ -15,12 +20,12 @@ interface TextObjectMap extends GenericMap {
 
 interface TextObjectMapInfo {
     characters: string[];
-    method: (args: {isInclusive: boolean}) => TextObject;
+    method: (args: { isInclusive: boolean }) => TextObject;
     args?: {};
 }
 
-export class SpecialKeyTextObject extends GenericMapper implements SpecialKeyCommon {
-
+export class SpecialKeyTextObject extends GenericMapper
+    implements SpecialKeyCommon {
     indicator = '{textObject}';
 
     private conflictRegExp = /^[ai]|\{char\}$/;
@@ -43,7 +48,7 @@ export class SpecialKeyTextObject extends GenericMapper implements SpecialKeyCom
             method: TextObjectBlock.byChevrons,
         },
         {
-            characters: ['\''],
+            characters: ["'"],
             method: TextObjectQuotedString.bySingle,
         },
         {
@@ -73,26 +78,38 @@ export class SpecialKeyTextObject extends GenericMapper implements SpecialKeyCom
     constructor() {
         super();
 
-        this.mapInfos.forEach(mapInfo => {
-            mapInfo.characters.forEach(character => {
-                this.map(`a ${character}`, mapInfo.method, Object.assign({}, mapInfo.args, { isInclusive: true }));
-                this.map(`i ${character}`, mapInfo.method, Object.assign({}, mapInfo.args, { isInclusive: false }));
+        this.mapInfos.forEach((mapInfo) => {
+            mapInfo.characters.forEach((character) => {
+                this.map(
+                    `a ${character}`,
+                    mapInfo.method,
+                    Object.assign({}, mapInfo.args, { isInclusive: true }),
+                );
+                this.map(
+                    `i ${character}`,
+                    mapInfo.method,
+                    Object.assign({}, mapInfo.args, { isInclusive: false }),
+                );
             });
         });
 
-        this.maps.forEach(map => {
+        this.maps.forEach((map) => {
             this.map(map.keys, map.textObjectGenerator, map.args);
         });
     }
 
-    map(joinedKeys: string, textObjectGenerator: TextObjectGenerator, args?: {}): void {
+    map(
+        joinedKeys: string,
+        textObjectGenerator: TextObjectGenerator,
+        args?: {},
+    ): void {
         const map = super.map(joinedKeys, args);
         (map as TextObjectMap).textObjectGenerator = textObjectGenerator;
     }
 
     unmapConflicts(node: RecursiveMap, keyToMap: string): void {
         if (keyToMap === this.indicator) {
-            Object.getOwnPropertyNames(node).forEach(key => {
+            Object.getOwnPropertyNames(node).forEach((key) => {
                 this.conflictRegExp.test(key) && delete node[key];
             });
         }
@@ -106,17 +123,19 @@ export class SpecialKeyTextObject extends GenericMapper implements SpecialKeyCom
 
     matchSpecial(
         inputs: string[],
-        additionalArgs: {[key: string]: any},
+        additionalArgs: { [key: string]: any },
         lastSpecialKeyMatch?: SpecialKeyMatchResult,
     ): SpecialKeyMatchResult | null {
-        const {kind, map} = this.match(inputs);
+        const { kind, map } = this.match(inputs);
 
         if (kind === MatchResultKind.FAILED) {
             return null;
         }
 
         if (map) {
-            additionalArgs.textObject = (map as TextObjectMap).textObjectGenerator(map.args);
+            additionalArgs.textObject = (map as TextObjectMap).textObjectGenerator(
+                map.args,
+            );
         }
 
         return {
@@ -125,5 +144,4 @@ export class SpecialKeyTextObject extends GenericMapper implements SpecialKeyCom
             matchedCount: inputs.length,
         };
     }
-
 }

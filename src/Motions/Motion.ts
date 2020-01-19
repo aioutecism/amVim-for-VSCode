@@ -1,19 +1,24 @@
-import {window, Position} from 'vscode';
+import { window, Position } from 'vscode';
 
 export abstract class Motion {
-
     readonly isLinewise: boolean;
     readonly isCharacterUpdated: boolean;
 
     private lineDelta = 0;
     private characterDelta = 0;
 
-    constructor(args: {
-        isLinewise?: boolean,
-        isCharacterUpdated?: boolean,
-    } = {}) {
-        this.isLinewise = args.isLinewise === undefined ? false : args.isLinewise;
-        this.isCharacterUpdated = args.isCharacterUpdated === undefined ? true : args.isCharacterUpdated;
+    constructor(
+        args: {
+            isLinewise?: boolean;
+            isCharacterUpdated?: boolean;
+        } = {},
+    ) {
+        this.isLinewise =
+            args.isLinewise === undefined ? false : args.isLinewise;
+        this.isCharacterUpdated =
+            args.isCharacterUpdated === undefined
+                ? true
+                : args.isCharacterUpdated;
     }
 
     protected translate(lineDelta: number, characterDelta: number): void {
@@ -24,7 +29,7 @@ export abstract class Motion {
     apply(from: Position, option?: any): Position {
         const activeTextEditor = window.activeTextEditor;
 
-        if (! activeTextEditor) {
+        if (!activeTextEditor) {
             return from;
         }
 
@@ -36,8 +41,7 @@ export abstract class Motion {
         if (toLine < 0) {
             toLine = 0;
             toCharacter = 0;
-        }
-        else if (toLine > document.lineCount - 1) {
+        } else if (toLine > document.lineCount - 1) {
             toLine = document.lineCount - 1;
             toCharacter = Infinity;
         }
@@ -46,8 +50,10 @@ export abstract class Motion {
             toCharacter = document.lineAt(toLine).text.length;
         }
 
-        const preferredColumn = !this.isCharacterUpdated && option
-            ? option.preferredColumn as number : null;
+        const preferredColumn =
+            !this.isCharacterUpdated && option
+                ? (option.preferredColumn as number)
+                : null;
 
         if (preferredColumn) {
             const tabSize = activeTextEditor.options.tabSize as number;
@@ -57,7 +63,11 @@ export abstract class Motion {
             let thisColumn = 0;
             let i: number;
 
-            for (i = 0; i < toLineText.length && thisColumn <= preferredColumn; i++) {
+            for (
+                i = 0;
+                i < toLineText.length && thisColumn <= preferredColumn;
+                i++
+            ) {
                 lastColumn = thisColumn;
                 thisColumn += toLineText.charAt(i) === '\t' ? tabSize : 1;
             }
@@ -70,7 +80,8 @@ export abstract class Motion {
 
         toCharacter = Math.max(toCharacter, 0);
 
-        return activeTextEditor.document.validatePosition(new Position(toLine, toCharacter));
+        return activeTextEditor.document.validatePosition(
+            new Position(toLine, toCharacter),
+        );
     }
-
 }

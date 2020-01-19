@@ -13,7 +13,8 @@ suite('VisualLine: g ?', () => {
             to: '[]NOPQRSTUVWXYZABCDEFGHIJKLM',
         },
         {
-            from: 'abcdefghijklm[]nopqrstuvwxyz\nNOPQRSTUVWXYZABCDEFGHIJKLM\nfoo',
+            from:
+                'abcdefghijklm[]nopqrstuvwxyz\nNOPQRSTUVWXYZABCDEFGHIJKLM\nfoo',
             inputs: 'V j g ?',
             to: '[]nopqrstuvwxyzabcdefghijklm\nABCDEFGHIJKLMNOPQRSTUVWXYZ\nfoo',
         },

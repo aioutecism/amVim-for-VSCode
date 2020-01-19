@@ -1,5 +1,5 @@
 import * as BlackBox from '../Framework/BlackBox';
-import {MotionMatch} from '../../src/Motions/Match';
+import { MotionMatch } from '../../src/Motions/Match';
 
 suite('Normal: ,', () => {
     MotionMatch.clearLast();

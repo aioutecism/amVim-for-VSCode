@@ -1,4 +1,4 @@
-import {RecursiveMap, MatchResultKind} from '../Generic';
+import { RecursiveMap, MatchResultKind } from '../Generic';
 
 export interface SpecialKeyMatchResult {
     specialKey: SpecialKeyCommon;
@@ -12,7 +12,7 @@ export interface SpecialKeyCommon {
     unmapConflicts(node: RecursiveMap, keyToMap: string): void;
     matchSpecial(
         inputs: string[],
-        additionalArgs: {[key: string]: any},
+        additionalArgs: { [key: string]: any },
         lastSpecialKeyMatch?: SpecialKeyMatchResult,
     ): SpecialKeyMatchResult | null;
 }

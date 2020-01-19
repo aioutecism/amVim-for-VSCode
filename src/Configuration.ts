@@ -1,19 +1,28 @@
-import {commands, window, workspace, WorkspaceConfiguration, Disposable} from 'vscode';
-import {ModeID} from './Modes/Mode';
-import {UtilWord} from './Utils/Word';
+import {
+    commands,
+    window,
+    workspace,
+    WorkspaceConfiguration,
+    Disposable,
+} from 'vscode';
+import { ModeID } from './Modes/Mode';
+import { UtilWord } from './Utils/Word';
 
 export class Configuration {
-
     private static isReady = false;
     private static extensionNamespace: WorkspaceConfiguration;
     private static editorNamespace: WorkspaceConfiguration;
     private static disposables: Disposable[] = [];
 
     private static _defaultModeID: ModeID;
-    static get defaultModeID(): ModeID { return this._defaultModeID; }
+    static get defaultModeID(): ModeID {
+        return this._defaultModeID;
+    }
 
     private static _smartRelativeLineNumbers: boolean;
-    static get smartRelativeLineNumbers(): boolean { return this._smartRelativeLineNumbers; }
+    static get smartRelativeLineNumbers(): boolean {
+        return this._smartRelativeLineNumbers;
+    }
 
     static init(): void {
         if (this.isReady) {
@@ -25,7 +34,9 @@ export class Configuration {
         this.onDidChangeConfiguration();
 
         this.disposables.push(
-            workspace.onDidChangeConfiguration(() => this.onDidChangeConfiguration())
+            workspace.onDidChangeConfiguration(() =>
+                this.onDidChangeConfiguration(),
+            ),
         );
     }
 
@@ -33,10 +44,23 @@ export class Configuration {
         this.updateCache();
         this.updateKeybindingContexts();
 
-        this._defaultModeID = this.getExtensionSetting<boolean>('startInInsertMode', false) ? ModeID.INSERT : ModeID.NORMAL;
-        this._smartRelativeLineNumbers = this.getExtensionSetting<boolean>('smartRelativeLineNumbers', false);
+        this._defaultModeID = this.getExtensionSetting<boolean>(
+            'startInInsertMode',
+            false,
+        )
+            ? ModeID.INSERT
+            : ModeID.NORMAL;
+        this._smartRelativeLineNumbers = this.getExtensionSetting<boolean>(
+            'smartRelativeLineNumbers',
+            false,
+        );
 
-        UtilWord.updateCharacterKindCache(this.getEditorSetting<string>('wordSeparators', '`~!@#$%^&*()-=+[{]}\\|;:\'",.<>/?'));
+        UtilWord.updateCharacterKindCache(
+            this.getEditorSetting<string>(
+                'wordSeparators',
+                '`~!@#$%^&*()-=+[{]}\\|;:\'",.<>/?',
+            ),
+        );
     }
 
     private static updateCache(): void {
@@ -45,17 +69,23 @@ export class Configuration {
     }
 
     private static updateKeybindingContexts(): void {
-        commands.executeCommand('setContext',
+        commands.executeCommand(
+            'setContext',
             'amVim.configuration.shouldBindCtrlCommands',
-            this.getExtensionSetting<boolean>('bindCtrlCommands', true)
+            this.getExtensionSetting<boolean>('bindCtrlCommands', true),
         );
-        commands.executeCommand('setContext',
+        commands.executeCommand(
+            'setContext',
             'amVim.configuration.shouldMimicVimSearchBehavior',
-            this.getExtensionSetting<boolean>('mimicVimSearchBehavior', true)
+            this.getExtensionSetting<boolean>('mimicVimSearchBehavior', true),
         );
-        commands.executeCommand('setContext',
+        commands.executeCommand(
+            'setContext',
             'amVim.configuration.shouldUseVimStyleNavigationInListView',
-            this.getExtensionSetting<boolean>('vimStyleNavigationInListView', true)
+            this.getExtensionSetting<boolean>(
+                'vimStyleNavigationInListView',
+                true,
+            ),
         );
     }
 
@@ -98,5 +128,4 @@ export class Configuration {
     static dispose(): void {
         Disposable.from(...this.disposables).dispose();
     }
-
 }

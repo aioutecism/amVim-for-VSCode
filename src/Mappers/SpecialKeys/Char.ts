@@ -1,8 +1,7 @@
-import {RecursiveMap, MatchResultKind} from '../Generic';
-import {SpecialKeyCommon, SpecialKeyMatchResult} from './Common';
+import { RecursiveMap, MatchResultKind } from '../Generic';
+import { SpecialKeyCommon, SpecialKeyMatchResult } from './Common';
 
 export class SpecialKeyChar implements SpecialKeyCommon {
-
     indicator = '{char}';
 
     unmapConflicts(node: RecursiveMap, keyToMap: string): void {
@@ -15,7 +14,7 @@ export class SpecialKeyChar implements SpecialKeyCommon {
 
     matchSpecial(
         inputs: string[],
-        additionalArgs: {[key: string]: any},
+        additionalArgs: { [key: string]: any },
         lastSpecialKeyMatch?: SpecialKeyMatchResult,
     ): SpecialKeyMatchResult | null {
         let character = inputs[0];
@@ -32,5 +31,4 @@ export class SpecialKeyChar implements SpecialKeyCommon {
             matchedCount: 1,
         };
     }
-
 }

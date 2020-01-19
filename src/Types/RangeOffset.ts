@@ -1,7 +1,6 @@
-import {Range} from 'vscode';
+import { Range } from 'vscode';
 
 export class RangeOffset {
-
     readonly lineOffset: number;
     readonly characterOffset: number;
 
@@ -11,11 +10,9 @@ export class RangeOffset {
         if (first instanceof Range) {
             this.lineOffset = first.end.line - first.start.line;
             this.characterOffset = first.end.character - first.start.character;
-        }
-        else {
+        } else {
             this.lineOffset = first;
             this.characterOffset = second!;
         }
     }
-
 }
