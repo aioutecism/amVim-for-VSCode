@@ -7,5 +7,5 @@ export class Command {
 
     execute(): Thenable<boolean | undefined> {
         return Promise.resolve(false);
-    };
+    }
 }

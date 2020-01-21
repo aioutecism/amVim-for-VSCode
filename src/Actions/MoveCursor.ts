@@ -1,12 +1,13 @@
-import {window, Position, Selection} from 'vscode';
-import {ActionReveal} from './Reveal';
-import {Motion} from '../Motions/Motion';
-import {UtilPosition} from '../Utils/Position';
-import {UtilSelection} from '../Utils/Selection';
+import { window, Position, Selection } from 'vscode';
+import { ActionReveal } from './Reveal';
+import { Motion } from '../Motions/Motion';
+import { UtilPosition } from '../Utils/Position';
+import { UtilSelection } from '../Utils/Selection';
 
 export class ActionMoveCursor {
-
-    private static preferredColumnBySelectionIndex: {[i: number]: number} = [];
+    private static preferredColumnBySelectionIndex: {
+        [i: number]: number;
+    } = [];
     private static isUpdatePreferredColumnBlocked = false;
     private static preferredColumnBlockTimer: NodeJS.Timer | undefined;
 
@@ -30,22 +31,22 @@ export class ActionMoveCursor {
 
         const activeTextEditor = window.activeTextEditor;
 
-        if (! activeTextEditor) {
+        if (!activeTextEditor) {
             return Promise.resolve(false);
         }
 
-        ActionMoveCursor.preferredColumnBySelectionIndex =
-            activeTextEditor.selections.map(selection =>
-                UtilPosition.getColumn(activeTextEditor, selection.active));
+        ActionMoveCursor.preferredColumnBySelectionIndex = activeTextEditor.selections.map(
+            (selection) => UtilPosition.getColumn(activeTextEditor, selection.active),
+        );
 
         return Promise.resolve(true);
     }
 
     static byMotions(args: {
-        motions: Motion[],
-        isVisualMode?: boolean,
-        isVisualLineMode?: boolean,
-        noEmptyAtLineEnd?: boolean
+        motions: Motion[];
+        isVisualMode?: boolean;
+        isVisualLineMode?: boolean;
+        noEmptyAtLineEnd?: boolean;
     }): Thenable<boolean> {
         args.isVisualMode = args.isVisualMode === undefined ? false : args.isVisualMode;
         args.isVisualLineMode = args.isVisualLineMode === undefined ? false : args.isVisualLineMode;
@@ -53,12 +54,12 @@ export class ActionMoveCursor {
 
         const activeTextEditor = window.activeTextEditor;
 
-        if (! activeTextEditor) {
+        if (!activeTextEditor) {
             return Promise.resolve(false);
         }
 
         // Prevent preferred character update if no motion updates character.
-        if (args.motions.every(motion => ! motion.isCharacterUpdated)) {
+        if (args.motions.every((motion) => !motion.isCharacterUpdated)) {
             ActionMoveCursor.blockUpdatePreferredColumn();
         }
 
@@ -70,12 +71,12 @@ export class ActionMoveCursor {
             let active = args.motions.reduce(
                 (position, motion) => {
                     return motion.apply(position, {
-                        preferredColumn: ActionMoveCursor.preferredColumnBySelectionIndex[i]
+                        preferredColumn: ActionMoveCursor.preferredColumnBySelectionIndex[i],
                     });
                 },
                 args.isVisualMode
                     ? UtilSelection.getActiveInVisualMode(selection)
-                    : selection.active
+                    : selection.active,
             );
 
             if (args.isVisualMode) {
@@ -90,27 +91,32 @@ export class ActionMoveCursor {
 
                 if (active.isEqual(anchor) && anchor.character > 0) {
                     anchor = anchor.translate(0, -1);
-                }
-                else if (active.isAfter(anchor) && selection.isReversed && anchor.character > 0) {
+                } else if (active.isAfter(anchor) && selection.isReversed && anchor.character > 0) {
                     anchor = anchor.translate(0, -1);
-                }
-                else if (active.isBefore(anchor) && !selection.isReversed && anchor.character < anchorLineLength) {
+                } else if (
+                    active.isBefore(anchor) &&
+                    !selection.isReversed &&
+                    anchor.character < anchorLineLength
+                ) {
                     anchor = anchor.translate(0, +1);
                 }
-            }
-            else if (args.isVisualLineMode) {
+            } else if (args.isVisualLineMode) {
                 anchor = selection.anchor;
 
                 if (anchor.isBefore(active)) {
                     anchor = anchor.with(undefined, 0);
-                    active = active.with(undefined, activeTextEditor.document.lineAt(active.line).text.length);
-                }
-                else {
-                    anchor = anchor.with(undefined, activeTextEditor.document.lineAt(anchor.line).text.length);
+                    active = active.with(
+                        undefined,
+                        activeTextEditor.document.lineAt(active.line).text.length,
+                    );
+                } else {
+                    anchor = anchor.with(
+                        undefined,
+                        activeTextEditor.document.lineAt(anchor.line).text.length,
+                    );
                     active = active.with(undefined, 0);
                 }
-            }
-            else {
+            } else {
                 if (args.noEmptyAtLineEnd) {
                     const lineEndCharacter = document.lineAt(active.line).text.length;
                     if (lineEndCharacter !== 0 && active.character === lineEndCharacter) {
@@ -126,5 +132,4 @@ export class ActionMoveCursor {
 
         return ActionReveal.primaryCursor();
     }
-
 }

@@ -1,13 +1,12 @@
-import {window, TextEditorCursorStyle} from 'vscode';
+import { window, TextEditorCursorStyle } from 'vscode';
 
 export class ActionBlockCursor {
-
     static on(): Thenable<boolean> {
         return new Promise((resolve) => {
             setTimeout(() => {
                 const activeTextEditor = window.activeTextEditor;
 
-                if (! activeTextEditor) {
+                if (!activeTextEditor) {
                     return Promise.resolve(false);
                 }
 
@@ -23,7 +22,7 @@ export class ActionBlockCursor {
             setTimeout(() => {
                 const activeTextEditor = window.activeTextEditor;
 
-                if (! activeTextEditor) {
+                if (!activeTextEditor) {
                     return Promise.resolve(false);
                 }
 
@@ -33,5 +32,4 @@ export class ActionBlockCursor {
             }, 0);
         });
     }
-
 }

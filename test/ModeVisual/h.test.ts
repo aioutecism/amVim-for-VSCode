@@ -25,6 +25,6 @@ suite('Visual: h', () => {
     ];
 
     for (let i = 0; i < testCases.length; i++) {
-       BlackBox.run(testCases[i]);
+        BlackBox.run(testCases[i]);
     }
 });

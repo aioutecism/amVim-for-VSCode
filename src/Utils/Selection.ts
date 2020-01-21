@@ -1,10 +1,9 @@
-import {Selection, Position} from 'vscode';
+import { Selection, Position } from 'vscode';
 
 export class UtilSelection {
-
     static unionOverlaps(from: Selection[]): Selection[] {
         // Make a copy so we won't destroy the array passed in.
-        from = from.map(selection => selection);
+        from = from.map((selection) => selection);
 
         const to: Selection[] = [];
 
@@ -33,18 +32,15 @@ export class UtilSelection {
         const line = selection.active.line;
         let character = selection.active.character;
 
-        if (! selection.isEmpty && ! selection.isReversed && character > 0) {
+        if (!selection.isEmpty && !selection.isReversed && character > 0) {
             character--;
         }
 
-        return new Selection(
-            line, character,
-            line, character
-        );
+        return new Selection(line, character, line, character);
     }
 
     static shrinkToActives(selections: Selection[]): Selection[] {
-        return selections.map(selection => UtilSelection.shrinkToActive(selection));
+        return selections.map((selection) => UtilSelection.shrinkToActive(selection));
     }
 
     static getActiveInVisualMode(anchor: Position, active: Position): Position;
@@ -56,15 +52,11 @@ export class UtilSelection {
         if (second) {
             isReversed = (first as Position).isAfter(second);
             active = second;
-        }
-        else {
+        } else {
             isReversed = (first as Selection).isReversed;
             active = (first as Selection).active;
         }
 
-        return !isReversed && active.character > 0
-            ? active.translate(0, -1)
-            : active;
+        return !isReversed && active.character > 0 ? active.translate(0, -1) : active;
     }
-
 }

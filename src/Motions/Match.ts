@@ -1,11 +1,13 @@
-import {window, Position} from 'vscode';
-import {Motion} from './Motion';
-import {MotionEmpty} from './Empty';
+import { window, Position } from 'vscode';
+import { Motion } from './Motion';
+import { MotionEmpty } from './Empty';
 
-enum MotionMatchDirection {NEXT, PREV}
+enum MotionMatchDirection {
+    NEXT,
+    PREV,
+}
 
 export class MotionMatch extends Motion {
-
     private static last?: MotionMatch;
 
     private character: string;
@@ -14,7 +16,7 @@ export class MotionMatch extends Motion {
     private isTill: boolean;
     private isRepeat = false;
 
-    static next(args: {character: string, isTill?: boolean, n?: number}): Motion {
+    static next(args: { character: string; isTill?: boolean; n?: number }): Motion {
         args.isTill = args.isTill === undefined ? false : args.isTill;
 
         const obj = new MotionMatch();
@@ -28,7 +30,7 @@ export class MotionMatch extends Motion {
         return obj;
     }
 
-    static prev(args: {character: string, isTill?: boolean, n?: number}): Motion {
+    static prev(args: { character: string; isTill?: boolean; n?: number }): Motion {
         args.isTill = args.isTill === undefined ? false : args.isTill;
 
         const obj = new MotionMatch();
@@ -46,18 +48,20 @@ export class MotionMatch extends Motion {
         MotionMatch.last = undefined;
     }
 
-    static repeatLast(args: { isReverse?: boolean, n?: number }): Motion {
+    static repeatLast(args: { isReverse?: boolean; n?: number }): Motion {
         return MotionMatch.last ? MotionMatch.last.clone(args) : new MotionEmpty();
     }
 
-    clone(args: { isReverse?: boolean, n?: number }): MotionMatch {
+    clone(args: { isReverse?: boolean; n?: number }): MotionMatch {
         args.isReverse = args.isReverse === undefined ? false : args.isReverse;
         args.n = args.n === undefined ? 1 : args.n;
 
         const obj = new MotionMatch();
         obj.character = this.character;
         obj.direction = args.isReverse
-            ? (this.direction === MotionMatchDirection.NEXT ? MotionMatchDirection.PREV : MotionMatchDirection.NEXT)
+            ? this.direction === MotionMatchDirection.NEXT
+                ? MotionMatchDirection.PREV
+                : MotionMatchDirection.NEXT
             : this.direction;
         obj.isTill = this.isTill;
         obj.n = args.n;
@@ -66,14 +70,14 @@ export class MotionMatch extends Motion {
         return obj;
     }
 
-    apply(from: Position, option: {isInclusive?: boolean} = {}): Position {
+    apply(from: Position, option: { isInclusive?: boolean } = {}): Position {
         option.isInclusive = option.isInclusive === undefined ? false : option.isInclusive;
 
         from = super.apply(from);
 
         const activeTextEditor = window.activeTextEditor;
 
-        if (! activeTextEditor || this.direction === undefined || ! this.character) {
+        if (!activeTextEditor || this.direction === undefined || !this.character) {
             return from;
         }
 
@@ -88,8 +92,7 @@ export class MotionMatch extends Motion {
         if (this.isRepeat && this.isTill && this.n === 1) {
             if (this.direction === MotionMatchDirection.NEXT) {
                 shouldSkip = targetText[toCharacter + 1] === this.character;
-            }
-            else if (this.direction === MotionMatchDirection.PREV) {
+            } else if (this.direction === MotionMatchDirection.PREV) {
                 shouldSkip = targetText[toCharacter - 1] === this.character;
             }
         }
@@ -117,12 +120,12 @@ export class MotionMatch extends Motion {
                     toCharacter -= 1;
                 }
             }
-        }
-
-        else if (this.direction === MotionMatchDirection.PREV) {
+        } else if (this.direction === MotionMatchDirection.PREV) {
             targetText = targetText
                 .substr(0, toCharacter - (shouldSkip ? 1 : 0))
-                .split('').reverse().join('');
+                .split('')
+                .reverse()
+                .join('');
 
             let offset = -1;
 
@@ -144,5 +147,4 @@ export class MotionMatch extends Motion {
 
         return new Position(toLine, toCharacter);
     }
-
 }

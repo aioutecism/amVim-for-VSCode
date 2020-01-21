@@ -1,7 +1,6 @@
-import {commands} from 'vscode';
+import { commands } from 'vscode';
 
 export class ActionFold {
-
     static fold(): Thenable<boolean | undefined> {
         return commands.executeCommand('editor.fold');
     }
@@ -17,5 +16,4 @@ export class ActionFold {
     static unfoldAll(): Thenable<boolean | undefined> {
         return commands.executeCommand('editor.unfoldAll');
     }
-
 }

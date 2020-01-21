@@ -1,15 +1,16 @@
-import {Motion} from './Motion';
+import { Motion } from './Motion';
 
 export class MotionCharacter extends Motion {
-
-    constructor(args: {
-        isLinewise?: boolean
-        isCharacterUpdated?: boolean
-    } = {}) {
+    constructor(
+        args: {
+            isLinewise?: boolean;
+            isCharacterUpdated?: boolean;
+        } = {},
+    ) {
         super(args);
     }
 
-    static left(args: {n?: number} = {}): Motion {
+    static left(args: { n?: number } = {}): Motion {
         args.n = args.n === undefined ? 1 : args.n;
 
         const obj = new MotionCharacter();
@@ -18,7 +19,7 @@ export class MotionCharacter extends Motion {
         return obj;
     }
 
-    static right(args: {n?: number} = {}): Motion {
+    static right(args: { n?: number } = {}): Motion {
         args.n = args.n === undefined ? 1 : args.n;
 
         const obj = new MotionCharacter();
@@ -27,7 +28,7 @@ export class MotionCharacter extends Motion {
         return obj;
     }
 
-    static up(args: {n?: number} = {}): Motion {
+    static up(args: { n?: number } = {}): Motion {
         args.n = args.n === undefined ? 1 : args.n;
 
         const obj = new MotionCharacter({
@@ -39,7 +40,7 @@ export class MotionCharacter extends Motion {
         return obj;
     }
 
-    static down(args: {n?: number} = {}): Motion {
+    static down(args: { n?: number } = {}): Motion {
         args.n = args.n === undefined ? 1 : args.n;
 
         const obj = new MotionCharacter({
@@ -50,5 +51,4 @@ export class MotionCharacter extends Motion {
 
         return obj;
     }
-
 }

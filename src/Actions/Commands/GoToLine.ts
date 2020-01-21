@@ -3,7 +3,6 @@ import { ActionMoveCursor } from '../MoveCursor';
 import { MotionDocument } from '../../Motions/Document';
 
 export class GoToLineCommand extends Command {
-
     private readonly line: number;
 
     constructor(input: string) {
@@ -18,11 +17,8 @@ export class GoToLineCommand extends Command {
         }
 
         return ActionMoveCursor.byMotions({
-            motions: [
-                MotionDocument.toLine({ n: this.line }),
-            ],
+            motions: [MotionDocument.toLine({ n: this.line })],
             noEmptyAtLineEnd: true,
         });
     }
-
 }

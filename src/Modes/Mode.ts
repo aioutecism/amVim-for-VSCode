@@ -1,13 +1,17 @@
-import {window} from 'vscode';
-import {StaticReflect} from '../LanguageExtensions/StaticReflect';
-import {SymbolMetadata} from '../Symbols/Metadata';
-import {MatchResultKind} from '../Mappers/Generic';
-import {CommandMap, CommandMapper} from '../Mappers/Command';
+import { window } from 'vscode';
+import { StaticReflect } from '../LanguageExtensions/StaticReflect';
+import { SymbolMetadata } from '../Symbols/Metadata';
+import { MatchResultKind } from '../Mappers/Generic';
+import { CommandMap, CommandMapper } from '../Mappers/Command';
 
-export enum ModeID {NORMAL, VISUAL, VISUAL_LINE, INSERT}
+export enum ModeID {
+    NORMAL,
+    VISUAL,
+    VISUAL_LINE,
+    INSERT,
+}
 
 export abstract class Mode {
-
     id: ModeID;
     name: string;
 
@@ -53,25 +57,22 @@ export abstract class Mode {
 
         if (key === 'escape') {
             inputs = [key];
-        }
-        else {
+        } else {
             this.inputs.push(key);
             inputs = this.inputs;
         }
 
-        const {kind, map} = this.mapper.match(inputs);
+        const { kind, map } = this.mapper.match(inputs);
 
         if (kind === MatchResultKind.FAILED) {
             this.updateStatusBar();
             this.clearInputs();
-        }
-        else if (kind === MatchResultKind.FOUND) {
+        } else if (kind === MatchResultKind.FOUND) {
             this.updateStatusBar();
             this.clearInputs();
             this.pushCommandMap(map!);
             this.execute();
-        }
-        else if (kind === MatchResultKind.WAITING) {
+        } else if (kind === MatchResultKind.WAITING) {
             this.updateStatusBar(`${this.inputs.join(' ')} and...`);
         }
 
@@ -85,7 +86,9 @@ export abstract class Mode {
     /**
      * Override this to return recorded command maps.
      */
-    get recordedCommandMaps(): CommandMap[] { return []; }
+    get recordedCommandMaps(): CommandMap[] {
+        return [];
+    }
 
     /**
      * Override this to do something before command map makes changes.
@@ -121,14 +124,14 @@ export abstract class Mode {
         const one = () => {
             const map = this.pendings.shift();
 
-            if (! map) {
+            if (!map) {
                 this.executing = false;
                 return;
             }
 
             let promise: Promise<boolean | undefined> = Promise.resolve(true);
 
-            const isAnyActionIsChange = map.actions.some(action => {
+            const isAnyActionIsChange = map.actions.some((action) => {
                 return StaticReflect.getMetadata(SymbolMetadata.Action.isChange, action);
             });
 
@@ -136,7 +139,7 @@ export abstract class Mode {
                 promise = promise.then(() => this.onWillCommandMapMakesChanges(map));
             }
 
-            map.actions.forEach(action => {
+            map.actions.forEach((action) => {
                 promise = promise.then(() => action(map.args));
             });
 
@@ -144,16 +147,12 @@ export abstract class Mode {
                 promise = promise.then(() => this.onDidCommandMapMakesChanges(map));
             }
 
-            promise.then(
-                one.bind(this),
-                () => {
-                    this.clearPendings();
-                    this.executing = false;
-                }
-            );
+            promise.then(one.bind(this), () => {
+                this.clearPendings();
+                this.executing = false;
+            });
         };
 
         one();
     }
-
 }

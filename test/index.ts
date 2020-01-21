@@ -17,7 +17,7 @@ import * as testRunner from 'vscode/lib/testrunner';
 testRunner.configure({
     ui: 'tdd',
     useColors: true,
-    timeout: 2500
+    timeout: 2500,
 });
 
 module.exports = testRunner;
