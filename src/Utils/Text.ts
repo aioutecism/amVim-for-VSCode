@@ -18,9 +18,7 @@ export class UtilText {
 
     static rot13(text: string): string {
         return text.replace(/[a-z]/gi, (char) =>
-            String.fromCharCode(
-                char.charCodeAt(0) + (char.toUpperCase() > 'M' ? -13 : 13),
-            ),
+            String.fromCharCode(char.charCodeAt(0) + (char.toUpperCase() > 'M' ? -13 : 13)),
         );
     }
 

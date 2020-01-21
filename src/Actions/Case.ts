@@ -79,10 +79,7 @@ export class ActionCase {
         }
 
         let ranges = activeTextEditor.selections.map((selection) => {
-            return new Range(
-                selection.active,
-                selection.active.translate(0, args.n),
-            );
+            return new Range(selection.active, selection.active.translate(0, args.n));
         });
 
         ranges = UtilRange.unionOverlaps(ranges);

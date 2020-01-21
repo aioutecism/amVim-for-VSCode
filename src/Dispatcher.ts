@@ -51,18 +51,12 @@ export class Dispatcher {
 
         Keys.raws.forEach((key) => {
             context.subscriptions.push(
-                commands.registerCommand(
-                    `amVim.${key}`,
-                    this.inputHandler(key),
-                ),
+                commands.registerCommand(`amVim.${key}`, this.inputHandler(key)),
             );
         });
 
         context.subscriptions.push(
-            commands.registerCommand(
-                'amVim.executeNativeFind',
-                ActionFind.executeNativeFind,
-            ),
+            commands.registerCommand('amVim.executeNativeFind', ActionFind.executeNativeFind),
         );
 
         ActionMoveCursor.updatePreferredColumn();
@@ -106,18 +100,11 @@ export class Dispatcher {
         this._currentMode = this.modes[id];
         this._currentMode.enter();
 
-        commands.executeCommand(
-            'setContext',
-            'amVim.mode',
-            this._currentMode.name,
-        );
+        commands.executeCommand('setContext', 'amVim.mode', this._currentMode.name);
 
         // For use in repeat command
         if (lastMode) {
-            this._currentMode.onDidRecordFinish(
-                lastMode.recordedCommandMaps,
-                lastMode.id,
-            );
+            this._currentMode.onDidRecordFinish(lastMode.recordedCommandMaps, lastMode.id);
         }
     }
 

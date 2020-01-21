@@ -3,8 +3,6 @@ import { Command } from './Base';
 
 export class NewFileCommand extends Command {
     execute(): Thenable<undefined> {
-        return vscode.commands.executeCommand(
-            'workbench.action.files.newUntitledFile',
-        );
+        return vscode.commands.executeCommand('workbench.action.files.newUntitledFile');
     }
 }

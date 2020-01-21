@@ -1,9 +1,4 @@
-import {
-    GenericMapper,
-    GenericMap,
-    RecursiveMap,
-    MatchResultKind,
-} from '../Generic';
+import { GenericMapper, GenericMap, RecursiveMap, MatchResultKind } from '../Generic';
 import { SpecialKeyCommon, SpecialKeyMatchResult } from './Common';
 import { SpecialKeyN } from './N';
 import { SpecialKeyChar } from './Char';
@@ -25,8 +20,7 @@ interface MotionMap extends GenericMap {
     motionGenerators: MotionGenerator[];
 }
 
-export class SpecialKeyMotion extends GenericMapper
-    implements SpecialKeyCommon {
+export class SpecialKeyMotion extends GenericMapper implements SpecialKeyCommon {
     indicator = '{motion}';
 
     private conflictRegExp = /^[0]|\{char\}$/;
@@ -54,9 +48,17 @@ export class SpecialKeyMotion extends GenericMapper
             args: { useBlankSeparatedStyle: true },
         },
         { keys: 'b', motionGenerators: [MotionWord.prevStart] },
-        { keys: 'B', motionGenerators: [MotionWord.prevStart], args: { useBlankSeparatedStyle: true } },
+        {
+            keys: 'B',
+            motionGenerators: [MotionWord.prevStart],
+            args: { useBlankSeparatedStyle: true },
+        },
         { keys: 'g e', motionGenerators: [MotionWord.prevEnd] },
-        { keys: 'g E', motionGenerators: [MotionWord.prevEnd], args: { useBlankSeparatedStyle: true } },
+        {
+            keys: 'g E',
+            motionGenerators: [MotionWord.prevEnd],
+            args: { useBlankSeparatedStyle: true },
+        },
 
         { keys: 'f {char}', motionGenerators: [MotionMatch.next] },
         { keys: 'F {char}', motionGenerators: [MotionMatch.prev] },
@@ -128,11 +130,7 @@ export class SpecialKeyMotion extends GenericMapper
         });
     }
 
-    map(
-        joinedKeys: string,
-        motionGenerators: MotionGenerator[],
-        args?: {},
-    ): void {
+    map(joinedKeys: string, motionGenerators: MotionGenerator[], args?: {}): void {
         const map = super.map(joinedKeys, args);
         (map as MotionMap).motionGenerators = motionGenerators;
     }
@@ -164,16 +162,13 @@ export class SpecialKeyMotion extends GenericMapper
 
         if (map) {
             // Take N from last special key match.
-            if (
-                lastSpecialKeyMatch &&
-                lastSpecialKeyMatch.specialKey instanceof SpecialKeyN
-            ) {
+            if (lastSpecialKeyMatch && lastSpecialKeyMatch.specialKey instanceof SpecialKeyN) {
                 map.args = Object.assign(map.args, { n: additionalArgs.n });
                 delete additionalArgs.n;
             }
 
-            additionalArgs.motions = (map as MotionMap).motionGenerators.map(
-                (generator) => generator(map.args),
+            additionalArgs.motions = (map as MotionMap).motionGenerators.map((generator) =>
+                generator(map.args),
             );
         }
 

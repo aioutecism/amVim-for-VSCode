@@ -9,10 +9,6 @@ export class WriteQuitCommand extends Command {
 
         return vscode.window.activeTextEditor.document
             .save()
-            .then(() =>
-                vscode.commands.executeCommand(
-                    'workbench.action.closeActiveEditor',
-                ),
-            );
+            .then(() => vscode.commands.executeCommand('workbench.action.closeActiveEditor'));
     }
 }

@@ -25,8 +25,7 @@ export class Register {
 
     constructor(args: { text: string; isLinewise?: boolean }) {
         this.text = args.text;
-        this.isLinewise =
-            args.isLinewise === undefined ? false : args.isLinewise;
+        this.isLinewise = args.isLinewise === undefined ? false : args.isLinewise;
     }
 }
 
@@ -37,10 +36,7 @@ export class ActionRegister {
         return ActionRegister.stash;
     }
 
-    static yankRanges(args: {
-        ranges: Range[];
-        isLinewise: boolean;
-    }): Thenable<boolean> {
+    static yankRanges(args: { ranges: Range[]; isLinewise: boolean }): Thenable<boolean> {
         const activeTextEditor = window.activeTextEditor;
 
         if (!activeTextEditor) {
@@ -50,9 +46,7 @@ export class ActionRegister {
         const document = activeTextEditor.document;
 
         if (args.isLinewise) {
-            args.ranges = args.ranges.map((range) =>
-                UtilRange.toLinewise(range, document),
-            );
+            args.ranges = args.ranges.map((range) => UtilRange.toLinewise(range, document));
         }
 
         args.ranges = UtilRange.unionOverlaps(args.ranges);
@@ -71,12 +65,8 @@ export class ActionRegister {
         return Promise.resolve(true);
     }
 
-    static yankByMotions(args: {
-        motions: Motion[];
-        isChangeAction?: boolean;
-    }): Thenable<boolean> {
-        args.isChangeAction =
-            args.isChangeAction === undefined ? false : args.isChangeAction;
+    static yankByMotions(args: { motions: Motion[]; isChangeAction?: boolean }): Thenable<boolean> {
+        args.isChangeAction = args.isChangeAction === undefined ? false : args.isChangeAction;
 
         const activeTextEditor = window.activeTextEditor;
 
@@ -104,9 +94,7 @@ export class ActionRegister {
         });
     }
 
-    static yankByTextObject(args: {
-        textObject: TextObject;
-    }): Thenable<boolean> {
+    static yankByTextObject(args: { textObject: TextObject }): Thenable<boolean> {
         const activeTextEditor = window.activeTextEditor;
 
         if (!activeTextEditor) {
@@ -143,8 +131,7 @@ export class ActionRegister {
     }
 
     static yankSelections(args: { isLinewise?: boolean }): Thenable<boolean> {
-        args.isLinewise =
-            args.isLinewise === undefined ? false : args.isLinewise;
+        args.isLinewise = args.isLinewise === undefined ? false : args.isLinewise;
 
         const activeTextEditor = window.activeTextEditor;
 
@@ -217,10 +204,7 @@ export class ActionRegister {
             .then(() => {
                 if (stash.isLinewise) {
                     return ActionMoveCursor.byMotions({
-                        motions: [
-                            MotionCharacter.down(),
-                            MotionLine.firstNonBlank(),
-                        ],
+                        motions: [MotionCharacter.down(), MotionLine.firstNonBlank()],
                     });
                 } else if (stash.lineCount > 1) {
                     return ActionMoveCursor.byMotions({
@@ -252,9 +236,7 @@ export class ActionRegister {
         const stash = ActionRegister.stash;
 
         const putPositions = activeTextEditor.selections.map((selection) => {
-            return stash.isLinewise
-                ? selection.active.with(undefined, 0)
-                : selection.active;
+            return stash.isLinewise ? selection.active.with(undefined, 0) : selection.active;
         });
 
         const textToPut = stash.text.repeat(args.n);

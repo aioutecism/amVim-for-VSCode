@@ -70,8 +70,7 @@ export class ModeNormal extends Mode {
         {
             keys: 'A',
             actions: [
-                () =>
-                    ActionMoveCursor.byMotions({ motions: [MotionLine.end()] }),
+                () => ActionMoveCursor.byMotions({ motions: [MotionLine.end()] }),
                 ActionMode.toInsert,
             ],
         },
@@ -105,30 +104,21 @@ export class ModeNormal extends Mode {
         },
         {
             keys: 'x',
-            actions: [
-                ActionDelete.selectionsOrRight,
-                ActionSelection.validateSelections,
-            ],
+            actions: [ActionDelete.selectionsOrRight, ActionSelection.validateSelections],
             args: {
                 shouldYank: true,
             },
         },
         {
             keys: '{N} x',
-            actions: [
-                ActionDelete.selectionsOrRight,
-                ActionSelection.validateSelections,
-            ],
+            actions: [ActionDelete.selectionsOrRight, ActionSelection.validateSelections],
             args: {
                 shouldYank: true,
             },
         },
         {
             keys: 'delete',
-            actions: [
-                ActionDelete.selectionsOrRight,
-                ActionSelection.validateSelections,
-            ],
+            actions: [ActionDelete.selectionsOrRight, ActionSelection.validateSelections],
             args: {
                 shouldYank: true,
             },
@@ -150,10 +140,7 @@ export class ModeNormal extends Mode {
         },
         {
             keys: 'D',
-            actions: [
-                ActionDelete.byMotions,
-                ActionSelection.validateSelections,
-            ],
+            actions: [ActionDelete.byMotions, ActionSelection.validateSelections],
             args: {
                 motions: [MotionLine.end()],
                 shouldYank: true,
@@ -161,40 +148,28 @@ export class ModeNormal extends Mode {
         },
         {
             keys: 'd {motion}',
-            actions: [
-                ActionDelete.byMotions,
-                ActionSelection.validateSelections,
-            ],
+            actions: [ActionDelete.byMotions, ActionSelection.validateSelections],
             args: {
                 shouldYank: true,
             },
         },
         {
             keys: 'd {N} {motion}',
-            actions: [
-                ActionDelete.byMotions,
-                ActionSelection.validateSelections,
-            ],
+            actions: [ActionDelete.byMotions, ActionSelection.validateSelections],
             args: {
                 shouldYank: true,
             },
         },
         {
             keys: '{N} d {motion}',
-            actions: [
-                ActionDelete.byMotions,
-                ActionSelection.validateSelections,
-            ],
+            actions: [ActionDelete.byMotions, ActionSelection.validateSelections],
             args: {
                 shouldYank: true,
             },
         },
         {
             keys: 'd {textObject}',
-            actions: [
-                ActionDelete.byTextObject,
-                ActionSelection.validateSelections,
-            ],
+            actions: [ActionDelete.byTextObject, ActionSelection.validateSelections],
             args: {
                 shouldYank: true,
             },
@@ -348,24 +323,15 @@ export class ModeNormal extends Mode {
 
         {
             keys: 'ctrl+c',
-            actions: [
-                ActionNativeEscape.press,
-                ActionSelection.shrinkToPrimaryActive,
-            ],
+            actions: [ActionNativeEscape.press, ActionSelection.shrinkToPrimaryActive],
         },
         {
             keys: 'ctrl+[',
-            actions: [
-                ActionNativeEscape.press,
-                ActionSelection.shrinkToPrimaryActive,
-            ],
+            actions: [ActionNativeEscape.press, ActionSelection.shrinkToPrimaryActive],
         },
         {
             keys: 'escape',
-            actions: [
-                ActionNativeEscape.press,
-                ActionSelection.shrinkToPrimaryActive,
-            ],
+            actions: [ActionNativeEscape.press, ActionSelection.shrinkToPrimaryActive],
         },
     ];
 
@@ -405,10 +371,7 @@ export class ModeNormal extends Mode {
 
         const actions = map.actions.filter((action) => {
             return (
-                StaticReflect.getMetadata(
-                    SymbolMetadata.Action.shouldSkipOnRepeat,
-                    action,
-                ) !== true
+                StaticReflect.getMetadata(SymbolMetadata.Action.shouldSkipOnRepeat, action) !== true
             );
         });
 
@@ -424,10 +387,7 @@ export class ModeNormal extends Mode {
         return Promise.resolve(true);
     }
 
-    onDidRecordFinish(
-        recordedCommandMaps: CommandMap[],
-        lastModeID: ModeID,
-    ): void {
+    onDidRecordFinish(recordedCommandMaps: CommandMap[], lastModeID: ModeID): void {
         if (!recordedCommandMaps || recordedCommandMaps.length === 0) {
             return;
         }
@@ -438,9 +398,7 @@ export class ModeNormal extends Mode {
             if (this._recordedCommandMaps === undefined) {
                 this._recordedCommandMaps = recordedCommandMaps;
             } else {
-                this._recordedCommandMaps = this._recordedCommandMaps.concat(
-                    recordedCommandMaps,
-                );
+                this._recordedCommandMaps = this._recordedCommandMaps.concat(recordedCommandMaps);
             }
         } else {
             this._recordedCommandMaps = recordedCommandMaps;

@@ -75,18 +75,8 @@ const extractInfo = (originalText: string) => {
 
                 selections.push(
                     isReversed
-                        ? new Selection(
-                              endLine,
-                              endCharacter,
-                              startLine,
-                              startCharacter,
-                          )
-                        : new Selection(
-                              startLine,
-                              startCharacter,
-                              endLine,
-                              endCharacter,
-                          ),
+                        ? new Selection(endLine, endCharacter, startLine, startCharacter)
+                        : new Selection(startLine, startCharacter, endLine, endCharacter),
                 );
 
                 return content;
@@ -106,10 +96,7 @@ const extractInfo = (originalText: string) => {
 
 let reusableDocument: TextDocument;
 
-export const run = (
-    testCase: TestCase,
-    before?: (textEditor: TextEditor) => void,
-) => {
+export const run = (testCase: TestCase, before?: (textEditor: TextEditor) => void) => {
     const plainFrom = testCase.from.replace(/\n/g, '\\n');
     const plainTo = testCase.to.replace(/\n/g, '\\n');
     const expectation = `Inputs: ${testCase.inputs}\n> ${plainFrom}\n< ${plainTo}`;
@@ -141,14 +128,8 @@ export const run = (
                 }
 
                 try {
-                    assert.equal(
-                        TestUtil.getDocument()!.getText(),
-                        toInfo.cleanText,
-                    );
-                    assert.deepEqual(
-                        TestUtil.getSelections(),
-                        toInfo.selections,
-                    );
+                    assert.equal(TestUtil.getDocument()!.getText(), toInfo.cleanText);
+                    assert.deepEqual(TestUtil.getSelections(), toInfo.selections);
                 } catch (error) {
                     done(error);
                     return;

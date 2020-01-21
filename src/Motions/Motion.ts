@@ -13,12 +13,9 @@ export abstract class Motion {
             isCharacterUpdated?: boolean;
         } = {},
     ) {
-        this.isLinewise =
-            args.isLinewise === undefined ? false : args.isLinewise;
+        this.isLinewise = args.isLinewise === undefined ? false : args.isLinewise;
         this.isCharacterUpdated =
-            args.isCharacterUpdated === undefined
-                ? true
-                : args.isCharacterUpdated;
+            args.isCharacterUpdated === undefined ? true : args.isCharacterUpdated;
     }
 
     protected translate(lineDelta: number, characterDelta: number): void {
@@ -51,9 +48,7 @@ export abstract class Motion {
         }
 
         const preferredColumn =
-            !this.isCharacterUpdated && option
-                ? (option.preferredColumn as number)
-                : null;
+            !this.isCharacterUpdated && option ? (option.preferredColumn as number) : null;
 
         if (preferredColumn) {
             const tabSize = activeTextEditor.options.tabSize as number;
@@ -63,11 +58,7 @@ export abstract class Motion {
             let thisColumn = 0;
             let i: number;
 
-            for (
-                i = 0;
-                i < toLineText.length && thisColumn <= preferredColumn;
-                i++
-            ) {
+            for (i = 0; i < toLineText.length && thisColumn <= preferredColumn; i++) {
                 lastColumn = thisColumn;
                 thisColumn += toLineText.charAt(i) === '\t' ? tabSize : 1;
             }
@@ -80,8 +71,6 @@ export abstract class Motion {
 
         toCharacter = Math.max(toCharacter, 0);
 
-        return activeTextEditor.document.validatePosition(
-            new Position(toLine, toCharacter),
-        );
+        return activeTextEditor.document.validatePosition(new Position(toLine, toCharacter));
     }
 }

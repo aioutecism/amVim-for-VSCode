@@ -90,38 +90,22 @@ export class ModeVisualLine extends Mode {
         },
         {
             keys: 'c',
-            actions: [
-                ActionDelete.byLines,
-                ActionInsert.newLineBefore,
-                ActionMode.toInsert,
-            ],
+            actions: [ActionDelete.byLines, ActionInsert.newLineBefore, ActionMode.toInsert],
             args: { shouldYank: true },
         },
         {
             keys: 'C',
-            actions: [
-                ActionDelete.byLines,
-                ActionInsert.newLineBefore,
-                ActionMode.toInsert,
-            ],
+            actions: [ActionDelete.byLines, ActionInsert.newLineBefore, ActionMode.toInsert],
             args: { shouldYank: true },
         },
         {
             keys: 's',
-            actions: [
-                ActionDelete.byLines,
-                ActionInsert.newLineBefore,
-                ActionMode.toInsert,
-            ],
+            actions: [ActionDelete.byLines, ActionInsert.newLineBefore, ActionMode.toInsert],
             args: { shouldYank: true },
         },
         {
             keys: 'S',
-            actions: [
-                ActionDelete.byLines,
-                ActionInsert.newLineBefore,
-                ActionMode.toInsert,
-            ],
+            actions: [ActionDelete.byLines, ActionInsert.newLineBefore, ActionMode.toInsert],
             args: { shouldYank: true },
         },
         {
@@ -134,10 +118,7 @@ export class ModeVisualLine extends Mode {
         },
         {
             keys: 'J',
-            actions: [
-                ActionJoinLines.onSelections,
-                ActionSelection.shrinkToActives,
-            ],
+            actions: [ActionJoinLines.onSelections, ActionSelection.shrinkToActives],
         },
 
         {
@@ -159,39 +140,24 @@ export class ModeVisualLine extends Mode {
 
         {
             keys: 'r {char}',
-            actions: [
-                ActionReplace.selectionsWithCharacter,
-                ActionSelection.shrinkToStarts,
-            ],
+            actions: [ActionReplace.selectionsWithCharacter, ActionSelection.shrinkToStarts],
         },
 
         {
             keys: '~',
-            actions: [
-                ActionCase.switchSelections,
-                ActionSelection.shrinkToStarts,
-            ],
+            actions: [ActionCase.switchSelections, ActionSelection.shrinkToStarts],
         },
         {
             keys: 'u',
-            actions: [
-                ActionCase.lowercaseSelections,
-                ActionSelection.shrinkToStarts,
-            ],
+            actions: [ActionCase.lowercaseSelections, ActionSelection.shrinkToStarts],
         },
         {
             keys: 'U',
-            actions: [
-                ActionCase.uppercaseSelections,
-                ActionSelection.shrinkToStarts,
-            ],
+            actions: [ActionCase.uppercaseSelections, ActionSelection.shrinkToStarts],
         },
         {
             keys: 'g ?',
-            actions: [
-                ActionCase.rot13Selections,
-                ActionSelection.shrinkToStarts,
-            ],
+            actions: [ActionCase.rot13Selections, ActionSelection.shrinkToStarts],
         },
 
         { keys: '=', actions: [ActionFilter.Format.bySelections] },
@@ -219,24 +185,15 @@ export class ModeVisualLine extends Mode {
 
         {
             keys: 'ctrl+c',
-            actions: [
-                ActionNativeEscape.press,
-                ActionSelection.shrinkToActives,
-            ],
+            actions: [ActionNativeEscape.press, ActionSelection.shrinkToActives],
         },
         {
             keys: 'ctrl+[',
-            actions: [
-                ActionNativeEscape.press,
-                ActionSelection.shrinkToActives,
-            ],
+            actions: [ActionNativeEscape.press, ActionSelection.shrinkToActives],
         },
         {
             keys: 'escape',
-            actions: [
-                ActionNativeEscape.press,
-                ActionSelection.shrinkToActives,
-            ],
+            actions: [ActionNativeEscape.press, ActionSelection.shrinkToActives],
         },
     ];
 
@@ -266,10 +223,7 @@ export class ModeVisualLine extends Mode {
     protected onWillCommandMapMakesChanges(map: CommandMap): Promise<boolean> {
         const actions = map.actions.filter((action) => {
             return (
-                StaticReflect.getMetadata(
-                    SymbolMetadata.Action.shouldSkipOnRepeat,
-                    action,
-                ) !== true
+                StaticReflect.getMetadata(SymbolMetadata.Action.shouldSkipOnRepeat, action) !== true
             );
         });
 

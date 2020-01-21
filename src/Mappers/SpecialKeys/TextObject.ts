@@ -1,9 +1,4 @@
-import {
-    GenericMapper,
-    GenericMap,
-    RecursiveMap,
-    MatchResultKind,
-} from '../Generic';
+import { GenericMapper, GenericMap, RecursiveMap, MatchResultKind } from '../Generic';
 import { SpecialKeyCommon, SpecialKeyMatchResult } from './Common';
 import { TextObject } from '../../TextObjects/TextObject';
 import { TextObjectBlock } from '../../TextObjects/Block';
@@ -24,8 +19,7 @@ interface TextObjectMapInfo {
     args?: {};
 }
 
-export class SpecialKeyTextObject extends GenericMapper
-    implements SpecialKeyCommon {
+export class SpecialKeyTextObject extends GenericMapper implements SpecialKeyCommon {
     indicator = '{textObject}';
 
     private conflictRegExp = /^[ai]|\{char\}$/;
@@ -98,11 +92,7 @@ export class SpecialKeyTextObject extends GenericMapper
         });
     }
 
-    map(
-        joinedKeys: string,
-        textObjectGenerator: TextObjectGenerator,
-        args?: {},
-    ): void {
+    map(joinedKeys: string, textObjectGenerator: TextObjectGenerator, args?: {}): void {
         const map = super.map(joinedKeys, args);
         (map as TextObjectMap).textObjectGenerator = textObjectGenerator;
     }
@@ -133,9 +123,7 @@ export class SpecialKeyTextObject extends GenericMapper
         }
 
         if (map) {
-            additionalArgs.textObject = (map as TextObjectMap).textObjectGenerator(
-                map.args,
-            );
+            additionalArgs.textObject = (map as TextObjectMap).textObjectGenerator(map.args);
         }
 
         return {

@@ -16,11 +16,7 @@ export class MotionMatch extends Motion {
     private isTill: boolean;
     private isRepeat = false;
 
-    static next(args: {
-        character: string;
-        isTill?: boolean;
-        n?: number;
-    }): Motion {
+    static next(args: { character: string; isTill?: boolean; n?: number }): Motion {
         args.isTill = args.isTill === undefined ? false : args.isTill;
 
         const obj = new MotionMatch();
@@ -34,11 +30,7 @@ export class MotionMatch extends Motion {
         return obj;
     }
 
-    static prev(args: {
-        character: string;
-        isTill?: boolean;
-        n?: number;
-    }): Motion {
+    static prev(args: { character: string; isTill?: boolean; n?: number }): Motion {
         args.isTill = args.isTill === undefined ? false : args.isTill;
 
         const obj = new MotionMatch();
@@ -57,9 +49,7 @@ export class MotionMatch extends Motion {
     }
 
     static repeatLast(args: { isReverse?: boolean; n?: number }): Motion {
-        return MotionMatch.last
-            ? MotionMatch.last.clone(args)
-            : new MotionEmpty();
+        return MotionMatch.last ? MotionMatch.last.clone(args) : new MotionEmpty();
     }
 
     clone(args: { isReverse?: boolean; n?: number }): MotionMatch {
@@ -81,18 +71,13 @@ export class MotionMatch extends Motion {
     }
 
     apply(from: Position, option: { isInclusive?: boolean } = {}): Position {
-        option.isInclusive =
-            option.isInclusive === undefined ? false : option.isInclusive;
+        option.isInclusive = option.isInclusive === undefined ? false : option.isInclusive;
 
         from = super.apply(from);
 
         const activeTextEditor = window.activeTextEditor;
 
-        if (
-            !activeTextEditor ||
-            this.direction === undefined ||
-            !this.character
-        ) {
+        if (!activeTextEditor || this.direction === undefined || !this.character) {
             return from;
         }
 
@@ -113,9 +98,7 @@ export class MotionMatch extends Motion {
         }
 
         if (this.direction === MotionMatchDirection.NEXT) {
-            targetText = targetText.substr(
-                toCharacter + 1 + (shouldSkip ? 1 : 0),
-            );
+            targetText = targetText.substr(toCharacter + 1 + (shouldSkip ? 1 : 0));
 
             let offset = -1;
 

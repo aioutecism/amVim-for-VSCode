@@ -22,31 +22,22 @@ export class ActionSelection {
 
         let isChanged = false;
 
-        const validatedSelections = activeTextEditor.selections.map(
-            (selection) => {
-                if (!selection.isEmpty) {
-                    return selection;
-                }
+        const validatedSelections = activeTextEditor.selections.map((selection) => {
+            if (!selection.isEmpty) {
+                return selection;
+            }
 
-                const position = selection.active;
-                const endCharacter = document.lineAt(position).range.end
-                    .character;
-                const maxCharacter =
-                    endCharacter > 0 ? endCharacter - 1 : endCharacter;
+            const position = selection.active;
+            const endCharacter = document.lineAt(position).range.end.character;
+            const maxCharacter = endCharacter > 0 ? endCharacter - 1 : endCharacter;
 
-                if (position.character > maxCharacter) {
-                    isChanged = true;
-                    return new Selection(
-                        position.line,
-                        maxCharacter,
-                        position.line,
-                        maxCharacter,
-                    );
-                } else {
-                    return selection;
-                }
-            },
-        );
+            if (position.character > maxCharacter) {
+                isChanged = true;
+                return new Selection(position.line, maxCharacter, position.line, maxCharacter);
+            } else {
+                return selection;
+            }
+        });
 
         if (isChanged) {
             activeTextEditor.selections = validatedSelections;
@@ -62,9 +53,7 @@ export class ActionSelection {
             return Promise.resolve(false);
         }
 
-        activeTextEditor.selection = UtilSelection.shrinkToActive(
-            activeTextEditor.selection,
-        );
+        activeTextEditor.selection = UtilSelection.shrinkToActive(activeTextEditor.selection);
 
         return Promise.resolve(true);
     }
@@ -76,15 +65,11 @@ export class ActionSelection {
             return Promise.resolve(false);
         }
 
-        if (
-            activeTextEditor.selections.every((selection) => selection.isEmpty)
-        ) {
+        if (activeTextEditor.selections.every((selection) => selection.isEmpty)) {
             return Promise.resolve(false);
         }
 
-        activeTextEditor.selections = UtilSelection.shrinkToActives(
-            activeTextEditor.selections,
-        );
+        activeTextEditor.selections = UtilSelection.shrinkToActives(activeTextEditor.selections);
 
         return Promise.resolve(true);
     }
@@ -96,11 +81,9 @@ export class ActionSelection {
             return Promise.resolve(false);
         }
 
-        activeTextEditor.selections = activeTextEditor.selections.map(
-            (selection) => {
-                return new Selection(selection.start, selection.start);
-            },
-        );
+        activeTextEditor.selections = activeTextEditor.selections.map((selection) => {
+            return new Selection(selection.start, selection.start);
+        });
 
         return Promise.resolve(true);
     }
@@ -112,11 +95,9 @@ export class ActionSelection {
             return Promise.resolve(false);
         }
 
-        activeTextEditor.selections = activeTextEditor.selections.map(
-            (selection) => {
-                return new Selection(selection.end, selection.end);
-            },
-        );
+        activeTextEditor.selections = activeTextEditor.selections.map((selection) => {
+            return new Selection(selection.end, selection.end);
+        });
 
         return Promise.resolve(true);
     }
@@ -128,23 +109,16 @@ export class ActionSelection {
             return Promise.resolve(false);
         }
 
-        activeTextEditor.selections = activeTextEditor.selections.map(
-            (selection) => {
-                return selection.isEmpty
-                    ? new Selection(
-                          selection.anchor,
-                          selection.anchor.translate(0, +1),
-                      )
-                    : selection;
-            },
-        );
+        activeTextEditor.selections = activeTextEditor.selections.map((selection) => {
+            return selection.isEmpty
+                ? new Selection(selection.anchor, selection.anchor.translate(0, +1))
+                : selection;
+        });
 
         return Promise.resolve(true);
     }
 
-    static expandByTextObject(args: {
-        textObject: TextObject;
-    }): Thenable<boolean> {
+    static expandByTextObject(args: { textObject: TextObject }): Thenable<boolean> {
         const activeTextEditor = window.activeTextEditor;
 
         if (!activeTextEditor) {
@@ -159,9 +133,7 @@ export class ActionSelection {
             if (selection.isEmpty || UtilRange.isSingleCharacter(selection)) {
                 positionToApply = selection.start;
             } else {
-                positionToApply = UtilSelection.getActiveInVisualMode(
-                    selection,
-                );
+                positionToApply = UtilSelection.getActiveInVisualMode(selection);
 
                 if (selection.isReversed && positionToApply.character > 0) {
                     positionToApply = positionToApply.translate(0, -1);
@@ -174,8 +146,7 @@ export class ActionSelection {
             if (match) {
                 const intersection = selection.intersection(match);
                 const range =
-                    args.textObject.willFindForward &&
-                    (!intersection || intersection.isEmpty)
+                    args.textObject.willFindForward && (!intersection || intersection.isEmpty)
                         ? match
                         : selection.union(match);
                 selection = selection.isReversed
@@ -202,19 +173,14 @@ export class ActionSelection {
             return Promise.resolve(false);
         }
 
-        activeTextEditor.selections = activeTextEditor.selections.map(
-            (selection) => {
-                const start = selection.start.with(undefined, 0);
-                const end = selection.end.with(
-                    undefined,
-                    activeTextEditor.document.lineAt(selection.end.line).text
-                        .length,
-                );
-                return selection.isReversed
-                    ? new Selection(end, start)
-                    : new Selection(start, end);
-            },
-        );
+        activeTextEditor.selections = activeTextEditor.selections.map((selection) => {
+            const start = selection.start.with(undefined, 0);
+            const end = selection.end.with(
+                undefined,
+                activeTextEditor.document.lineAt(selection.end.line).text.length,
+            );
+            return selection.isReversed ? new Selection(end, start) : new Selection(start, end);
+        });
 
         return Promise.resolve(true);
     }

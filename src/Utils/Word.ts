@@ -16,10 +16,7 @@ export class UtilWord {
     private static japanesePunctuationCharCodeRange = [0x3000, 0x303f];
     private static hiraganaCharCodeRange = [0x3040, 0x309f];
     private static katakanaCharCodeRange = [0x30a0, 0x30ff];
-    private static fullWidthRomanOrHalfWidthKatakanaCharCodeRange = [
-        0xff00,
-        0xffef,
-    ];
+    private static fullWidthRomanOrHalfWidthKatakanaCharCodeRange = [0xff00, 0xffef];
     private static kanjiCharCodeRange = [0x4e00, 0x9faf];
     private static rareKanjiCharCodeRange = [0x3400, 0x4dbf];
 
@@ -29,20 +26,15 @@ export class UtilWord {
         this.characterKindCache = {};
 
         for (let i = 0; i < this.blankSeparators.length; i++) {
-            this.characterKindCache[this.blankSeparators.charCodeAt(i)] =
-                WordCharacterKind.Blank;
+            this.characterKindCache[this.blankSeparators.charCodeAt(i)] = WordCharacterKind.Blank;
         }
 
         for (let i = 0, len = wordSeparators.length; i < len; i++) {
-            this.characterKindCache[wordSeparators.charCodeAt(i)] =
-                WordCharacterKind.Separator;
+            this.characterKindCache[wordSeparators.charCodeAt(i)] = WordCharacterKind.Separator;
         }
     }
 
-    static getCharacterKind(
-        charCode: number,
-        useBlankSeparatedStyle: boolean,
-    ): WordCharacterKind {
+    static getCharacterKind(charCode: number, useBlankSeparatedStyle: boolean): WordCharacterKind {
         let characterKind = UtilWord.characterKindCache[charCode];
 
         if (characterKind === undefined) {
@@ -62,13 +54,10 @@ export class UtilWord {
             ) {
                 characterKind = WordCharacterKind.Katakana;
             } else if (
-                charCode >=
-                    this.fullWidthRomanOrHalfWidthKatakanaCharCodeRange[0] &&
-                charCode <=
-                    this.fullWidthRomanOrHalfWidthKatakanaCharCodeRange[1]
+                charCode >= this.fullWidthRomanOrHalfWidthKatakanaCharCodeRange[0] &&
+                charCode <= this.fullWidthRomanOrHalfWidthKatakanaCharCodeRange[1]
             ) {
-                characterKind =
-                    WordCharacterKind.FullWidthRomanOrHalfWidthKatakana;
+                characterKind = WordCharacterKind.FullWidthRomanOrHalfWidthKatakana;
             } else if (
                 charCode >= this.kanjiCharCodeRange[0] &&
                 charCode <= this.kanjiCharCodeRange[1]

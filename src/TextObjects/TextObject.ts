@@ -58,10 +58,7 @@ export abstract class TextObject {
         return range;
     }
 
-    protected createRangeDueToIsInclusive(
-        startRange: Range,
-        endRange: Range,
-    ): Range {
+    protected createRangeDueToIsInclusive(startRange: Range, endRange: Range): Range {
         return this.isInclusive
             ? new Range(startRange.start, endRange.end)
             : new Range(startRange.end, endRange.start);
@@ -77,8 +74,7 @@ export abstract class TextObject {
 
         if (this.isInclusive) {
             if (
-                range.start.character ===
-                    startLine.firstNonWhitespaceCharacterIndex &&
+                range.start.character === startLine.firstNonWhitespaceCharacterIndex &&
                 range.end.character === endLine.text.length
             ) {
                 range = UtilRange.toLinewise(range, document);

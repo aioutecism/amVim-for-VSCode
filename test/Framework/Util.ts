@@ -36,10 +36,7 @@ export function createTempDocument(
             return textEditor
                 .edit((editBuilder) => {
                     editBuilder.setEndOfLine(EndOfLine.LF);
-                    editBuilder.replace(
-                        new Range(0, 0, textEditor.document.lineCount, 0),
-                        content,
-                    );
+                    editBuilder.replace(new Range(0, 0, textEditor.document.lineCount, 0), content);
                 })
                 .then(() => textEditor);
         }

@@ -10,8 +10,7 @@ export class ActionBlockCursor {
                     return Promise.resolve(false);
                 }
 
-                activeTextEditor.options.cursorStyle =
-                    TextEditorCursorStyle.Block;
+                activeTextEditor.options.cursorStyle = TextEditorCursorStyle.Block;
 
                 resolve(true);
             }, 0);
@@ -27,8 +26,7 @@ export class ActionBlockCursor {
                     return Promise.resolve(false);
                 }
 
-                activeTextEditor.options.cursorStyle =
-                    TextEditorCursorStyle.Line;
+                activeTextEditor.options.cursorStyle = TextEditorCursorStyle.Line;
 
                 resolve(true);
             }, 0);

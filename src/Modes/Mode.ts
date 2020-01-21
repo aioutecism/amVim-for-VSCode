@@ -112,10 +112,7 @@ export abstract class Mode {
     /**
      * Override this to do something after recording ends.
      */
-    onDidRecordFinish(
-        recordedCommandMaps: CommandMap[],
-        lastModeID: ModeID,
-    ): void {}
+    onDidRecordFinish(recordedCommandMaps: CommandMap[], lastModeID: ModeID): void {}
 
     protected execute(): void {
         if (this.executing) {
@@ -135,16 +132,11 @@ export abstract class Mode {
             let promise: Promise<boolean | undefined> = Promise.resolve(true);
 
             const isAnyActionIsChange = map.actions.some((action) => {
-                return StaticReflect.getMetadata(
-                    SymbolMetadata.Action.isChange,
-                    action,
-                );
+                return StaticReflect.getMetadata(SymbolMetadata.Action.isChange, action);
             });
 
             if (isAnyActionIsChange) {
-                promise = promise.then(() =>
-                    this.onWillCommandMapMakesChanges(map),
-                );
+                promise = promise.then(() => this.onWillCommandMapMakesChanges(map));
             }
 
             map.actions.forEach((action) => {
@@ -152,9 +144,7 @@ export abstract class Mode {
             });
 
             if (isAnyActionIsChange) {
-                promise = promise.then(() =>
-                    this.onDidCommandMapMakesChanges(map),
-                );
+                promise = promise.then(() => this.onDidCommandMapMakesChanges(map));
             }
 
             promise.then(one.bind(this), () => {

@@ -1,10 +1,4 @@
-import {
-    commands,
-    window,
-    workspace,
-    WorkspaceConfiguration,
-    Disposable,
-} from 'vscode';
+import { commands, window, workspace, WorkspaceConfiguration, Disposable } from 'vscode';
 import { ModeID } from './Modes/Mode';
 import { UtilWord } from './Utils/Word';
 
@@ -34,9 +28,7 @@ export class Configuration {
         this.onDidChangeConfiguration();
 
         this.disposables.push(
-            workspace.onDidChangeConfiguration(() =>
-                this.onDidChangeConfiguration(),
-            ),
+            workspace.onDidChangeConfiguration(() => this.onDidChangeConfiguration()),
         );
     }
 
@@ -44,10 +36,7 @@ export class Configuration {
         this.updateCache();
         this.updateKeybindingContexts();
 
-        this._defaultModeID = this.getExtensionSetting<boolean>(
-            'startInInsertMode',
-            false,
-        )
+        this._defaultModeID = this.getExtensionSetting<boolean>('startInInsertMode', false)
             ? ModeID.INSERT
             : ModeID.NORMAL;
         this._smartRelativeLineNumbers = this.getExtensionSetting<boolean>(
@@ -56,10 +45,7 @@ export class Configuration {
         );
 
         UtilWord.updateCharacterKindCache(
-            this.getEditorSetting<string>(
-                'wordSeparators',
-                '`~!@#$%^&*()-=+[{]}\\|;:\'",.<>/?',
-            ),
+            this.getEditorSetting<string>('wordSeparators', '`~!@#$%^&*()-=+[{]}\\|;:\'",.<>/?'),
         );
     }
 
@@ -82,10 +68,7 @@ export class Configuration {
         commands.executeCommand(
             'setContext',
             'amVim.configuration.shouldUseVimStyleNavigationInListView',
-            this.getExtensionSetting<boolean>(
-                'vimStyleNavigationInListView',
-                true,
-            ),
+            this.getExtensionSetting<boolean>('vimStyleNavigationInListView', true),
         );
     }
 

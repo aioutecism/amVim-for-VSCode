@@ -1,10 +1,5 @@
 import { Action } from '../Actions/Action';
-import {
-    GenericMapper,
-    GenericMap,
-    MatchResult,
-    MatchResultKind,
-} from './Generic';
+import { GenericMapper, GenericMap, MatchResult, MatchResultKind } from './Generic';
 import { SpecialKeyN } from './SpecialKeys/N';
 import { SpecialKeyChar } from './SpecialKeys/Char';
 import { SpecialKeyMotion } from './SpecialKeys/Motion';

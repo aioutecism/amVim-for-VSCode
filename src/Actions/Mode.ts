@@ -28,9 +28,7 @@ export class ActionMode {
         return commands.executeCommand(`amVim.mode.${ModeID.INSERT}`);
     }
 
-    static switchByActiveSelections(
-        currentMode: ModeID | null,
-    ): Thenable<boolean> {
+    static switchByActiveSelections(currentMode: ModeID | null): Thenable<boolean> {
         const activeTextEditor = window.activeTextEditor;
 
         if (!activeTextEditor) {
@@ -57,10 +55,7 @@ export class ActionMode {
             } else {
                 return Promise.resolve(true);
             }
-        } else if (
-            mode === ModeID.VISUAL &&
-            currentMode === ModeID.VISUAL_LINE
-        ) {
+        } else if (mode === ModeID.VISUAL && currentMode === ModeID.VISUAL_LINE) {
             return Promise.resolve(true);
         } else {
             return commands

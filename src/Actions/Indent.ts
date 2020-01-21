@@ -18,10 +18,7 @@ export class ActionIndent {
         }
     }
 
-    private static getIndentLevel(
-        lineNumber: number,
-        document: TextDocument,
-    ): number {
+    private static getIndentLevel(lineNumber: number, document: TextDocument): number {
         if (lineNumber >= document.lineCount) {
             return 0;
         }
@@ -30,16 +27,11 @@ export class ActionIndent {
 
         const line = document.lineAt(lineNumber);
 
-        const indentText = line.text.substr(
-            0,
-            line.firstNonWhitespaceCharacterIndex,
-        );
+        const indentText = line.text.substr(0, line.firstNonWhitespaceCharacterIndex);
         const tabCount = UtilText.countStringAppearance('\t', indentText);
 
         let indentLength =
-            tabCount > 0
-                ? indentText.length + tabCount * (tabSize - 1)
-                : indentText.length;
+            tabCount > 0 ? indentText.length + tabCount * (tabSize - 1) : indentText.length;
 
         return indentLength / tabSize;
     }
@@ -50,10 +42,8 @@ export class ActionIndent {
         isVisualLineMode?: boolean;
         preferredRelativeRange?: RangeOffset;
     }): Thenable<boolean> {
-        args.isVisualMode =
-            args.isVisualMode === undefined ? false : args.isVisualMode;
-        args.isVisualLineMode =
-            args.isVisualLineMode === undefined ? false : args.isVisualLineMode;
+        args.isVisualMode = args.isVisualMode === undefined ? false : args.isVisualMode;
+        args.isVisualLineMode = args.isVisualLineMode === undefined ? false : args.isVisualLineMode;
 
         const activeTextEditor = window.activeTextEditor;
 
@@ -70,9 +60,7 @@ export class ActionIndent {
             activeTextEditor.selections.forEach((selection) => {
                 for (
                     let i = selection.active.line;
-                    i <=
-                    selection.active.line +
-                        args.preferredRelativeRange!.lineOffset;
+                    i <= selection.active.line + args.preferredRelativeRange!.lineOffset;
                     i++
                 ) {
                     lineNumbers[i] = true;
@@ -80,11 +68,7 @@ export class ActionIndent {
             });
         } else {
             activeTextEditor.selections.forEach((selection) => {
-                for (
-                    let i = selection.start.line;
-                    i <= selection.end.line;
-                    i++
-                ) {
+                for (let i = selection.start.line; i <= selection.end.line; i++) {
                     lineNumbers[i] = true;
                 }
             });
@@ -101,18 +85,11 @@ export class ActionIndent {
 
                     const line = document.lineAt(lineNumber);
 
-                    const currentIndentLevel = ActionIndent.getIndentLevel(
-                        lineNumber,
-                        document,
-                    );
+                    const currentIndentLevel = ActionIndent.getIndentLevel(lineNumber, document);
                     let toIndentLevel =
                         args.indentLevelOffset > 0
-                            ? Math.floor(
-                                  currentIndentLevel + args.indentLevelOffset,
-                              )
-                            : Math.ceil(
-                                  currentIndentLevel + args.indentLevelOffset,
-                              );
+                            ? Math.floor(currentIndentLevel + args.indentLevelOffset)
+                            : Math.ceil(currentIndentLevel + args.indentLevelOffset);
 
                     if (toIndentLevel < 0) {
                         toIndentLevel = 0;
@@ -121,12 +98,7 @@ export class ActionIndent {
                     const indentText = indentUnit.repeat(toIndentLevel);
 
                     editBuilder.replace(
-                        new Range(
-                            lineNumber,
-                            0,
-                            lineNumber,
-                            line.firstNonWhitespaceCharacterIndex,
-                        ),
+                        new Range(lineNumber, 0, lineNumber, line.firstNonWhitespaceCharacterIndex),
                         indentText,
                     );
                 });

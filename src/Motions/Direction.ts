@@ -38,11 +38,7 @@ export class MotionDirection extends Motion {
 
         const activeTextEditor = window.activeTextEditor;
 
-        if (
-            !activeTextEditor ||
-            this.direction === undefined ||
-            this.n === undefined
-        ) {
+        if (!activeTextEditor || this.direction === undefined || this.n === undefined) {
             return from;
         }
 

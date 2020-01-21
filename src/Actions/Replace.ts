@@ -12,10 +12,8 @@ export class ActionReplace {
         shouldYank?: boolean;
         isLinewise?: boolean;
     }): Thenable<boolean> {
-        args.shouldYank =
-            args.shouldYank === undefined ? false : args.shouldYank;
-        args.isLinewise =
-            args.isLinewise === undefined ? false : args.isLinewise;
+        args.shouldYank = args.shouldYank === undefined ? false : args.shouldYank;
+        args.isLinewise = args.isLinewise === undefined ? false : args.isLinewise;
 
         const stash = ActionRegister.GetStash();
 
@@ -34,9 +32,7 @@ export class ActionReplace {
         let ranges = activeTextEditor.selections as Range[];
 
         if (args.isLinewise) {
-            ranges = ranges.map((range) =>
-                UtilRange.toLinewise(range, document),
-            );
+            ranges = ranges.map((range) => UtilRange.toLinewise(range, document));
         }
 
         return (args.shouldYank
@@ -57,9 +53,7 @@ export class ActionReplace {
     }
 
     @StaticReflect.metadata(SymbolMetadata.Action.isChange, true)
-    static selectionsWithCharacter(args: {
-        character: string;
-    }): Thenable<boolean> {
+    static selectionsWithCharacter(args: { character: string }): Thenable<boolean> {
         const activeTextEditor = window.activeTextEditor;
 
         if (!activeTextEditor) {
@@ -70,20 +64,14 @@ export class ActionReplace {
             .edit((editBuilder) => {
                 activeTextEditor.selections.forEach((selection) => {
                     let text = activeTextEditor.document.getText(selection);
-                    editBuilder.replace(
-                        selection,
-                        text.replace(/[^\n]/g, args.character),
-                    );
+                    editBuilder.replace(selection, text.replace(/[^\n]/g, args.character));
                 });
             })
             .then(() => ActionReveal.primaryCursor());
     }
 
     @StaticReflect.metadata(SymbolMetadata.Action.isChange, true)
-    static charactersWithCharacter(args: {
-        character: string;
-        n?: number;
-    }): Thenable<boolean> {
+    static charactersWithCharacter(args: { character: string; n?: number }): Thenable<boolean> {
         args.n = args.n === undefined ? 1 : args.n;
 
         const activeTextEditor = window.activeTextEditor;
@@ -93,10 +81,7 @@ export class ActionReplace {
         }
 
         let ranges = activeTextEditor.selections.map((selection) => {
-            return new Range(
-                selection.active,
-                selection.active.translate(0, args.n),
-            );
+            return new Range(selection.active, selection.active.translate(0, args.n));
         });
 
         ranges = UtilRange.unionOverlaps(ranges);
@@ -105,10 +90,7 @@ export class ActionReplace {
             .edit((editBuilder) => {
                 ranges.forEach((range) => {
                     let text = activeTextEditor.document.getText(range);
-                    editBuilder.replace(
-                        range,
-                        text.replace(/[^\n]/g, args.character),
-                    );
+                    editBuilder.replace(range, text.replace(/[^\n]/g, args.character));
                 });
             })
             .then(() => ActionReveal.primaryCursor());

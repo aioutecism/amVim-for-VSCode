@@ -40,17 +40,12 @@ export class UtilSelection {
     }
 
     static shrinkToActives(selections: Selection[]): Selection[] {
-        return selections.map((selection) =>
-            UtilSelection.shrinkToActive(selection),
-        );
+        return selections.map((selection) => UtilSelection.shrinkToActive(selection));
     }
 
     static getActiveInVisualMode(anchor: Position, active: Position): Position;
     static getActiveInVisualMode(selection: Selection): Position;
-    static getActiveInVisualMode(
-        first: Position | Selection,
-        second?: Position,
-    ): Position {
+    static getActiveInVisualMode(first: Position | Selection, second?: Position): Position {
         let active: Position;
         let isReversed: boolean;
 
@@ -62,8 +57,6 @@ export class UtilSelection {
             active = (first as Selection).active;
         }
 
-        return !isReversed && active.character > 0
-            ? active.translate(0, -1)
-            : active;
+        return !isReversed && active.character > 0 ? active.translate(0, -1) : active;
     }
 }

@@ -41,19 +41,10 @@ export class TextObjectQuotedString extends TextObject {
 
         while (characterIndex >= 0) {
             const characterEscaped =
-                lineText[characterIndex - 1] ===
-                TextObjectQuotedString.escapeCharacter;
-            if (
-                lineText[characterIndex] === this.quoteCharacter &&
-                !characterEscaped
-            ) {
+                lineText[characterIndex - 1] === TextObjectQuotedString.escapeCharacter;
+            if (lineText[characterIndex] === this.quoteCharacter && !characterEscaped) {
                 this.adjustedAnchor = new Position(lineIndex, anchor.character);
-                return new Range(
-                    lineIndex,
-                    characterIndex,
-                    lineIndex,
-                    characterIndex + 1,
-                );
+                return new Range(lineIndex, characterIndex, lineIndex, characterIndex + 1);
             }
 
             characterIndex--;
@@ -63,22 +54,10 @@ export class TextObjectQuotedString extends TextObject {
 
         while (characterIndex < lineText.length) {
             const characterEscaped =
-                lineText[characterIndex - 1] ===
-                TextObjectQuotedString.escapeCharacter;
-            if (
-                lineText[characterIndex] === this.quoteCharacter &&
-                !characterEscaped
-            ) {
-                this.adjustedAnchor = new Position(
-                    lineIndex,
-                    characterIndex + 1,
-                );
-                return new Range(
-                    lineIndex,
-                    characterIndex,
-                    lineIndex,
-                    characterIndex + 1,
-                );
+                lineText[characterIndex - 1] === TextObjectQuotedString.escapeCharacter;
+            if (lineText[characterIndex] === this.quoteCharacter && !characterEscaped) {
+                this.adjustedAnchor = new Position(lineIndex, characterIndex + 1);
+                return new Range(lineIndex, characterIndex, lineIndex, characterIndex + 1);
             }
 
             characterIndex++;
@@ -99,18 +78,9 @@ export class TextObjectQuotedString extends TextObject {
 
         while (characterIndex < lineText.length) {
             const characterEscaped =
-                lineText[characterIndex - 1] ===
-                TextObjectQuotedString.escapeCharacter;
-            if (
-                lineText[characterIndex] === this.quoteCharacter &&
-                !characterEscaped
-            ) {
-                return new Range(
-                    lineIndex,
-                    characterIndex,
-                    lineIndex,
-                    characterIndex + 1,
-                );
+                lineText[characterIndex - 1] === TextObjectQuotedString.escapeCharacter;
+            if (lineText[characterIndex] === this.quoteCharacter && !characterEscaped) {
+                return new Range(lineIndex, characterIndex, lineIndex, characterIndex + 1);
             }
 
             characterIndex++;

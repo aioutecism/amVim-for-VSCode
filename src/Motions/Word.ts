@@ -28,9 +28,7 @@ export class MotionWord extends Motion {
 
         this.n = args.n === undefined ? 1 : args.n;
         this.useBlankSeparatedStyle =
-            args.useBlankSeparatedStyle === undefined
-                ? false
-                : args.useBlankSeparatedStyle;
+            args.useBlankSeparatedStyle === undefined ? false : args.useBlankSeparatedStyle;
     }
 
     static nextStart(
@@ -89,14 +87,10 @@ export class MotionWord extends Motion {
             shouldCrossLines?: boolean;
         } = {},
     ): Position {
-        option.isInclusive =
-            option.isInclusive === undefined ? false : option.isInclusive;
-        option.isChangeAction =
-            option.isChangeAction === undefined ? false : option.isChangeAction;
+        option.isInclusive = option.isInclusive === undefined ? false : option.isInclusive;
+        option.isChangeAction = option.isChangeAction === undefined ? false : option.isChangeAction;
         option.shouldCrossLines =
-            option.shouldCrossLines === undefined
-                ? true
-                : option.shouldCrossLines;
+            option.shouldCrossLines === undefined ? true : option.shouldCrossLines;
 
         from = super.apply(from);
 
@@ -162,10 +156,7 @@ export class MotionWord extends Motion {
                         this.useBlankSeparatedStyle,
                     );
 
-                    if (
-                        lastPosition !== undefined &&
-                        lastCharacterKind !== currentCharacterKind
-                    ) {
+                    if (lastPosition !== undefined && lastCharacterKind !== currentCharacterKind) {
                         let startPosition: Position | undefined;
                         let endPosition: Position | undefined;
 
@@ -235,8 +226,7 @@ export class MotionWord extends Motion {
         } else if (this.direction === MotionWordDirection.Prev) {
             while (line >= 0) {
                 const text = document.lineAt(line).text + '\n';
-                let character =
-                    line === from.line ? from.character : text.length - 1;
+                let character = line === from.line ? from.character : text.length - 1;
 
                 while (character >= 0) {
                     const currentCharacterKind = UtilWord.getCharacterKind(
@@ -244,10 +234,7 @@ export class MotionWord extends Motion {
                         this.useBlankSeparatedStyle,
                     );
 
-                    if (
-                        lastPosition !== undefined &&
-                        lastCharacterKind !== currentCharacterKind
-                    ) {
+                    if (lastPosition !== undefined && lastCharacterKind !== currentCharacterKind) {
                         let startPosition: Position | undefined;
                         let endPosition: Position | undefined;
 

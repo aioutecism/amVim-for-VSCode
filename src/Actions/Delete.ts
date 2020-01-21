@@ -15,10 +15,8 @@ export class ActionDelete {
         isChangeAction?: boolean;
         shouldYank?: boolean;
     }): Thenable<boolean> {
-        args.isChangeAction =
-            args.isChangeAction === undefined ? false : args.isChangeAction;
-        args.shouldYank =
-            args.shouldYank === undefined ? false : args.shouldYank;
+        args.isChangeAction = args.isChangeAction === undefined ? false : args.isChangeAction;
+        args.shouldYank = args.shouldYank === undefined ? false : args.shouldYank;
 
         const activeTextEditor = window.activeTextEditor;
 
@@ -41,9 +39,7 @@ export class ActionDelete {
         });
 
         if (args.motions.some((motion) => motion.isLinewise)) {
-            ranges = ranges.map((range) =>
-                UtilRange.toLinewise(range, document),
-            );
+            ranges = ranges.map((range) => UtilRange.toLinewise(range, document));
         }
 
         ranges = UtilRange.unionOverlaps(ranges);
@@ -67,12 +63,8 @@ export class ActionDelete {
     }
 
     @StaticReflect.metadata(SymbolMetadata.Action.isChange, true)
-    static byTextObject(args: {
-        textObject: TextObject;
-        shouldYank?: boolean;
-    }): Thenable<boolean> {
-        args.shouldYank =
-            args.shouldYank === undefined ? false : args.shouldYank;
+    static byTextObject(args: { textObject: TextObject; shouldYank?: boolean }): Thenable<boolean> {
+        args.shouldYank = args.shouldYank === undefined ? false : args.shouldYank;
 
         const activeTextEditor = window.activeTextEditor;
 
@@ -123,8 +115,7 @@ export class ActionDelete {
         } = {},
     ): Thenable<boolean> {
         args.n = args.n === undefined ? 1 : args.n;
-        args.shouldYank =
-            args.shouldYank === undefined ? false : args.shouldYank;
+        args.shouldYank = args.shouldYank === undefined ? false : args.shouldYank;
 
         const activeTextEditor = window.activeTextEditor;
 
@@ -165,8 +156,7 @@ export class ActionDelete {
         } = {},
     ): Thenable<boolean> {
         args.n = args.n === undefined ? 1 : args.n;
-        args.shouldYank =
-            args.shouldYank === undefined ? false : args.shouldYank;
+        args.shouldYank = args.shouldYank === undefined ? false : args.shouldYank;
 
         const activeTextEditor = window.activeTextEditor;
 
@@ -176,10 +166,7 @@ export class ActionDelete {
 
         let ranges = activeTextEditor.selections.map((selection) => {
             return selection.isEmpty
-                ? new Range(
-                      selection.active,
-                      selection.active.translate(0, +args.n!),
-                  )
+                ? new Range(selection.active, selection.active.translate(0, +args.n!))
                 : selection;
         });
 
@@ -202,13 +189,9 @@ export class ActionDelete {
     }
 
     @StaticReflect.metadata(SymbolMetadata.Action.isChange, true)
-    static byLines(args: {
-        n?: number;
-        shouldYank?: boolean;
-    }): Thenable<boolean> {
+    static byLines(args: { n?: number; shouldYank?: boolean }): Thenable<boolean> {
         args.n = args.n === undefined ? 1 : args.n;
-        args.shouldYank =
-            args.shouldYank === undefined ? false : args.shouldYank;
+        args.shouldYank = args.shouldYank === undefined ? false : args.shouldYank;
 
         const activeTextEditor = window.activeTextEditor;
 
@@ -230,10 +213,7 @@ export class ActionDelete {
 
         ranges = UtilRange.unionOverlaps(ranges);
 
-        return (args.shouldYank
-            ? ActionRegister.yankLines({ n: args.n })
-            : Promise.resolve(true)
-        )
+        return (args.shouldYank ? ActionRegister.yankLines({ n: args.n }) : Promise.resolve(true))
             .then(() => {
                 return activeTextEditor.edit((editBuilder) => {
                     ranges.forEach((range) => editBuilder.delete(range));

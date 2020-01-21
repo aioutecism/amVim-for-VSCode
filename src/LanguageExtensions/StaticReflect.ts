@@ -92,23 +92,13 @@ export class StaticReflect {
      */
     static metadata(key: string | symbol, value: any) {
         function decorator(targetObject: Function): void;
-        function decorator(
-            targetObject: Object,
-            targetKey: string | symbol,
-        ): void;
-        function decorator(
-            targetObject: Object,
-            targetKey?: string | symbol,
-        ): void {
+        function decorator(targetObject: Object, targetKey: string | symbol): void;
+        function decorator(targetObject: Object, targetKey?: string | symbol): void {
             if (!isUndefined(targetKey)) {
                 if (!isObject(targetObject)) {
                     throw new TypeError();
                 }
-                StaticReflect.defineMetadata(
-                    key,
-                    value,
-                    targetObject[targetKey!],
-                );
+                StaticReflect.defineMetadata(key, value, targetObject[targetKey!]);
             } else {
                 if (!isConstructor(targetObject)) {
                     throw new TypeError();

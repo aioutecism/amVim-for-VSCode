@@ -10,15 +10,11 @@ export class ActionRelativeLineNumbers {
                     return resolve(false);
                 }
 
-                if (
-                    activeTextEditor.options.lineNumbers ===
-                    TextEditorLineNumbersStyle.Off
-                ) {
+                if (activeTextEditor.options.lineNumbers === TextEditorLineNumbersStyle.Off) {
                     return resolve(false);
                 }
 
-                activeTextEditor.options.lineNumbers =
-                    TextEditorLineNumbersStyle.Relative;
+                activeTextEditor.options.lineNumbers = TextEditorLineNumbersStyle.Relative;
 
                 resolve(true);
             }, 0);
@@ -34,15 +30,11 @@ export class ActionRelativeLineNumbers {
                     return resolve(false);
                 }
 
-                if (
-                    activeTextEditor.options.lineNumbers ===
-                    TextEditorLineNumbersStyle.Off
-                ) {
+                if (activeTextEditor.options.lineNumbers === TextEditorLineNumbersStyle.Off) {
                     return resolve(false);
                 }
 
-                activeTextEditor.options.lineNumbers =
-                    TextEditorLineNumbersStyle.On;
+                activeTextEditor.options.lineNumbers = TextEditorLineNumbersStyle.On;
 
                 resolve(true);
             }, 0);

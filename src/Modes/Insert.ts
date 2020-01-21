@@ -44,9 +44,7 @@ export class ModeInsert extends Mode {
                 ActionNativeEscape.press,
                 () =>
                     ActionSelection.shrinkToActives().then((isShrunken) =>
-                        isShrunken
-                            ? Promise.resolve(true)
-                            : ActionMode.toNormal(),
+                        isShrunken ? Promise.resolve(true) : ActionMode.toNormal(),
                     ),
             ],
         },
@@ -56,9 +54,7 @@ export class ModeInsert extends Mode {
                 ActionNativeEscape.press,
                 () =>
                     ActionSelection.shrinkToActives().then((isShrunken) =>
-                        isShrunken
-                            ? Promise.resolve(true)
-                            : ActionMode.toNormal(),
+                        isShrunken ? Promise.resolve(true) : ActionMode.toNormal(),
                     ),
             ],
         },
@@ -68,9 +64,7 @@ export class ModeInsert extends Mode {
                 ActionNativeEscape.press,
                 () =>
                     ActionSelection.shrinkToActives().then((isShrunken) =>
-                        isShrunken
-                            ? Promise.resolve(true)
-                            : ActionMode.toNormal(),
+                        isShrunken ? Promise.resolve(true) : ActionMode.toNormal(),
                     ),
             ],
         },
@@ -108,10 +102,7 @@ export class ModeInsert extends Mode {
         }
     }
 
-    input(
-        key: string,
-        args: { replaceCharCnt?: number } = {},
-    ): MatchResultKind {
+    input(key: string, args: { replaceCharCnt?: number } = {}): MatchResultKind {
         const matchResultKind = super.input(key);
 
         // Pass key to built-in command if match failed.
@@ -165,9 +156,7 @@ export class ModeInsert extends Mode {
             return;
         }
 
-        const currentLineText = this.textEditor.document.lineAt(
-            this.recordStartPosition.line,
-        ).text;
+        const currentLineText = this.textEditor.document.lineAt(this.recordStartPosition.line).text;
 
         let deletionCountBefore = 0;
         let deletionCountAfter = 0;
@@ -175,35 +164,24 @@ export class ModeInsert extends Mode {
         let searchLimit: number;
 
         // Calculate deletion count before.
-        searchLimit = Math.min(
-            this.recordStartPosition.character,
-            this.recordStartLineText.length,
-        );
+        searchLimit = Math.min(this.recordStartPosition.character, this.recordStartLineText.length);
         for (let i = 0; i < searchLimit; i++) {
-            if (
-                currentLineText.length <= i ||
-                currentLineText[i] !== this.recordStartLineText[i]
-            ) {
+            if (currentLineText.length <= i || currentLineText[i] !== this.recordStartLineText[i]) {
                 deletionCountBefore = this.recordStartPosition.character - i;
                 break;
             }
         }
 
         // Calculate deletion count after;
-        const minIndex =
-            this.recordStartPosition.character - deletionCountBefore;
-        searchLimit =
-            this.recordStartLineText.length -
-            this.recordStartPosition.character +
-            1;
+        const minIndex = this.recordStartPosition.character - deletionCountBefore;
+        searchLimit = this.recordStartLineText.length - this.recordStartPosition.character + 1;
         for (let i = 1; i < searchLimit; i++) {
             const originalIndex = this.recordStartLineText.length - i;
             const currentIndex = currentLineText.length - i;
 
             if (
                 currentIndex < minIndex ||
-                currentLineText[currentIndex] !==
-                    this.recordStartLineText[originalIndex]
+                currentLineText[currentIndex] !== this.recordStartLineText[originalIndex]
             ) {
                 deletionCountAfter = searchLimit - i;
                 break;
@@ -334,10 +312,7 @@ export class ModeInsert extends Mode {
             return;
         }
 
-        if (
-            this.textEditor.selection.active.line !==
-            this.recordStartPosition.line
-        ) {
+        if (this.textEditor.selection.active.line !== this.recordStartPosition.line) {
             this.endRecord();
         }
     }

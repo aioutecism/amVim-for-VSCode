@@ -5,10 +5,7 @@ import { UtilWord, WordCharacterKind } from '../Utils/Word';
 export class TextObjectWord extends TextObject {
     private useBlankSeparatedStyle: boolean;
 
-    static byWord(args: {
-        useBlankSeparatedStyle: boolean;
-        isInclusive: boolean;
-    }) {
+    static byWord(args: { useBlankSeparatedStyle: boolean; isInclusive: boolean }) {
         const obj = new TextObjectWord();
         obj.isInclusive = args.isInclusive;
         obj.useBlankSeparatedStyle = args.useBlankSeparatedStyle;
@@ -26,11 +23,7 @@ export class TextObjectWord extends TextObject {
         );
 
         let exclusiveCharacterIndex: number = 0;
-        for (
-            let characterIndex = anchor.character - 1;
-            characterIndex >= 0;
-            characterIndex--
-        ) {
+        for (let characterIndex = anchor.character - 1; characterIndex >= 0; characterIndex--) {
             const characterKind = UtilWord.getCharacterKind(
                 lineText.charCodeAt(characterIndex),
                 this.useBlankSeparatedStyle,
@@ -59,12 +52,7 @@ export class TextObjectWord extends TextObject {
             }
         }
 
-        return new Range(
-            lineIndex,
-            inclusiveCharacterIndex,
-            lineIndex,
-            exclusiveCharacterIndex,
-        );
+        return new Range(lineIndex, inclusiveCharacterIndex, lineIndex, exclusiveCharacterIndex);
     }
 
     findEndRange(document: TextDocument, anchor: Position): Range {
@@ -128,10 +116,7 @@ export class TextObjectWord extends TextObject {
         );
     }
 
-    protected createRangeDueToIsInclusive(
-        startRange: Range,
-        endRange: Range,
-    ): Range {
+    protected createRangeDueToIsInclusive(startRange: Range, endRange: Range): Range {
         if (this.isInclusive) {
             // From Vim documentation:
             // "Any trailing white space is included, unless there is none, then leading white space is included."

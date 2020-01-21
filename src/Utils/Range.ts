@@ -37,15 +37,12 @@ export class UtilRange {
             startCharacter = 0;
         }
 
-        return document.validateRange(
-            new Range(startLine, startCharacter, from.end.line + 1, 0),
-        );
+        return document.validateRange(new Range(startLine, startCharacter, from.end.line + 1, 0));
     }
 
     static isSingleCharacter(range: Range): boolean {
         return (
-            range.start.line === range.end.line &&
-            range.end.character - range.start.character === 1
+            range.start.line === range.end.line && range.end.character - range.start.character === 1
         );
     }
 }

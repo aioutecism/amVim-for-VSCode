@@ -20,10 +20,8 @@ export class ActionJoinLines {
                         return null;
                     }
 
-                    const thisLine = activeTextEditor.document.lineAt(line)
-                        .text;
-                    const nextLine = activeTextEditor.document.lineAt(line + 1)
-                        .text;
+                    const thisLine = activeTextEditor.document.lineAt(line).text;
+                    const nextLine = activeTextEditor.document.lineAt(line + 1).text;
 
                     const thisLineTrimLength = (() => {
                         const matches = thisLine.match(/\s+$/);
@@ -47,21 +45,13 @@ export class ActionJoinLines {
 
                 activeTextEditor.selections.forEach((selection) => {
                     if (selection.isSingleLine) {
-                        const line = activeTextEditor.document.lineAt(
-                            selection.active.line,
-                        );
-                        targetPositions.push(
-                            new Position(line.lineNumber, line.text.length),
-                        );
+                        const line = activeTextEditor.document.lineAt(selection.active.line);
+                        targetPositions.push(new Position(line.lineNumber, line.text.length));
 
                         linesToJoin.push(line.lineNumber);
                     } else {
-                        const line = activeTextEditor.document.lineAt(
-                            selection.end.line - 1,
-                        );
-                        targetPositions.push(
-                            new Position(line.lineNumber, line.text.length),
-                        );
+                        const line = activeTextEditor.document.lineAt(selection.end.line - 1);
+                        targetPositions.push(new Position(line.lineNumber, line.text.length));
 
                         for (
                             let lineNumber = selection.start.line;
