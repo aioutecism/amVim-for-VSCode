@@ -1,61 +1,81 @@
 import * as BlackBox from '../Framework/BlackBox';
 
-suite('Normal: d i t', () => {
+suite.only('Normal: d i t', () => {
     const testCases: BlackBox.TestCase[] = [
         {
             from: '<[]span>content</span>',
             inputs: 'd i t',
-            to: '<span>[]</span>'
+            to: '<span>[]</span>',
         },
         {
             from: '<span[]>content</span>',
             inputs: 'd i t',
-            to: '<span>[]</span>'
+            to: '<span>[]</span>',
         },
         {
             from: '<sp[]an>content</span>',
             inputs: 'd i t',
-            to: '<span>[]</span>'
+            to: '<span>[]</span>',
         },
         {
             from: '<span>content<[]/span>',
             inputs: 'd i t',
-            to: '<span>[]</span>'
+            to: '<span>[]</span>',
         },
         {
             from: '<span>content</[]span>',
             inputs: 'd i t',
-            to: '<span>[]</span>'
+            to: '<span>[]</span>',
         },
         {
             from: '<span>content</sp[]an>',
             inputs: 'd i t',
-            to: '<span>[]</span>'
+            to: '<span>[]</span>',
         },
         {
             from: '<span>content</span[]>',
             inputs: 'd i t',
-            to: '<span>[]</span>'
+            to: '<span>[]</span>',
         },
         {
             from: '<div>\n<span[]>content</span>\n</div>',
             inputs: 'd i t',
-            to: '<div>\n<span>[]</span>\n</div>'
+            to: '<div>\n<span>[]</span>\n</div>',
         },
         {
             from: '<div>\n<span>content</span[]>\n</div>',
             inputs: 'd i t',
-            to: '<div>\n<span>[]</span>\n</div>'
+            to: '<div>\n<span>[]</span>\n</div>',
         },
         {
             from: '<div[]>\n<span>content</span>\n</div>',
             inputs: 'd i t',
-            to: '<div>[]</div>'
+            to: '<div>[]</div>',
         },
         {
             from: '<div>\n<span>content</span>\n</[]div>',
             inputs: 'd i t',
-            to: '<div>[]</div>'
+            to: '<div>[]</div>',
+        },
+        {
+            from: '<div[]><span>content</div></span>',
+            inputs: 'd i t',
+            to: '<div>[]</div></span>',
+        },
+        {
+            from: '<div>[]<span>content</div></span>',
+            inputs: 'd i t',
+            to: '<div>[]</div></span>',
+        },
+        {
+            from: '<div><[]span></div></span>',
+            inputs: 'd i t',
+            to: '<div>[]</div></span>',
+        },
+        {
+            from: '<div><span></div[]></span>',
+            inputs: 'd i t',
+            to: '<div>[]</div></span>',
         },
     ];
 
