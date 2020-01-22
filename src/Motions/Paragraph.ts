@@ -1,14 +1,16 @@
-import {window, TextDocument, Position} from 'vscode';
-import {Motion} from './Motion';
+import { window, TextDocument, Position } from 'vscode';
+import { Motion } from './Motion';
 
-enum Direction {Prev, Next}
+enum Direction {
+    Prev,
+    Next,
+}
 
 export class MotionParagraph extends Motion {
-
     private direction: Direction;
     private n: number;
 
-    constructor(args: {direction: Direction, n?: number}) {
+    constructor(args: { direction: Direction; n?: number }) {
         args.n = args.n === undefined ? 1 : args.n;
 
         super();
@@ -17,14 +19,14 @@ export class MotionParagraph extends Motion {
         this.n = args.n;
     }
 
-    static prev(args: {n?: number}): Motion {
+    static prev(args: { n?: number }): Motion {
         return new MotionParagraph({
             direction: Direction.Prev,
             n: args.n,
         });
     }
 
-    static next(args: {n?: number}): Motion {
+    static next(args: { n?: number }): Motion {
         return new MotionParagraph({
             direction: Direction.Next,
             n: args.n,
@@ -36,7 +38,7 @@ export class MotionParagraph extends Motion {
 
         const activeTextEditor = window.activeTextEditor;
 
-        if (! activeTextEditor || this.direction === undefined || this.n === undefined) {
+        if (!activeTextEditor || this.direction === undefined || this.n === undefined) {
             return from;
         }
 
@@ -59,8 +61,8 @@ export class MotionParagraph extends Motion {
         document: TextDocument,
         from: Position,
     ): {
-        to: Position,
-        shouldStop: boolean,
+        to: Position;
+        shouldStop: boolean;
     } {
         let toLine: number | undefined = undefined;
         let toCharacter = 0;
@@ -90,8 +92,7 @@ export class MotionParagraph extends Motion {
                 shouldStop = true;
                 toLine = 0;
             }
-        }
-        else {
+        } else {
             for (let i = from.line + 1; i < document.lineCount; i++) {
                 const isLineEmpty = MotionParagraph.isLineEmpty(document, i);
 
@@ -124,5 +125,4 @@ export class MotionParagraph extends Motion {
     private static isLineEmpty(document: TextDocument, line: number): boolean {
         return document.lineAt(line).text === '';
     }
-
 }

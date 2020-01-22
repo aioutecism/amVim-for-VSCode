@@ -1,11 +1,13 @@
-import {commands} from 'vscode';
-import {StaticReflect} from '../LanguageExtensions/StaticReflect';
-import {SymbolMetadata} from '../Symbols/Metadata';
+import { commands } from 'vscode';
+import { StaticReflect } from '../LanguageExtensions/StaticReflect';
+import { SymbolMetadata } from '../Symbols/Metadata';
 
 export class ActionInsert {
-
     @StaticReflect.metadata(SymbolMetadata.Action.isChange, true)
-    static textAtSelections(args: { text: string, replaceCharCnt?: number }): Thenable<boolean | undefined> {
+    static textAtSelections(args: {
+        text: string;
+        replaceCharCnt?: number;
+    }): Thenable<boolean | undefined> {
         if (args.replaceCharCnt !== undefined) {
             return commands.executeCommand('default:replacePreviousChar', {
                 text: args.text,
@@ -24,5 +26,4 @@ export class ActionInsert {
     static newLineAfter(): Thenable<boolean | undefined> {
         return commands.executeCommand('editor.action.insertLineAfter');
     }
-
 }

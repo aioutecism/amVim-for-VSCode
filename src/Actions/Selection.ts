@@ -1,12 +1,11 @@
-import {window, Selection, Position} from 'vscode';
-import {getCurrentMode} from '../extension';
-import {ModeID} from '../Modes/Mode';
-import {TextObject} from '../TextObjects/TextObject';
-import {UtilSelection} from '../Utils/Selection';
-import {UtilRange} from '../Utils/Range';
+import { window, Selection, Position } from 'vscode';
+import { getCurrentMode } from '../extension';
+import { ModeID } from '../Modes/Mode';
+import { TextObject } from '../TextObjects/TextObject';
+import { UtilSelection } from '../Utils/Selection';
+import { UtilRange } from '../Utils/Range';
 
 export class ActionSelection {
-
     static validateSelections(): Thenable<boolean> {
         const currentMode = getCurrentMode();
         if (currentMode !== null && currentMode.id === ModeID.INSERT) {
@@ -15,7 +14,7 @@ export class ActionSelection {
 
         const activeTextEditor = window.activeTextEditor;
 
-        if (! activeTextEditor) {
+        if (!activeTextEditor) {
             return Promise.resolve(false);
         }
 
@@ -23,8 +22,8 @@ export class ActionSelection {
 
         let isChanged = false;
 
-        const validatedSelections = activeTextEditor.selections.map(selection => {
-            if (! selection.isEmpty) {
+        const validatedSelections = activeTextEditor.selections.map((selection) => {
+            if (!selection.isEmpty) {
                 return selection;
             }
 
@@ -34,11 +33,8 @@ export class ActionSelection {
 
             if (position.character > maxCharacter) {
                 isChanged = true;
-                return new Selection(
-                    position.line, maxCharacter,
-                    position.line, maxCharacter);
-            }
-            else {
+                return new Selection(position.line, maxCharacter, position.line, maxCharacter);
+            } else {
                 return selection;
             }
         });
@@ -53,7 +49,7 @@ export class ActionSelection {
     static shrinkToPrimaryActive(): Thenable<boolean> {
         const activeTextEditor = window.activeTextEditor;
 
-        if (! activeTextEditor) {
+        if (!activeTextEditor) {
             return Promise.resolve(false);
         }
 
@@ -65,11 +61,11 @@ export class ActionSelection {
     static shrinkToActives(): Thenable<boolean> {
         const activeTextEditor = window.activeTextEditor;
 
-        if (! activeTextEditor) {
+        if (!activeTextEditor) {
             return Promise.resolve(false);
         }
 
-        if (activeTextEditor.selections.every(selection => selection.isEmpty)) {
+        if (activeTextEditor.selections.every((selection) => selection.isEmpty)) {
             return Promise.resolve(false);
         }
 
@@ -81,11 +77,11 @@ export class ActionSelection {
     static shrinkToStarts(): Thenable<boolean> {
         const activeTextEditor = window.activeTextEditor;
 
-        if (! activeTextEditor) {
+        if (!activeTextEditor) {
             return Promise.resolve(false);
         }
 
-        activeTextEditor.selections = activeTextEditor.selections.map(selection => {
+        activeTextEditor.selections = activeTextEditor.selections.map((selection) => {
             return new Selection(selection.start, selection.start);
         });
 
@@ -95,11 +91,11 @@ export class ActionSelection {
     static shrinkToEnds(): Thenable<boolean> {
         const activeTextEditor = window.activeTextEditor;
 
-        if (! activeTextEditor) {
+        if (!activeTextEditor) {
             return Promise.resolve(false);
         }
 
-        activeTextEditor.selections = activeTextEditor.selections.map(selection => {
+        activeTextEditor.selections = activeTextEditor.selections.map((selection) => {
             return new Selection(selection.end, selection.end);
         });
 
@@ -109,11 +105,11 @@ export class ActionSelection {
     static expandToOne(): Thenable<boolean> {
         const activeTextEditor = window.activeTextEditor;
 
-        if (! activeTextEditor) {
+        if (!activeTextEditor) {
             return Promise.resolve(false);
         }
 
-        activeTextEditor.selections = activeTextEditor.selections.map(selection => {
+        activeTextEditor.selections = activeTextEditor.selections.map((selection) => {
             return selection.isEmpty
                 ? new Selection(selection.anchor, selection.anchor.translate(0, +1))
                 : selection;
@@ -122,30 +118,26 @@ export class ActionSelection {
         return Promise.resolve(true);
     }
 
-    static expandByTextObject(args: {
-        textObject: TextObject
-    }): Thenable<boolean> {
+    static expandByTextObject(args: { textObject: TextObject }): Thenable<boolean> {
         const activeTextEditor = window.activeTextEditor;
 
-        if (! activeTextEditor) {
+        if (!activeTextEditor) {
             return Promise.resolve(false);
         }
 
         let selections: Selection[] = [];
 
-        activeTextEditor.selections.forEach(selection => {
+        activeTextEditor.selections.forEach((selection) => {
             let positionToApply: Position;
 
             if (selection.isEmpty || UtilRange.isSingleCharacter(selection)) {
                 positionToApply = selection.start;
-            }
-            else {
+            } else {
                 positionToApply = UtilSelection.getActiveInVisualMode(selection);
 
                 if (selection.isReversed && positionToApply.character > 0) {
                     positionToApply = positionToApply.translate(0, -1);
-                }
-                else if (!selection.isReversed) {
+                } else if (!selection.isReversed) {
                     positionToApply = positionToApply.translate(0, +1);
                 }
             }
@@ -153,8 +145,10 @@ export class ActionSelection {
             const match = args.textObject.apply(positionToApply);
             if (match) {
                 const intersection = selection.intersection(match);
-                const range = args.textObject.willFindForward && (!intersection || intersection.isEmpty)
-                    ? match : selection.union(match);
+                const range =
+                    args.textObject.willFindForward && (!intersection || intersection.isEmpty)
+                        ? match
+                        : selection.union(match);
                 selection = selection.isReversed
                     ? new Selection(range.end, range.start)
                     : new Selection(range.start, range.end);
@@ -175,19 +169,19 @@ export class ActionSelection {
     static expandToLine(): Thenable<boolean> {
         const activeTextEditor = window.activeTextEditor;
 
-        if (! activeTextEditor) {
+        if (!activeTextEditor) {
             return Promise.resolve(false);
         }
 
-        activeTextEditor.selections = activeTextEditor.selections.map(selection => {
+        activeTextEditor.selections = activeTextEditor.selections.map((selection) => {
             const start = selection.start.with(undefined, 0);
-            const end = selection.end.with(undefined, activeTextEditor.document.lineAt(selection.end.line).text.length);
-            return selection.isReversed
-                ? new Selection(end, start)
-                : new Selection(start, end);
+            const end = selection.end.with(
+                undefined,
+                activeTextEditor.document.lineAt(selection.end.line).text.length,
+            );
+            return selection.isReversed ? new Selection(end, start) : new Selection(start, end);
         });
 
         return Promise.resolve(true);
     }
-
 }

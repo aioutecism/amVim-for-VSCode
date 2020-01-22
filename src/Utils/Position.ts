@@ -1,7 +1,6 @@
-import {TextEditor, Position} from 'vscode';
+import { TextEditor, Position } from 'vscode';
 
 export class UtilPosition {
-
     /**
      * Get visual column from position.
      */
@@ -17,5 +16,4 @@ export class UtilPosition {
 
         return column;
     }
-
 }

@@ -1,13 +1,14 @@
-import {window, TextDocument, Position, Range} from 'vscode';
-import {UtilRange} from '../Utils/Range';
+import { window, TextDocument, Position, Range } from 'vscode';
+import { UtilRange } from '../Utils/Range';
 
 export abstract class TextObject {
-
     protected readonly shouldExpandToLinewise: boolean = false;
     readonly willFindForward: boolean = false;
 
     private _isLinewise: boolean = false;
-    public get isLinewise() { return this._isLinewise; }
+    public get isLinewise() {
+        return this._isLinewise;
+    }
 
     protected isInclusive: boolean;
 
@@ -32,7 +33,7 @@ export abstract class TextObject {
 
         const activeTextEditor = window.activeTextEditor;
 
-        if (! activeTextEditor) {
+        if (!activeTextEditor) {
             return null;
         }
 
@@ -73,22 +74,18 @@ export abstract class TextObject {
 
         if (this.isInclusive) {
             if (
-                range.start.character === startLine.firstNonWhitespaceCharacterIndex
-                && range.end.character === endLine.text.length
+                range.start.character === startLine.firstNonWhitespaceCharacterIndex &&
+                range.end.character === endLine.text.length
             ) {
                 range = UtilRange.toLinewise(range, document);
                 this._isLinewise = true;
             }
-        }
-        else {
+        } else {
             if (
-                range.start.character === startLine.text.length
-                && range.end.character === endLine.firstNonWhitespaceCharacterIndex
+                range.start.character === startLine.text.length &&
+                range.end.character === endLine.firstNonWhitespaceCharacterIndex
             ) {
-                range = new Range(
-                    range.start.line + 1, 0,
-                    range.end.line, 0
-                );
+                range = new Range(range.start.line + 1, 0, range.end.line, 0);
                 this._isLinewise = true;
             }
         }

@@ -1,7 +1,7 @@
 import * as assert from 'assert';
 import * as TestUtil from './Util';
-import {TextEditor, TextDocument, Selection} from 'vscode';
-import {getCurrentMode} from '../../src/extension';
+import { TextEditor, TextDocument, Selection } from 'vscode';
+import { getCurrentMode } from '../../src/extension';
 
 export interface TestCase {
     from: string;
@@ -10,7 +10,7 @@ export interface TestCase {
 }
 
 const waitForMillisecond = (millisecond: number) => {
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
         setTimeout(() => resolve(), millisecond);
     });
 };
@@ -21,7 +21,9 @@ const getLine = (text: string, offset: number) => {
 
     while (true) {
         position = text.indexOf('\n', position + 1);
-        if (position < 0 || position >= offset) { break; }
+        if (position < 0 || position >= offset) {
+            break;
+        }
         count++;
     }
 
@@ -34,8 +36,7 @@ const getCharacter = (text: string, offset: number) => {
 
     if (lastLineBreakIndex < 0) {
         return offset;
-    }
-    else {
+    } else {
         return offset - (lastLineBreakIndex + 1);
     }
 };
@@ -72,15 +73,19 @@ const extractInfo = (originalText: string) => {
                     }
                 }
 
-                selections.push(isReversed
-                    ? new Selection(endLine, endCharacter, startLine, startCharacter)
-                    : new Selection(startLine, startCharacter, endLine, endCharacter));
+                selections.push(
+                    isReversed
+                        ? new Selection(endLine, endCharacter, startLine, startCharacter)
+                        : new Selection(startLine, startCharacter, endLine, endCharacter),
+                );
 
                 return content;
-            }
+            },
         );
 
-        if (!hasMatch) { break; }
+        if (!hasMatch) {
+            break;
+        }
     }
 
     return {
@@ -105,33 +110,33 @@ export const run = (testCase: TestCase, before?: (textEditor: TextEditor) => voi
         const toInfo = extractInfo(testCase.to);
         const inputs = testCase.inputs.split(' ');
 
-        TestUtil.createTempDocument(fromInfo.cleanText, reusableDocument)
-        .then(async textEditor => {
-            reusableDocument = textEditor.document;
+        TestUtil.createTempDocument(fromInfo.cleanText, reusableDocument).then(
+            async (textEditor) => {
+                reusableDocument = textEditor.document;
 
-            if (before) {
-                before(textEditor);
-            }
+                if (before) {
+                    before(textEditor);
+                }
 
-            TestUtil.setSelections(fromInfo.selections);
+                TestUtil.setSelections(fromInfo.selections);
 
-            await waitForMillisecond(50 * tries);
+                await waitForMillisecond(50 * tries);
 
-            for (let i = 0; i < inputs.length; i++) {
-                getCurrentMode()!.input(inputs[i]);
-                await waitForMillisecond(20 * tries);
-            }
+                for (let i = 0; i < inputs.length; i++) {
+                    getCurrentMode()!.input(inputs[i]);
+                    await waitForMillisecond(20 * tries);
+                }
 
-            try {
-                assert.equal(TestUtil.getDocument()!.getText(), toInfo.cleanText);
-                assert.deepEqual(TestUtil.getSelections(), toInfo.selections);
-            }
-            catch (error) {
-                done(error);
-                return;
-            }
+                try {
+                    assert.equal(TestUtil.getDocument()!.getText(), toInfo.cleanText);
+                    assert.deepEqual(TestUtil.getSelections(), toInfo.selections);
+                } catch (error) {
+                    done(error);
+                    return;
+                }
 
-            done();
-        });
+                done();
+            },
+        );
     });
 };

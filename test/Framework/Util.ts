@@ -1,29 +1,44 @@
-import {workspace, window, Uri, TextDocument, TextEditor, Position, Range, Selection, EndOfLine} from 'vscode';
+import {
+    workspace,
+    window,
+    Uri,
+    TextDocument,
+    TextEditor,
+    Position,
+    Range,
+    Selection,
+    EndOfLine,
+} from 'vscode';
 
-export function createTempDocument(content?: string, reusableDocument?: TextDocument): Thenable<TextEditor> {
+export function createTempDocument(
+    content?: string,
+    reusableDocument?: TextDocument,
+): Thenable<TextEditor> {
     let getTextEditor: Thenable<TextEditor>;
 
-    if (reusableDocument && window.activeTextEditor && window.activeTextEditor.document === reusableDocument) {
+    if (
+        reusableDocument &&
+        window.activeTextEditor &&
+        window.activeTextEditor.document === reusableDocument
+    ) {
         getTextEditor = Promise.resolve(window.activeTextEditor);
-    }
-    else {
+    } else {
         const uri = reusableDocument
             ? reusableDocument.uri
             : Uri.parse(`untitled:${__dirname}.${Math.random()}.tmp`);
-        getTextEditor = workspace.openTextDocument(uri)
-            .then(document => window.showTextDocument(document));
+        getTextEditor = workspace
+            .openTextDocument(uri)
+            .then((document) => window.showTextDocument(document));
     }
 
-    return getTextEditor.then(textEditor => {
+    return getTextEditor.then((textEditor) => {
         if (content) {
-            return textEditor.edit(editBuilder => {
-                editBuilder.setEndOfLine(EndOfLine.LF);
-                editBuilder.replace(new Range(
-                    0, 0,
-                    textEditor.document.lineCount, 0
-                ), content);
-            })
-            .then(() => textEditor);
+            return textEditor
+                .edit((editBuilder) => {
+                    editBuilder.setEndOfLine(EndOfLine.LF);
+                    editBuilder.replace(new Range(0, 0, textEditor.document.lineCount, 0), content);
+                })
+                .then(() => textEditor);
         }
 
         return textEditor;
@@ -39,11 +54,11 @@ export function setPosition(position: Position): void {
 }
 
 export function setPositions(positions: Position[]): void {
-    if (! window.activeTextEditor) {
+    if (!window.activeTextEditor) {
         throw new Error('No active text editor.');
     }
 
-    window.activeTextEditor.selections = positions.map(position => {
+    window.activeTextEditor.selections = positions.map((position) => {
         return new Selection(position, position);
     });
 }
@@ -53,7 +68,7 @@ export function setSelection(selection: Selection): void {
 }
 
 export function setSelections(selections: Selection[]): void {
-    if (! window.activeTextEditor) {
+    if (!window.activeTextEditor) {
         throw new Error('No active text editor.');
     }
 
@@ -61,7 +76,7 @@ export function setSelections(selections: Selection[]): void {
 }
 
 export function getPosition(): Position {
-    if (! window.activeTextEditor) {
+    if (!window.activeTextEditor) {
         throw new Error('No active text editor.');
     }
 
@@ -78,7 +93,7 @@ export function getPosition(): Position {
 }
 
 export function getPositions(): Position[] {
-    if (! window.activeTextEditor) {
+    if (!window.activeTextEditor) {
         throw new Error('No active text editor.');
     }
 
@@ -100,7 +115,7 @@ export function getPositions(): Position[] {
 }
 
 export function getSelection(): Selection {
-    if (! window.activeTextEditor) {
+    if (!window.activeTextEditor) {
         throw new Error('No active text editor.');
     }
 
@@ -114,7 +129,7 @@ export function getSelection(): Selection {
 }
 
 export function getSelections(): Selection[] {
-    if (! window.activeTextEditor) {
+    if (!window.activeTextEditor) {
         throw new Error('No active text editor.');
     }
 

@@ -1,8 +1,7 @@
-import {window, Position} from 'vscode';
-import {Motion} from './Motion';
+import { window, Position } from 'vscode';
+import { Motion } from './Motion';
 
 export class MotionLine extends Motion {
-
     private shouldToFirstNonBlank = false;
 
     static firstNonBlank(): Motion {
@@ -28,7 +27,7 @@ export class MotionLine extends Motion {
 
         const activeTextEditor = window.activeTextEditor;
 
-        if (! activeTextEditor || ! this.shouldToFirstNonBlank) {
+        if (!activeTextEditor || !this.shouldToFirstNonBlank) {
             return from;
         }
 
@@ -38,5 +37,4 @@ export class MotionLine extends Motion {
 
         return from.with(undefined, line.firstNonWhitespaceCharacterIndex);
     }
-
 }

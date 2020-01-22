@@ -61,8 +61,19 @@ Set to `false` to keep VSCode's keybinding when searching.
 Set to `false` to disable Vim style navigation in sidebar.
 
 
-## Contribution
+## Contributing
 
-Feel free to open [issues](https://github.com/aioutecism/amVim-for-VSCode/issues) to report bugs or require features.
+Feel free to open [issues][] to report bugs or require features.
 
-[Pull requests](https://github.com/aioutecism/amVim-for-VSCode/pulls) are welcomed too!
+[Pull requests][] are welcomed too! See VS Code's official instructions about:
+
+- [How to run and debug extensions][]
+- [How to run extension tests][]
+  - Protip: change `suite(` to `suite.only(` in a test file to run only a
+    single test suite at a time. This saves quite a lot of time. Remember to
+    remove the `.only` part before making a Git commit.
+
+[issues]: https://github.com/aioutecism/amVim-for-VSCode/issues
+[Pull requests]: https://github.com/aioutecism/amVim-for-VSCode/pulls
+[How to run and debug extensions]: https://code.visualstudio.com/docs/extensions/developing-extensions
+[How to run extension tests]: https://code.visualstudio.com/docs/extensions/testing-extensions

@@ -1,13 +1,13 @@
-import {window, Range, TextEditorRevealType} from 'vscode';
+import { window, Range, TextEditorRevealType } from 'vscode';
 
 export class ActionReveal {
-
-    static primaryCursor(args: {revealType?: TextEditorRevealType} = {}): Thenable<boolean> {
-        args.revealType = args.revealType === undefined ? TextEditorRevealType.Default : args.revealType;
+    static primaryCursor(args: { revealType?: TextEditorRevealType } = {}): Thenable<boolean> {
+        args.revealType =
+            args.revealType === undefined ? TextEditorRevealType.Default : args.revealType;
 
         const activeTextEditor = window.activeTextEditor;
 
-        if (! activeTextEditor) {
+        if (!activeTextEditor) {
             return Promise.resolve(false);
         }
 
@@ -16,5 +16,4 @@ export class ActionReveal {
 
         return Promise.resolve(true);
     }
-
 }

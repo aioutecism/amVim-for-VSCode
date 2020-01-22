@@ -1,14 +1,13 @@
-import {window, Position} from 'vscode';
-import {Motion} from './Motion';
-import {TextObjectBlock} from '../TextObjects/Block';
-import {TextObject} from '../TextObjects/TextObject';
+import { window, Position } from 'vscode';
+import { Motion } from './Motion';
+import { TextObjectBlock } from '../TextObjects/Block';
+import { TextObject } from '../TextObjects/TextObject';
 
 interface MotionMatchPairMap {
     [key: string]: (args) => TextObject;
 }
 
 export class MotionMatchPair extends Motion {
-
     // TODO: C-style comments (/* */) and C preprocessor conditionals are not supported for now
 
     private static openingCharacterMap: MotionMatchPairMap = {
@@ -26,7 +25,9 @@ export class MotionMatchPair extends Motion {
     };
 
     private static characterMap: MotionMatchPairMap = Object.assign(
-        <MotionMatchPairMap>{}, MotionMatchPair.openingCharacterMap, MotionMatchPair.closingCharacterMap
+        <MotionMatchPairMap>{},
+        MotionMatchPair.openingCharacterMap,
+        MotionMatchPair.closingCharacterMap,
     );
 
     private static matchCharacters: string[] = Object.keys(MotionMatchPair.characterMap);
@@ -38,8 +39,8 @@ export class MotionMatchPair extends Motion {
     apply(
         from: Position,
         option: {
-            isInclusive?: boolean,
-        } = {}
+            isInclusive?: boolean;
+        } = {},
     ): Position {
         option.isInclusive = option.isInclusive === undefined ? false : option.isInclusive;
 
@@ -64,13 +65,18 @@ export class MotionMatchPair extends Motion {
             const textObject: TextObject = MotionMatchPair.characterMap[currentCharacterString]({});
 
             if (MotionMatchPair.openingCharacters.indexOf(currentCharacterString) < 0) {
-                const startRange = textObject.findStartRange(document, new Position(from.line, character));
+                const startRange = textObject.findStartRange(
+                    document,
+                    new Position(from.line, character),
+                );
                 if (startRange !== null) {
                     return startRange.start;
                 }
-            }
-            else {
-                const endRange = textObject.findEndRange(document, new Position(from.line, character));
+            } else {
+                const endRange = textObject.findEndRange(
+                    document,
+                    new Position(from.line, character),
+                );
                 if (endRange !== null) {
                     return option.isInclusive ? endRange.end : endRange.start;
                 }

@@ -1,13 +1,12 @@
 import { TextEditorLineNumbersStyle, window } from 'vscode';
 
 export class ActionRelativeLineNumbers {
-
     static on(): Thenable<boolean> {
         return new Promise((resolve) => {
             setTimeout(() => {
                 const activeTextEditor = window.activeTextEditor;
 
-                if (! activeTextEditor) {
+                if (!activeTextEditor) {
                     return resolve(false);
                 }
 
@@ -27,7 +26,7 @@ export class ActionRelativeLineNumbers {
             setTimeout(() => {
                 const activeTextEditor = window.activeTextEditor;
 
-                if (! activeTextEditor) {
+                if (!activeTextEditor) {
                     return resolve(false);
                 }
 
@@ -41,5 +40,4 @@ export class ActionRelativeLineNumbers {
             }, 0);
         });
     }
-
 }

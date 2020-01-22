@@ -1,15 +1,11 @@
-import {TextDocument, Position, Range} from 'vscode';
-import {TextObject} from './TextObject';
-import {UtilWord, WordCharacterKind} from '../Utils/Word';
+import { TextDocument, Position, Range } from 'vscode';
+import { TextObject } from './TextObject';
+import { UtilWord, WordCharacterKind } from '../Utils/Word';
 
 export class TextObjectWord extends TextObject {
-
     private useBlankSeparatedStyle: boolean;
 
-    static byWord(args: {
-        useBlankSeparatedStyle: boolean,
-        isInclusive: boolean,
-    }) {
+    static byWord(args: { useBlankSeparatedStyle: boolean; isInclusive: boolean }) {
         const obj = new TextObjectWord();
         obj.isInclusive = args.isInclusive;
         obj.useBlankSeparatedStyle = args.useBlankSeparatedStyle;
@@ -23,14 +19,14 @@ export class TextObjectWord extends TextObject {
 
         const anchorCharacterKind = UtilWord.getCharacterKind(
             lineText.charCodeAt(anchor.character),
-            this.useBlankSeparatedStyle
+            this.useBlankSeparatedStyle,
         );
 
         let exclusiveCharacterIndex: number = 0;
         for (let characterIndex = anchor.character - 1; characterIndex >= 0; characterIndex--) {
             const characterKind = UtilWord.getCharacterKind(
                 lineText.charCodeAt(characterIndex),
-                this.useBlankSeparatedStyle
+                this.useBlankSeparatedStyle,
             );
 
             if (characterKind !== anchorCharacterKind) {
@@ -40,10 +36,14 @@ export class TextObjectWord extends TextObject {
         }
 
         let inclusiveCharacterIndex: number = 0;
-        for (let characterIndex = exclusiveCharacterIndex - 1; characterIndex >= 0; characterIndex--) {
+        for (
+            let characterIndex = exclusiveCharacterIndex - 1;
+            characterIndex >= 0;
+            characterIndex--
+        ) {
             const characterKind = UtilWord.getCharacterKind(
                 lineText.charCodeAt(characterIndex),
-                this.useBlankSeparatedStyle
+                this.useBlankSeparatedStyle,
             );
 
             if (characterKind !== WordCharacterKind.Blank) {
@@ -52,10 +52,7 @@ export class TextObjectWord extends TextObject {
             }
         }
 
-        return new Range(
-            lineIndex, inclusiveCharacterIndex,
-            lineIndex, exclusiveCharacterIndex
-        );
+        return new Range(lineIndex, inclusiveCharacterIndex, lineIndex, exclusiveCharacterIndex);
     }
 
     findEndRange(document: TextDocument, anchor: Position): Range {
@@ -64,14 +61,18 @@ export class TextObjectWord extends TextObject {
 
         const anchorCharacterKind = UtilWord.getCharacterKind(
             lineText.charCodeAt(anchor.character),
-            this.useBlankSeparatedStyle
+            this.useBlankSeparatedStyle,
         );
 
         let exclusiveCharacterIndex: number = lineText.length - 1;
-        for (let characterIndex = anchor.character + 1; characterIndex < lineText.length; characterIndex++) {
+        for (
+            let characterIndex = anchor.character + 1;
+            characterIndex < lineText.length;
+            characterIndex++
+        ) {
             const characterKind = UtilWord.getCharacterKind(
                 lineText.charCodeAt(characterIndex),
-                this.useBlankSeparatedStyle
+                this.useBlankSeparatedStyle,
             );
 
             if (characterKind !== anchorCharacterKind) {
@@ -82,17 +83,22 @@ export class TextObjectWord extends TextObject {
 
         let inclusiveCharacterIndex: number = lineText.length - 1;
         if (exclusiveCharacterIndex < lineText.length - 1) {
-            const includeCharacterKind = anchorCharacterKind === WordCharacterKind.Blank
-                ? UtilWord.getCharacterKind(
-                    lineText.charCodeAt(exclusiveCharacterIndex + 1),
-                    this.useBlankSeparatedStyle
-                )
-                : WordCharacterKind.Blank;
+            const includeCharacterKind =
+                anchorCharacterKind === WordCharacterKind.Blank
+                    ? UtilWord.getCharacterKind(
+                          lineText.charCodeAt(exclusiveCharacterIndex + 1),
+                          this.useBlankSeparatedStyle,
+                      )
+                    : WordCharacterKind.Blank;
 
-            for (let characterIndex = exclusiveCharacterIndex + 1; characterIndex < lineText.length; characterIndex++) {
+            for (
+                let characterIndex = exclusiveCharacterIndex + 1;
+                characterIndex < lineText.length;
+                characterIndex++
+            ) {
                 const characterKind = UtilWord.getCharacterKind(
                     lineText.charCodeAt(characterIndex),
-                    this.useBlankSeparatedStyle
+                    this.useBlankSeparatedStyle,
                 );
 
                 if (characterKind !== includeCharacterKind) {
@@ -103,8 +109,10 @@ export class TextObjectWord extends TextObject {
         }
 
         return new Range(
-            lineIndex, exclusiveCharacterIndex + 1,
-            lineIndex, inclusiveCharacterIndex + 1
+            lineIndex,
+            exclusiveCharacterIndex + 1,
+            lineIndex,
+            inclusiveCharacterIndex + 1,
         );
     }
 
@@ -112,16 +120,13 @@ export class TextObjectWord extends TextObject {
         if (this.isInclusive) {
             // From Vim documentation:
             // "Any trailing white space is included, unless there is none, then leading white space is included."
-            if (! endRange.isEmpty) {
+            if (!endRange.isEmpty) {
                 return new Range(startRange.end, endRange.end);
-            }
-            else {
+            } else {
                 return new Range(startRange.start, endRange.start);
             }
-        }
-        else {
+        } else {
             return new Range(startRange.end, endRange.start);
         }
     }
-
 }
