@@ -59,6 +59,7 @@ export class TextObjectTag extends TextObject {
 
         let match;
         let tags: Tag[] = [];
+        // TODO: Potential performance issue with getText()
         while ((match = this.TAG_REGEX.exec(document.getText())) !== null) {
             if (match[this.CLOSE_FORWARD_SLASH]) {
                 continue;
