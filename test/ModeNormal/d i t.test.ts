@@ -77,6 +77,41 @@ suite('Normal: d i t', () => {
             inputs: 'd i t',
             to: '<div>[]</div></span>',
         },
+        {
+            from: '<div[] \n class="test">\nstuff</div>',
+            inputs: 'd i t',
+            to: '<div \n class="test">[]</div>',
+        },
+        {
+            from: '<div \n class[]="test">\nstuff</div>',
+            inputs: 'd i t',
+            to: '<div \n class="test">[]</div>',
+        },
+        {
+            from: '<div \n class="test"[]>\nstuff</div>',
+            inputs: 'd i t',
+            to: '<div \n class="test">[]</div>',
+        },
+        {
+            from: '<div[] \n class="test">\nstuff</[]div>',
+            inputs: 'd i t',
+            to: '<div \n class="test">[]</div>',
+        },
+        {
+            from: '<div []\n class="test">\nstuff\n</div\n >',
+            inputs: 'd i t',
+            to: '<div \n class="test">[]</div\n >',
+        },
+        {
+            from: '<div \n class="test">\nstuff\n</div[]\n >',
+            inputs: 'd i t',
+            to: '<div \n class="test">[]</div\n >',
+        },
+        {
+            from: '<div \n class="test">\nstuff\n</div\n []>',
+            inputs: 'd i t',
+            to: '<div \n class="test">[]</div\n >',
+        },
     ];
 
     for (let i = 0; i < testCases.length; i++) {
