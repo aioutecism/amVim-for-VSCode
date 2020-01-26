@@ -1,5 +1,5 @@
-import { TextDocument, Position, Range } from 'vscode'
-import {TextObject} from './TextObject';
+import { TextDocument, Position, Range } from 'vscode';
+import { TextObject } from './TextObject';
 
 type Tag = { name: string; type: 'close' | 'open'; start: number; end: number };
 type MatchedTag = {
@@ -11,18 +11,17 @@ type MatchedTag = {
 };
 
 export class TextObjectTag extends TextObject {
-
-    TAG_REGEX = /\<(\/)?([^\>\<\s\/]+)(?:[^\>\<]*?)(\/)?\>/g
+    TAG_REGEX = /<(\/)?([^><\s\/]+)(?:[^><]*?)(\/)?>/g;
     OPEN_FORWARD_SLASH = 1;
     TAG_NAME = 2;
-    CLOSE_FORWARD_SLASH = 3
+    CLOSE_FORWARD_SLASH = 3;
     openStart: number | undefined;
     openEnd: number | undefined;
     closeStart: number | undefined;
     closeEnd: number | undefined;
     tagsParsed: boolean = false;
 
-    static byTag(args: {isInclusive: boolean}): TextObject {
+    static byTag(args: { isInclusive: boolean }): TextObject {
         const obj = new TextObjectTag();
         obj.isInclusive = args.isInclusive;
         return obj;
@@ -34,11 +33,11 @@ export class TextObjectTag extends TextObject {
         if (this.openStart !== undefined && this.openEnd !== undefined) {
             return new Range(
                 document.positionAt(this.openStart),
-                document.positionAt(this.openEnd)
-            )
+                document.positionAt(this.openEnd),
+            );
         }
         return null;
-    }   
+    }
 
     findEndRange(document: TextDocument, anchor: Position): Range | null {
         this.parseTags(document, anchor);
@@ -46,11 +45,11 @@ export class TextObjectTag extends TextObject {
         if (this.closeStart !== undefined && this.closeEnd !== undefined) {
             return new Range(
                 document.positionAt(this.closeStart),
-                document.positionAt(this.closeEnd)
+                document.positionAt(this.closeEnd),
             );
         }
         return null;
-    }   
+    }
 
     parseTags(document: TextDocument, anchor: Position) {
         // Only need to parse tags if we haven't already
@@ -62,20 +61,19 @@ export class TextObjectTag extends TextObject {
         let tags: Tag[] = [];
         while ((match = this.TAG_REGEX.exec(document.getText())) !== null) {
             if (match[this.CLOSE_FORWARD_SLASH]) {
-              continue;
+                continue;
             }
 
             tags.push({
-              name: match[this.TAG_NAME],
-              type: match[this.OPEN_FORWARD_SLASH] ? 'close' : 'open',
-              start: match.index,
-              end: this.TAG_REGEX.lastIndex,
+                name: match[this.TAG_NAME],
+                type: match[this.OPEN_FORWARD_SLASH] ? 'close' : 'open',
+                start: match.index,
+                end: this.TAG_REGEX.lastIndex,
             });
         }
 
         const stack: Tag[] = [];
         const matchedTags: MatchedTag[] = [];
-
 
         for (let tag of tags) {
             // We have to push on the stack
@@ -108,7 +106,7 @@ export class TextObjectTag extends TextObject {
 
         const startPos = document.offsetAt(anchor);
         const endPos = document.offsetAt(anchor);
-        const tagsSurrounding = matchedTags.filter(n => {
+        const tagsSurrounding = matchedTags.filter((n) => {
             return startPos > n.openingTagStart && endPos < n.closingTagEnd;
         });
 
@@ -132,7 +130,7 @@ export class TextObjectTag extends TextObject {
             this.openEnd = nodeSurrounding.openingTagEnd;
             this.closeStart = nodeSurrounding.closingTagStart;
         }
-        
+
         this.tagsParsed = true;
     }
 }
