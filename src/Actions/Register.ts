@@ -96,12 +96,12 @@ export class ActionRegister {
             }, Promise.resolve(start));
             return new Range(start, end);
         });
-        return Promise.all(promisedRanges).then((ranges) => {
-            return ActionRegister.yankRanges({
+        return Promise.all(promisedRanges).then((ranges) =>
+            ActionRegister.yankRanges({
                 ranges: ranges,
                 isLinewise: isLinewise,
-            });
-        });
+            }),
+        );
     }
 
     static async yankByTextObject(args: { textObject: TextObject }): Promise<boolean> {

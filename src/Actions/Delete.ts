@@ -56,11 +56,11 @@ export class ActionDelete {
                   })
                 : Promise.resolve(true)
             )
-                .then(() => {
-                    return activeTextEditor.edit((editBuilder) => {
+                .then(() =>
+                    activeTextEditor.edit((editBuilder) => {
                         ranges.forEach((range) => editBuilder.delete(range));
-                    });
-                })
+                    }),
+                )
                 .then(() => ActionSelection.shrinkToStarts())
                 .then(() => ActionReveal.primaryCursor());
         });
