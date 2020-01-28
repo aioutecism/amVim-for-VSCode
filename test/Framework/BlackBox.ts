@@ -94,7 +94,7 @@ const extractInfo = (originalText: string) => {
     };
 };
 
-let reusableDocument: TextDocument;
+const reusableDocuments: Map<string, TextDocument> = new Map();
 
 export const run = (testCase: TestCase, before?: (textEditor: TextEditor) => void) => {
     const plainFrom = testCase.from.replace(/\n/g, '\\n');
@@ -107,41 +107,44 @@ export const run = (testCase: TestCase, before?: (textEditor: TextEditor) => voi
     test(expectation, (done) => {
         tries++;
 
+        const language = testCase.language || 'plaintext';
         const fromInfo = extractInfo(testCase.from);
         const toInfo = extractInfo(testCase.to);
         const inputs = testCase.inputs.split(' ');
 
-        TestUtil.createTempDocument(fromInfo.cleanText, reusableDocument, testCase.language).then(
-            async (textEditor) => {
-                reusableDocument = textEditor.document;
+        TestUtil.createTempDocument(
+            fromInfo.cleanText,
+            reusableDocuments.get(language),
+            language,
+        ).then(async (textEditor) => {
+            reusableDocuments.set(textEditor.document.languageId, textEditor.document);
 
-                if (before) {
-                    before(textEditor);
-                }
+            if (before) {
+                before(textEditor);
+            }
 
-                TestUtil.setSelections(fromInfo.selections);
+            TestUtil.setSelections(fromInfo.selections);
 
+            await waitForMillisecond(50 * tries);
+
+            for (let i = 0; i < inputs.length; i++) {
+                getCurrentMode()!.input(inputs[i]);
+                await waitForMillisecond(20 * tries);
+            }
+
+            if (language !== 'plaintext') {
                 await waitForMillisecond(50 * tries);
+            }
 
-                for (let i = 0; i < inputs.length; i++) {
-                    getCurrentMode()!.input(inputs[i]);
-                    await waitForMillisecond(20 * tries);
-                }
+            try {
+                assert.equal(TestUtil.getDocument()!.getText(), toInfo.cleanText);
+                assert.deepEqual(TestUtil.getSelections(), toInfo.selections);
+            } catch (error) {
+                done(error);
+                return;
+            }
 
-                if (testCase.language) {
-                    await waitForMillisecond(50 * tries);
-                }
-
-                try {
-                    assert.equal(TestUtil.getDocument()!.getText(), toInfo.cleanText);
-                    assert.deepEqual(TestUtil.getSelections(), toInfo.selections);
-                } catch (error) {
-                    done(error);
-                    return;
-                }
-
-                done();
-            },
-        );
+            done();
+        });
     });
 };
