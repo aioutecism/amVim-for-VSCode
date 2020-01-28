@@ -66,10 +66,10 @@ export class MotionMatch extends Motion {
         return obj;
     }
 
-    apply(from: Position, option: { isInclusive?: boolean } = {}): Position {
+    async apply(from: Position, option: { isInclusive?: boolean } = {}): Promise<Position> {
         option.isInclusive = option.isInclusive === undefined ? false : option.isInclusive;
 
-        from = super.apply(from);
+        from = await super.apply(from);
 
         const activeTextEditor = window.activeTextEditor;
 

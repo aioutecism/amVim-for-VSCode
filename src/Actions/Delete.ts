@@ -26,40 +26,44 @@ export class ActionDelete {
 
         const document = activeTextEditor.document;
 
-        let ranges = activeTextEditor.selections.map((selection) => {
+        const promisedRanges = activeTextEditor.selections.map(async (selection) => {
             const start = selection.active;
-            const end = args.motions.reduce((position, motion) => {
-                return motion.apply(position, {
-                    isInclusive: true,
-                    shouldCrossLines: false,
-                    isChangeAction: args.isChangeAction,
-                });
-            }, start);
+            const end = await args.motions.reduce((promisedPosition, motion) => {
+                return promisedPosition.then((position) =>
+                    motion.apply(position, {
+                        isInclusive: true,
+                        shouldCrossLines: false,
+                        isChangeAction: args.isChangeAction,
+                    }),
+                );
+            }, Promise.resolve(start));
             return new Range(start, end);
         });
 
-        if (args.motions.some((motion) => motion.isLinewise)) {
-            ranges = ranges.map((range) => UtilRange.toLinewise(range, document));
-        }
+        return Promise.all(promisedRanges).then((ranges) => {
+            if (args.motions.some((motion) => motion.isLinewise)) {
+                ranges = ranges.map((range) => UtilRange.toLinewise(range, document));
+            }
 
-        ranges = UtilRange.unionOverlaps(ranges);
+            ranges = UtilRange.unionOverlaps(ranges);
 
-        // TODO: Move cursor to first non-space if needed
+            // TODO: Move cursor to first non-space if needed
 
-        return (args.shouldYank
-            ? ActionRegister.yankByMotions({
-                  motions: args.motions,
-                  isChangeAction: args.isChangeAction,
-              })
-            : Promise.resolve(true)
-        )
-            .then(() => {
-                return activeTextEditor.edit((editBuilder) => {
-                    ranges.forEach((range) => editBuilder.delete(range));
-                });
-            })
-            .then(() => ActionSelection.shrinkToStarts())
-            .then(() => ActionReveal.primaryCursor());
+            return (args.shouldYank
+                ? ActionRegister.yankByMotions({
+                      motions: args.motions,
+                      isChangeAction: args.isChangeAction,
+                  })
+                : Promise.resolve(true)
+            )
+                .then(() => {
+                    return activeTextEditor.edit((editBuilder) => {
+                        ranges.forEach((range) => editBuilder.delete(range));
+                    });
+                })
+                .then(() => ActionSelection.shrinkToStarts())
+                .then(() => ActionReveal.primaryCursor());
+        });
     }
 
     @StaticReflect.metadata(SymbolMetadata.Action.isChange, true)

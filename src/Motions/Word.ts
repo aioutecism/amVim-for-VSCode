@@ -79,20 +79,20 @@ export class MotionWord extends Motion {
         return obj;
     }
 
-    apply(
+    async apply(
         from: Position,
         option: {
             isInclusive?: boolean;
             isChangeAction?: boolean;
             shouldCrossLines?: boolean;
         } = {},
-    ): Position {
+    ): Promise<Position> {
         option.isInclusive = option.isInclusive === undefined ? false : option.isInclusive;
         option.isChangeAction = option.isChangeAction === undefined ? false : option.isChangeAction;
         option.shouldCrossLines =
             option.shouldCrossLines === undefined ? true : option.shouldCrossLines;
 
-        from = super.apply(from);
+        from = await super.apply(from);
 
         const activeTextEditor = window.activeTextEditor;
 

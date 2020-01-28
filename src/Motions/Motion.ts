@@ -23,7 +23,7 @@ export abstract class Motion {
         this.characterDelta += characterDelta;
     }
 
-    apply(from: Position, option?: any): Position {
+    async apply(from: Position, option?: any): Promise<Position> {
         const activeTextEditor = window.activeTextEditor;
 
         if (!activeTextEditor) {

@@ -83,21 +83,24 @@ export class ActionRegister {
 
         const isLinewise = args.motions.some((motion) => motion.isLinewise);
 
-        const ranges = activeTextEditor.selections.map((selection) => {
+        const promisedRanges = activeTextEditor.selections.map(async (selection) => {
             const start = selection.active;
-            const end = args.motions.reduce((position, motion) => {
-                return motion.apply(position, {
-                    isInclusive: true,
-                    shouldCrossLines: false,
-                    isChangeAction: args.isChangeAction,
-                });
-            }, start);
+            const end = await args.motions.reduce((promisedPosition, motion) => {
+                return promisedPosition.then((position) =>
+                    motion.apply(position, {
+                        isInclusive: true,
+                        shouldCrossLines: false,
+                        isChangeAction: args.isChangeAction,
+                    }),
+                );
+            }, Promise.resolve(start));
             return new Range(start, end);
         });
-
-        return ActionRegister.yankRanges({
-            ranges: ranges,
-            isLinewise: isLinewise,
+        return Promise.all(promisedRanges).then((ranges) => {
+            return ActionRegister.yankRanges({
+                ranges: ranges,
+                isLinewise: isLinewise,
+            });
         });
     }
 

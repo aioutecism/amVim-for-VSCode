@@ -65,19 +65,16 @@ export class ActionMoveCursor {
 
         const document = activeTextEditor.document;
 
-        activeTextEditor.selections = activeTextEditor.selections.map((selection, i) => {
+        const promisedSelections = activeTextEditor.selections.map(async (selection, i) => {
             let anchor: Position;
 
-            let active = args.motions.reduce(
-                (position, motion) => {
-                    return motion.apply(position, {
+            let active = await args.motions.reduce((promisedPosition, motion) => {
+                return promisedPosition.then((position) =>
+                    motion.apply(position, {
                         preferredColumn: ActionMoveCursor.preferredColumnBySelectionIndex[i],
-                    });
-                },
-                args.isVisualMode
-                    ? UtilSelection.getActiveInVisualMode(selection)
-                    : selection.active,
-            );
+                    }),
+                );
+            }, Promise.resolve(args.isVisualMode ? UtilSelection.getActiveInVisualMode(selection) : selection.active));
 
             if (args.isVisualMode) {
                 anchor = selection.anchor;
@@ -129,7 +126,11 @@ export class ActionMoveCursor {
 
             return new Selection(anchor, active);
         });
-
-        return ActionReveal.primaryCursor();
+        return Promise.all(promisedSelections)
+            .then((selections) => {
+                activeTextEditor.selections = selections;
+                return Promise.resolve(true);
+            })
+            .then(() => ActionReveal.primaryCursor());
     }
 }
