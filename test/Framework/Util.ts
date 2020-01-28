@@ -1,7 +1,6 @@
 import {
     workspace,
     window,
-    Uri,
     TextDocument,
     TextEditor,
     Position,
@@ -13,22 +12,29 @@ import {
 export function createTempDocument(
     content?: string,
     reusableDocument?: TextDocument,
+    language: string = 'plaintext',
 ): Thenable<TextEditor> {
     let getTextEditor: Thenable<TextEditor>;
 
     if (
-        reusableDocument &&
+        reusableDocument?.languageId === language &&
         window.activeTextEditor &&
         window.activeTextEditor.document === reusableDocument
     ) {
         getTextEditor = Promise.resolve(window.activeTextEditor);
     } else {
-        const uri = reusableDocument
-            ? reusableDocument.uri
-            : Uri.parse(`untitled:${__dirname}.${Math.random()}.tmp`);
-        getTextEditor = workspace
-            .openTextDocument(uri)
-            .then((document) => window.showTextDocument(document));
+        // for non-plaintext files, sleep for a while to let the language server load
+        const getDocument =
+            reusableDocument?.languageId === language
+                ? workspace.openTextDocument(reusableDocument.uri)
+                : workspace.openTextDocument({ language }).then((document) =>
+                      language === 'plaintext'
+                          ? document
+                          : new Promise<TextDocument>((resolve) => {
+                                setTimeout(() => resolve(document), 1500);
+                            }),
+                  );
+        getTextEditor = getDocument.then((document) => window.showTextDocument(document));
     }
 
     return getTextEditor.then((textEditor) => {

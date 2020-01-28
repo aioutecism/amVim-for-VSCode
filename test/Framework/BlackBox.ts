@@ -3,6 +3,7 @@ import * as TestUtil from './Util';
 import { TextEditor, TextDocument, Selection, extensions } from 'vscode';
 
 export interface TestCase {
+    language?: string;
     from: string;
     inputs: string;
     to: string;
@@ -110,7 +111,7 @@ export const run = (testCase: TestCase, before?: (textEditor: TextEditor) => voi
         const toInfo = extractInfo(testCase.to);
         const inputs = testCase.inputs.split(' ');
 
-        TestUtil.createTempDocument(fromInfo.cleanText, reusableDocument).then(
+        TestUtil.createTempDocument(fromInfo.cleanText, reusableDocument, testCase.language).then(
             async (textEditor) => {
                 reusableDocument = textEditor.document;
 
@@ -125,6 +126,10 @@ export const run = (testCase: TestCase, before?: (textEditor: TextEditor) => voi
                 for (let i = 0; i < inputs.length; i++) {
                     getCurrentMode()!.input(inputs[i]);
                     await waitForMillisecond(20 * tries);
+                }
+
+                if (testCase.language) {
+                    await waitForMillisecond(50 * tries);
                 }
 
                 try {
