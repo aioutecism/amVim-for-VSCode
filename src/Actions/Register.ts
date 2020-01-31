@@ -183,7 +183,7 @@ export class ActionRegister {
     }
 
     @StaticReflect.metadata(SymbolMetadata.Action.isChange, true)
-    static async putAfter(args: { n?: number }): Promise<boolean> {
+    static putAfter(args: { n?: number }): Thenable<boolean> {
         args.n = args.n === undefined ? 1 : args.n;
 
         const activeTextEditor = window.activeTextEditor;
@@ -191,56 +191,62 @@ export class ActionRegister {
         if (!activeTextEditor) {
             return Promise.resolve(false);
         }
+        const systemClipboardPromise =
+            Configuration.useSystemClipboard === true
+                ? env.clipboard.readText()
+                : Promise.resolve(undefined);
 
-        if (Configuration.useSystemClipboard === true) {
-            ActionRegister.stash = new Register({
-                text: await env.clipboard.readText(),
-                isLinewise: false,
-            });
-        }
-
-        if (!ActionRegister.stash) {
-            return Promise.resolve(false);
-        }
-
-        const stash = ActionRegister.stash;
-
-        const putPositions = activeTextEditor.selections.map((selection) => {
-            return stash.isLinewise
-                ? new Position(selection.active.line + 1, 0)
-                : selection.active.translate(0, +1);
-        });
-
-        const textToPut = stash.text.repeat(args.n);
-
-        return ActionSelection.shrinkToActives()
-            .then(() => {
-                return activeTextEditor.edit((editBuilder) => {
-                    putPositions.forEach((position) => {
-                        editBuilder.insert(position, textToPut);
-                    });
+        return systemClipboardPromise.then((result) => {
+            if (Configuration.useSystemClipboard === true && result) {
+                ActionRegister.stash = new Register({
+                    text: result,
+                    isLinewise: false,
                 });
-            })
-            .then(() => {
-                if (stash.isLinewise) {
-                    return ActionMoveCursor.byMotions({
-                        motions: [MotionCharacter.down(), MotionLine.firstNonBlank()],
-                    });
-                } else if (stash.lineCount > 1) {
-                    return ActionMoveCursor.byMotions({
-                        motions: [MotionCharacter.right()],
-                    });
-                } else {
-                    const characters = textToPut.length;
-                    return ActionMoveCursor.byMotions({
-                        motions: [MotionCharacter.right({ n: characters })],
-                    });
-                }
+            }
+
+            if (!ActionRegister.stash) {
+                return Promise.resolve(false);
+            }
+
+            const stash = ActionRegister.stash;
+
+            const putPositions = activeTextEditor.selections.map((selection) => {
+                return stash.isLinewise
+                    ? new Position(selection.active.line + 1, 0)
+                    : selection.active.translate(0, +1);
             });
+
+            const textToPut = stash.text.repeat(args.n);
+
+            return ActionSelection.shrinkToActives()
+                .then(() => {
+                    return activeTextEditor.edit((editBuilder) => {
+                        putPositions.forEach((position) => {
+                            editBuilder.insert(position, textToPut);
+                        });
+                    });
+                })
+                .then(() => {
+                    if (stash.isLinewise) {
+                        return ActionMoveCursor.byMotions({
+                            motions: [MotionCharacter.down(), MotionLine.firstNonBlank()],
+                        });
+                    } else if (stash.lineCount > 1) {
+                        return ActionMoveCursor.byMotions({
+                            motions: [MotionCharacter.right()],
+                        });
+                    } else {
+                        const characters = textToPut.length;
+                        return ActionMoveCursor.byMotions({
+                            motions: [MotionCharacter.right({ n: characters })],
+                        });
+                    }
+                });
+        });
     }
 
     @StaticReflect.metadata(SymbolMetadata.Action.isChange, true)
-    static async putBefore(args: { n?: number }): Promise<boolean> {
+    static putBefore(args: { n?: number }): Thenable<boolean> {
         args.n = args.n === undefined ? 1 : args.n;
 
         const activeTextEditor = window.activeTextEditor;
@@ -248,57 +254,63 @@ export class ActionRegister {
         if (!activeTextEditor) {
             return Promise.resolve(false);
         }
+        const systemClipboardPromise =
+            Configuration.useSystemClipboard === true
+                ? env.clipboard.readText()
+                : Promise.resolve(undefined);
 
-        if (Configuration.useSystemClipboard === true) {
-            ActionRegister.stash = new Register({
-                text: await env.clipboard.readText(),
-                isLinewise: false,
-            });
-        }
-
-        if (!ActionRegister.stash) {
-            return Promise.resolve(false);
-        }
-
-        const stash = ActionRegister.stash;
-
-        const putPositions = activeTextEditor.selections.map((selection) => {
-            return stash.isLinewise ? selection.active.with(undefined, 0) : selection.active;
-        });
-
-        const textToPut = stash.text.repeat(args.n);
-
-        return ActionSelection.shrinkToActives()
-            .then(() => {
-                return activeTextEditor.edit((editBuilder) => {
-                    putPositions.forEach((position) => {
-                        editBuilder.insert(position, textToPut);
-                    });
+        return systemClipboardPromise.then((result) => {
+            if (Configuration.useSystemClipboard === true && result) {
+                ActionRegister.stash = new Register({
+                    text: result,
+                    isLinewise: false,
                 });
-            })
-            .then(() => {
-                if (stash.isLinewise) {
-                    return ActionMoveCursor.byMotions({
-                        motions: [
-                            MotionCharacter.up({
-                                n: UtilText.getLineCount(textToPut) - 1,
-                            }),
-                            MotionLine.firstNonBlank(),
-                        ],
-                    });
-                } else if (stash.lineCount > 1) {
-                    return ActionMoveCursor.byMotions({
-                        motions: [
-                            MotionDirection.prev({
-                                n: textToPut.length - args.n!,
-                            }),
-                        ],
-                    });
-                } else {
-                    return ActionMoveCursor.byMotions({
-                        motions: [MotionCharacter.left()],
-                    });
-                }
+            }
+
+            if (!ActionRegister.stash) {
+                return Promise.resolve(false);
+            }
+
+            const stash = ActionRegister.stash;
+
+            const putPositions = activeTextEditor.selections.map((selection) => {
+                return stash.isLinewise ? selection.active.with(undefined, 0) : selection.active;
             });
+
+            const textToPut = stash.text.repeat(args.n);
+
+            return ActionSelection.shrinkToActives()
+                .then(() => {
+                    return activeTextEditor.edit((editBuilder) => {
+                        putPositions.forEach((position) => {
+                            editBuilder.insert(position, textToPut);
+                        });
+                    });
+                })
+                .then(() => {
+                    if (stash.isLinewise) {
+                        return ActionMoveCursor.byMotions({
+                            motions: [
+                                MotionCharacter.up({
+                                    n: UtilText.getLineCount(textToPut) - 1,
+                                }),
+                                MotionLine.firstNonBlank(),
+                            ],
+                        });
+                    } else if (stash.lineCount > 1) {
+                        return ActionMoveCursor.byMotions({
+                            motions: [
+                                MotionDirection.prev({
+                                    n: textToPut.length - args.n!,
+                                }),
+                            ],
+                        });
+                    } else {
+                        return ActionMoveCursor.byMotions({
+                            motions: [MotionCharacter.left()],
+                        });
+                    }
+                });
+        });
     }
 }
