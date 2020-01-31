@@ -1,4 +1,4 @@
-import { window, Position, Range } from 'vscode';
+import { env, window, Position, Range } from 'vscode';
 import { StaticReflect } from '../LanguageExtensions/StaticReflect';
 import { SymbolMetadata } from '../Symbols/Metadata';
 import { ActionMoveCursor } from './MoveCursor';
@@ -10,6 +10,7 @@ import { MotionLine } from '../Motions/Line';
 import { TextObject } from '../TextObjects/TextObject';
 import { UtilRange } from '../Utils/Range';
 import { UtilText } from '../Utils/Text';
+import { Configuration } from '../Configuration';
 
 export class Register {
     readonly text: string;
@@ -56,6 +57,12 @@ export class ActionRegister {
                 return document.getText(document.validateRange(range));
             })
             .join('');
+
+        if (Configuration.useSystemClipboard === true) {
+            // Write to clipboard but then continue to allow
+            // for saving `isLinewise` state
+            env.clipboard.writeText(text);
+        }
 
         ActionRegister.stash = new Register({
             text: text,
@@ -122,6 +129,12 @@ export class ActionRegister {
             })
             .join('');
 
+        if (Configuration.useSystemClipboard === true) {
+            // Write to clipboard but then continue to allow
+            // for saving `isLinewise` state
+            env.clipboard.writeText(text);
+        }
+
         ActionRegister.stash = new Register({
             text: text,
             isLinewise: args.textObject.isLinewise,
@@ -170,16 +183,23 @@ export class ActionRegister {
     }
 
     @StaticReflect.metadata(SymbolMetadata.Action.isChange, true)
-    static putAfter(args: { n?: number }): Thenable<boolean> {
+    static async putAfter(args: { n?: number }): Promise<boolean> {
         args.n = args.n === undefined ? 1 : args.n;
-
-        if (!ActionRegister.stash) {
-            return Promise.resolve(false);
-        }
 
         const activeTextEditor = window.activeTextEditor;
 
         if (!activeTextEditor) {
+            return Promise.resolve(false);
+        }
+
+        if (Configuration.useSystemClipboard === true) {
+            ActionRegister.stash = new Register({
+                text: await env.clipboard.readText(),
+                isLinewise: false,
+            });
+        }
+
+        if (!ActionRegister.stash) {
             return Promise.resolve(false);
         }
 
@@ -220,16 +240,23 @@ export class ActionRegister {
     }
 
     @StaticReflect.metadata(SymbolMetadata.Action.isChange, true)
-    static putBefore(args: { n?: number }): Thenable<boolean> {
+    static async putBefore(args: { n?: number }): Promise<boolean> {
         args.n = args.n === undefined ? 1 : args.n;
-
-        if (!ActionRegister.stash) {
-            return Promise.resolve(false);
-        }
 
         const activeTextEditor = window.activeTextEditor;
 
         if (!activeTextEditor) {
+            return Promise.resolve(false);
+        }
+
+        if (Configuration.useSystemClipboard === true) {
+            ActionRegister.stash = new Register({
+                text: await env.clipboard.readText(),
+                isLinewise: false,
+            });
+        }
+
+        if (!ActionRegister.stash) {
             return Promise.resolve(false);
         }
 
