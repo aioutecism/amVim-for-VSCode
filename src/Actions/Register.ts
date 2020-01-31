@@ -197,11 +197,18 @@ export class ActionRegister {
                 : Promise.resolve(undefined);
 
         return systemClipboardPromise.then((result) => {
-            if (Configuration.useSystemClipboard === true && result) {
-                ActionRegister.stash = new Register({
-                    text: result,
-                    isLinewise: false,
-                });
+            if (Configuration.useSystemClipboard === true) {
+                const existingStash = ActionRegister.stash || {};
+
+                // Don't add a new register if:
+                // - there is nothing returned from the system clipboard promise
+                // - the existing register has the text already
+                if (result && existingStash.text !== result) {
+                    ActionRegister.stash = new Register({
+                        text: result,
+                        isLinewise: false,
+                    });
+                }
             }
 
             if (!ActionRegister.stash) {
@@ -260,11 +267,18 @@ export class ActionRegister {
                 : Promise.resolve(undefined);
 
         return systemClipboardPromise.then((result) => {
-            if (Configuration.useSystemClipboard === true && result) {
-                ActionRegister.stash = new Register({
-                    text: result,
-                    isLinewise: false,
-                });
+            if (Configuration.useSystemClipboard === true) {
+                const existingStash = ActionRegister.stash || {};
+
+                // Don't add a new register if:
+                // - there is nothing returned from the system clipboard promise
+                // - the existing register has the text already
+                if (result && existingStash.text !== result) {
+                    ActionRegister.stash = new Register({
+                        text: result,
+                        isLinewise: false,
+                    });
+                }
             }
 
             if (!ActionRegister.stash) {
