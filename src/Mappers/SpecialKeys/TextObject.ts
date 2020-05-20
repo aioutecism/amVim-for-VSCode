@@ -4,6 +4,7 @@ import { TextObject } from '../../TextObjects/TextObject';
 import { TextObjectBlock } from '../../TextObjects/Block';
 import { TextObjectQuotedString } from '../../TextObjects/QuotedString';
 import { TextObjectWord } from '../../TextObjects/Word';
+import { TextObjectTag } from '../../TextObjects/Tag';
 
 interface TextObjectGenerator {
     (args?: {}): TextObject;
@@ -52,6 +53,10 @@ export class SpecialKeyTextObject extends GenericMapper implements SpecialKeyCom
         {
             characters: ['`'],
             method: TextObjectQuotedString.byBackward,
+        },
+        {
+            characters: ['t'],
+            method: TextObjectTag.byTag,
         },
         {
             characters: ['w'],
