@@ -33,7 +33,7 @@
     "engines": {
         "node": "^8.6.0",
         "npm": "^5.6.0",
-        "vscode": "^1.41.0"
+        "vscode": "^1.45.1"
     },
     "main": "./out/src/extension",
     "extensionKind": [
@@ -260,14 +260,14 @@
     "devDependencies": {
         "@types/glob": "^7.1.1",
         "@types/mocha": "^5.2.7",
-        "@types/node": "^8.10.58",
-        "@types/vscode": "^1.41.0",
+        "@types/node": "^8.10.61",
+        "@types/vscode": "^1.45.1",
         "github-releases-renderer": "github:aioutecism/github-releases-renderer",
         "glob": "^7.1.6",
-        "mocha": "^6.2.2",
+        "mocha": "^6.2.3",
         "prettier": "^1.19.1",
         "rimraf": "^2.7.1",
-        "source-map-support": "^0.5.16",
+        "source-map-support": "^0.5.19",
         "typescript": "^3.7.5",
         "vscode-test": "^1.3.0"
     },
