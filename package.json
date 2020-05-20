@@ -33,7 +33,7 @@
     "engines": {
         "node": "^8.6.0",
         "npm": "^5.6.0",
-        "vscode": "^1.45.1"
+        "vscode": "^1.32.0"
     },
     "main": "./out/src/extension",
     "extensionKind": [
@@ -261,7 +261,7 @@
         "@types/glob": "^7.1.1",
         "@types/mocha": "^5.2.7",
         "@types/node": "^8.10.61",
-        "@types/vscode": "^1.45.1",
+        "@types/vscode": "^1.32.0",
         "github-releases-renderer": "github:aioutecism/github-releases-renderer",
         "glob": "^7.1.6",
         "mocha": "^6.2.3",
