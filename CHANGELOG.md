@@ -1,3 +1,13 @@
+# [1.31.0](https://github.com/aioutecism/amVim-for-VSCode/releases/tag/1.31.0)
+
+- Added `g ?` (ROT13) for visual and visual block modes. #235
+- Added `zt` to put cursor at top of the screen. #245
+- Added `{N} ~` for normal mode. #234
+- Added go to percent in file motion `%`. #227
+- Added tag TextObject. #247
+- Dependency upgrades
+
+
 # [1.30.0](https://github.com/aioutecism/amVim-for-VSCode/releases/tag/1.30.0)
 
 - Added `amVim.mimicVimSearchBehavior` configuration. #224
