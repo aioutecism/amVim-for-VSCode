@@ -37,7 +37,7 @@ export class ActionRegister {
         return ActionRegister.stash;
     }
 
-    static yankRanges(args: { ranges: Range[]; isLinewise: boolean }): Thenable<boolean> {
+    static async yankRanges(args: { ranges: Range[]; isLinewise: boolean }): Promise<boolean> {
         const activeTextEditor = window.activeTextEditor;
 
         if (!activeTextEditor) {
@@ -61,7 +61,7 @@ export class ActionRegister {
         if (Configuration.useSystemClipboard === true) {
             // Write to clipboard but then continue to allow
             // for saving `isLinewise` state
-            env.clipboard.writeText(text);
+            await env.clipboard.writeText(text);
         }
 
         ActionRegister.stash = new Register({
@@ -101,7 +101,7 @@ export class ActionRegister {
         });
     }
 
-    static yankByTextObject(args: { textObject: TextObject }): Thenable<boolean> {
+    static async yankByTextObject(args: { textObject: TextObject }): Promise<boolean> {
         const activeTextEditor = window.activeTextEditor;
 
         if (!activeTextEditor) {
@@ -132,7 +132,7 @@ export class ActionRegister {
         if (Configuration.useSystemClipboard === true) {
             // Write to clipboard but then continue to allow
             // for saving `isLinewise` state
-            env.clipboard.writeText(text);
+            await env.clipboard.writeText(text);
         }
 
         ActionRegister.stash = new Register({
@@ -183,148 +183,138 @@ export class ActionRegister {
     }
 
     @StaticReflect.metadata(SymbolMetadata.Action.isChange, true)
-    static putAfter(args: { n?: number }): Thenable<boolean> {
+    static async putAfter(args: { n?: number }): Promise<boolean> {
         args.n = args.n === undefined ? 1 : args.n;
 
         const activeTextEditor = window.activeTextEditor;
 
         if (!activeTextEditor) {
+            return false;
+        }
+
+        if (Configuration.useSystemClipboard === true) {
+            const text = await env.clipboard.readText();
+            const existingStash = ActionRegister.stash || {};
+
+            // Don't add a new register if:
+            // - there is nothing returned from the system clipboard
+            // - the existing register has the text already
+            if (text && existingStash.text !== text) {
+                ActionRegister.stash = new Register({
+                    text,
+                    isLinewise: false,
+                });
+            }
+        }
+
+        if (!ActionRegister.stash) {
             return Promise.resolve(false);
         }
-        const systemClipboardPromise =
-            Configuration.useSystemClipboard === true
-                ? env.clipboard.readText()
-                : Promise.resolve(undefined);
 
-        return systemClipboardPromise.then((result) => {
-            if (Configuration.useSystemClipboard === true) {
-                const existingStash = ActionRegister.stash || {};
+        const stash = ActionRegister.stash;
 
-                // Don't add a new register if:
-                // - there is nothing returned from the system clipboard promise
-                // - the existing register has the text already
-                if (result && existingStash.text !== result) {
-                    ActionRegister.stash = new Register({
-                        text: result,
-                        isLinewise: false,
+        const putPositions = activeTextEditor.selections.map((selection) => {
+            return stash.isLinewise
+                ? new Position(selection.active.line + 1, 0)
+                : selection.active.translate(0, +1);
+        });
+
+        const textToPut = stash.text.repeat(args.n);
+
+        return ActionSelection.shrinkToActives()
+            .then(() => {
+                return activeTextEditor.edit((editBuilder) => {
+                    putPositions.forEach((position) => {
+                        editBuilder.insert(position, textToPut);
+                    });
+                });
+            })
+            .then(() => {
+                if (stash.isLinewise) {
+                    return ActionMoveCursor.byMotions({
+                        motions: [MotionCharacter.down(), MotionLine.firstNonBlank()],
+                    });
+                } else if (stash.lineCount > 1) {
+                    return ActionMoveCursor.byMotions({
+                        motions: [MotionCharacter.right()],
+                    });
+                } else {
+                    const characters = textToPut.length;
+                    return ActionMoveCursor.byMotions({
+                        motions: [MotionCharacter.right({ n: characters })],
                     });
                 }
-            }
-
-            if (!ActionRegister.stash) {
-                return Promise.resolve(false);
-            }
-
-            const stash = ActionRegister.stash;
-
-            const putPositions = activeTextEditor.selections.map((selection) => {
-                return stash.isLinewise
-                    ? new Position(selection.active.line + 1, 0)
-                    : selection.active.translate(0, +1);
             });
-
-            const textToPut = stash.text.repeat(args.n);
-
-            return ActionSelection.shrinkToActives()
-                .then(() => {
-                    return activeTextEditor.edit((editBuilder) => {
-                        putPositions.forEach((position) => {
-                            editBuilder.insert(position, textToPut);
-                        });
-                    });
-                })
-                .then(() => {
-                    if (stash.isLinewise) {
-                        return ActionMoveCursor.byMotions({
-                            motions: [MotionCharacter.down(), MotionLine.firstNonBlank()],
-                        });
-                    } else if (stash.lineCount > 1) {
-                        return ActionMoveCursor.byMotions({
-                            motions: [MotionCharacter.right()],
-                        });
-                    } else {
-                        const characters = textToPut.length;
-                        return ActionMoveCursor.byMotions({
-                            motions: [MotionCharacter.right({ n: characters })],
-                        });
-                    }
-                });
-        });
     }
 
     @StaticReflect.metadata(SymbolMetadata.Action.isChange, true)
-    static putBefore(args: { n?: number }): Thenable<boolean> {
+    static async putBefore(args: { n?: number }): Promise<boolean> {
         args.n = args.n === undefined ? 1 : args.n;
 
         const activeTextEditor = window.activeTextEditor;
 
         if (!activeTextEditor) {
+            return false;
+        }
+
+        if (Configuration.useSystemClipboard === true) {
+            const text = await env.clipboard.readText();
+            const existingStash = ActionRegister.stash || {};
+
+            // Don't add a new register if:
+            // - there is nothing returned from the system clipboard
+            // - the existing register has the text already
+            if (text && existingStash.text !== text) {
+                ActionRegister.stash = new Register({
+                    text,
+                    isLinewise: false,
+                });
+            }
+        }
+
+        if (!ActionRegister.stash) {
             return Promise.resolve(false);
         }
-        const systemClipboardPromise =
-            Configuration.useSystemClipboard === true
-                ? env.clipboard.readText()
-                : Promise.resolve(undefined);
 
-        return systemClipboardPromise.then((result) => {
-            if (Configuration.useSystemClipboard === true) {
-                const existingStash = ActionRegister.stash || {};
+        const stash = ActionRegister.stash;
 
-                // Don't add a new register if:
-                // - there is nothing returned from the system clipboard promise
-                // - the existing register has the text already
-                if (result && existingStash.text !== result) {
-                    ActionRegister.stash = new Register({
-                        text: result,
-                        isLinewise: false,
+        const putPositions = activeTextEditor.selections.map((selection) => {
+            return stash.isLinewise ? selection.active.with(undefined, 0) : selection.active;
+        });
+
+        const textToPut = stash.text.repeat(args.n);
+
+        return ActionSelection.shrinkToActives()
+            .then(() => {
+                return activeTextEditor.edit((editBuilder) => {
+                    putPositions.forEach((position) => {
+                        editBuilder.insert(position, textToPut);
+                    });
+                });
+            })
+            .then(() => {
+                if (stash.isLinewise) {
+                    return ActionMoveCursor.byMotions({
+                        motions: [
+                            MotionCharacter.up({
+                                n: UtilText.getLineCount(textToPut) - 1,
+                            }),
+                            MotionLine.firstNonBlank(),
+                        ],
+                    });
+                } else if (stash.lineCount > 1) {
+                    return ActionMoveCursor.byMotions({
+                        motions: [
+                            MotionDirection.prev({
+                                n: textToPut.length - args.n!,
+                            }),
+                        ],
+                    });
+                } else {
+                    return ActionMoveCursor.byMotions({
+                        motions: [MotionCharacter.left()],
                     });
                 }
-            }
-
-            if (!ActionRegister.stash) {
-                return Promise.resolve(false);
-            }
-
-            const stash = ActionRegister.stash;
-
-            const putPositions = activeTextEditor.selections.map((selection) => {
-                return stash.isLinewise ? selection.active.with(undefined, 0) : selection.active;
             });
-
-            const textToPut = stash.text.repeat(args.n);
-
-            return ActionSelection.shrinkToActives()
-                .then(() => {
-                    return activeTextEditor.edit((editBuilder) => {
-                        putPositions.forEach((position) => {
-                            editBuilder.insert(position, textToPut);
-                        });
-                    });
-                })
-                .then(() => {
-                    if (stash.isLinewise) {
-                        return ActionMoveCursor.byMotions({
-                            motions: [
-                                MotionCharacter.up({
-                                    n: UtilText.getLineCount(textToPut) - 1,
-                                }),
-                                MotionLine.firstNonBlank(),
-                            ],
-                        });
-                    } else if (stash.lineCount > 1) {
-                        return ActionMoveCursor.byMotions({
-                            motions: [
-                                MotionDirection.prev({
-                                    n: textToPut.length - args.n!,
-                                }),
-                            ],
-                        });
-                    } else {
-                        return ActionMoveCursor.byMotions({
-                            motions: [MotionCharacter.left()],
-                        });
-                    }
-                });
-        });
     }
 }
