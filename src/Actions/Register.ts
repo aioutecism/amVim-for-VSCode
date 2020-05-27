@@ -189,7 +189,7 @@ export class ActionRegister {
         const activeTextEditor = window.activeTextEditor;
 
         if (!activeTextEditor) {
-            return false;
+            return Promise.resolve(false);
         }
 
         if (Configuration.useSystemClipboard === true) {
@@ -254,7 +254,7 @@ export class ActionRegister {
         const activeTextEditor = window.activeTextEditor;
 
         if (!activeTextEditor) {
-            return false;
+            return Promise.resolve(false);
         }
 
         if (Configuration.useSystemClipboard === true) {
