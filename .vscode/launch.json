@@ -25,6 +25,7 @@
             "stopOnEntry": false,
             "sourceMaps": true,
             "args": [
+                "--disable-extensions",
                 "--extensionDevelopmentPath=${workspaceFolder}",
                 "--extensionTestsPath=${workspaceFolder}/out/test"
             ],
