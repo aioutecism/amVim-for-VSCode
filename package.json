@@ -63,6 +63,11 @@
                     "default": true,
                     "description": "Set to `false` to keep VSCode's keybinding when searching."
                 },
+                "amVim.useSystemClipboard": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Set to `true` to copy to and paste from the system clipboard."
+                },
                 "amVim.vimStyleNavigationInListView": {
                     "type": "boolean",
                     "default": true,

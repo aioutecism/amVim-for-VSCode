@@ -18,6 +18,11 @@ export class Configuration {
         return this._smartRelativeLineNumbers;
     }
 
+    private static _useSystemClipboard: boolean;
+    static get useSystemClipboard(): boolean {
+        return this._useSystemClipboard;
+    }
+
     static init(): void {
         if (this.isReady) {
             return;
@@ -43,6 +48,7 @@ export class Configuration {
             'smartRelativeLineNumbers',
             false,
         );
+        this._useSystemClipboard = this.getExtensionSetting<boolean>('useSystemClipboard', false);
 
         UtilWord.updateCharacterKindCache(
             this.getEditorSetting<string>('wordSeparators', '`~!@#$%^&*()-=+[{]}\\|;:\'",.<>/?'),

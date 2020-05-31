@@ -1,4 +1,4 @@
-import { window, Position, Range } from 'vscode';
+import { env, window, Position, Range } from 'vscode';
 import { StaticReflect } from '../LanguageExtensions/StaticReflect';
 import { SymbolMetadata } from '../Symbols/Metadata';
 import { ActionMoveCursor } from './MoveCursor';
@@ -10,6 +10,7 @@ import { MotionLine } from '../Motions/Line';
 import { TextObject } from '../TextObjects/TextObject';
 import { UtilRange } from '../Utils/Range';
 import { UtilText } from '../Utils/Text';
+import { Configuration } from '../Configuration';
 
 export class Register {
     readonly text: string;
@@ -36,7 +37,7 @@ export class ActionRegister {
         return ActionRegister.stash;
     }
 
-    static yankRanges(args: { ranges: Range[]; isLinewise: boolean }): Thenable<boolean> {
+    static async yankRanges(args: { ranges: Range[]; isLinewise: boolean }): Promise<boolean> {
         const activeTextEditor = window.activeTextEditor;
 
         if (!activeTextEditor) {
@@ -56,6 +57,12 @@ export class ActionRegister {
                 return document.getText(document.validateRange(range));
             })
             .join('');
+
+        if (Configuration.useSystemClipboard === true) {
+            // Write to clipboard but then continue to allow
+            // for saving `isLinewise` state
+            await env.clipboard.writeText(text);
+        }
 
         ActionRegister.stash = new Register({
             text: text,
@@ -94,7 +101,7 @@ export class ActionRegister {
         });
     }
 
-    static yankByTextObject(args: { textObject: TextObject }): Thenable<boolean> {
+    static async yankByTextObject(args: { textObject: TextObject }): Promise<boolean> {
         const activeTextEditor = window.activeTextEditor;
 
         if (!activeTextEditor) {
@@ -121,6 +128,12 @@ export class ActionRegister {
                 return document.getText(document.validateRange(range));
             })
             .join('');
+
+        if (Configuration.useSystemClipboard === true) {
+            // Write to clipboard but then continue to allow
+            // for saving `isLinewise` state
+            await env.clipboard.writeText(text);
+        }
 
         ActionRegister.stash = new Register({
             text: text,
@@ -170,16 +183,31 @@ export class ActionRegister {
     }
 
     @StaticReflect.metadata(SymbolMetadata.Action.isChange, true)
-    static putAfter(args: { n?: number }): Thenable<boolean> {
+    static async putAfter(args: { n?: number }): Promise<boolean> {
         args.n = args.n === undefined ? 1 : args.n;
-
-        if (!ActionRegister.stash) {
-            return Promise.resolve(false);
-        }
 
         const activeTextEditor = window.activeTextEditor;
 
         if (!activeTextEditor) {
+            return Promise.resolve(false);
+        }
+
+        if (Configuration.useSystemClipboard === true) {
+            const text = await env.clipboard.readText();
+            const existingStash = ActionRegister.stash || {};
+
+            // Don't add a new register if:
+            // - there is nothing returned from the system clipboard
+            // - the existing register has the text already
+            if (text && existingStash.text !== text) {
+                ActionRegister.stash = new Register({
+                    text,
+                    isLinewise: false,
+                });
+            }
+        }
+
+        if (!ActionRegister.stash) {
             return Promise.resolve(false);
         }
 
@@ -220,16 +248,31 @@ export class ActionRegister {
     }
 
     @StaticReflect.metadata(SymbolMetadata.Action.isChange, true)
-    static putBefore(args: { n?: number }): Thenable<boolean> {
+    static async putBefore(args: { n?: number }): Promise<boolean> {
         args.n = args.n === undefined ? 1 : args.n;
-
-        if (!ActionRegister.stash) {
-            return Promise.resolve(false);
-        }
 
         const activeTextEditor = window.activeTextEditor;
 
         if (!activeTextEditor) {
+            return Promise.resolve(false);
+        }
+
+        if (Configuration.useSystemClipboard === true) {
+            const text = await env.clipboard.readText();
+            const existingStash = ActionRegister.stash || {};
+
+            // Don't add a new register if:
+            // - there is nothing returned from the system clipboard
+            // - the existing register has the text already
+            if (text && existingStash.text !== text) {
+                ActionRegister.stash = new Register({
+                    text,
+                    isLinewise: false,
+                });
+            }
+        }
+
+        if (!ActionRegister.stash) {
             return Promise.resolve(false);
         }
 
