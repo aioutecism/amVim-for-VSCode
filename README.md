@@ -36,6 +36,12 @@ You can overwrite default configurations in
 
 Set to `false` to disable `Ctrl+<key>` keybindings.
 
+#### `amVim.mimicVimSearchBehavior`
+
+`Boolean`, Default: `true`
+
+Set to `false` to keep VSCode's keybinding when searching.
+
 #### `amVim.startInInsertMode`
 
 `Boolean`, Default: `false`
@@ -48,11 +54,11 @@ Set to `true` to start in Insert mode when opening files.
 
 Set to `true` to will make line numbers relative when not in Insert mode.
 
-#### `amVim.mimicVimSearchBehavior`
+#### `amVim.useSystemClipboard`
 
-`Boolean`, Default: `true`
+`Boolean`, Default: `false`
 
-Set to `false` to keep VSCode's keybinding when searching.
+Set to `true` to copy to and paste from the operating system clipboard.
 
 #### `amVim.vimStyleNavigationInListView`
 
