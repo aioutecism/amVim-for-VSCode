@@ -1,8 +1,13 @@
 .vscode/**
 .vscode-test/**
 out/test/**
-out/**/*.map
 test/**
 src/**
+**/*.map
 .gitignore
 tsconfig.json
+prettier.config.js
+webpack.config.js
+tslint.json
+CHANGELOG.template.md
+CHANGELOG.md
