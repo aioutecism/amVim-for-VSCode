@@ -30,7 +30,7 @@
                 "--extensionTestsPath=${workspaceFolder}/out/test"
             ],
             "outFiles": [
-                "${workspaceFolder}/out/test/**/*.js"
+                "${workspaceFolder}/dist/**/*.js"
             ],
             "preLaunchTask": "npm: pretest"
         }

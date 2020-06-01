@@ -250,10 +250,10 @@
         "*"
     ],
     "scripts": {
-        "vscode:prepublish": "npm run compile",
-        "compile": "webpack --mode production",
+        "vscode:prepublish": "webpack --mode production",
+        "compile": "webpack --mode development",
         "test-compile": "tsc -p ./",
-        "watch": "webpack --mode none --watch --info-verbosity verbose",
+        "watch": "webpack --mode development --watch --info-verbosity verbose",
         "pretest": "npm run compile && npm run test-compile",
         "test": "node ./out/test/runTest.js",
         "sync-changelog": "node ./node_modules/github-releases-renderer/index.js run aioutecism amVim-for-VSCode CHANGELOG.template.md CHANGELOG.md -c 0",
