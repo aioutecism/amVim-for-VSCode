@@ -1,7 +1,6 @@
 import * as assert from 'assert';
 import * as TestUtil from './Util';
-import { TextEditor, TextDocument, Selection } from 'vscode';
-import { getCurrentMode } from '../../src/extension';
+import { TextEditor, TextDocument, Selection, extensions } from 'vscode';
 
 export interface TestCase {
     from: string;
@@ -100,8 +99,9 @@ export const run = (testCase: TestCase, before?: (textEditor: TextEditor) => voi
     const plainFrom = testCase.from.replace(/\n/g, '\\n');
     const plainTo = testCase.to.replace(/\n/g, '\\n');
     const expectation = `Inputs: ${testCase.inputs}\n> ${plainFrom}\n< ${plainTo}`;
-
     let tries = 0;
+
+    const { getCurrentMode } = extensions.getExtension('auiworks.amvim')?.exports;
 
     test(expectation, (done) => {
         tries++;

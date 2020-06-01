@@ -250,13 +250,11 @@
         "*"
     ],
     "scripts": {
-        "vscode:prepublish": "webpack --mode production",
-        "webpack": "webpack --mode development",
-        "webpack-dev": "webpack --mode development --watch",
+        "vscode:prepublish": "npm run compile",
+        "compile": "webpack --mode production",
         "test-compile": "tsc -p ./",
-        "compile": "webpack --mode none",
-        "watch": "webpack --mode none --watch",
-        "pretest": "npm run test-compile",
+        "watch": "webpack --mode none --watch --info-verbosity verbose",
+        "pretest": "npm run compile && npm run test-compile",
         "test": "node ./out/test/runTest.js",
         "sync-changelog": "node ./node_modules/github-releases-renderer/index.js run aioutecism amVim-for-VSCode CHANGELOG.template.md CHANGELOG.md -c 0",
         "prettier-check": "prettier --list-different '{src,test}/**/*.ts'",

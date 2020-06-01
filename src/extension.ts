@@ -10,6 +10,8 @@ export function activate(context: ExtensionContext) {
     dispatcher = new Dispatcher(context);
 
     context.subscriptions.push(Configuration, dispatcher);
+
+    return { getCurrentMode: getCurrentMode };
 }
 
 export function getCurrentMode(): Mode | null {
