@@ -11,7 +11,7 @@ export function activate(context: ExtensionContext) {
 
     context.subscriptions.push(Configuration, dispatcher);
 
-    return { getCurrentMode: getCurrentMode };
+    return { getCurrentMode };
 }
 
 export function getCurrentMode(): Mode | null {
