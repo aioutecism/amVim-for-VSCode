@@ -31,8 +31,6 @@
     "author": "aioutecism",
     "license": "ISC",
     "engines": {
-        "node": "^8.17.0",
-        "npm": "^6.13.4",
         "vscode": "^1.32.0"
     },
     "main": "./out/src/extension",
