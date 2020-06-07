@@ -1,14 +1,17 @@
 import * as BlackBox from '../Framework/BlackBox';
-import { MotionMatch } from '../../src/Motions/Match';
 
 suite('Normal: ;', () => {
-    MotionMatch.clearLast();
-
     const testCases: BlackBox.TestCase[] = [
-        // Empty
+        // Empty - can only be tested in a fresh document
+        //{
+        //    from: '[]Foo aaa bbb ccc end\nBar end',
+        //    inputs: ';',
+        //    to: '[]Foo aaa bbb ccc end\nBar end',
+        //},
+        // Empty - after no match
         {
             from: '[]Foo aaa bbb ccc end\nBar end',
-            inputs: ';',
+            inputs: 'f X ;',
             to: '[]Foo aaa bbb ccc end\nBar end',
         },
         // f <char>
