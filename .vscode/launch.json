@@ -13,7 +13,7 @@
                 "--extensionDevelopmentPath=${workspaceFolder}"
             ],
             "outFiles": [
-                "${workspaceFolder}/out/**/*.js"
+                "${workspaceFolder}/dist/*.js"
             ],
             "preLaunchTask": "npm: watch"
         },
@@ -25,13 +25,14 @@
             "stopOnEntry": false,
             "sourceMaps": true,
             "args": [
+                "--disable-extensions",
                 "--extensionDevelopmentPath=${workspaceFolder}",
                 "--extensionTestsPath=${workspaceFolder}/out/test"
             ],
             "outFiles": [
-                "${workspaceFolder}/out/test/**/*.js"
+                "${workspaceFolder}/dist/*.js"
             ],
-            "preLaunchTask": "npm: watch"
+            "preLaunchTask": "npm: pretest"
         }
     ]
 }
