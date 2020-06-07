@@ -257,8 +257,8 @@
         "pretest": "npm run compile && npm run test-compile",
         "test": "node ./out/test/runTest.js",
         "sync-changelog": "node ./node_modules/github-releases-renderer/index.js run aioutecism amVim-for-VSCode CHANGELOG.template.md CHANGELOG.md -c 0",
-        "prettier-check": "prettier --list-different '{src,test}/**/*.ts'",
-        "prettier-write": "prettier --write '{src,test}/**/*.ts'"
+        "prettier-check": "prettier --list-different \"{src,test}/**/*.ts\"",
+        "prettier-write": "prettier --write \"{src,test}/**/*.ts\""
     },
     "devDependencies": {
         "@types/glob": "^7.1.1",
