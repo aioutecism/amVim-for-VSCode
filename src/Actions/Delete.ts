@@ -10,60 +10,58 @@ import { UtilRange } from '../Utils/Range';
 
 export class ActionDelete {
     @StaticReflect.metadata(SymbolMetadata.Action.isChange, true)
-    static byMotions(args: {
+    static async byMotions(args: {
         motions: Motion[];
         isChangeAction?: boolean;
         shouldYank?: boolean;
-    }): Thenable<boolean> {
+    }): Promise<boolean> {
         args.isChangeAction = args.isChangeAction === undefined ? false : args.isChangeAction;
         args.shouldYank = args.shouldYank === undefined ? false : args.shouldYank;
 
         const activeTextEditor = window.activeTextEditor;
 
         if (!activeTextEditor) {
-            return Promise.resolve(false);
+            return false;
         }
 
         const document = activeTextEditor.document;
 
-        const promisedRanges = activeTextEditor.selections.map(async (selection) => {
+        let ranges: Range[] = [];
+
+        for (const selection of activeTextEditor.selections) {
             const start = selection.active;
-            const end = await args.motions.reduce((promisedPosition, motion) => {
-                return promisedPosition.then((position) =>
-                    motion.apply(position, {
-                        isInclusive: true,
-                        shouldCrossLines: false,
-                        isChangeAction: args.isChangeAction,
-                    }),
-                );
-            }, Promise.resolve(start));
-            return new Range(start, end);
-        });
-
-        return Promise.all(promisedRanges).then((ranges) => {
-            if (args.motions.some((motion) => motion.isLinewise)) {
-                ranges = ranges.map((range) => UtilRange.toLinewise(range, document));
+            let position = start;
+            for (const motion of args.motions) {
+                position = await motion.apply(position, {
+                    isInclusive: true,
+                    shouldCrossLines: false,
+                    isChangeAction: args.isChangeAction,
+                });
             }
+            ranges.push(new Range(start, position));
+        }
 
-            ranges = UtilRange.unionOverlaps(ranges);
+        if (args.motions.some((motion) => motion.isLinewise)) {
+            ranges = ranges.map((range) => UtilRange.toLinewise(range, document));
+        }
 
-            // TODO: Move cursor to first non-space if needed
+        ranges = UtilRange.unionOverlaps(ranges);
 
-            return (args.shouldYank
-                ? ActionRegister.yankByMotions({
-                      motions: args.motions,
-                      isChangeAction: args.isChangeAction,
-                  })
-                : Promise.resolve(true)
-            )
-                .then(() =>
-                    activeTextEditor.edit((editBuilder) => {
-                        ranges.forEach((range) => editBuilder.delete(range));
-                    }),
-                )
-                .then(() => ActionSelection.shrinkToStarts())
-                .then(() => ActionReveal.primaryCursor());
+        // TODO: Move cursor to first non-space if needed
+
+        if (args.shouldYank) {
+            await ActionRegister.yankByMotions({
+                motions: args.motions,
+                isChangeAction: args.isChangeAction,
+            });
+        }
+        await activeTextEditor.edit((editBuilder) => {
+            ranges.forEach((range) => editBuilder.delete(range));
         });
+        await ActionSelection.shrinkToStarts();
+        await ActionReveal.primaryCursor();
+
+        return true;
     }
 
     @StaticReflect.metadata(SymbolMetadata.Action.isChange, true)

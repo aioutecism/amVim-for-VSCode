@@ -42,12 +42,12 @@ export class ActionMoveCursor {
         return Promise.resolve(true);
     }
 
-    static byMotions(args: {
+    static async byMotions(args: {
         motions: Motion[];
         isVisualMode?: boolean;
         isVisualLineMode?: boolean;
         noEmptyAtLineEnd?: boolean;
-    }): Thenable<boolean> {
+    }): Promise<boolean> {
         args.isVisualMode = args.isVisualMode === undefined ? false : args.isVisualMode;
         args.isVisualLineMode = args.isVisualLineMode === undefined ? false : args.isVisualLineMode;
         args.noEmptyAtLineEnd = args.noEmptyAtLineEnd === undefined ? false : args.noEmptyAtLineEnd;
@@ -55,7 +55,7 @@ export class ActionMoveCursor {
         const activeTextEditor = window.activeTextEditor;
 
         if (!activeTextEditor) {
-            return Promise.resolve(false);
+            return false;
         }
 
         // Prevent preferred character update if no motion updates character.
@@ -65,16 +65,21 @@ export class ActionMoveCursor {
 
         const document = activeTextEditor.document;
 
-        const promisedSelections = activeTextEditor.selections.map(async (selection, i) => {
+        const selections: Selection[] = [];
+
+        for (let i = 0; i < activeTextEditor.selections.length; i++) {
+            const selection = activeTextEditor.selections[i];
             let anchor: Position;
 
-            let active = await args.motions.reduce((promisedPosition, motion) => {
-                return promisedPosition.then((position) =>
-                    motion.apply(position, {
-                        preferredColumn: ActionMoveCursor.preferredColumnBySelectionIndex[i],
-                    }),
-                );
-            }, Promise.resolve(args.isVisualMode ? UtilSelection.getActiveInVisualMode(selection) : selection.active));
+            let active = args.isVisualMode
+                ? UtilSelection.getActiveInVisualMode(selection)
+                : selection.active;
+
+            for (const motion of args.motions) {
+                active = await motion.apply(active, {
+                    preferredColumn: ActionMoveCursor.preferredColumnBySelectionIndex[i],
+                });
+            }
 
             if (args.isVisualMode) {
                 anchor = selection.anchor;
@@ -124,13 +129,12 @@ export class ActionMoveCursor {
                 anchor = active;
             }
 
-            return new Selection(anchor, active);
-        });
-        return Promise.all(promisedSelections)
-            .then((selections) => {
-                activeTextEditor.selections = selections;
-                return Promise.resolve(true);
-            })
-            .then(() => ActionReveal.primaryCursor());
+            selections.push(new Selection(anchor, active));
+        }
+
+        activeTextEditor.selections = selections;
+        await ActionReveal.primaryCursor();
+
+        return true;
     }
 }

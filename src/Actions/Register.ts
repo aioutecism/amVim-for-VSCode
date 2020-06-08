@@ -72,36 +72,40 @@ export class ActionRegister {
         return Promise.resolve(true);
     }
 
-    static yankByMotions(args: { motions: Motion[]; isChangeAction?: boolean }): Thenable<boolean> {
+    static async yankByMotions(args: {
+        motions: Motion[];
+        isChangeAction?: boolean;
+    }): Promise<boolean> {
         args.isChangeAction = args.isChangeAction === undefined ? false : args.isChangeAction;
 
         const activeTextEditor = window.activeTextEditor;
 
         if (!activeTextEditor) {
-            return Promise.resolve(false);
+            return false;
         }
 
         const isLinewise = args.motions.some((motion) => motion.isLinewise);
 
-        const promisedRanges = activeTextEditor.selections.map(async (selection) => {
+        let ranges: Range[] = [];
+
+        for (const selection of activeTextEditor.selections) {
             const start = selection.active;
-            const end = await args.motions.reduce((promisedPosition, motion) => {
-                return promisedPosition.then((position) =>
-                    motion.apply(position, {
-                        isInclusive: true,
-                        shouldCrossLines: false,
-                        isChangeAction: args.isChangeAction,
-                    }),
-                );
-            }, Promise.resolve(start));
-            return new Range(start, end);
+            let position = start;
+            for (const motion of args.motions) {
+                position = await motion.apply(position, {
+                    isInclusive: true,
+                    shouldCrossLines: false,
+                    isChangeAction: args.isChangeAction,
+                });
+            }
+            ranges.push(new Range(start, position));
+        }
+        await ActionRegister.yankRanges({
+            ranges: ranges,
+            isLinewise: isLinewise,
         });
-        return Promise.all(promisedRanges).then((ranges) =>
-            ActionRegister.yankRanges({
-                ranges: ranges,
-                isLinewise: isLinewise,
-            }),
-        );
+
+        return true;
     }
 
     static async yankByTextObject(args: { textObject: TextObject }): Promise<boolean> {
