@@ -36,15 +36,15 @@ export class MotionMatchPair extends Motion {
         return new MotionMatchPair();
     }
 
-    apply(
+    async apply(
         from: Position,
         option: {
             isInclusive?: boolean;
         } = {},
-    ): Position {
+    ): Promise<Position> {
         option.isInclusive = option.isInclusive === undefined ? false : option.isInclusive;
 
-        from = super.apply(from);
+        from = await super.apply(from);
 
         const activeTextEditor = window.activeTextEditor;
 

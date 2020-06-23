@@ -33,8 +33,8 @@ export class MotionDirection extends Motion {
         });
     }
 
-    apply(from: Position, option?: any): Position {
-        from = super.apply(from);
+    async apply(from: Position, option?: any): Promise<Position> {
+        from = await super.apply(from);
 
         const activeTextEditor = window.activeTextEditor;
 

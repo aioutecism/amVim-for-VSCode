@@ -11,6 +11,7 @@ import { MotionMatchPair } from '../../Motions/MatchPair';
 import { MotionLine } from '../../Motions/Line';
 import { MotionParagraph } from '../../Motions/Paragraph';
 import { MotionDocument } from '../../Motions/Document';
+import { MotionNavigation } from '../../Motions/Navigation';
 
 interface MotionGenerator {
     (args?: {}): Motion;
@@ -120,6 +121,8 @@ export class SpecialKeyMotion extends GenericMapper implements SpecialKeyCommon 
 
         { keys: 'space', motionGenerators: [MotionDirection.next] },
         { keys: 'backspace', motionGenerators: [MotionDirection.prev] },
+        { keys: 'g d', motionGenerators: [MotionNavigation.toDeclaration] },
+        { keys: 'g D', motionGenerators: [MotionNavigation.toTypeDefinition] },
     ];
 
     constructor() {

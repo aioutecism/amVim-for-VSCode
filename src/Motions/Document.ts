@@ -28,8 +28,8 @@ export class MotionDocument extends Motion {
         return obj;
     }
 
-    apply(from: Position): Position {
-        from = super.apply(from);
+    async apply(from: Position): Promise<Position> {
+        from = await super.apply(from);
 
         const activeTextEditor = window.activeTextEditor;
 

@@ -1,7 +1,6 @@
 import {
     workspace,
     window,
-    Uri,
     TextDocument,
     TextEditor,
     Position,
@@ -10,39 +9,41 @@ import {
     EndOfLine,
 } from 'vscode';
 
-export function createTempDocument(
+export async function createTempDocument(
     content?: string,
     reusableDocument?: TextDocument,
-): Thenable<TextEditor> {
-    let getTextEditor: Thenable<TextEditor>;
+    language: string = 'plaintext',
+): Promise<TextEditor> {
+    let textEditor: TextEditor;
 
     if (
-        reusableDocument &&
+        reusableDocument?.languageId === language &&
         window.activeTextEditor &&
         window.activeTextEditor.document === reusableDocument
     ) {
-        getTextEditor = Promise.resolve(window.activeTextEditor);
+        textEditor = window.activeTextEditor;
     } else {
-        const uri = reusableDocument
-            ? reusableDocument.uri
-            : Uri.parse(`untitled:${__dirname}.${Math.random()}.tmp`);
-        getTextEditor = workspace
-            .openTextDocument(uri)
-            .then((document) => window.showTextDocument(document));
+        let document: TextDocument;
+        if (reusableDocument?.languageId === language) {
+            document = await workspace.openTextDocument(reusableDocument.uri);
+        } else {
+            document = await workspace.openTextDocument({ language });
+            // for non-plaintext files, sleep for a while to let the language server load
+            if (language !== 'plaintext') {
+                await new Promise((resolve) => setTimeout(resolve, 2000));
+            }
+        }
+        textEditor = await window.showTextDocument(document);
     }
 
-    return getTextEditor.then((textEditor) => {
-        if (content) {
-            return textEditor
-                .edit((editBuilder) => {
-                    editBuilder.setEndOfLine(EndOfLine.LF);
-                    editBuilder.replace(new Range(0, 0, textEditor.document.lineCount, 0), content);
-                })
-                .then(() => textEditor);
-        }
+    if (content) {
+        await textEditor.edit((editBuilder) => {
+            editBuilder.setEndOfLine(EndOfLine.LF);
+            editBuilder.replace(new Range(0, 0, textEditor.document.lineCount, 0), content);
+        });
+    }
 
-        return textEditor;
-    });
+    return textEditor;
 }
 
 export function getDocument(): TextDocument | undefined {
