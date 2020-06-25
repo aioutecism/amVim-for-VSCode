@@ -1,3 +1,10 @@
+# [1.32.0](https://github.com/aioutecism/amVim-for-VSCode/releases/tag/1.32.0)
+
+- Yank to and paste from system clipboard with `amVim.useSystemClipboard` option: #260 Thanks @karlhorky!
+- Add `gd` and `gD` go to definition motion: #258
+- Package with webpack for faster startup: #270 Thanks @tejanium!
+
+
 # [1.31.0](https://github.com/aioutecism/amVim-for-VSCode/releases/tag/1.31.0)
 
 - Added `g ?` (ROT13) for visual and visual block modes. #235
@@ -15,7 +22,7 @@
 
 # [1.29.3](https://github.com/aioutecism/amVim-for-VSCode/releases/tag/1.29.3)
 
-- Fixed `command 'search.action.focusActiveEditor' not found` when searching. Thanks @marek2901. #223 
+- Fixed `command 'search.action.focusActiveEditor' not found` when searching. Thanks @marek2901. #223
 
 
 # [1.29.2](https://github.com/aioutecism/amVim-for-VSCode/releases/tag/1.29.2)
@@ -136,7 +143,7 @@
 # [1.17.6](https://github.com/aioutecism/amVim-for-VSCode/releases/tag/1.17.6)
 
 - Fix cursor position when exiting insert mode. #155 #154
-- Better escape handling. #156 #147 
+- Better escape handling. #156 #147
 
 
 # [1.17.5](https://github.com/aioutecism/amVim-for-VSCode/releases/tag/1.17.5)
@@ -161,7 +168,7 @@
 
 # [1.17.0](https://github.com/aioutecism/amVim-for-VSCode/releases/tag/1.17.0)
 
-- Added N support for word motions. #146 
+- Added N support for word motions. #146
 
 
 # [1.16.1](https://github.com/aioutecism/amVim-for-VSCode/releases/tag/1.16.1)
@@ -176,8 +183,8 @@
 
 # [1.15.0](https://github.com/aioutecism/amVim-for-VSCode/releases/tag/1.15.0)
 
-- Update to TypeScript 2.0.3. #138 
-- Added `p` support in Visual and VisualLine modes. #142 
+- Update to TypeScript 2.0.3. #138
+- Added `p` support in Visual and VisualLine modes. #142
 
 
 # [1.14.0](https://github.com/aioutecism/amVim-for-VSCode/releases/tag/1.14.0)
@@ -198,12 +205,12 @@
 
 # [1.11.7](https://github.com/aioutecism/amVim-for-VSCode/releases/tag/1.11.7)
 
-- Preserve multiple cursors when changing to normal mode from insert mode. #132 
+- Preserve multiple cursors when changing to normal mode from insert mode. #132
 
 
 # [1.11.6](https://github.com/aioutecism/amVim-for-VSCode/releases/tag/1.11.6)
 
-- Fix wrong behavior when modifying last line of document. #71 
+- Fix wrong behavior when modifying last line of document. #71
 
 
 # [1.11.5](https://github.com/aioutecism/amVim-for-VSCode/releases/tag/1.11.5)
@@ -228,7 +235,7 @@
 
 # [1.11.1](https://github.com/aioutecism/amVim-for-VSCode/releases/tag/1.11.1)
 
-- Fix wrong behavior when deleting word at end of line. 
+- Fix wrong behavior when deleting word at end of line.
 
 
 # [1.11.0](https://github.com/aioutecism/amVim-for-VSCode/releases/tag/1.11.0)
@@ -412,7 +419,7 @@ See #50.
 # [0.1.1](https://github.com/aioutecism/amVim-for-VSCode/releases/tag/0.1.1)
 
 - Fix behaviour of `C` in Visual mode.
-- Fix wrong keybindings of indent/outdent in visual mode. #32 
+- Fix wrong keybindings of indent/outdent in visual mode. #32
 - Support for `s` and `S` in visual mode/visual line mode. #31
 
 
