@@ -27,6 +27,17 @@ suite('Normal: r', () => {
             inputs: '3 r r',
             to: 'Foo []rrr',
         },
+        {
+            from: '[]Foo []Foo',
+            inputs: '3 r r',
+            to: '[]rrr []rrr',
+        },
+        // on vim this is an error, but replace to end of line is okay
+        {
+            from: '[]Foo\nFoo',
+            inputs: '6 r r',
+            to: '[]rrr\nFoo',
+        },
     ];
 
     for (let i = 0; i < testCases.length; i++) {

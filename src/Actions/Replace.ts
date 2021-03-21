@@ -64,7 +64,7 @@ export class ActionReplace {
             .edit((editBuilder) => {
                 activeTextEditor.selections.forEach((selection) => {
                     let text = activeTextEditor.document.getText(selection);
-                    editBuilder.replace(selection, text.replace(/[^\n]/g, args.character));
+                    editBuilder.replace(selection, text.replace(/[^\r\n]/g, args.character));
                 });
             })
             .then(() => ActionReveal.primaryCursor());
@@ -90,7 +90,7 @@ export class ActionReplace {
             .edit((editBuilder) => {
                 ranges.forEach((range) => {
                     let text = activeTextEditor.document.getText(range);
-                    editBuilder.replace(range, text.replace(/[^\n]/g, args.character));
+                    editBuilder.replace(range, text.replace(/[^\r\n]/g, args.character));
                 });
             })
             .then(() => ActionReveal.primaryCursor());
