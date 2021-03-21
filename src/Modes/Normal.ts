@@ -239,6 +239,8 @@ export class ModeNormal extends Mode {
 
         { keys: 'r {char}', actions: [ActionReplace.charactersWithCharacter] },
         { keys: '{N} r {char}', actions: [ActionReplace.charactersWithCharacter] },
+        { keys: 'R', actions: [ActionMode.toReplace] },
+
         {
             keys: '~',
             actions: [
@@ -393,7 +395,7 @@ export class ModeNormal extends Mode {
             return;
         }
 
-        if (lastModeID === ModeID.INSERT) {
+        if (lastModeID === ModeID.INSERT || lastModeID === ModeID.REPLACE) {
             recordedCommandMaps.forEach((map) => (map.isRepeating = true));
 
             if (this._recordedCommandMaps === undefined) {

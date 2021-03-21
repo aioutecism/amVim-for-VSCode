@@ -8,7 +8,10 @@ import { UtilRange } from '../Utils/Range';
 export class ActionSelection {
     static validateSelections(): Thenable<boolean> {
         const currentMode = getCurrentMode();
-        if (currentMode !== null && currentMode.id === ModeID.INSERT) {
+        if (
+            currentMode !== null &&
+            (currentMode.id === ModeID.INSERT || currentMode.id === ModeID.REPLACE)
+        ) {
             return Promise.resolve(true);
         }
 

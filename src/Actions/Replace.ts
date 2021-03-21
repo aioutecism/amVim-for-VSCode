@@ -1,6 +1,7 @@
 import { window, Range } from 'vscode';
 import { StaticReflect } from '../LanguageExtensions/StaticReflect';
 import { SymbolMetadata } from '../Symbols/Metadata';
+import { ActionInsert } from './Insert';
 import { ActionRegister } from './Register';
 import { ActionSelection } from './Selection';
 import { ActionReveal } from './Reveal';
@@ -94,5 +95,16 @@ export class ActionReplace {
                 });
             })
             .then(() => ActionReveal.primaryCursor());
+    }
+
+    @StaticReflect.metadata(SymbolMetadata.Action.isChange, true)
+    static textAtSelections(args: {
+        text: string;
+        replaceCharCnt?: number;
+    }): Thenable<boolean | undefined> {
+        if (args.replaceCharCnt !== undefined) {
+            return ActionInsert.textAtSelections(args);
+        }
+        return ActionSelection.expandToOne().then(() => ActionInsert.textAtSelections(args));
     }
 }
