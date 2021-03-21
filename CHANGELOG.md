@@ -1,3 +1,8 @@
+# [1.33.0](https://github.com/aioutecism/amVim-for-VSCode/releases/tag/1.33.0)
+
+- Support remote development mode with workspace execution location: #283 Thanks @imyelo!
+
+
 # [1.32.0](https://github.com/aioutecism/amVim-for-VSCode/releases/tag/1.32.0)
 
 - Yank to and paste from system clipboard with `amVim.useSystemClipboard` option: #260 Thanks @karlhorky!
