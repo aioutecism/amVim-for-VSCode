@@ -17,6 +17,16 @@ suite('Normal: r', () => {
             inputs: 'r r',
             to: 'Fo[]r',
         },
+        {
+            from: '[]Foo',
+            inputs: '3 r r',
+            to: '[]rrr',
+        },
+        {
+            from: 'Foo []Foo',
+            inputs: '3 r r',
+            to: 'Foo []rrr',
+        },
     ];
 
     for (let i = 0; i < testCases.length; i++) {

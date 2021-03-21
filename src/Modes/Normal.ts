@@ -238,6 +238,7 @@ export class ModeNormal extends Mode {
         { keys: 'J', actions: [ActionJoinLines.onSelections] },
 
         { keys: 'r {char}', actions: [ActionReplace.charactersWithCharacter] },
+        { keys: '{N} r {char}', actions: [ActionReplace.charactersWithCharacter] },
         {
             keys: '~',
             actions: [
