@@ -66,11 +66,7 @@ export class ActionFind {
 
         return commands.executeCommand('editor.action.previousMatchFindAction').then(() => {
             window.showTextDocument(activeTextEditor.document, activeTextEditor.viewColumn);
-            activeTextEditor.selection = new Selection(
-                activeTextEditor.selection.start,
-                activeTextEditor.selection.start,
-            );
-            return Promise.resolve(true);
+            return ActionSelection.shrinkToStarts();
         });
     }
 }
