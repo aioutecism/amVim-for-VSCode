@@ -2,6 +2,7 @@ import { window, commands, Disposable, ExtensionContext } from 'vscode';
 import * as Keys from './Keys';
 import { Mode, ModeID } from './Modes/Mode';
 import { ModeNormal } from './Modes/Normal';
+import { ModeReplace } from './Modes/Replace';
 import { ModeVisual } from './Modes/Visual';
 import { ModeVisualLine } from './Modes/VisualLine';
 import { ModeInsert } from './Modes/Insert';
@@ -21,6 +22,7 @@ export class Dispatcher {
         [ModeID.VISUAL]: new ModeVisual(),
         [ModeID.VISUAL_LINE]: new ModeVisualLine(),
         [ModeID.INSERT]: new ModeInsert(),
+        [ModeID.REPLACE]: new ModeReplace(),
     };
 
     private disposables: Disposable[] = [];
@@ -100,7 +102,14 @@ export class Dispatcher {
         this._currentMode = this.modes[id];
         this._currentMode.enter();
 
-        commands.executeCommand('setContext', 'amVim.mode', this._currentMode.name);
+        // in order not to break existing configs, we export REPLACE as INSERT
+        commands.executeCommand(
+            'setContext',
+            'amVim.mode',
+            this._currentMode === this.modes[ModeID.REPLACE]
+                ? this.modes[ModeID.INSERT].name
+                : this._currentMode.name,
+        );
 
         // For use in repeat command
         if (lastMode) {

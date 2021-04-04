@@ -1,6 +1,7 @@
 import { window, Range } from 'vscode';
 import { StaticReflect } from '../LanguageExtensions/StaticReflect';
 import { SymbolMetadata } from '../Symbols/Metadata';
+import { ActionInsert } from './Insert';
 import { ActionRegister } from './Register';
 import { ActionSelection } from './Selection';
 import { ActionReveal } from './Reveal';
@@ -64,7 +65,7 @@ export class ActionReplace {
             .edit((editBuilder) => {
                 activeTextEditor.selections.forEach((selection) => {
                     let text = activeTextEditor.document.getText(selection);
-                    editBuilder.replace(selection, text.replace(/[^\n]/g, args.character));
+                    editBuilder.replace(selection, text.replace(/[^\r\n]/g, args.character));
                 });
             })
             .then(() => ActionReveal.primaryCursor());
@@ -90,9 +91,20 @@ export class ActionReplace {
             .edit((editBuilder) => {
                 ranges.forEach((range) => {
                     let text = activeTextEditor.document.getText(range);
-                    editBuilder.replace(range, text.replace(/[^\n]/g, args.character));
+                    editBuilder.replace(range, text.replace(/[^\r\n]/g, args.character));
                 });
             })
             .then(() => ActionReveal.primaryCursor());
+    }
+
+    @StaticReflect.metadata(SymbolMetadata.Action.isChange, true)
+    static textAtSelections(args: {
+        text: string;
+        replaceCharCnt?: number;
+    }): Thenable<boolean | undefined> {
+        if (args.replaceCharCnt !== undefined) {
+            return ActionInsert.textAtSelections(args);
+        }
+        return ActionSelection.expandToOne().then(() => ActionInsert.textAtSelections(args));
     }
 }

@@ -3,6 +3,7 @@ import { Mode, ModeID } from './Mode';
 import { Configuration } from '../Configuration';
 import { MatchResultKind } from '../Mappers/Generic';
 import { CommandMap } from '../Mappers/Command';
+import { Action } from '../Actions/Action';
 import { ActionRelativeLineNumbers } from '../Actions/RelativeLineNumbers';
 import { ActionInsert } from '../Actions/Insert';
 import { ActionDelete } from '../Actions/Delete';
@@ -70,7 +71,7 @@ export class ModeInsert extends Mode {
         },
     ];
 
-    constructor() {
+    constructor(private textAtSelections: Action = ActionInsert.textAtSelections) {
         super();
 
         this.maps.forEach((map) => {
@@ -114,7 +115,7 @@ export class ModeInsert extends Mode {
 
         this.pushCommandMap({
             keys: key,
-            actions: [ActionInsert.textAtSelections],
+            actions: [this.textAtSelections],
             args: {
                 text: key,
                 replaceCharCnt: args.replaceCharCnt,

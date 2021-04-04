@@ -9,6 +9,7 @@ export enum ModeID {
     VISUAL,
     VISUAL_LINE,
     INSERT,
+    REPLACE,
 }
 
 export abstract class Mode {
