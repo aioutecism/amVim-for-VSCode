@@ -51,24 +51,6 @@ export class ActionCase {
     }
 
     @StaticReflect.metadata(SymbolMetadata.Action.isChange, true)
-    static rot13Selections(): Thenable<boolean> {
-        const activeTextEditor = window.activeTextEditor;
-
-        if (!activeTextEditor) {
-            return Promise.resolve(false);
-        }
-
-        return activeTextEditor
-            .edit((editBuilder) => {
-                activeTextEditor.selections.forEach((selection) => {
-                    const text = activeTextEditor.document.getText(selection);
-                    editBuilder.replace(selection, UtilText.rot13(text));
-                });
-            })
-            .then(() => ActionReveal.primaryCursor());
-    }
-
-    @StaticReflect.metadata(SymbolMetadata.Action.isChange, true)
     static switchActives(args: { n?: number }): Thenable<boolean> {
         args.n = args.n === undefined ? 1 : args.n;
 
