@@ -16,12 +16,6 @@ export class UtilText {
         return to;
     }
 
-    static rot13(text: string): string {
-        return text.replace(/[a-z]/gi, (char) =>
-            String.fromCharCode(char.charCodeAt(0) + (char.toUpperCase() > 'M' ? -13 : 13)),
-        );
-    }
-
     static countStringAppearance(searchString: string, text: string): number {
         let count = 0;
         let position = -1;
