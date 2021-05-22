@@ -1,3 +1,13 @@
+# [1.34.0](https://github.com/aioutecism/amVim-for-VSCode/releases/tag/1.34.0)
+- Improve replace command `r` and add basic replace mode `R` #287
+  - `r` command now supports a count
+  - This early version of `R` replace mode keeps `amVim.mode` set to `INSERT` to preserve backwards compatibility with existing custom key bindings.
+  - Known issues with replace mode: paste from OS clipboard and VS Code autocomplete still inserts instead of replaces
+- Fix behavior of next match `n` by nudging the cursor #289
+  - `/` command has been modified to put the cursor at the start of the match like vim when `amVim.mimicVimSearchBehavior` is true (default)
+  - `n` command now nudges the cursor forward to find the next match - this now makes it work the same as vim
+- Temporarily remove `g?` ROT13 command since it broke `gg` motions in visual mode #292
+
 # [1.33.0](https://github.com/aioutecism/amVim-for-VSCode/releases/tag/1.33.0)
 
 - Support remote development mode with workspace execution location: #283 Thanks @imyelo!
