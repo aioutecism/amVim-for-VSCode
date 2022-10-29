@@ -10,7 +10,7 @@ export interface TestCase {
 }
 
 const waitForMillisecond = (millisecond: number) => {
-    return new Promise((resolve) => {
+    return new Promise<void>((resolve) => {
         setTimeout(() => resolve(), millisecond);
     });
 };

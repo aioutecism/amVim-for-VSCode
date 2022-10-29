@@ -1,6 +1,6 @@
 import * as path from 'path';
 
-import { runTests } from 'vscode-test';
+import { runTests } from '@vscode/test-electron';
 
 async function main() {
     try {
@@ -14,6 +14,7 @@ async function main() {
 
         // Download VS Code, unzip it and run the integration test
         await runTests({
+            version: '1.62.0',
             extensionDevelopmentPath,
             extensionTestsPath,
             launchArgs: ['--disable-extensions'],

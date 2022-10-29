@@ -37,7 +37,10 @@ export class ActionRegister {
         return ActionRegister.stash;
     }
 
-    static async yankRanges(args: { ranges: Range[]; isLinewise: boolean }): Promise<boolean> {
+    static async yankRanges(args: {
+        ranges: readonly Range[];
+        isLinewise: boolean;
+    }): Promise<boolean> {
         const activeTextEditor = window.activeTextEditor;
 
         if (!activeTextEditor) {

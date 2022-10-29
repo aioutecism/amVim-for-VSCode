@@ -30,17 +30,18 @@ export class ActionReplace {
 
         const document = activeTextEditor.document;
 
-        let ranges = activeTextEditor.selections as Range[];
+        let ranges = activeTextEditor.selections as readonly Range[];
 
         if (args.isLinewise) {
             ranges = ranges.map((range) => UtilRange.toLinewise(range, document));
         }
 
-        return (args.shouldYank
-            ? ActionRegister.yankSelections({
-                  isLinewise: args.isLinewise!,
-              })
-            : Promise.resolve(true)
+        return (
+            args.shouldYank
+                ? ActionRegister.yankSelections({
+                      isLinewise: args.isLinewise!,
+                  })
+                : Promise.resolve(true)
         )
             .then(() =>
                 activeTextEditor.edit((editBuilder) => {

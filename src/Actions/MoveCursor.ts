@@ -18,7 +18,7 @@ export class ActionMoveCursor {
 
         ActionMoveCursor.isUpdatePreferredColumnBlocked = true;
 
-        ActionMoveCursor.preferredColumnBlockTimer = setTimeout(function() {
+        ActionMoveCursor.preferredColumnBlockTimer = setTimeout(function () {
             ActionMoveCursor.isUpdatePreferredColumnBlocked = false;
             ActionMoveCursor.preferredColumnBlockTimer = undefined;
         }, 100);

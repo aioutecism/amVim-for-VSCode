@@ -128,7 +128,7 @@ export class ActionSelection {
             return Promise.resolve(false);
         }
 
-        let selections: Selection[] = [];
+        const selections: Selection[] = [];
 
         activeTextEditor.selections.forEach((selection) => {
             let positionToApply: Position;
@@ -163,8 +163,7 @@ export class ActionSelection {
             return Promise.reject<boolean>(false);
         }
 
-        selections = UtilSelection.unionOverlaps(selections);
-        activeTextEditor.selections = selections;
+        activeTextEditor.selections = UtilSelection.unionOverlaps(selections);
 
         return Promise.resolve(true);
     }

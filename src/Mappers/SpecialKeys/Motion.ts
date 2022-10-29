@@ -166,7 +166,7 @@ export class SpecialKeyMotion extends GenericMapper implements SpecialKeyCommon 
         if (map) {
             // Take N from last special key match.
             if (lastSpecialKeyMatch && lastSpecialKeyMatch.specialKey instanceof SpecialKeyN) {
-                map.args = Object.assign(map.args, { n: additionalArgs.n });
+                map.args = Object.assign(map.args ?? {}, { n: additionalArgs.n });
                 delete additionalArgs.n;
             }
 

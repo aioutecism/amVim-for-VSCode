@@ -1,23 +1,23 @@
 import { Selection, Position } from 'vscode';
 
 export class UtilSelection {
-    static unionOverlaps(from: Selection[]): Selection[] {
+    static unionOverlaps(from: readonly Selection[]): readonly Selection[] {
         // Make a copy so we won't destroy the array passed in.
-        from = from.map((selection) => selection);
+        const fromcopy = [...from];
 
         const to: Selection[] = [];
 
-        while (from.length > 0) {
-            let a = from.shift()!;
+        while (fromcopy.length > 0) {
+            let a = fromcopy.shift()!;
 
-            for (let i = 0; i < from.length; i++) {
-                const b = from[i];
+            for (let i = 0; i < fromcopy.length; i++) {
+                const b = fromcopy[i];
                 if (a.intersection(b) !== undefined) {
                     const unionedRange = a.union(b);
                     a = a.isReversed
                         ? new Selection(unionedRange.end, unionedRange.start)
                         : new Selection(unionedRange.start, unionedRange.end);
-                    from.splice(i, 1);
+                    fromcopy.splice(i, 1);
                     i--;
                 }
             }
@@ -39,7 +39,7 @@ export class UtilSelection {
         return new Selection(line, character, line, character);
     }
 
-    static shrinkToActives(selections: Selection[]): Selection[] {
+    static shrinkToActives(selections: readonly Selection[]): readonly Selection[] {
         return selections.map((selection) => UtilSelection.shrinkToActive(selection));
     }
 

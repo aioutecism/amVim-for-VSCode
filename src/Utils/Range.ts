@@ -1,20 +1,20 @@
 import { TextDocument, Range } from 'vscode';
 
 export class UtilRange {
-    static unionOverlaps(from: Range[]): Range[] {
+    static unionOverlaps(from: readonly Range[]): Range[] {
         // Make a copy so we won't destroy the array passed in.
-        from = from.map((range) => range);
+        const fromcopy = [...from];
 
         const to: Range[] = [];
 
-        while (from.length > 0) {
-            let a = from.shift()!;
+        while (fromcopy.length > 0) {
+            let a = fromcopy.shift()!;
 
-            for (let i = 0; i < from.length; i++) {
-                const b = from[i];
+            for (let i = 0; i < fromcopy.length; i++) {
+                const b = fromcopy[i];
                 if (a.intersection(b) !== undefined) {
                     a = a.union(b);
-                    from.splice(i, 1);
+                    fromcopy.splice(i, 1);
                     i--;
                 }
             }
