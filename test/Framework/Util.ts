@@ -68,7 +68,7 @@ export function setSelection(selection: Selection): void {
     setSelections([selection]);
 }
 
-export function setSelections(selections: Selection[]): void {
+export function setSelections(selections: readonly Selection[]): void {
     if (!window.activeTextEditor) {
         throw new Error('No active text editor.');
     }
@@ -129,7 +129,7 @@ export function getSelection(): Selection {
     return activeEditor.selection;
 }
 
-export function getSelections(): Selection[] {
+export function getSelections(): readonly Selection[] {
     if (!window.activeTextEditor) {
         throw new Error('No active text editor.');
     }

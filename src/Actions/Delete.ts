@@ -89,11 +89,12 @@ export class ActionDelete {
             return Promise.reject<boolean>(false);
         }
 
-        return (args.shouldYank
-            ? ActionRegister.yankByTextObject({
-                  textObject: args.textObject,
-              })
-            : Promise.resolve(true)
+        return (
+            args.shouldYank
+                ? ActionRegister.yankByTextObject({
+                      textObject: args.textObject,
+                  })
+                : Promise.resolve(true)
         )
             .then(() => {
                 // Selections will be adjust to matched ranges' start.
@@ -134,12 +135,13 @@ export class ActionDelete {
 
         ranges = UtilRange.unionOverlaps(ranges);
 
-        return (args.shouldYank
-            ? ActionRegister.yankRanges({
-                  ranges: ranges,
-                  isLinewise: false,
-              })
-            : Promise.resolve(true)
+        return (
+            args.shouldYank
+                ? ActionRegister.yankRanges({
+                      ranges: ranges,
+                      isLinewise: false,
+                  })
+                : Promise.resolve(true)
         )
             .then(() => {
                 return activeTextEditor.edit((editBuilder) => {
@@ -174,12 +176,13 @@ export class ActionDelete {
 
         ranges = UtilRange.unionOverlaps(ranges);
 
-        return (args.shouldYank
-            ? ActionRegister.yankRanges({
-                  ranges: ranges,
-                  isLinewise: false,
-              })
-            : Promise.resolve(true)
+        return (
+            args.shouldYank
+                ? ActionRegister.yankRanges({
+                      ranges: ranges,
+                      isLinewise: false,
+                  })
+                : Promise.resolve(true)
         )
             .then(() => {
                 return activeTextEditor.edit((editBuilder) => {

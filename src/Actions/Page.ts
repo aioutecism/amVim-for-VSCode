@@ -14,9 +14,8 @@ export class ActionPage {
         if (args.moveType === PageMoveType.Normal) {
             return commands.executeCommand('cursorPageUp');
         } else {
-            const thenable: Thenable<boolean | undefined> = commands.executeCommand(
-                'cursorPageUpSelect',
-            );
+            const thenable: Thenable<boolean | undefined> =
+                commands.executeCommand('cursorPageUpSelect');
 
             if (args.moveType === PageMoveType.SelectLine) {
                 thenable.then(() => ActionSelection.expandToLine());
@@ -32,9 +31,8 @@ export class ActionPage {
         if (args.moveType === PageMoveType.Normal) {
             return commands.executeCommand('cursorPageDown');
         } else {
-            const thenable: Thenable<boolean | undefined> = commands.executeCommand(
-                'cursorPageDownSelect',
-            );
+            const thenable: Thenable<boolean | undefined> =
+                commands.executeCommand('cursorPageDownSelect');
 
             if (args.moveType === PageMoveType.SelectLine) {
                 thenable.then(() => ActionSelection.expandToLine());
