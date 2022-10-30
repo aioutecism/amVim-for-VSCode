@@ -95,8 +95,10 @@ export class SpecialKeyMotion extends GenericMapper implements SpecialKeyCommon 
         { keys: '0', motionGenerators: [MotionLine.start] },
         { keys: '$', motionGenerators: [MotionLine.end] },
 
+        { keys: 'g ^', motionGenerators: [MotionWrappedLine.firstNonBlank] },
         { keys: 'g 0', motionGenerators: [MotionWrappedLine.start] },
         { keys: 'g $', motionGenerators: [MotionWrappedLine.end] },
+        { keys: 'g m', motionGenerators: [MotionWrappedLine.middle] },
         { keys: 'g k', motionGenerators: [MotionWrappedLine.up] },
         { keys: 'g j', motionGenerators: [MotionWrappedLine.down] },
 

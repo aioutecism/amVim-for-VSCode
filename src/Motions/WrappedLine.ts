@@ -13,6 +13,14 @@ export class MotionWrappedLine extends Motion {
         this.cursorMove = args.cursorMove;
     }
 
+    static firstNonBlank(): Motion {
+        return new MotionWrappedLine({
+            cursorMove: {
+                to: 'wrappedLineFirstNonWhitespaceCharacter',
+            },
+        });
+    }
+
     static start(): Motion {
         return new MotionWrappedLine({
             cursorMove: {
@@ -25,6 +33,14 @@ export class MotionWrappedLine extends Motion {
         return new MotionWrappedLine({
             cursorMove: {
                 to: 'wrappedLineEnd',
+            },
+        });
+    }
+
+    static middle(): Motion {
+        return new MotionWrappedLine({
+            cursorMove: {
+                to: 'wrappedLineColumnCenter',
             },
         });
     }
