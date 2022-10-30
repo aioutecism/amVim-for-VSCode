@@ -7,7 +7,6 @@
             "type": "extensionHost",
             "request": "launch",
             "runtimeExecutable": "${execPath}",
-            "stopOnEntry": false,
             "sourceMaps": true,
             "args": [
                 "--extensionDevelopmentPath=${workspaceFolder}"
@@ -22,7 +21,6 @@
             "type": "extensionHost",
             "request": "launch",
             "runtimeExecutable": "${execPath}",
-            "stopOnEntry": false,
             "sourceMaps": true,
             "args": [
                 "--disable-extensions",

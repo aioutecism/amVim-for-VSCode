@@ -12,6 +12,7 @@ import { MotionLine } from '../../Motions/Line';
 import { MotionParagraph } from '../../Motions/Paragraph';
 import { MotionDocument } from '../../Motions/Document';
 import { MotionNavigation } from '../../Motions/Navigation';
+import { MotionWrappedLine } from '../../Motions/WrappedLine';
 
 interface MotionGenerator {
     (args?: {}): Motion;
@@ -93,6 +94,11 @@ export class SpecialKeyMotion extends GenericMapper implements SpecialKeyCommon 
         { keys: '^', motionGenerators: [MotionLine.firstNonBlank] },
         { keys: '0', motionGenerators: [MotionLine.start] },
         { keys: '$', motionGenerators: [MotionLine.end] },
+
+        { keys: 'g 0', motionGenerators: [MotionWrappedLine.start] },
+        { keys: 'g $', motionGenerators: [MotionWrappedLine.end] },
+        { keys: 'g k', motionGenerators: [MotionWrappedLine.up] },
+        { keys: 'g j', motionGenerators: [MotionWrappedLine.down] },
 
         {
             keys: '-',
