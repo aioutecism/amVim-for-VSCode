@@ -1,3 +1,9 @@
+# [1.35.0](https://github.com/aioutecism/amVim-for-VSCode/releases/tag/1.35.0)
+- Wrapped line support: #305 #306
+  - Implements `g^`, `g0`, `g$`, `gm`, `gk` and `gj`.
+  - Known issues include a slight flicker and occasional unexpected cursor placement.
+
+
 # [1.34.0](https://github.com/aioutecism/amVim-for-VSCode/releases/tag/1.34.0)
 - Improve replace command `r` and add basic replace mode `R` #287
   - `r` command now supports a count
@@ -7,6 +13,7 @@
   - `/` command has been modified to put the cursor at the start of the match like vim when `amVim.mimicVimSearchBehavior` is true (default)
   - `n` command now nudges the cursor forward to find the next match - this now makes it work the same as vim
 - Temporarily remove `g?` ROT13 command since it broke `gg` motions in visual mode #292
+
 
 # [1.33.0](https://github.com/aioutecism/amVim-for-VSCode/releases/tag/1.33.0)
 
