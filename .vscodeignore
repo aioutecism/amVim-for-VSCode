@@ -1,10 +1,13 @@
+.github/**
 .vscode/**
 .vscode-test/**
+out/src/**
 out/test/**
 test/**
 src/**
 **/*.map
 .gitignore
+.prettierignore
 tsconfig.json
 prettier.config.js
 webpack.config.js
