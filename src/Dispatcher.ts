@@ -68,18 +68,18 @@ export class Dispatcher {
         this.disposables.push(
             window.onDidChangeTextEditorSelection(() => {
                 // Ensure this is executed after all pending commands.
-                setTimeout(() => {
-                    ActionMode.switchByActiveSelections(this._currentMode.id);
+                setTimeout(async () => {
+                    await ActionMode.switchByActiveSelections(this._currentMode.id);
                     ActionMoveCursor.updatePreferredColumn();
                     this._currentMode.onDidChangeTextEditorSelection();
                 }, 0);
             }),
-            window.onDidChangeActiveTextEditor(() => {
+            window.onDidChangeActiveTextEditor(async () => {
                 if (Configuration.defaultModeID === ModeID.INSERT) {
-                    ActionMode.toInsert();
+                    await ActionMode.toInsert();
                 } else {
                     // Passing `null` to `currentMode` to force mode switch.
-                    ActionMode.switchByActiveSelections(null);
+                    await ActionMode.switchByActiveSelections(null);
                 }
                 ActionMoveCursor.updatePreferredColumn();
             }),

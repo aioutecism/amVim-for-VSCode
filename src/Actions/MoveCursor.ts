@@ -24,22 +24,20 @@ export class ActionMoveCursor {
         }, 100);
     }
 
-    static updatePreferredColumn(): Thenable<boolean> {
+    static updatePreferredColumn(): void {
         if (ActionMoveCursor.isUpdatePreferredColumnBlocked) {
-            return Promise.resolve(false);
+            return;
         }
 
         const activeTextEditor = window.activeTextEditor;
 
         if (!activeTextEditor) {
-            return Promise.resolve(false);
+            return;
         }
 
         ActionMoveCursor.preferredColumnBySelectionIndex = activeTextEditor.selections.map(
             (selection) => UtilPosition.getColumn(activeTextEditor, selection.active),
         );
-
-        return Promise.resolve(true);
     }
 
     static async byMotions(args: {
