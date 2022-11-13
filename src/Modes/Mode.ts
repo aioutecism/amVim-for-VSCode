@@ -96,16 +96,12 @@ export abstract class Mode {
     /**
      * Override this to do something before command map makes changes.
      */
-    protected onWillCommandMapMakesChanges(map: CommandMap): Promise<boolean> {
-        return Promise.resolve(true);
-    }
+    protected onWillCommandMapMakesChanges(map: CommandMap): void {}
 
     /**
      * Override this to do something after command map made changes.
      */
-    protected onDidCommandMapMakesChanges(map: CommandMap): Promise<boolean> {
-        return Promise.resolve(true);
-    }
+    protected onDidCommandMapMakesChanges(map: CommandMap): void {}
 
     /**
      * Override this to do something after selection changes.
@@ -132,7 +128,7 @@ export abstract class Mode {
                 return;
             }
 
-            let promise: Promise<boolean | undefined> = Promise.resolve(true);
+            let promise: Promise<boolean | undefined | void> = Promise.resolve(true);
 
             const isAnyActionIsChange = map.actions.some((action) => {
                 return StaticReflect.getMetadata(SymbolMetadata.Action.isChange, action);

@@ -269,9 +269,9 @@ export class ModeInsert extends Mode {
         this.processRecord();
     }
 
-    protected onWillCommandMapMakesChanges(map: CommandMap): Promise<boolean> {
+    protected onWillCommandMapMakesChanges(map: CommandMap): void {
         if (!this.isRecording) {
-            return Promise.resolve(false);
+            return;
         }
 
         if (map.keys === '\n') {
@@ -285,18 +285,16 @@ export class ModeInsert extends Mode {
                 isRepeating: true,
             });
         }
-
-        return Promise.resolve(true);
     }
 
-    protected onDidCommandMapMakesChanges(map: CommandMap): Promise<boolean> {
+    protected onDidCommandMapMakesChanges(map: CommandMap): void {
         if (!this.isRecording) {
-            return Promise.resolve(false);
+            return;
         }
 
         if (map.keys === '\n') {
             if (!this.textEditor) {
-                return Promise.resolve(false);
+                return;
             }
 
             this.recordStartPosition = this.textEditor.selection.active;
@@ -304,8 +302,6 @@ export class ModeInsert extends Mode {
                 this.recordStartPosition.line,
             ).text;
         }
-
-        return Promise.resolve(true);
     }
 
     onDidChangeTextEditorSelection(): void {
