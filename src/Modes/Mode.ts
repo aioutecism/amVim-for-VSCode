@@ -1,4 +1,4 @@
-import { window } from 'vscode';
+import { commands, window } from 'vscode';
 import { StaticReflect } from '../LanguageExtensions/StaticReflect';
 import { SymbolMetadata } from '../Symbols/Metadata';
 import { MatchResultKind } from '../Mappers/Generic';
@@ -47,6 +47,7 @@ export abstract class Mode {
 
     private clearInputs(): void {
         this.inputs = [];
+        commands.executeCommand('setContext', 'amVim.waitingForInput', false);
     }
 
     private clearPendings(): void {
@@ -75,6 +76,7 @@ export abstract class Mode {
             this.execute();
         } else if (kind === MatchResultKind.WAITING) {
             this.updateStatusBar(`${this.inputs.join(' ')} and...`);
+            commands.executeCommand('setContext', 'amVim.waitingForInput', true);
         }
 
         return kind;
