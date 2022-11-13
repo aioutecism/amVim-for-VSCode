@@ -27,8 +27,8 @@ Check the list [here](https://github.com/aioutecism/amVim-for-VSCode/issues/1).
 
 ## Configuration
 
-You can overwrite default configurations in
-[User and Workspace Settings](https://code.visualstudio.com/docs/customization/userandworkspace).
+You can override default configurations in
+[User and Workspace Settings](https://code.visualstudio.com/docs/getstarted/settings).
 
 #### `amVim.bindCtrlCommands`
 
@@ -67,19 +67,60 @@ Set to `true` to copy to and paste from the system clipboard.
 Set to `false` to disable Vim style navigation in sidebar.
 
 
+## Contexts
+
+You can make use of 
+[when clause contexts](https://code.visualstudio.com/api/references/when-clause-contexts)
+to construct keybindings that only apply in specific scenarios.
+
+#### `amVim.mode`
+
+`String`, Possible values: `NORMAL`, `INSERT`, `VISUAL`, `VISUAL LINE`
+
+Tracks the current editing mode. For backward compatibility, `REPLACE` mode will appear as `INSERT`.
+
+#### `amVim.waitingForInput`
+
+`Boolean`
+
+Set to `true` when amVim is waiting for further input to match a command, otherwise `false`.
+This can be used to set up keybindings that perform a custom function when keys are pressed
+independently, without overriding the default Vim style behavior for those keys when
+prefixed.
+
+For example, the following configuration will redefine Vim style navigation keys `j` and `k`
+to move the native cursor, stepping over folded code and stepping into wrapped lines, while
+still allowing longer Vim commands like `3j` to work as expected:
+
+```json
+[
+  {
+    "key": "j",
+    "command": "cursorDown",
+    "when": "editorTextFocus && amVim.mode == 'NORMAL' && !amVim.waitingForInput"
+  },
+  {
+    "key": "k",
+    "command": "cursorUp",
+    "when": "editorTextFocus && amVim.mode == 'NORMAL' && !amVim.waitingForInput"
+  }
+]
+```
+
+
 ## Contributing
 
 Feel free to open [issues][] to report bugs or require features.
 
 [Pull requests][] are welcomed too! See VS Code's official instructions about:
 
-- [How to run and debug extensions][]
-- [How to run extension tests][]
+- [Extension API][]
+- [Testing Extensions][]
   - Protip: change `suite(` to `suite.only(` in a test file to run only a
     single test suite at a time. This saves quite a lot of time. Remember to
     remove the `.only` part before making a Git commit.
 
 [issues]: https://github.com/aioutecism/amVim-for-VSCode/issues
 [Pull requests]: https://github.com/aioutecism/amVim-for-VSCode/pulls
-[How to run and debug extensions]: https://code.visualstudio.com/docs/extensions/developing-extensions
-[How to run extension tests]: https://code.visualstudio.com/docs/extensions/testing-extensions
+[Extension API]: https://code.visualstudio.com/api
+[Testing Extensions]: https://code.visualstudio.com/api/working-with-extensions/testing-extension
