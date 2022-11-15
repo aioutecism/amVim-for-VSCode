@@ -2,13 +2,13 @@ import * as vscode from 'vscode';
 import { Command } from './Base';
 
 export class WriteQuitCommand extends Command {
-    execute(): Thenable<boolean | undefined> {
+    async execute(): Promise<boolean | undefined> {
         if (!vscode.window.activeTextEditor) {
-            return Promise.resolve(false);
+            return false;
         }
 
-        return vscode.window.activeTextEditor.document
-            .save()
-            .then(() => vscode.commands.executeCommand('workbench.action.closeActiveEditor'));
+        return (await vscode.window.activeTextEditor.document.save())
+            ? vscode.commands.executeCommand('workbench.action.closeActiveEditor')
+            : false;
     }
 }
