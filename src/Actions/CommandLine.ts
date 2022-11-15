@@ -11,6 +11,7 @@ import { HorizontalSplitCommand } from './Commands/HorizontalSplit';
 import { VerticalSplitCommand } from './Commands/VerticalSplit';
 import { NewFileCommand } from './Commands/NewFile';
 import { VerticalNewFileCommand } from './Commands/VerticalNewFile';
+import { ShellCommand } from './Commands/Shell';
 
 export class ActionCommandLine {
     private static maps: { [key: string]: typeof Command } = {
@@ -41,6 +42,9 @@ export class ActionCommandLine {
         new: NewFileCommand,
         vne: VerticalNewFileCommand,
         vnew: VerticalNewFileCommand,
+
+        sh: ShellCommand,
+        shell: ShellCommand,
     };
 
     static run(input: string | undefined): Thenable<boolean | undefined> {
