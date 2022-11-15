@@ -7,7 +7,8 @@ import { QuitCommand } from './Commands/Quit';
 import { QuitAllCommand } from './Commands/QuitAll';
 import { WriteQuitCommand } from './Commands/WriteQuit';
 import { WriteQuitAllCommand } from './Commands/WriteQuitAll';
-import { VerticalSplitCommand } from './Commands/VisualSplit';
+import { HorizontalSplitCommand } from './Commands/HorizontalSplit';
+import { VerticalSplitCommand } from './Commands/VerticalSplit';
 import { NewFileCommand } from './Commands/NewFile';
 import { VerticalNewFileCommand } from './Commands/VerticalNewFile';
 
@@ -31,8 +32,11 @@ export class ActionCommandLine {
         xa: WriteQuitAllCommand,
         xall: WriteQuitAllCommand,
 
+        sp: HorizontalSplitCommand,
+        split: HorizontalSplitCommand,
         vs: VerticalSplitCommand,
         vsp: VerticalSplitCommand,
+        vsplit: VerticalSplitCommand,
 
         new: NewFileCommand,
         vne: VerticalNewFileCommand,
