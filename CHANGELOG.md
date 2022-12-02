@@ -1,3 +1,11 @@
+# [1.36.0](https://github.com/aioutecism/amVim-for-VSCode/releases/tag/1.36.0)
+- Add new when clause context `amVim.waitingForInput` #303
+  - Allows for binding `h`, `j`, `k` and `l` to native cursor movement.
+- Small improvements to mode change behavior to avoid unexpected cursor placement.
+- Add `:shell` and `:split` commands #314
+  - Improve `:wq` command to behave more consistently when save fails.
+
+
 # [1.35.0](https://github.com/aioutecism/amVim-for-VSCode/releases/tag/1.35.0)
 - Wrapped line support: #305 #306
   - Implements `g^`, `g0`, `g$`, `gm`, `gk` and `gj`.
