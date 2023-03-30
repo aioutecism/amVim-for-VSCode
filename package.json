@@ -103,12 +103,12 @@
             {
                 "command": "amVim.up",
                 "key": "up",
-                "when": "editorTextFocus && amVim.mode != 'INSERT'"
+                "when": "editorTextFocus && amVim.mode != 'INSERT' && !suggestWidgetMultipleSuggestions && !suggestWidgetVisible"
             },
             {
                 "command": "amVim.down",
                 "key": "down",
-                "when": "editorTextFocus && amVim.mode != 'INSERT'"
+                "when": "editorTextFocus && amVim.mode != 'INSERT' && !suggestWidgetMultipleSuggestions && !suggestWidgetVisible"
             },
             {
                 "command": "amVim.escape",
