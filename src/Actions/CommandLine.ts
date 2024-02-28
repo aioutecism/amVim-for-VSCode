@@ -59,8 +59,8 @@ export class ActionCommandLine {
         const commandConstructor = this.maps[input]
             ? this.maps[input]
             : Number.isInteger(Number(input))
-            ? GoToLineCommand
-            : undefined;
+              ? GoToLineCommand
+              : undefined;
 
         if (!commandConstructor) {
             return Promise.resolve(false);

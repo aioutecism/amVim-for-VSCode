@@ -43,8 +43,8 @@ export class MotionDocument extends Motion {
             this.line !== undefined
                 ? this.line
                 : this.percent !== undefined
-                ? Math.round((document.lineCount - 1) * this.percent)
-                : undefined;
+                  ? Math.round((document.lineCount - 1) * this.percent)
+                  : undefined;
 
         if (line === undefined) {
             return from;
