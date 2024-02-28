@@ -1,3 +1,8 @@
+# [1.37.0](https://github.com/aioutecism/amVim-for-VSCode/releases/tag/1.37.0)
+- Update dependencies and clean up the test infrastructure somewhat.
+- Add a 2ms delay to selection change recalculations to try reduce cursor placement issues with `o` and other commands #308 #317
+
+
 # [1.36.0](https://github.com/aioutecism/amVim-for-VSCode/releases/tag/1.36.0)
 - Add new when clause context `amVim.waitingForInput` #303
   - Allows for binding `h`, `j`, `k` and `l` to native cursor movement.
