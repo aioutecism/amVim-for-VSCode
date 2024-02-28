@@ -72,7 +72,7 @@ export class Dispatcher {
                     await ActionMode.switchByActiveSelections(this._currentMode.id);
                     ActionMoveCursor.updatePreferredColumn();
                     this._currentMode.onDidChangeTextEditorSelection();
-                }, 0);
+                }, 2);
             }),
             window.onDidChangeActiveTextEditor(async () => {
                 if (Configuration.defaultModeID === ModeID.INSERT) {
