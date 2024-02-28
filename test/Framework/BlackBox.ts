@@ -94,6 +94,17 @@ const extractInfo = (originalText: string) => {
     };
 };
 
+export const toJs = (s: Selection) => ({
+    active: {
+        line: s.active.line,
+        character: s.active.character,
+    },
+    anchor: {
+        line: s.anchor.line,
+        character: s.anchor.character,
+    },
+});
+
 const reusableDocuments: Map<string, TextDocument> = new Map();
 
 export const run = (testCase: TestCase, before?: (textEditor: TextEditor) => void) => {
@@ -138,7 +149,7 @@ export const run = (testCase: TestCase, before?: (textEditor: TextEditor) => voi
 
             try {
                 assert.equal(TestUtil.getDocument()!.getText(), toInfo.cleanText);
-                assert.deepEqual(TestUtil.getSelections(), toInfo.selections);
+                assert.deepEqual(TestUtil.getSelections().map(toJs), toInfo.selections.map(toJs));
             } catch (error) {
                 done(error);
                 return;
