@@ -6,11 +6,12 @@ out/test/**
 test/**
 src/**
 **/*.map
+.eslintrc.json
 .gitignore
 .prettierignore
+.vscode-test.mjs
 tsconfig.json
 prettier.config.js
 webpack.config.js
-tslint.json
 CHANGELOG.template.md
 CHANGELOG.md

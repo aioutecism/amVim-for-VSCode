@@ -9,7 +9,7 @@ export class ActionMoveCursor {
         [i: number]: number;
     } = [];
     private static isUpdatePreferredColumnBlocked = false;
-    private static preferredColumnBlockTimer: NodeJS.Timer | undefined;
+    private static preferredColumnBlockTimer: NodeJS.Timeout | undefined;
 
     private static blockUpdatePreferredColumn(): void {
         if (ActionMoveCursor.preferredColumnBlockTimer) {

@@ -1,2 +1,3 @@
-package.json
-tslint.json
+*.json
+prettier.config.js
+webpack.config.js

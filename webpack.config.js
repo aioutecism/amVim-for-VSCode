@@ -4,9 +4,13 @@
 
 const path = require('path');
 
-/**@type {import('webpack').Configuration}*/
+//@ts-check
+/** @typedef {import('webpack').Configuration} WebpackConfig **/
+
+/** @type WebpackConfig */
 const config = {
     target: 'node',
+    mode: 'none',
     entry: './src/extension.ts',
     output: {
         path: path.resolve(__dirname, 'dist'),
@@ -14,7 +18,7 @@ const config = {
         libraryTarget: 'commonjs2',
         devtoolModuleFilenameTemplate: '../[resource-path]',
     },
-    devtool: 'source-map',
+    devtool: 'nosources-source-map',
     externals: {
         vscode: 'commonjs vscode'
     },
@@ -29,7 +33,10 @@ const config = {
                 loader: 'ts-loader'
             }]
         }]
+    },
+    infrastructureLogging: {
+        level: "log",
     }
 };
 
-module.exports = config;
+module.exports = [ config ];
