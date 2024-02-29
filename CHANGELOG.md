@@ -1,4 +1,5 @@
 # [1.37.0](https://github.com/aioutecism/amVim-for-VSCode/releases/tag/1.37.0)
+- Allow up/down arrows to navigate suggest widget in normal mode: #319 Thanks @notiv-nt!
 - Update dependencies and clean up the test infrastructure somewhat.
 - Add a 2ms delay to selection change recalculations to try reduce cursor placement issues with `o` and other commands #308 #317
 
